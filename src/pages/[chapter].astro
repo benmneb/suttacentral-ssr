@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro'
+
+const { chapter } = Astro.params
+const response = await fetch(
+  `https://suttacentral.net/api/suttaplex/${chapter}?language=en`
+)
+const data = await response.json()
+
+const crumbsResponse = await fetch(
+  `https://suttacentral.net/api/navigation_data/${chapter}?language=en`
+)
+const crumbsData = await crumbsResponse.json()
+---
+
+<Layout breadcrumbs={crumbsData}>
+  <article>
+    <ol>
+      {
+        data.map(entry => (
+          <li>
+            <h1>
+              {entry.original_title}—{entry.translated_title}
+            </h1>
+            {!!entry.translations?.length && <p>{entry.acronym}</p>}
+            {entry.blurb && <p>{entry.blurb}</p>}
+            {!!entry.translations?.length && (
+              <div>
+                <h2>translations</h2>
+                <ul>
+                  {entry.translations.map(t => (
+                    <li>
+                      <a href={`/${entry.uid}/${t.lang}/${t.author_uid}`}>
+                        {t.author}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+  </article>
+</Layout>

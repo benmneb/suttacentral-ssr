@@ -1,0 +1,36 @@
+{
+  "name": "suttacentral-ssr",
+  "description": "A fast and minimal alternative frontend for SuttaCentral.net",
+  "version": "0.0.1",
+  "author": "benmneb",
+  "license": "CC0",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@10.24.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,mjs,ts,astro,json,css,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.6.0",
+    "@astrojs/vercel": "^9.0.2",
+    "astro": "^5.16.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.17",
+    "daisyui": "^5.5.11",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.4",
+    "prettier-plugin-astro": "^0.14.1",
+    "tailwindcss": "^4.1.17"
+  }
+}

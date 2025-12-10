@@ -1,0 +1,58 @@
+---
+// import '../assets/styles.css'
+
+interface Props {
+  title?: string
+  description?: string
+  breadcrumbs?: string[]
+}
+
+const { title, description, breadcrumbs } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="generator" content={Astro.generator} />
+    <title>SuttaCentral.now</title>
+    <script defer src="https://scripts.simpleanalyticscdn.com/light.js"
+    ></script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/">📚</a></li>{
+            breadcrumbs?.map(b => (
+              <li>
+                <a href={b.url}>{b.title}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </header>
+    <slot />
+    <footer>links</footer>
+    <noscript
+      ><img
+        src="https://queue.simpleanalyticscdn.com/noscript.gif"
+        alt=""
+        referrerpolicy="no-referrer-when-downgrade"
+      /></noscript
+    >
+  </body>
+</html>
+
+<style>
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>

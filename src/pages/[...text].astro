@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro'
+
+const { text } = Astro.params
+
+// will be a string like "dn1/en/sujato"
+const parts = text!.split('/')
+if (parts.length !== 3) return Astro.redirect('/404') // TODO:
+const [acronym, language, author] = parts
+
+const bilaraResponse = await fetch(
+  `https://suttacentral.net/api/bilarasuttas/${acronym}/${author}?lang=en`
+)
+const bilaraData = await bilaraResponse.json()
+
+const suttasResponse = await fetch(
+  `https://suttacentral.net/api/suttas/${acronym}/${author}?lang=en&siteLanguage=en`
+)
+const suttasData = await suttasResponse.json()
+---
+
+<Layout>
+  <h1>{acronym} / {language} / {author}</h1>
+</Layout>

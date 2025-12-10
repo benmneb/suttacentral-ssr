@@ -1,0 +1,42 @@
+image: alpine/latest
+
+packages:
+  - nodejs
+  - npm
+
+git.sr.ht:
+  enabled: true
+  allow-refs:
+    - refs/heads/main
+
+secrets:
+  - 34a7d712-4558-4943-a03d-c8057965f23c # SSH for srht-builds
+  - 62aca017-2dfb-4fb1-aecf-b1c3d1e4d4a0 # SSH for pushing to mirrors
+  - 17a99919-e5a0-4c52-a891-b1f560367762 # vercel token
+
+environment:
+  VERCEL_ORG_ID: team_TOIiTPjWHQixeXjTUdaAMtks
+  VERCEL_PROJECT_ID: prj_KK4vY2yHwRDa7ypXHGFZl6SPS7Ys
+
+triggers:
+  - action: email
+    condition: failure
+    to: whacking_conflict869@simplelogin.com
+
+tasks:
+  - install_pnpm: |
+      sudo npm i -g pnpm
+  - setup: |
+      cd suttacentral-ssr
+      pnpm i
+  - build: |
+      cd suttacentral-ssr
+      pnpm i
+      pnpm run build
+  - deploy: |
+      cd suttacentral-ssr
+      npx vercel --prod --token=$(cat ~/.vercel) --yes
+  - mirror: |
+      cd suttacentral-ssr
+      GIT_SSH_COMMAND="ssh -i ~/.ssh/62aca017-2dfb-4fb1-aecf-b1c3d1e4d4a0 -o StrictHostKeyChecking=no" git push --mirror git@codeberg.org:benmneb/suttacentral-ssr.git
+      GIT_SSH_COMMAND="ssh -i ~/.ssh/62aca017-2dfb-4fb1-aecf-b1c3d1e4d4a0 -o StrictHostKeyChecking=no" git push --mirror git@github.com:benmneb/suttacentral-ssr.git
