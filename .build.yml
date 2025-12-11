@@ -12,11 +12,10 @@ git.sr.ht:
 secrets:
   - 34a7d712-4558-4943-a03d-c8057965f23c # SSH for srht-builds
   - 62aca017-2dfb-4fb1-aecf-b1c3d1e4d4a0 # SSH for pushing to mirrors
-  - 17a99919-e5a0-4c52-a891-b1f560367762 # vercel token
+  - 9e7fe4d8-c333-4116-97e7-c29e68409a21 # Cloudflare API token
 
 environment:
-  VERCEL_ORG_ID: team_TOIiTPjWHQixeXjTUdaAMtks
-  VERCEL_PROJECT_ID: prj_KK4vY2yHwRDa7ypXHGFZl6SPS7Ys
+  CLOUDFLARE_ACCOUNT_ID: cc1f9251f98d1dab3451b99675c70166
 
 triggers:
   - action: email
@@ -35,7 +34,8 @@ tasks:
       pnpm run build
   - deploy: |
       cd suttacentral-ssr
-      npx vercel --prod --token=$(cat ~/.vercel) --yes
+      export CLOUDFLARE_API_TOKEN=$(cat ~/.cloudflare)
+      npx wrangler pages deploy dist --project-name=suttacentral-ssr --branch=main
   - mirror: |
       cd suttacentral-ssr
       GIT_SSH_COMMAND="ssh -i ~/.ssh/62aca017-2dfb-4fb1-aecf-b1c3d1e4d4a0 -o StrictHostKeyChecking=no" git push --mirror git@codeberg.org:benmneb/suttacentral-ssr.git
