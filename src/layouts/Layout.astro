@@ -1,5 +1,6 @@
 ---
 // import '../assets/global.css'
+const pathname = Astro.url.pathname
 
 interface Props {
   title?: string
@@ -37,7 +38,13 @@ const { title, description, breadcrumbs } = Astro.props
       </nav>
     </header>
     <slot />
-    <footer>links</footer>
+    <footer>
+      <p>
+        View this page on <a href={`https://suttacentral.net${pathname}`}
+          >SuttaCentral.net</a
+        >
+      </p>
+    </footer>
     <noscript
       ><img
         src="https://queue.simpleanalyticscdn.com/noscript.gif"
