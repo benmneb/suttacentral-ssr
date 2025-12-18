@@ -42,7 +42,7 @@ const crumbsData = await crumbsResponse.json()
 <Layout breadcrumbs={crumbsData}>
   <article>
     <h1>{data.root_name}—{data.translated_name}</h1>
-    <p>{data.blurb}</p>
+    {!!data.blurb && <p set:html={data.blurb} />}
     <ol>
       {
         data.children.map(child => (
@@ -52,7 +52,7 @@ const crumbsData = await crumbsResponse.json()
                 {child.root_name}—{child.translated_name}
               </a>
             </h2>
-            <p>{child.blurb}</p>
+            {!!child.blurb && <p set:html={child.blurb} />}
           </li>
         ))
       }

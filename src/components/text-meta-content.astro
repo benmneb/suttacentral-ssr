@@ -11,8 +11,8 @@ const { entry, chosenLanguage = 'en' } = Astro.props
   <h1>
     {entry.original_title}—{entry.translated_title}
   </h1>
-  {entry.acronym && <p>{entry.acronym}</p>}
-  {entry.blurb && <p>{entry.blurb}</p>}
+  {!!entry.acronym && <p>{entry.acronym}</p>}
+  {!!entry.blurb && <p set:html={entry.blurb} />}
   {
     !!entry.translations.length && (
       <section>

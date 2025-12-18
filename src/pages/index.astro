@@ -22,7 +22,7 @@ const tipitaka = json
                 {pitaka.root_name}—{pitaka.translated_name}
               </a>
             </h2>
-            <p>{pitaka.blurb}</p>
+            {!!pitaka.blurb && <p set:html={pitaka.blurb} />}
           </article>
         </li>
       ))
