@@ -14,7 +14,7 @@ const { entry, chosenLanguage = 'en' } = Astro.props
   {entry.acronym && <p>{entry.acronym}</p>}
   {entry.blurb && <p>{entry.blurb}</p>}
   {
-    entry.type === 'leaf' && (
+    !!entry.translations.length && (
       <section>
         <details open>
           <summary>Translation(s) in English lol</summary>
