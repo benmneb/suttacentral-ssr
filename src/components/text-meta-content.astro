@@ -1,0 +1,79 @@
+---
+interface Props {
+  entry: any
+  chosenLanguage?: string
+}
+
+const { entry, chosenLanguage = 'en' } = Astro.props
+---
+
+<li>
+  <h1>
+    {entry.original_title}—{entry.translated_title}
+  </h1>
+  {entry.acronym && <p>{entry.acronym}</p>}
+  {entry.blurb && <p>{entry.blurb}</p>}
+  {
+    entry.type === 'leaf' && (
+      <section>
+        <details open>
+          <summary>Translation(s) in English lol</summary>
+          <ul>
+            {entry.translations
+              .filter(t => t.lang === chosenLanguage)
+              .map(t => (
+                <li>
+                  {t.lang_name}—
+                  <a href={`/${entry.uid}/${t.lang}/${t.author_uid}`}>
+                    {t.author}
+                  </a>
+                </li>
+              ))}
+          </ul>
+        </details>
+        <details open>
+          <summary>Edition of the root text</summary>
+          <ul>
+            {entry.translations
+              .filter(t => t.lang === entry.root_lang)
+              .map(t => (
+                <li>
+                  {t.lang_name}—
+                  <a href={`/${entry.uid}/${t.lang}/${t.author_uid}`}>
+                    {t.author}
+                  </a>
+                </li>
+              ))}
+          </ul>
+        </details>
+        <details>
+          <summary>Translation(s) in other modern languages</summary>
+          <ul>
+            {entry.translations
+              .filter(
+                t => t.lang !== chosenLanguage && t.lang !== entry.root_lang
+              )
+              .toSorted((a, b) => a.lang - b.lang)
+              .map(t => (
+                <li>
+                  {t.lang_name}—
+                  <a href={`/${entry.uid}/${t.lang}/${t.author_uid}`}>
+                    {t.author}
+                  </a>
+                </li>
+              ))}
+          </ul>
+        </details>
+        <ul />
+      </section>
+    )
+  }
+  {
+    entry.type === 'leaf' && (
+      <details>
+        <summary>Parallel(s) in ancient texts</summary>
+        TODO!
+      </details>
+    )
+  }
+</li>

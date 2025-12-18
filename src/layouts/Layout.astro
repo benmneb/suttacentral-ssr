@@ -5,7 +5,7 @@ const pathname = Astro.url.pathname
 interface Props {
   title?: string
   description?: string
-  breadcrumbs?: string[]
+  breadcrumbs?: string[] // TODO: wrong type
 }
 
 const { title, description, breadcrumbs } = Astro.props

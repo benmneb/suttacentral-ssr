@@ -1,45 +1,43 @@
 ---
+import TextMetaContent from '../components/text-meta-content.astro'
 import Layout from '../layouts/Layout.astro'
 
 const { chapter } = Astro.params
-const response = await fetch(
+
+const suttaplexResponse = await fetch(
   `https://suttacentral.net/api/suttaplex/${chapter}?language=en`
 )
-const data = await response.json()
+const suttaplexData = await suttaplexResponse.json()
+
+// const parallelsResponse = await fetch(`https://suttacentral.net/api/parallels/${uid}`)
+// const parallelsData = await parallelsResponse.json()
 
 const crumbsResponse = await fetch(
   `https://suttacentral.net/api/navigation_data/${chapter}?language=en`
 )
 const crumbsData = await crumbsResponse.json()
+
+const chosenLanguage = 'en' // TODO: lol
+const isPatimokkha = chapter?.endsWith('-pm')
 ---
 
 <Layout breadcrumbs={crumbsData}>
   <article>
     <ol>
       {
-        data.map(entry => (
-          <li>
-            <h1>
-              {entry.original_title}—{entry.translated_title}
-            </h1>
-            {!!entry.translations?.length && <p>{entry.acronym}</p>}
-            {entry.blurb && <p>{entry.blurb}</p>}
-            {!!entry.translations?.length && (
-              <div>
-                <h2>translations</h2>
-                <ul>
-                  {entry.translations.map(t => (
-                    <li>
-                      <a href={`/${entry.uid}/${t.lang}/${t.author_uid}`}>
-                        {t.author}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </li>
+        (isPatimokkha ? [suttaplexData[0]] : suttaplexData).map(entry => (
+          <TextMetaContent entry={entry} chosenLanguage={chosenLanguage} />
         ))
+      }
+      {
+        isPatimokkha && (
+          <details class="patimokkha-details">
+            <summary>Show parallels and details</summary>
+            {suttaplexData.slice(1).map(entry => (
+              <TextMetaContent entry={entry} chosenLanguage={chosenLanguage} />
+            ))}
+          </details>
+        )
       }
     </ol>
   </article>
