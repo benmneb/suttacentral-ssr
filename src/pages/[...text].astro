@@ -3,22 +3,194 @@ import Layout from '../layouts/Layout.astro'
 
 const { text } = Astro.params
 
-// will be a string like "dn1/en/sujato"
-const parts = text!.split('/')
+const parts = text!.split('/') // will be a string like "dn1/en/sujato"
 if (parts.length !== 3) return Astro.redirect('/404') // TODO:
-const [acronym, language, author] = parts
+const [acronym, language, authorUid] = parts
 
+// TODO: put root url in global file
 const bilaraResponse = await fetch(
-  `https://suttacentral.net/api/bilarasuttas/${acronym}/${author}?lang=en`
+  `https://suttacentral.net/api/bilarasuttas/${acronym}/${authorUid}?lang=${language}`
 )
 const bilaraData = await bilaraResponse.json()
 
 const suttasResponse = await fetch(
-  `https://suttacentral.net/api/suttas/${acronym}/${author}?lang=en&siteLanguage=en`
+  `https://suttacentral.net/api/suttas/${acronym}/${authorUid}?lang=${language}&siteLanguage=en`
 )
 const suttasData = await suttasResponse.json()
+
+const publicationResponse = await fetch(
+  `https://suttacentral.net/api/publication_info/${acronym}/${language}/${authorUid}`
+)
+const publicationData = await publicationResponse.json()
+
+const crumbsResponse = await fetch(
+  `https://suttacentral.net/api/navigation_data/${acronym}?language=en`
+)
+const crumbsData = await crumbsResponse.json()
+
+const isSegmented = !!suttasData.segmented
+
+// TODO: put in global file
+const normalise = (v: string) => v?.replace(/\s+/g, ' ').trim() ?? ''
+
+let commentsHtml = ''
+
+function getRootLangHTML() {
+  if (!isSegmented || language !== suttasData.root_text.lang) return null
+
+  return bilaraData.keys_order
+    .map(key => {
+      const html = bilaraData.html_text[key]
+      const text = bilaraData.root_text[key]
+      const comment = bilaraData.variant_text?.[key]
+      const ref = key.split(':').pop()
+
+      if (!html) return ''
+
+      const segment = `
+    <span id="${key}" class="segment">
+      <span class="reference" id="${ref}">
+        <a href="#${ref}" title="SuttaCentral segment number">${ref}</a>
+      </span>
+      ${
+        text
+          ? `
+      <!-- This is not a translation, its the root text, the class is so it's not \`display: none\` by default. -->
+      <span class="translation" lang="${suttasData.root_text.lang}" translate="no">
+        <span class="text">${text}</span>
+        ${
+          comment
+            ? `
+        <button popovertarget="comment-${key}" aria-label="Show variant reading for segment ${ref}">*</button>
+        <span class="inline-comment" aria-label="Variant reading for segment ${ref}">
+          Variant: ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
+        </span>
+        `
+            : ''
+        }
+      </span>
+      `
+          : ''
+      }
+    </span>
+  `
+
+      if (comment) {
+        commentsHtml += `
+      <article id="comment-${key}" popover>
+        Variant: ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
+      </article>
+    `
+      }
+
+      return html.replace('{}', segment)
+    })
+    .join('')
+}
+
+function getSegmentedHTML() {
+  if (!isSegmented || language === suttasData.root_text.lang) return null
+
+  return bilaraData.keys_order
+    .map(key => {
+      const html = bilaraData.html_text[key]
+      const text = bilaraData.translation_text[key]
+      const rootText = bilaraData.root_text[key]
+      const comment = bilaraData.comment_text?.[key]
+      const ref = key.split(':').pop()
+
+      if (!html) return ''
+
+      const segment = `
+    <span id="${key}" class="segment">
+      <span class="reference" id="${ref}">
+        <a href="#${ref}" title="SuttaCentral segment number">${ref}</a>
+      </span>
+      ${
+        text
+          ? `
+      <span class="translation" lang="${suttasData.translation.lang}">
+        <span class="text">${text}</span>
+        ${
+          comment
+            ? `
+        <button popovertarget="comment-${key}" aria-label="Show ${suttasData.translation.author}'s footnote for segment ${key}">*</button>
+        <span class="inline-comment" aria-label="${suttasData.translation.author}'s footnote for segment ${key}">
+          ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
+        </span>
+        `
+            : ''
+        }
+      </span>
+      `
+          : ''
+      }
+      ${
+        rootText
+          ? `
+      <span class="root" lang="${suttasData.suttaplex.root_lang}" translate="no">
+        <span class="text">${rootText}</span>
+      </span>
+      `
+          : ''
+      }
+    </span>
+  `
+
+      if (comment) {
+        commentsHtml += `
+      <article id="comment-${key}" popover>
+        ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
+      </article>
+    `
+      }
+
+      return html.replace('{}', segment)
+    })
+    .join('')
+}
+
+function getLegacyHTML() {
+  if (isSegmented) return null
+
+  const htmlContent = suttasData?.translation.text.replace(/\n/g, '')
+  // Extract the last <footer>...</footer> (its the publication info)
+  const footerParts = htmlContent.split('<footer')
+  const lastFooterPart = footerParts[footerParts.length - 1]
+  const footerContent = lastFooterPart.split('</footer>')[0]
+  const originalFooter = '<footer' + footerContent + '</footer>'
+  // Remove footer from HTML
+  const htmlWithoutFooter = htmlContent.replace(originalFooter, '')
+  // Transform footer to info article with popover
+  const modifiedFooter = originalFooter
+    .replace('<footer', '<article id="info" popover')
+    .replace('</footer>', '</article>')
+
+  return htmlWithoutFooter + modifiedFooter
+}
+
+const rootLangHTML = getRootLangHTML()
+const segmentedHTML = getSegmentedHTML()
+const legacyHTML = getLegacyHTML()
+
+const articleHTML = rootLangHTML || segmentedHTML || legacyHTML
 ---
 
-<Layout>
-  <h1>{acronym} / {language} / {author}</h1>
+<Layout breadcrumbs={crumbsData}>
+  <main>
+    <Fragment set:html={articleHTML} />
+    <Fragment set:html={commentsHtml} />
+
+    {
+      !!publicationData && (
+        <article id="info" popover>
+          TODO!
+          {/* TODO: Include publicationInfo component here */}
+          {/* <PublicationInfo entry={suttasData} /> */}
+        </article>
+      )
+    }
+  </main>
 </Layout>
+
+ ̰
