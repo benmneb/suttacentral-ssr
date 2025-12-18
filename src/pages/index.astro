@@ -12,16 +12,20 @@ const tipitaka = json
 
 <Layout>
   <h1>Tipiṭaka—the Three Baskets of the Buddhist canon</h1>
-  {
-    tipitaka.map(pitaka => (
-      <article>
-        <h2>
-          <a href={`/pitaka/${pitaka.uid}`}>
-            {pitaka.root_name}—{pitaka.translated_name}
-          </a>
-        </h2>
-        <p>{pitaka.blurb}</p>
-      </article>
-    ))
-  }
+  <ol>
+    {
+      tipitaka.map(pitaka => (
+        <li>
+          <article>
+            <h2>
+              <a href={`/pitaka/${pitaka.uid}`}>
+                {pitaka.root_name}—{pitaka.translated_name}
+              </a>
+            </h2>
+            <p>{pitaka.blurb}</p>
+          </article>
+        </li>
+      ))
+    }
+  </ol>
 </Layout>
