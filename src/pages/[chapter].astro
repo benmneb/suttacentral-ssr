@@ -3,21 +3,18 @@ import TextMetaContent from '../components/text-meta-content.astro'
 import Layout from '../layouts/Layout.astro'
 
 const { chapter } = Astro.params
+const chosenLanguage = 'en' // TODO: lol
 
 const suttaplexResponse = await fetch(
-  `https://suttacentral.net/api/suttaplex/${chapter}?language=en`
+  `https://suttacentral.net/api/suttaplex/${chapter}?language=${chosenLanguage}`
 )
 const suttaplexData = await suttaplexResponse.json()
 
-// const parallelsResponse = await fetch(`https://suttacentral.net/api/parallels/${uid}`)
-// const parallelsData = await parallelsResponse.json()
-
 const crumbsResponse = await fetch(
-  `https://suttacentral.net/api/navigation_data/${chapter}?language=en`
+  `https://suttacentral.net/api/navigation_data/${chapter}?language=${chosenLanguage}`
 )
 const crumbsData = await crumbsResponse.json()
 
-const chosenLanguage = 'en' // TODO: lol
 const isPatimokkha = chapter?.endsWith('-pm')
 ---
 
@@ -26,7 +23,7 @@ const isPatimokkha = chapter?.endsWith('-pm')
     <ol>
       {
         (isPatimokkha ? [suttaplexData[0]] : suttaplexData).map(entry => (
-          <TextMetaContent entry={entry} chosenLanguage={chosenLanguage} />
+          <TextMetaContent data={entry} chosenLanguage={chosenLanguage} />
         ))
       }
       {
@@ -34,7 +31,7 @@ const isPatimokkha = chapter?.endsWith('-pm')
           <details class="patimokkha-details">
             <summary>Show parallels and details</summary>
             {suttaplexData.slice(1).map(entry => (
-              <TextMetaContent entry={entry} chosenLanguage={chosenLanguage} />
+              <TextMetaContent data={entry} chosenLanguage={chosenLanguage} />
             ))}
           </details>
         )

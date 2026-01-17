@@ -1,0 +1,143 @@
+---
+const { data: entry, parallelsOpen } = Astro.props
+
+const parallelsResponse = await fetch(
+  `https://suttacentral.net/api/parallels/${entry.uid}`
+)
+const parallelsData = await parallelsResponse.json()
+
+// Get root translation for building links
+const rootTrans = entry.translations.find((t: any) => t.is_root)
+
+// Helper to format PTS volpages
+function formatVolpages(volpages: string | null): string {
+  if (!volpages) return ''
+  if (!volpages.includes('PTS')) return volpages
+
+  const parts = volpages.trim().split(', ')
+  if (parts.length < 2) return volpages
+
+  const firstParts = parts[0].trim().split(' ')
+  const lastParts = parts[parts.length - 1].trim().split(' ')
+  const prefix = firstParts[0]
+  const firstNum = firstParts[firstParts.length - 1]
+  const lastNum = lastParts[lastParts.length - 1]
+
+  return `${prefix} ${firstNum}—${lastNum}`
+}
+
+// Helper to get base path from segment key
+function getBasePath(segmentKey: string): string {
+  let basePath = segmentKey
+  if (segmentKey.includes('#')) {
+    basePath = segmentKey.split('#')[0]
+  }
+  if (entry.scx_range_sutta && segmentKey.includes('-')) {
+    basePath = entry.scx_range_sutta_uid
+  }
+  return basePath
+}
+
+// Helper to get hash fragment
+function getHashFragment(key: string): string {
+  if (key.includes('#')) {
+    return '#' + key.split('#')[1]
+  }
+  return ''
+}
+
+// Get parallel type title
+function getParallelTypeTitle(type: string): string {
+  switch (type) {
+    case 'full':
+      return 'Full parallel: different versions of the same text'
+    case 'mention':
+      return 'Mention: one text is quoted or mentioned in another'
+    case 'retelling':
+      return 'Retelling: the events of one text are retold in another'
+    default:
+      return ''
+  }
+}
+
+// Filter out metadata entries
+const segments = Object.entries(parallelsData).filter(
+  ([key]) => !key.includes('scx_fetched_at')
+)
+---
+
+<details open={parallelsOpen}>
+  <summary>
+    Parallels ({entry.parallel_count}) in ancient texts
+  </summary>
+  <ul>
+    {
+      segments.map(([segmentKey, parallels]) => (
+        <li>
+          {rootTrans ? (
+            <a
+              href={`/${getBasePath(segmentKey)}/${rootTrans.lang}/${rootTrans.author_uid}${getHashFragment(segmentKey)}`}
+            >
+              {segmentKey}
+            </a>
+          ) : (
+            <span>{segmentKey}</span>
+          )}
+          <ul>
+            {(parallels as any[]).map(parallel => {
+              const prettyVolpages = formatVolpages(parallel.to.volpages)
+              const hasTranslations = parallel.to.translations?.length > 0
+              const firstTrans = parallel.to.translations?.[0]
+              const displayTitle =
+                parallel.to.translated_title?.trim() ||
+                parallel.to.original_title?.trim() ||
+                parallel.to.acronym?.trim()
+
+              return (
+                <li
+                  class={`parallel-list-item-${parallel.to.type}`}
+                  title={getParallelTypeTitle(parallel.to.type)}
+                >
+                  {hasTranslations ? (
+                    <a
+                      href={`/${parallel.to.uid}/${firstTrans.lang}/${firstTrans.author_uid}${getHashFragment(parallel.to.to)}`}
+                      hreflang={firstTrans.lang}
+                    >
+                      {displayTitle}
+                    </a>
+                  ) : (
+                    <span>{displayTitle}</span>
+                  )}
+
+                  {/* Secondary info line */}
+                  {parallel.to.translated_title &&
+                  parallel.to.original_title ? (
+                    <>
+                      <br />
+                      {parallel.to.original_title.trim()}
+                      {parallel.to.acronym && (
+                        <> ∙ {parallel.to.acronym.trim()}</>
+                      )}
+                      {prettyVolpages && <> ∙ {prettyVolpages.trim()}</>}
+                    </>
+                  ) : parallel.to.original_title ? (
+                    <>
+                      <br />
+                      {parallel.to.acronym && <>{parallel.to.acronym.trim()}</>}
+                      {prettyVolpages && <> ∙ {prettyVolpages.trim()}</>}
+                    </>
+                  ) : parallel.to.acronym && prettyVolpages ? (
+                    <>
+                      <br />
+                      {prettyVolpages.trim()}
+                    </>
+                  ) : null}
+                </li>
+              )
+            })}
+          </ul>
+        </li>
+      ))
+    }
+  </ul>
+</details>

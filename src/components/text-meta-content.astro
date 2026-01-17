@@ -1,10 +1,15 @@
 ---
+import ParallelsDetails from './parallels-details.astro'
+
 interface Props {
-  entry: any
+  data: any //suttaplex response
   chosenLanguage?: string
+  title?: string
+  translations?: any
+  parallelsOpen?: boolean
 }
 
-const { entry, chosenLanguage = 'en' } = Astro.props
+const { data: entry, chosenLanguage = 'en', parallelsOpen } = Astro.props
 ---
 
 <li>
@@ -70,10 +75,7 @@ const { entry, chosenLanguage = 'en' } = Astro.props
   }
   {
     entry.type === 'leaf' && (
-      <details>
-        <summary>Parallel(s) in ancient texts</summary>
-        TODO!
-      </details>
+      <ParallelsDetails data={entry} parallelsOpen={parallelsOpen} />
     )
   }
 </li>

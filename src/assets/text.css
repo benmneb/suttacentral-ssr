@@ -1,0 +1,820 @@
+&:has(#commenter:checked) {
+  li[role='menuitem']:has(#commenter-inline) {
+    display: flex;
+  }
+
+  .segment button[popovertarget] {
+    display: initial;
+  }
+
+  &:has(#commenter-inline:checked) {
+    .inline-comment {
+      display: block;
+      height: fit-content;
+      margin: 0.5rem;
+      padding: 0.5rem;
+      color: var(--text-color-secondary);
+      background-color: var(--comments-background-color);
+      border-radius: var(--rounding);
+      border: 1px solid var(--comments-border-color);
+    }
+
+    .segment button[popovertarget] {
+      display: none;
+    }
+
+    /* can't use `var(--content-max-width)` in media queries :'( */
+    @media only screen and (min-width: 600px) {
+      li[role='menuitem']:has(#commenter-side) {
+        display: flex;
+      }
+
+      &:has(#commenter-side:checked) {
+        main {
+          max-width: var(--content-double-width-gap);
+        }
+        main ~ nav {
+          max-width: var(--content-double-width);
+        }
+
+        .translation {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          column-gap: 1rem;
+
+          .inline-comment {
+            margin: 0 0 0.5rem;
+          }
+        }
+
+        &:has(#rooter:checked) {
+          .root {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 1rem;
+
+            .inline-comment {
+              margin: 0 0 0.5rem;
+            }
+          }
+        }
+
+        &:has(#rooter-side:checked) {
+          .segment {
+            grid-template-columns: 2fr 1fr;
+
+            .root {
+              grid-template-columns: 1fr;
+            }
+          }
+
+          &:has(#rooter-first:checked) {
+            .segment {
+              grid-template-columns: 1fr 2fr;
+
+              .root {
+                grid-template-columns: 1fr;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+&:has(#segmenter:checked)
+  .segment:not(
+    header .segment,
+    h2 .segment,
+    h3 .segment,
+    h4 .segment,
+    h5 .segment,
+    h6 .segment
+  )
+  .reference
+  > a,
+&:has(#segmenter:checked) a.ref {
+  display: initial;
+}
+
+&:has(#rooter:checked) .segment {
+  display: grid;
+  margin-bottom: 0.3rem;
+
+  .translation {
+    grid-column: 1;
+  }
+
+  .root {
+    grid-column: 1;
+    display: initial;
+  }
+}
+
+&:has(#rooter:checked) {
+  li[role='menuitem']:has(#rooter-first) {
+    display: flex;
+  }
+
+  &:has(#rooter-side:checked) {
+    main {
+      max-width: var(--content-double-width-gap);
+    }
+    main ~ nav {
+      max-width: var(--content-double-width);
+    }
+  }
+
+  /* can't use `var(--content-max-width)` in media queries :'( */
+  @media only screen and (min-width: 600px) {
+    li[role='menuitem']:has(#rooter-side) {
+      display: flex;
+    }
+
+    &:has(#rooter-side:checked) {
+      .segment {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 1rem;
+
+        .verse-line .translation,
+        .verse-line .root {
+          text-indent: 2em;
+        }
+        .translation {
+          grid-column: 1;
+        }
+        .root {
+          grid-column: 2;
+        }
+        /* br {
+            content: '';
+          } */
+      }
+
+      &:has(#rooter-first:checked) {
+        .translation {
+          grid-column: 2;
+        }
+        .root {
+          grid-column: 1;
+        }
+      }
+
+      &:has(#segmenter:checked) {
+        .segment {
+          grid-template-columns: 3rem 1fr 1fr;
+
+          .reference {
+            grid-column: 1;
+            display: flex;
+            justify-content: end;
+            align-items: start;
+          }
+          .translation {
+            grid-column: 2;
+          }
+          .root {
+            grid-column: 3;
+          }
+        }
+        &:has(#segmenter:checked):has(#rooter-first:checked) {
+          .segment {
+            .translation {
+              grid-column: 3;
+            }
+            .root {
+              grid-column: 2;
+            }
+          }
+        }
+      }
+    }
+
+    &:has(#rooter-side:checked)&:has(#rooter-first:checked) {
+      .segment {
+        .root {
+          grid-column: 1;
+        }
+        .translation {
+          grid-column: 2;
+        }
+      }
+
+      &:has(#segmenter:checked) {
+        .segment {
+          .reference {
+            grid-column: 1;
+          }
+          .root {
+            grid-column: 2;
+          }
+          .translation {
+            grid-column: 3;
+          }
+        }
+      }
+    }
+  }
+
+  &:has(#rooter-first:checked) .segment {
+    .root {
+      order: 1;
+      grid-column: 1;
+      color: unset;
+    }
+    .translation {
+      order: 2;
+      color: var(--fg-alt-4);
+    }
+  }
+}
+
+/* can't use `var(--content-max-width)` in media queries :'( */
+@media only screen and (min-width: 600px) {
+  &:has(#segmenter:checked) {
+    &:has(#commenter:checked)&:has(#commenter-inline:checked) {
+      &:has(#commenter-side:checked) {
+        .segment {
+          display: grid;
+          grid-template-columns: 3rem 1fr;
+          column-gap: 1rem;
+
+          .reference {
+            grid-column: 1;
+            display: flex;
+            justify-content: end;
+            align-items: start;
+          }
+          .translation {
+            grid-column: 2;
+          }
+        }
+
+        &:has(#rooter:checked) {
+          .root {
+            grid-column-start: 2;
+          }
+
+          &:has(#rooter-side:checked) {
+            .segment {
+              grid-template-columns: 3rem 2fr 1fr;
+
+              .root {
+                grid-column: 3;
+                grid-template-columns: 1fr;
+              }
+            }
+
+            &:has(#rooter-first:checked) {
+              .segment {
+                grid-template-columns: 3rem 1fr 2fr;
+
+                .root {
+                  grid-column: 2;
+                }
+                .translation {
+                  grid-column: 3;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#views-menu li[role='menuitem']:has(#commenter-inline),
+#views-menu li[role='menuitem']:has(#commenter-side) {
+  display: none;
+}
+
+#listen-menu {
+  max-width: 30ch;
+
+  li[role='menuitem'] {
+    display: none;
+  }
+}
+
+[popover] {
+  color: var(--text-color);
+  border: none;
+  box-shadow: 0 0.3rem 1rem var(--shadow-color);
+  border-radius: var(--rounding);
+  padding: 1rem;
+  background-color: var(--popover-background-color);
+  max-width: calc(min(320px, 100vw) - 2rem);
+  max-height: 60vh;
+  overflow-y: scroll;
+
+  dl dt {
+    color: var(--text-color-secondary);
+  }
+
+  .texts-list > details > summary {
+    &:hover,
+    &:active {
+      background-color: var(--details-summary-hover-background);
+    }
+  }
+}
+
+[popover]#info,
+[popover]#parallels {
+  max-width: calc(min(60ch, 100vw) - 2rem);
+  width: 100%;
+}
+
+aside {
+  display: flex;
+  justify-content: end;
+  pointer-events: none;
+
+  &:has(#positioner:checked) {
+    position: sticky;
+    top: 0.5rem;
+  }
+
+  fieldset {
+    width: fit-content;
+    padding: 0;
+    border: none;
+    margin: 0;
+    background-color: var(--bg-alt-1);
+    border-top-left-radius: var(--rounding);
+    border-bottom-left-radius: var(--rounding);
+    pointer-events: auto;
+
+    button {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      min-height: 1.5rem;
+      padding: 0 0.5rem;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      background-color: inherit;
+      color: var(--fg-alt-3);
+
+      &:focus:not(button[disabled]),
+      &:hover:not(button[disabled]) {
+        background-color: var(--primary-color);
+        color: var(--background-color);
+      }
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding-left: 0;
+      display: flex;
+    }
+
+    li {
+      display: block;
+      position: relative;
+      color: var(--fg-alt-3);
+      border-top-left-radius: var(--rounding);
+      border-bottom-left-radius: var(--rounding);
+
+      &:first-of-type > button {
+        border-top-left-radius: var(--rounding);
+        border-bottom-left-radius: var(--rounding);
+      }
+    }
+
+    ul li ul {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      width: max-content;
+      background-color: var(--bg-alt-2);
+      color: var(--text-color);
+      padding-right: 0.3rem;
+      border-radius: var(--rounding);
+      border-top-right-radius: unset;
+
+      li {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding-right: 0.3rem;
+
+        &:hover,
+        &:focus-within {
+          background: var(--bg-soft);
+          border-radius: unset;
+
+          &:first-of-type {
+            border-top-left-radius: var(--rounding);
+          }
+          &:last-of-type {
+            border-bottom-left-radius: var(--rounding);
+            border-bottom-right-radius: var(--rounding);
+          }
+        }
+
+        label {
+          width: 100%;
+          padding: 0 0.3rem;
+        }
+
+        input {
+          margin: 0;
+        }
+
+        label,
+        input {
+          cursor: pointer;
+        }
+
+        &:has(#rooter-first),
+        &:has(#rooter-side) {
+          display: none;
+        }
+      }
+    }
+
+    ul li:hover > ul,
+    ul li:focus-within > ul,
+    ul li ul:hover,
+    ul li ul:focus {
+      display: block;
+    }
+  }
+}
+
+hr {
+  width: 30%;
+  border-radius: var(--rounding);
+  border: none;
+  border-top: 1px solid var(--gray);
+}
+
+section,
+article {
+  overflow-wrap: break-word;
+
+  [lang='pli'] {
+    overflow-wrap: anywhere;
+  }
+
+  button[popovertarget] {
+    display: none;
+    user-select: none;
+    cursor: help;
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    padding: 0;
+    margin: 0 0.1rem 0 0;
+    vertical-align: text-top;
+
+    &:focus {
+      background-color: var(--primary-color);
+      color: var(--background-color);
+    }
+  }
+
+  ul li {
+    list-style-type: initial;
+  }
+
+  dl {
+    dt {
+      color: var(--text-color-secondary);
+    }
+
+    dd {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .segment {
+    .root {
+      display: none;
+      color: var(--fg-alt-4);
+      /* word-break: break-all; */
+    }
+
+    .reference {
+      a {
+        display: none;
+        border: 1px solid var(--bg-alt-2);
+        border-radius: var(--rounding);
+        padding: 0.2rem;
+        text-decoration: none;
+        color: var(--fg-alt-4);
+        font-size: 0.7rem;
+        font-weight: initial;
+
+        &:hover {
+          background-color: var(--bg-soft);
+        }
+      }
+    }
+
+    .inline-comment {
+      display: none;
+    }
+  }
+
+  header > ul {
+    padding-left: 0;
+  }
+
+  .reference:target a,
+  a.ref:target {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+
+    &:hover {
+      color: unset;
+    }
+  }
+
+  blockquote:has(.verse-line) {
+    margin-left: unset;
+    margin-right: unset;
+  }
+
+  /* These named classes all come through from Sutta Central.
+       See: https://github.com/suttacentral/suttacentral/blob/d583b3364e9d94177343ad96cbab036f07bbba2d/client/elements/styles/sc-typography-common-styles.js#L647
+    */
+  header {
+    text-align: center;
+    margin-bottom: 4rem;
+
+    li {
+      list-style-type: none;
+      letter-spacing: 0.02rem;
+      /*font-variant-caps: all-small-caps; Doesn't fly with system fonts + diacritics */
+      text-transform: capitalize;
+      text-wrap: balance;
+    }
+
+    h1 {
+      /*font-variant-caps: small-caps; Doesn't fly with system fonts + diacritics */
+      text-transform: capitalize;
+    }
+
+    .sutta-title {
+      word-break: break-word;
+      text-wrap: balance;
+    }
+
+    .subheading {
+      font-style: italic;
+    }
+  }
+  /*bilingual sutta title*/
+  .mirror {
+    display: table;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .mirror > * {
+    display: table-row;
+  }
+  .mirror-left {
+    display: table-cell;
+    width: 50%;
+    padding-right: 1rem;
+    text-align: right;
+    border-right: var(--sc-border);
+  }
+  .mirror-right {
+    display: table-cell;
+    padding-left: 1rem;
+    text-align: left;
+  }
+  .mirror-middle {
+    position: absolute;
+    margin-top: 0.2rem;
+    text-align: right;
+  }
+  .text-table td:first-child {
+    font-weight: inherit;
+  }
+  .namo {
+    font-style: italic;
+    text-align: center;
+  }
+  .roman-numerals {
+    text-decoration: underline overline;
+    text-transform: uppercase;
+    text-decoration-thickness: 0.05em;
+    text-underline-offset: 0.2em;
+  }
+  .speaker {
+    font-style: italic;
+    display: block;
+    text-indent: 3em;
+  }
+  .pe {
+    font-style: italic;
+    color: var(--text-color-secondary);
+  }
+  .expansion-instructions {
+    font-style: italic;
+    color: var(--text-color-secondary);
+  }
+  .add:not(h1 .add) {
+    color: var(--text-color-secondary);
+  }
+  .evam:not(:has(.inline-comment)) {
+    letter-spacing: 0.02rem;
+    /*font-variant-caps: all-small-caps; Doesn't fly with system fonts + diacritics */
+    text-transform: uppercase;
+  }
+  .verse-line {
+    display: block;
+    .translation {
+      hyphens: none;
+      margin-left: 2em;
+    }
+    .root {
+      margin-left: 2em;
+    }
+  }
+  j {
+    display: block;
+    margin-left: 2em;
+  }
+  .uddana-intro {
+    font-weight: bold;
+    color: var(--text-color-secondary);
+  }
+  .endsection,
+  .end,
+  .endsubsection {
+    font-style: italic;
+    text-align: center;
+    color: var(--text-color-secondary);
+  }
+  .endsutta {
+    font-weight: bold;
+    text-align: center;
+    color: var(--text-color-secondary);
+  }
+  .endbook,
+  .endvagga,
+  .endkanda {
+    text-align: center;
+    /*font-variant-caps: all-petite-caps; Doesn't fly with system fonts + diacritics */
+    text-transform: capitalize;
+    color: var(--text-color-secondary);
+  }
+  .endbook {
+    font-weight: bold;
+  }
+
+  /* tables */
+  table {
+    margin: 2em auto 1em;
+    border-collapse: collapse;
+  }
+  caption {
+    font-weight: 600;
+    padding: 1em;
+  }
+  td {
+    padding: 0.6667em;
+    vertical-align: text-top;
+    border-top: 1px solid var(--background-color-secondary);
+    border-bottom: 1px solid var(--background-color-secondary);
+  }
+  td:first-child {
+    font-weight: bold;
+  }
+
+  /* lists */
+  ol,
+  ul {
+    padding-left: 1em;
+  }
+  ol ul,
+  ul ol,
+  ul ul,
+  ol ol {
+    margin: 0.5em 0 0;
+  }
+  li {
+    padding: 0;
+  }
+  dt {
+    font-weight: bold;
+  }
+  dd {
+    margin-left: 1em;
+  }
+  dd ol,
+  dd ul {
+    padding-left: 0;
+  }
+
+  /* Udanna */
+
+  .uddana {
+    font-weight: 400;
+    color: var(--text-color-secondary);
+  }
+
+  .uddana-intro {
+    font-weight: bold;
+    color: var(--text-color-secondary);
+  }
+
+  .uddanagatha {
+    font-weight: 400;
+    font-style: inherit;
+    color: var(--text-color-secondary);
+  }
+
+  /* Vinaya */
+  .kamma {
+    font-weight: 600;
+  }
+  .rule {
+    font-weight: 800;
+  }
+  .subrule {
+    font-weight: 600;
+  }
+  .help-heading,
+  .inserted-heading {
+    font-style: italic;
+  }
+
+  /* For Chinese root texts / Descriptive classes */
+  .xu,
+  .suttainfo {
+    background-color: var(--bg-alt-1);
+    padding: 1rem;
+    border-radius: var(--rounding);
+    margin-bottom: 2rem;
+  }
+  .suppliedmetre {
+    color: var(--text-color-secondary);
+  }
+  .gap {
+    color: var(--text-color-secondary);
+  }
+  .describe {
+    text-decoration: line-through;
+    text-decoration-color: var(--text-color-secondary);
+  }
+  .del {
+    text-decoration: line-through;
+    text-decoration-color: var(--text-color-secondary);
+  }
+  .scribe {
+    font-style: italic;
+  }
+  .alt-title {
+    display: none;
+  }
+  .hidden {
+    display: none;
+  }
+  .metre {
+    display: none;
+  }
+  .t-gaiji {
+    color: var(--text-color-secondary);
+  }
+  .rule-number {
+    color: var(--text-color-secondary);
+  }
+  .allowance {
+    font-weight: bold;
+  }
+  .t-note {
+    color: var(--text-color-secondary);
+  }
+  .vagga-number {
+    color: var(--text-color-secondary);
+  }
+
+  /* From Sutta Central with the non-segment texts. */
+  a.ref {
+    display: none;
+    border: 1px solid var(--bg-alt-2);
+    border-radius: var(--rounding);
+    padding: 0.2rem;
+    text-decoration: none;
+    color: var(--fg-alt-4);
+    font-size: 0.7rem;
+    margin-right: 0.3rem;
+    font-weight: initial;
+
+    &:hover {
+      background-color: var(--bg-soft);
+    }
+  }
+}
