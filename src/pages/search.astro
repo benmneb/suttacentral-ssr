@@ -68,24 +68,71 @@ const dictionaryTitles = {
           <ol>
             {!!dictionaryHits.length &&
               dictionaryHits.map(hit => (
-                <article>
-                  <h2>{hit.highlight.detail[0].word}</h2>
-                  <p>
-                    <span>
-                      {dictionaryTitles?.[hit.highlight.detail[0].dictname] ||
-                        'Dictionary'}
-                    </span>
-                    <a href={hit.url}>(see more (TODO))</a>
-                  </p>
-                  <p>
-                    <em>{hit.highlight.detail[0].grammar}</em>
-                  </p>
-                  <ol>
-                    {hit.highlight.detail[0].definition.map(d => (
-                      <li>{d}</li>
-                    ))}
-                  </ol>
-                </article>
+                <li>
+                  <dl>
+                    <dt>{hit.highlight.detail[0].word}</dt>
+                    <dd>
+                      <small>
+                        {dictionaryTitles?.[hit.highlight.detail[0].dictname] ||
+                          'Dictionary'}{' '}
+                        (<a href={hit.url}>see all dictionaries</a>)
+                      </small>
+                    </dd>
+                    {hit.highlight.detail[0].grammar && (
+                      <dd>
+                        <em>{hit.highlight.detail[0].grammar}</em>
+                      </dd>
+                    )}
+                    {hit.highlight.detail[0].text && (
+                      <dd
+                        set:html={hit.highlight.detail[0].text.replaceAll(
+                          'https://suttacentral.net',
+                          ''
+                        )}
+                      />
+                    )}
+                    {hit.highlight.detail[0].definition && (
+                      <dd>
+                        {Array.isArray(hit.highlight.detail[0].definition) ? (
+                          <ol>
+                            {hit.highlight.detail[0].definition.map(d => (
+                              <li>{d}</li>
+                            ))}
+                          </ol>
+                        ) : (
+                          hit.highlight.detail[0].definition
+                        )}
+                      </dd>
+                    )}
+                    {hit.highlight.detail[0].xr && (
+                      <dd>
+                        <ul>
+                          {Array.isArray(hit.highlight.detail[0].xr) ? (
+                            <>
+                              {hit.highlight.detail[0].xr.map(d => (
+                                <li>
+                                  <a href={`/define/${d}`}>{d}</a>
+                                </li>
+                              ))}
+                            </>
+                          ) : (
+                            <li>
+                              <a href={`/define/${hit.highlight.detail[0].xr}`}>
+                                {hit.highlight.detail[0].xr}
+                              </a>
+                            </li>
+                          )}
+                        </ul>
+                      </dd>
+                    )}
+                    {hit.highlight.detail[0].pronunciation && (
+                      <dd>
+                        <strong>Pronunciation:</strong>{' '}
+                        {hit.highlight.detail[0].pronunciation}
+                      </dd>
+                    )}
+                  </dl>
+                </li>
               ))}
             {!!suttaplexHits.length &&
               suttaplexHits.map(entry => (
