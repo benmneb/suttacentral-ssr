@@ -20,6 +20,13 @@
     Segoe UI Symbol;
 }
 
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+}
+
 :where(article h1, section h1, nav h1, aside h1) {
   margin-block: 0.67em;
   font-size: 2em;
@@ -35,4 +42,57 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+body > header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+
+  ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    li {
+      list-style-type: none;
+      display: flex;
+      word-break: keep-all;
+      text-wrap: nowrap;
+      white-space: nowrap;
+
+      &:first-of-type a {
+        text-decoration: none;
+      }
+
+      &::after {
+        content: '/';
+        margin-left: 0.5rem;
+        color: var(--gray);
+      }
+
+      &:last-child::after {
+        content: '';
+      }
+    }
+  }
+
+  button[popovertarget='search-modal'] {
+    cursor: pointer;
+    background: none;
+    border: none;
+
+    &:focus,
+    &:hover {
+      background-color: var(--primary-color);
+    }
+  }
 }

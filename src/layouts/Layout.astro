@@ -1,5 +1,6 @@
 ---
 import '../assets/global.css'
+import SearchForm from '../components/search-form.astro'
 const pathname = Astro.url.pathname
 
 interface Props {
@@ -36,6 +37,17 @@ const { title, description, breadcrumbs } = Astro.props
           }
         </ul>
       </nav>
+      {
+        !pathname.startsWith('/search') && (
+          <button
+            type="submit"
+            popovertarget="search-modal"
+            aria-label="Search site"
+          >
+            🔎
+          </button>
+        )
+      }
     </header>
     <slot />
     <footer>
@@ -45,6 +57,13 @@ const { title, description, breadcrumbs } = Astro.props
         >
       </p>
     </footer>
+    {
+      !pathname.startsWith('/search') && (
+        <section id="search-modal" popover>
+          <SearchForm />
+        </section>
+      )
+    }
     <noscript
       ><img
         src="https://queue.simpleanalyticscdn.com/noscript.gif"
