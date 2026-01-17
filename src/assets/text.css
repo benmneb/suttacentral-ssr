@@ -359,6 +359,7 @@ aside {
       cursor: pointer;
       background-color: inherit;
       color: var(--fg-alt-3);
+      font-family: inherit;
 
       &:focus:not(button[disabled]),
       &:hover:not(button[disabled]) {
