@@ -299,6 +299,40 @@
   }
 }
 
+.tts-highlight {
+  /* color: var(--tts-highlight-text-color); */
+  color: HighlightText;
+  /* background-color: var(--tts-highlight-background-color); */
+  background-color: Highlight;
+}
+
+.tts-clickable {
+  cursor: pointer;
+
+  &:hover {
+    /* background-color: var(--tts-hover-background-color); */
+    color: HighlightText;
+    background-color: HighLight;
+  }
+}
+
+.tts-controls {
+  display: flex;
+  height: 3rem;
+
+  button {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &[disabled] {
+      opacity: 0.2;
+      cursor: not-allowed;
+    }
+  }
+}
+
 [popover] {
   color: var(--text-color);
   border: none;
