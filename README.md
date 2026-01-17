@@ -4,7 +4,7 @@
 
 # [SuttaCentral.now](https://suttacentral.now) [![builds.sr.ht status](https://builds.sr.ht/~benmneb/suttacentral-ssr.svg?search=refs/heads/main)](https://builds.sr.ht/~benmneb/suttacentral-ssr?search=refs/heads/main)
 
-## A fast and feature-rich alternative frontend for [SuttaCentral.net](https://suttacentral.net)
+## Another fast and minimal alternative frontend for [SuttaCentral.net](https://suttacentral.net)
 
 (It's like SuttaCentral.net, except with SSR)
 
