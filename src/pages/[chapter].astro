@@ -19,7 +19,7 @@ const isPatimokkha = chapter?.endsWith('-pm')
 ---
 
 <Layout breadcrumbs={crumbsData}>
-  <article>
+  <main>
     <ol>
       {
         (isPatimokkha ? [suttaplexData[0]] : suttaplexData).map(entry => (
@@ -37,5 +37,5 @@ const isPatimokkha = chapter?.endsWith('-pm')
         )
       }
     </ol>
-  </article>
+  </main>
 </Layout>

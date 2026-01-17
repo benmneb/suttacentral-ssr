@@ -40,7 +40,7 @@ const crumbsData = await crumbsResponse.json()
 ---
 
 <Layout breadcrumbs={crumbsData}>
-  <article>
+  <main>
     <h1>{data.root_name}—{data.translated_name}</h1>
     {!!data.blurb && <p set:html={data.blurb} />}
     <ol>
@@ -57,5 +57,5 @@ const crumbsData = await crumbsResponse.json()
         ))
       }
     </ol>
-  </article>
+  </main>
 </Layout>
