@@ -68,27 +68,24 @@ const dictionaryTitles = {
           <ol>
             {!!dictionaryHits.length &&
               dictionaryHits.map(hit => (
-                <details>
-                  <summary>Define {query}</summary>
-                  <article>
-                    <p>
-                      <span>
-                        {dictionaryTitles?.[hit.highlight.detail[0].dictname] ||
-                          'Dictionary'}
-                      </span>
-                      <a href={hit.url}>(see more (TODO))</a>
-                    </p>
-                    <h2>{hit.highlight.detail[0].word}</h2>
-                    <p>
-                      <em>{hit.highlight.detail[0].grammar}</em>
-                    </p>
-                    <ol>
-                      {hit.highlight.detail[0].definition.map(d => (
-                        <li>{d}</li>
-                      ))}
-                    </ol>
-                  </article>
-                </details>
+                <article>
+                  <h2>{hit.highlight.detail[0].word}</h2>
+                  <p>
+                    <span>
+                      {dictionaryTitles?.[hit.highlight.detail[0].dictname] ||
+                        'Dictionary'}
+                    </span>
+                    <a href={hit.url}>(see more (TODO))</a>
+                  </p>
+                  <p>
+                    <em>{hit.highlight.detail[0].grammar}</em>
+                  </p>
+                  <ol>
+                    {hit.highlight.detail[0].definition.map(d => (
+                      <li>{d}</li>
+                    ))}
+                  </ol>
+                </article>
               ))}
             {!!suttaplexHits.length &&
               suttaplexHits.map(entry => (
