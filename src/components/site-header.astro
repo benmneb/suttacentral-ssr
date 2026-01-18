@@ -1,0 +1,85 @@
+---
+const { breadcrumbs } = Astro.props
+const pathname = Astro.url.pathname
+---
+
+<header>
+  <nav>
+    <ul>
+      <li><a href="/">📚</a></li>{
+        breadcrumbs?.map(b => (
+          <li>
+            <a href={b.url}>{b.title}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+  {
+    !pathname.startsWith('/search') && (
+      <button
+        type="submit"
+        popovertarget="search-modal"
+        aria-label="Search site"
+      >
+        🔎
+      </button>
+    )
+  }
+</header>
+
+<style>
+  header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    margin: 1rem;
+
+    ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0;
+      margin: 0;
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      li {
+        list-style-type: none;
+        display: flex;
+        word-break: keep-all;
+        text-wrap: nowrap;
+        white-space: nowrap;
+
+        &:first-of-type a {
+          text-decoration: none;
+        }
+
+        &::after {
+          content: '/';
+          margin-left: 0.5rem;
+          color: var(--gray);
+        }
+
+        &:last-child::after {
+          content: '';
+        }
+      }
+    }
+
+    button[popovertarget='search-modal'] {
+      cursor: pointer;
+      background: none;
+      border: none;
+
+      &:focus,
+      &:hover {
+        background-color: var(--primary-color);
+      }
+    }
+  }
+</style>

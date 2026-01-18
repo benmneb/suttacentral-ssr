@@ -332,16 +332,6 @@
 }
 
 [popover] {
-  color: var(--text-color);
-  border: none;
-  box-shadow: 0 0.3rem 1rem var(--shadow-color);
-  border-radius: var(--rounding);
-  padding: 1rem;
-  background-color: var(--popover-background-color);
-  max-width: calc(min(320px, 100vw) - 2rem);
-  max-height: 60vh;
-  overflow-y: scroll;
-
   dl dt {
     color: var(--text-color-secondary);
   }

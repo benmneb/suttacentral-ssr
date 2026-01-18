@@ -1,0 +1,51 @@
+---
+// Global site footer
+const pathname = Astro.url.pathname
+const renderTime = Astro.locals.renderTime
+---
+
+<footer>
+  <p>
+    View this page on <a href={`https://suttacentral.net${pathname}`}
+      >SuttaCentral.net</a
+    >
+  </p>
+  <p>This page rendered in {renderTime}s</p>
+</footer>
+
+<style>
+  footer {
+    background-color: var(--footer-background-color);
+    margin-top: 2rem;
+    text-align: center;
+    padding: 1rem;
+    color: var(--headings-color);
+
+    p:first-of-type {
+      font-weight: 800;
+    }
+
+    p:nth-of-type(2) {
+      font-weight: 600;
+    }
+
+    ul {
+      max-width: var(--content-max-width);
+      margin: 1rem auto;
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      li:not(li:last-of-type) {
+        margin-right: 0.5rem;
+
+        &::after {
+          content: '∙';
+          margin-left: 0.5rem;
+        }
+      }
+    }
+  }
+</style>

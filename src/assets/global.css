@@ -80,60 +80,6 @@ body {
   padding: 0;
   line-height: 1.5;
 
-  > header {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    align-items: center;
-    margin: 1rem;
-
-    ul {
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      padding: 0;
-      margin: 0;
-      scrollbar-width: none;
-      &::-webkit-scrollbar {
-        display: none;
-      }
-
-      li {
-        list-style-type: none;
-        display: flex;
-        word-break: keep-all;
-        text-wrap: nowrap;
-        white-space: nowrap;
-
-        &:first-of-type a {
-          text-decoration: none;
-        }
-
-        &::after {
-          content: '/';
-          margin-left: 0.5rem;
-          color: var(--gray);
-        }
-
-        &:last-child::after {
-          content: '';
-        }
-      }
-    }
-
-    button[popovertarget='search-modal'] {
-      cursor: pointer;
-      background: none;
-      border: none;
-
-      &:focus,
-      &:hover {
-        background-color: var(--primary-color);
-      }
-    }
-  }
-
   main {
     margin: auto;
     flex: 1;
@@ -141,39 +87,16 @@ body {
     max-width: var(--content-max-width);
     width: var(--width-minus-padding);
   }
+}
 
-  > footer {
-    background-color: var(--footer-background-color);
-    margin-top: 2rem;
-    text-align: center;
-    padding: 1rem;
-    color: var(--headings-color);
-
-    p:first-of-type {
-      font-weight: 800;
-    }
-
-    p:nth-of-type(2) {
-      font-weight: 600;
-    }
-
-    ul {
-      max-width: var(--content-max-width);
-      margin: 1rem auto;
-      list-style: none;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-
-      li:not(li:last-of-type) {
-        margin-right: 0.5rem;
-
-        &::after {
-          content: '∙';
-          margin-left: 0.5rem;
-        }
-      }
-    }
-  }
+[popover] {
+  color: var(--text-color);
+  border: none;
+  box-shadow: 0 0.3rem 1rem var(--shadow-color);
+  border-radius: var(--rounding);
+  padding: 1rem;
+  background-color: var(--popover-background-color);
+  max-width: calc(min(320px, 100vw) - 2rem);
+  max-height: 60vh;
+  overflow-y: scroll;
 }

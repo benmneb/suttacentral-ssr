@@ -1,9 +1,9 @@
 ---
 import '../assets/global.css'
 import SearchForm from '../components/search-form.astro'
+import SiteFooter from '../components/site-footer.astro'
+import SiteHeader from '../components/site-header.astro'
 const pathname = Astro.url.pathname
-
-const renderTime = Astro.locals.renderTime
 
 interface Props {
   title?: string
@@ -27,39 +27,9 @@ const { title, description, breadcrumbs } = Astro.props
     ></script>
   </head>
   <body>
-    <header>
-      <nav>
-        <ul>
-          <li><a href="/">📚</a></li>{
-            breadcrumbs?.map(b => (
-              <li>
-                <a href={b.url}>{b.title}</a>
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
-      {
-        !pathname.startsWith('/search') && (
-          <button
-            type="submit"
-            popovertarget="search-modal"
-            aria-label="Search site"
-          >
-            🔎
-          </button>
-        )
-      }
-    </header>
+    <SiteHeader breadcrumbs={breadcrumbs} />
     <slot />
-    <footer>
-      <p>
-        View this page on <a href={`https://suttacentral.net${pathname}`}
-          >SuttaCentral.net</a
-        >
-      </p>
-      <p>This page rendered in {renderTime}s</p>
-    </footer>
+    <SiteFooter />
     {
       !pathname.startsWith('/search') && (
         <section id="search-modal" popover>

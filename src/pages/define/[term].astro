@@ -1,5 +1,4 @@
 ---
-import '../../assets/define.css'
 import Layout from '../../layouts/Layout.astro'
 
 const { term } = Astro.params
@@ -161,3 +160,23 @@ const dictionaryTitles = {
     </section>
   </main>
 </Layout>
+
+<style>
+  main {
+    & > section {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 1rem;
+
+      @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+      }
+
+      & > nav {
+        position: sticky;
+        top: 1rem;
+      }
+    }
+  }
+</style>
