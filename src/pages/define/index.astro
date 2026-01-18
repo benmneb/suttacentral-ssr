@@ -1,0 +1,7 @@
+---
+// Handle search inputs on the form on /define/{term} pages
+const term = Astro.url.searchParams.get('term')
+if (term) {
+  return Astro.redirect(`/define/${term}`)
+}
+---
