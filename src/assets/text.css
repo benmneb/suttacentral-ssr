@@ -13,10 +13,10 @@
       height: fit-content;
       margin: 0.5rem;
       padding: 0.5rem;
-      color: var(--text-color-secondary);
-      background-color: var(--comments-background-color);
-      border-radius: var(--rounding);
-      border: 1px solid var(--comments-border-color);
+      color: FieldText;
+      background-color: Field;
+      border-radius: 0.2rem;
+      border: 1px solid ButtonFace;
     }
 
     .segment button[popovertarget] {
@@ -226,7 +226,7 @@
     }
     .translation {
       order: 2;
-      color: var(--fg-alt-4);
+      color: GrayText;
     }
   }
 }
@@ -334,18 +334,18 @@
 }
 
 [popover] {
-  color: var(--text-color);
+  color: ButtonText;
   border: none;
-  box-shadow: 0 0.3rem 1rem var(--shadow-color);
-  border-radius: var(--rounding);
+  /* box-shadow: 0 0.3rem 1rem Canvas; */
+  border-radius: 0.2rem;
   padding: 1rem;
-  background-color: var(--popover-background-color);
+  background-color: ButtonFace;
   max-width: calc(min(320px, 100vw) - 2rem);
   max-height: 60vh;
   overflow-y: scroll;
 
   dl dt {
-    color: var(--text-color-secondary);
+    /* color: var(--text-color-secondary); */
   }
 
   .texts-list > details > summary {
@@ -377,9 +377,9 @@ aside {
     padding: 0;
     border: none;
     margin: 0;
-    background-color: var(--bg-alt-1);
-    border-top-left-radius: var(--rounding);
-    border-bottom-left-radius: var(--rounding);
+    background-color: ButtonFace;
+    border-top-left-radius: 0.2rem;
+    border-bottom-left-radius: 0.2rem;
     pointer-events: auto;
 
     button {
@@ -392,12 +392,12 @@ aside {
       font-weight: bold;
       cursor: pointer;
       background-color: inherit;
-      color: var(--fg-alt-3);
+      color: ButtonText;
 
       &:focus:not(button[disabled]),
       &:hover:not(button[disabled]) {
-        background-color: var(--primary-color);
-        color: var(--background-color);
+        background-color: AccentColor;
+        color: AccentColorText;
       }
     }
 
@@ -412,12 +412,12 @@ aside {
       display: block;
       position: relative;
       color: var(--fg-alt-3);
-      border-top-left-radius: var(--rounding);
-      border-bottom-left-radius: var(--rounding);
+      border-top-left-radius: 0.2rem;
+      border-bottom-left-radius: 0.2rem;
 
       &:first-of-type > button {
-        border-top-left-radius: var(--rounding);
-        border-bottom-left-radius: var(--rounding);
+        border-top-left-radius: 0.2rem;
+        border-bottom-left-radius: 0.2rem;
       }
     }
 
@@ -427,10 +427,10 @@ aside {
       right: 0;
       top: 100%;
       width: max-content;
-      background-color: var(--bg-alt-2);
+      background-color: ButtonFace;
       color: var(--text-color);
       padding-right: 0.3rem;
-      border-radius: var(--rounding);
+      border-radius: 0.2rem;
       border-top-right-radius: unset;
 
       li {
@@ -441,15 +441,15 @@ aside {
 
         &:hover,
         &:focus-within {
-          background: var(--bg-soft);
+          /* background: var(--bg-soft); */
           border-radius: unset;
 
           &:first-of-type {
-            border-top-left-radius: var(--rounding);
+            border-top-left-radius: 0.2rem;
           }
           &:last-of-type {
-            border-bottom-left-radius: var(--rounding);
-            border-bottom-right-radius: var(--rounding);
+            border-bottom-left-radius: 0.2rem;
+            border-bottom-right-radius: 0.2rem;
           }
         }
 
@@ -485,9 +485,9 @@ aside {
 
 hr {
   width: 30%;
-  border-radius: var(--rounding);
+  border-radius: 0.2rem;
   border: none;
-  border-top: 1px solid var(--gray);
+  border-top: 1px solid GrayText;
 }
 
 section,
@@ -504,14 +504,14 @@ article {
     cursor: help;
     background: none;
     border: none;
-    color: var(--primary-color);
+    color: LinkText;
     padding: 0;
     margin: 0 0.1rem 0 0;
     vertical-align: text-top;
 
     &:focus {
-      background-color: var(--primary-color);
-      color: var(--background-color);
+      background-color: Highlight;
+      color: HighlightText;
     }
   }
 
@@ -532,23 +532,23 @@ article {
   .segment {
     .root {
       display: none;
-      color: var(--fg-alt-4);
+      color: GrayText;
       /* word-break: break-all; */
     }
 
     .reference {
       a {
         display: none;
-        border: 1px solid var(--bg-alt-2);
-        border-radius: var(--rounding);
+        border: 1px solid ButtonBorder;
+        border-radius: 0.2rem;
         padding: 0.2rem;
         text-decoration: none;
-        color: var(--fg-alt-4);
+        color: ButtonText;
         font-size: 0.7rem;
         font-weight: initial;
 
         &:hover {
-          background-color: var(--bg-soft);
+          background-color: ButtonFace;
         }
       }
     }
@@ -564,8 +564,8 @@ article {
 
   .reference:target a,
   a.ref:target {
-    background-color: var(--primary-color);
-    color: var(--background-color);
+    background-color: SelectedItem;
+    color: SelectedItemText;
 
     &:hover {
       color: unset;
@@ -790,7 +790,7 @@ article {
   .suttainfo {
     background-color: var(--bg-alt-1);
     padding: 1rem;
-    border-radius: var(--rounding);
+    border-radius: 0.2rem;
     margin-bottom: 2rem;
   }
   .suppliedmetre {
@@ -838,17 +838,17 @@ article {
   /* From Sutta Central with the non-segment texts. */
   a.ref {
     display: none;
-    border: 1px solid var(--bg-alt-2);
-    border-radius: var(--rounding);
+    border: 1px solid ButtonBorder;
+    border-radius: 0.2rem;
     padding: 0.2rem;
     text-decoration: none;
-    color: var(--fg-alt-4);
+    color: ButtonText;
     font-size: 0.7rem;
     margin-right: 0.3rem;
     font-weight: initial;
 
     &:hover {
-      background-color: var(--bg-soft);
+      background-color: ButtonFace;
     }
   }
 }
