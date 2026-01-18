@@ -14,6 +14,39 @@
   <button aria-label="Search" type="submit">🔎</button>
 </form>
 
+<style>
+  form {
+    display: flex;
+    border: 1px solid;
+    padding: 0.4rem;
+    border-radius: var(--rounding);
+    border-color: var(--bg-alt-4);
+
+    &:focus-within {
+      border-color: inherit;
+    }
+
+    input {
+      width: 100%;
+      border: none;
+      background-color: inherit;
+      color: inherit;
+      font-size: large;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    button {
+      border: none;
+      background: none;
+      font-size: inherit;
+      cursor: pointer;
+    }
+  }
+</style>
+
 <script>
   'use strict'
 

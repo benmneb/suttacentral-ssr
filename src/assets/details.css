@@ -1,0 +1,41 @@
+/* This is for <details> elements */
+details {
+  summary {
+    cursor: pointer;
+    padding: 0.5rem 0.15rem 0.5rem 0.5rem;
+    border-radius: var(--rounding);
+    margin-left: -0.5rem;
+
+    &:hover,
+    &:active {
+      background-color: var(--details-summary-hover-background);
+    }
+  }
+
+  ul {
+    padding-left: 0.75rem;
+    margin: 0;
+
+    li {
+      list-style-type: none;
+
+      ul {
+        padding-left: 2rem;
+
+        li {
+          list-style-type: lower-roman;
+        }
+      }
+    }
+  }
+
+  .parallel-list-item-full {
+    list-style-type: '⇆  ';
+  }
+  .parallel-list-item-mention {
+    list-style-type: '〞';
+  }
+  .parallel-list-item-retelling {
+    list-style-type: '↺ ';
+  }
+}

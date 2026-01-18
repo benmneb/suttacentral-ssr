@@ -39,3 +39,22 @@ const isPatimokkha = chapter?.endsWith('-pm')
     </ol>
   </main>
 </Layout>
+
+<style>
+  .patimokkha-details {
+    margin-top: 1rem;
+
+    > summary {
+      cursor: pointer;
+      padding: 0.5rem 0.15rem 0.5rem 0.5rem;
+      border-radius: var(--rounding);
+      margin-left: -0.5rem;
+      background-color: var(--background-color-secondary);
+
+      &:hover,
+      &:active {
+        background-color: var(--bg-alt-1);
+      }
+    }
+  }
+</style>

@@ -1,3 +1,5 @@
+@import url(./_variables.css);
+
 &:has(#commenter:checked) {
   li[role='menuitem']:has(#commenter-inline) {
     display: flex;
@@ -300,19 +302,15 @@
 }
 
 .tts-highlight {
-  /* color: var(--tts-highlight-text-color); */
-  color: HighlightText;
-  /* background-color: var(--tts-highlight-background-color); */
-  background-color: Highlight;
+  color: var(--tts-highlight-text-color);
+  background-color: var(--tts-highlight-background-color);
 }
 
 .tts-clickable {
   cursor: pointer;
 
   &:hover {
-    /* background-color: var(--tts-hover-background-color); */
-    color: HighlightText;
-    background-color: HighLight;
+    background-color: var(--tts-hover-background-color);
   }
 }
 

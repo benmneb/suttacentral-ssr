@@ -84,7 +84,7 @@ body {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
-    align-items: baseline;
+    align-items: center;
     margin: 1rem;
 
     ul {
