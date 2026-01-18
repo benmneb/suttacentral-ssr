@@ -1,9 +1,9 @@
 ---
+import '@/assets/global.css'
+import SearchForm from '@/components/search-form.astro'
+import SiteFooter from '@/components/site-footer.astro'
+import SiteHeader from '@/components/site-header.astro'
 import { getPreferredLanguage } from '@/utils/language'
-import '../assets/global.css'
-import SearchForm from '../components/search-form.astro'
-import SiteFooter from '../components/site-footer.astro'
-import SiteHeader from '../components/site-header.astro'
 
 const pathname = Astro.url.pathname
 const acceptLanguage = Astro.request.headers.get('accept-language')

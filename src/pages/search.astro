@@ -1,8 +1,8 @@
 ---
+import SearchForm from '@/components/search-form.astro'
+import TextMetaContent from '@/components/text-meta-content.astro'
+import Layout from '@/layouts/Layout.astro'
 import { getPreferredLanguage } from '@/utils/language'
-import SearchForm from '../components/search-form.astro'
-import TextMetaContent from '../components/text-meta-content.astro'
-import Layout from '../layouts/Layout.astro'
 
 const { searchParams } = Astro.url
 const acceptLanguage = Astro.request.headers.get('accept-language')
