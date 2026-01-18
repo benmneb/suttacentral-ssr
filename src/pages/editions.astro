@@ -1,5 +1,8 @@
 ---
+import { getPreferredLanguage } from '@/utils/language'
 import Layout from '../layouts/Layout.astro'
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
 ---
 
 <Layout>

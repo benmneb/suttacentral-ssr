@@ -1,17 +1,19 @@
 ---
+import { getPreferredLanguage } from '@/utils/language'
 import TextMetaContent from '../components/text-meta-content.astro'
 import Layout from '../layouts/Layout.astro'
 
 const { chapter } = Astro.params
-const chosenLanguage = 'en' // TODO: lol
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
 
 const suttaplexResponse = await fetch(
-  `https://suttacentral.net/api/suttaplex/${chapter}?language=${chosenLanguage}`
+  `https://suttacentral.net/api/suttaplex/${chapter}?language=${userLanguage}`
 )
 const suttaplexData = await suttaplexResponse.json()
 
 const crumbsResponse = await fetch(
-  `https://suttacentral.net/api/navigation_data/${chapter}?language=${chosenLanguage}`
+  `https://suttacentral.net/api/navigation_data/${chapter}?language=${userLanguage}`
 )
 const crumbsData = await crumbsResponse.json()
 
@@ -23,7 +25,7 @@ const isPatimokkha = chapter?.endsWith('-pm')
     <ol>
       {
         (isPatimokkha ? [suttaplexData[0]] : suttaplexData).map(entry => (
-          <TextMetaContent data={entry} chosenLanguage={chosenLanguage} />
+          <TextMetaContent data={entry} userLanguage={userLanguage} />
         ))
       }
       {
@@ -31,7 +33,7 @@ const isPatimokkha = chapter?.endsWith('-pm')
           <details class="patimokkha-details">
             <summary>Show parallels and details</summary>
             {suttaplexData.slice(1).map(entry => (
-              <TextMetaContent data={entry} chosenLanguage={chosenLanguage} />
+              <TextMetaContent data={entry} userLanguage={userLanguage} />
             ))}
           </details>
         )

@@ -1,8 +1,12 @@
 ---
+import { getPreferredLanguage } from '@/utils/language'
 import Layout from '../layouts/Layout.astro'
 
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
 const response = await fetch(
-  `https://suttacentral.net/api/menu?language=${Astro.currentLocale?.split('-')[0] || 'en'}`
+  `https://suttacentral.net/api/menu?language=${userLanguage}`
 )
 const json = await response.json()
 const tipitaka = json
@@ -20,7 +24,9 @@ const tipitaka = json
             <article>
               <h2>
                 <a href={`/pitaka/${pitaka.uid}`}>
-                  {pitaka.root_name}—{pitaka.translated_name}
+                  {pitaka.root_name}
+                  {pitaka.root_name && pitaka.translated_name && '—'}
+                  {pitaka.translated_name}
                 </a>
               </h2>
               {!!pitaka.blurb && <p set:html={pitaka.blurb} />}

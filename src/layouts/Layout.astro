@@ -1,10 +1,13 @@
 ---
+import { getPreferredLanguage } from '@/utils/language'
 import '../assets/global.css'
 import SearchForm from '../components/search-form.astro'
 import SiteFooter from '../components/site-footer.astro'
 import SiteHeader from '../components/site-header.astro'
-const pathname = Astro.url.pathname
 
+const pathname = Astro.url.pathname
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
 interface Props {
   title?: string
   description?: string
@@ -15,14 +18,14 @@ const { title, description, breadcrumbs } = Astro.props
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={userLanguage}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
-    <title>SuttaCentral.now</title>
+    <title>{title && `${title} ∙ `} SuttaCentral.now</title>
     <script defer src="https://scripts.simpleanalyticscdn.com/light.js"
     ></script>
   </head>

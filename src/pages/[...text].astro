@@ -3,9 +3,11 @@ import '../assets/text.css'
 import PublicationInfo from '../components/publication-info.astro'
 import TextMetaContent from '../components/text-meta-content.astro'
 import Layout from '../layouts/Layout.astro'
+import { getPreferredLanguage } from '@/utils/language'
 
 const { text } = Astro.params
-const siteLanguage = 'en' // TODO: lol
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
 
 const parts = text!.split('/') // will be a string like "dn1/en/sujato"
 if (parts.length !== 3) return Astro.redirect('/404') // TODO:
@@ -17,12 +19,12 @@ const bilaraResponse = await fetch(
 const bilaraData = await bilaraResponse.json()
 
 const suttasResponse = await fetch(
-  `https://suttacentral.net/api/suttas/${acronym}/${authorUid}?lang=${language}&siteLanguage=${siteLanguage}`
+  `https://suttacentral.net/api/suttas/${acronym}/${authorUid}?lang=${language}&siteLanguage=${userLanguage}`
 )
 const suttasData = await suttasResponse.json()
 
 const suttaplexResponse = await fetch(
-  `https://suttacentral.net/api/suttaplex/${acronym}?language=${siteLanguage}`
+  `https://suttacentral.net/api/suttaplex/${acronym}?language=${userLanguage}`
 )
 const suttaplexData = await suttaplexResponse.json()
 
@@ -32,7 +34,7 @@ const publicationResponse = await fetch(
 const publicationData = await publicationResponse.json()
 
 const crumbsResponse = await fetch(
-  `https://suttacentral.net/api/navigation_data/${acronym}?language=${siteLanguage}`
+  `https://suttacentral.net/api/navigation_data/${acronym}?language=${userLanguage}`
 )
 const crumbsData = await crumbsResponse.json()
 
@@ -370,7 +372,7 @@ const articleHTML = rootLangHTML || segmentedHTML || legacyHTML
     <article id="parallels" popover>
       <TextMetaContent
         data={suttaplexData[0]}
-        chosenLanguage={siteLanguage}
+        userLanguage={userLanguage}
         title="Test"
         parallelsOpen
       />

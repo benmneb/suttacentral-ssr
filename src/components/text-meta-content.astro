@@ -1,16 +1,27 @@
 ---
+import { getLanguageName, getPreferredLocale } from '@/utils/language'
 import '../assets/details.css'
 import ParallelsDetails from './parallels-details.astro'
 
 interface Props {
-  data: any //suttaplex response
-  chosenLanguage?: string
+  data: any // suttaplex response
+  userLanguage?: string
   title?: string
   translations?: any
   parallelsOpen?: boolean
 }
 
-const { data: entry, chosenLanguage = 'en', parallelsOpen } = Astro.props
+const { data: entry, userLanguage = 'en', parallelsOpen } = Astro.props
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLocale = getPreferredLocale(acceptLanguage)
+const languageName = getLanguageName(userLocale)
+
+const translations = entry.translations.filter(t => t.lang === userLanguage)
+const otherTranslations = entry.translations.filter(
+  t => t.lang !== userLanguage && t.lang !== entry.root_lang
+)
+const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
 ---
 
 <li>
@@ -24,42 +35,43 @@ const { data: entry, chosenLanguage = 'en', parallelsOpen } = Astro.props
       !!entry.translations.length && (
         <>
           <details open>
-            <summary>Translation(s) in English lol</summary>
+            <summary>
+              Translation{translations.length > 1 && 's'} in {languageName}
+            </summary>
             <ul>
-              {entry.translations
-                .filter(t => t.lang === chosenLanguage)
-                .map(t => (
-                  <li>
-                    {t.lang_name}—
-                    <a href={`/${entry.uid}/${t.lang}/${t.author_uid}`}>
-                      {t.author}
-                    </a>
-                  </li>
-                ))}
+              {translations.map(t => (
+                <li>
+                  <a href={`/${entry.uid}/${t.lang}/${t.author_uid}`}>
+                    {t.author}
+                  </a>{' '}
+                  {t.publication_date && `(${t.publication_date})`}
+                </li>
+              ))}
             </ul>
           </details>
           <details open>
-            <summary>Edition of the root text</summary>
+            <summary>
+              Edition{rootTexts.length > 1 && 's'} of the root text
+            </summary>
             <ul>
-              {entry.translations
-                .filter(t => t.lang === entry.root_lang)
-                .map(t => (
-                  <li>
-                    {t.lang_name}—
-                    <a href={`/${entry.uid}/${t.lang}/${t.author_uid}`}>
-                      {t.author}
-                    </a>
-                  </li>
-                ))}
+              {rootTexts.map(t => (
+                <li>
+                  {t.lang_name}—
+                  <a href={`/${entry.uid}/${t.lang}/${t.author_uid}`}>
+                    {t.author.trim()}
+                  </a>
+                  {t.publication_date && `(${t.publication_date})`}
+                </li>
+              ))}
             </ul>
           </details>
           <details>
-            <summary>Translation(s) in other modern languages</summary>
+            <summary>
+              Translation{otherTranslations.length > 1 && 's'} in other modern
+              languages ({otherTranslations.length})
+            </summary>
             <ul>
-              {entry.translations
-                .filter(
-                  t => t.lang !== chosenLanguage && t.lang !== entry.root_lang
-                )
+              {otherTranslations
                 .toSorted((a, b) => a.lang - b.lang)
                 .map(t => (
                   <li>
@@ -67,6 +79,7 @@ const { data: entry, chosenLanguage = 'en', parallelsOpen } = Astro.props
                     <a href={`/${entry.uid}/${t.lang}/${t.author_uid}`}>
                       {t.author}
                     </a>
+                    {t.publication_date && `(${t.publication_date})`}
                   </li>
                 ))}
             </ul>

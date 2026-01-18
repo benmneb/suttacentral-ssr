@@ -1,19 +1,21 @@
 ---
+import { getPreferredLanguage } from '@/utils/language'
 import SearchForm from '../components/search-form.astro'
 import TextMetaContent from '../components/text-meta-content.astro'
 import Layout from '../layouts/Layout.astro'
 
 const { searchParams } = Astro.url
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
 
 const query = searchParams.get('query') // TODO: handle no query
-const siteLanguage = 'en' // TODO: lol
 const matchPartial = false // TODO: add checkbox and param
 const limit = 50 // Show 50 results to start with, like .net
 const page = Number(searchParams.get('page')) || 1
 const offset = (page - 1) * limit
 
 const searchResponse = await fetch(
-  `https://suttacentral.net/api/search/instant?limit=${limit}&offset=${offset}&query=${query}&language=${siteLanguage}&restrict=all&matchpartial=${matchPartial}`
+  `https://suttacentral.net/api/search/instant?limit=${limit}&offset=${offset}&query=${query}&language=${userLanguage}&restrict=all&matchpartial=${matchPartial}`
 )
 const searchData = await searchResponse.json()
 
@@ -140,7 +142,7 @@ const dictionaryTitles = {
               ))}
             {!!suttaplexHits.length &&
               suttaplexHits.map(entry => (
-                <TextMetaContent data={entry} chosenLanguage={siteLanguage} />
+                <TextMetaContent data={entry} userLanguage={userLanguage} />
               ))}
           </ol>
         )

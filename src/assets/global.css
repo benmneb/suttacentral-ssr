@@ -100,3 +100,10 @@ body {
   max-height: 60vh;
   overflow-y: scroll;
 }
+
+/* These classes come are from SC (they need to be global to work): */
+/* /define */
+dd .eti {
+  color: var(--text-color-secondary);
+  font-size: small;
+}

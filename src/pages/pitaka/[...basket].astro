@@ -1,13 +1,16 @@
 ---
+import { getPreferredLanguage } from '@/utils/language'
 import Layout from '../../layouts/Layout.astro'
 
 const { pathname } = Astro.url
 const uid = pathname?.split('/').pop()
 
 // TODO: add "shortcut to all suttas" links
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
 
 const response = await fetch(
-  `https://suttacentral.net/api/menu/${uid}?language=en`
+  `https://suttacentral.net/api/menu/${uid}?language=${userLanguage}`
 )
 const json = await response.json()
 let data = json[0]
@@ -15,7 +18,7 @@ let data = json[0]
 const newKids = await Promise.all(
   data.children.map(async child => {
     const response = await fetch(
-      `https://suttacentral.net/api/menu/${child.uid}?language=en`
+      `https://suttacentral.net/api/menu/${child.uid}?language=${userLanguage}`
     )
     const json = await response.json()
     const childData = json[0]
@@ -34,14 +37,18 @@ const newKids = await Promise.all(
 data.children = newKids
 
 const crumbsResponse = await fetch(
-  `https://suttacentral.net/api/navigation_data/${uid}?language=en`
+  `https://suttacentral.net/api/navigation_data/${uid}?language=${userLanguage}`
 )
 const crumbsData = await crumbsResponse.json()
 ---
 
 <Layout breadcrumbs={crumbsData}>
   <main>
-    <h1>{data.root_name}—{data.translated_name}</h1>
+    <h1>
+      {data.root_name}
+      {data.root_name && data.translated_name && '—'}
+      {data.translated_name}
+    </h1>
     {!!data.blurb && <p set:html={data.blurb} />}
     <ol>
       {
@@ -49,7 +56,9 @@ const crumbsData = await crumbsResponse.json()
           <li>
             <h2>
               <a href={child.scn_href ?? `${data.uid}/${child.uid}`}>
-                {child.root_name}—{child.translated_name}
+                {child.root_name}
+                {child.root_name && child.translated_name && '—'}
+                {child.translated_name}
               </a>
             </h2>
             {!!child.blurb && <p set:html={child.blurb} />}
