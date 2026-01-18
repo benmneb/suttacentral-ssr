@@ -37,7 +37,10 @@ const dictionaryTitles = {
       <!-- <h1>Definitions for <mark>{term}</mark></h1>
       <p>{dictionaryData.length} results</p> -->
       <h1>Define</h1>
-      <p>{dictionaryData.length} results for <b>{term}</b></p>
+      <p>
+        {dictionaryData.length} result{dictionaryData.length !== 1 ? 's' : ''} for
+        <b>{term}</b>
+      </p>
     </hgroup>
     <section>
       {
@@ -123,7 +126,7 @@ const dictionaryTitles = {
           <button aria-label="Define" type="submit">🔎</button>
         </form>
         {
-          !!adjacentData?.[0].length && (
+          !!adjacentData?.[0].length && !!dictionaryData.length && (
             <article>
               <h2>Adjacent terms</h2>
               <ol>
@@ -163,6 +166,7 @@ const dictionaryTitles = {
 
 <style>
   main {
+    max-width: calc(var(--content-max-width) + 300px);
     & > section {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -177,6 +181,39 @@ const dictionaryTitles = {
         position: sticky;
         top: 1rem;
       }
+    }
+  }
+</style>
+
+<style>
+  form {
+    display: flex;
+    border: 1px solid;
+    padding: 0.4rem;
+    border-radius: var(--rounding);
+    border-color: var(--bg-alt-4);
+
+    &:focus-within {
+      border-color: inherit;
+    }
+
+    input {
+      width: 100%;
+      border: none;
+      background-color: inherit;
+      color: inherit;
+      font-size: inherit;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    button {
+      border: none;
+      background: none;
+      font-size: inherit;
+      cursor: pointer;
     }
   }
 </style>
