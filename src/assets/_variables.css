@@ -1,0 +1,7 @@
+:root {
+  --content-max-width: 600px;
+  --rounding: 0.2rem;
+  --width-minus-padding: calc(100% - 2rem);
+  --content-double-width: calc(var(--content-max-width) * 2);
+  --content-double-width-gap: calc(var(--content-max-width) * 2 + 1rem);
+}

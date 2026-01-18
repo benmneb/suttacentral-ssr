@@ -1,7 +1,11 @@
 /* @import 'tailwindcss';
 @plugin "daisyui" {
+  themes:
+    bumblebee --default,
+    halloween --prefersdark;
   exclude: properties;
 } */
+@import url(./_variables.css);
 
 :root {
   color-scheme: light dark;
@@ -27,6 +31,13 @@ button {
   font-family: inherit;
 }
 
+h1 {
+  text-wrap: balance;
+}
+h6 {
+  font-style: italic;
+}
+
 :where(article h1, section h1, nav h1, aside h1) {
   margin-block: 0.67em;
   font-size: 2em;
@@ -44,55 +55,108 @@ button {
   border: 0;
 }
 
-body > header {
+body {
   display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  align-items: baseline;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
 
-  ul {
-    list-style: none;
+  > header {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0;
-    margin: 0;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: baseline;
+    margin: 1rem;
+
+    ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0;
+      margin: 0;
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      li {
+        list-style-type: none;
+        display: flex;
+        word-break: keep-all;
+        text-wrap: nowrap;
+        white-space: nowrap;
+
+        &:first-of-type a {
+          text-decoration: none;
+        }
+
+        &::after {
+          content: '/';
+          margin-left: 0.5rem;
+          color: var(--gray);
+        }
+
+        &:last-child::after {
+          content: '';
+        }
+      }
     }
 
-    li {
-      list-style-type: none;
-      display: flex;
-      word-break: keep-all;
-      text-wrap: nowrap;
-      white-space: nowrap;
+    button[popovertarget='search-modal'] {
+      cursor: pointer;
+      background: none;
+      border: none;
 
-      &:first-of-type a {
-        text-decoration: none;
-      }
-
-      &::after {
-        content: '/';
-        margin-left: 0.5rem;
-        color: var(--gray);
-      }
-
-      &:last-child::after {
-        content: '';
+      &:focus,
+      &:hover {
+        background-color: var(--primary-color);
       }
     }
   }
 
-  button[popovertarget='search-modal'] {
-    cursor: pointer;
-    background: none;
-    border: none;
+  main {
+    margin: auto;
+    flex: 1;
+    padding: 0 1rem;
+    max-width: var(--content-max-width);
+    width: var(--width-minus-padding);
+  }
 
-    &:focus,
-    &:hover {
-      background-color: var(--primary-color);
+  > footer {
+    background-color: var(--footer-background-color);
+    margin-top: 2rem;
+    text-align: center;
+    padding: 1rem;
+    color: var(--headings-color);
+
+    p:first-of-type {
+      font-weight: 800;
+    }
+
+    p:nth-of-type(2) {
+      font-weight: 600;
+    }
+
+    ul {
+      max-width: var(--content-max-width);
+      margin: 1rem auto;
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+
+      li:not(li:last-of-type) {
+        margin-right: 0.5rem;
+
+        &::after {
+          content: '∙';
+          margin-left: 0.5rem;
+        }
+      }
     }
   }
 }
