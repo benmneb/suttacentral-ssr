@@ -55,13 +55,9 @@ const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
             </summary>
             <ul>
               {rootTexts.map(t => (
-                <li>
-                  {t.lang_name}—
-                  <a href={`/${entry.uid}/${t.lang}/${t.author_uid}`}>
-                    {t.author.trim()}
-                  </a>
-                  {t.publication_date && `(${t.publication_date})`}
-                </li>
+                <li
+                  set:html={`${t.lang_name}—<a href="/${entry.uid}/${t.lang}/${t.author_uid}">${t.author.trim()}</a>${t.publication_date ? `(${t.publication_date})` : ''}`}
+                />
               ))}
             </ul>
           </details>
@@ -74,13 +70,9 @@ const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
               {otherTranslations
                 .toSorted((a, b) => a.lang - b.lang)
                 .map(t => (
-                  <li>
-                    {t.lang_name}—
-                    <a href={`/${entry.uid}/${t.lang}/${t.author_uid}`}>
-                      {t.author}
-                    </a>
-                    {t.publication_date && `(${t.publication_date})`}
-                  </li>
+                  <li
+                    set:html={`${t.lang_name}—<a href="/${entry.uid}/${t.lang}/${t.author_uid}">${t.author}</a>${t.publication_date ? `(${t.publication_date})` : ''}`}
+                  />
                 ))}
             </ul>
           </details>

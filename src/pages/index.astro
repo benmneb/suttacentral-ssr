@@ -23,11 +23,10 @@ const tipitaka = json
           <li>
             <article>
               <h2>
-                <a href={`/pitaka/${pitaka.uid}`}>
-                  {pitaka.root_name}
-                  {pitaka.root_name && pitaka.translated_name && '—'}
-                  {pitaka.translated_name}
-                </a>
+                <a
+                  href={`/pitaka/${pitaka.uid}`}
+                  set:text={`${pitaka.root_name}${pitaka.root_name && pitaka.translated_name ? '—' : ''}${pitaka.translated_name || ''}`}
+                />
               </h2>
               {!!pitaka.blurb && <p set:html={pitaka.blurb} />}
             </article>

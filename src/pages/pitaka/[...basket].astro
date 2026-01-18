@@ -44,22 +44,19 @@ const crumbsData = await crumbsResponse.json()
 
 <Layout breadcrumbs={crumbsData}>
   <main>
-    <h1>
-      {data.root_name}
-      {data.root_name && data.translated_name && '—'}
-      {data.translated_name}
-    </h1>
+    <h1
+      set:text={`${data.root_name}${data.root_name && data.translated_name ? '—' : ''}${data.translated_name || ''}`}
+    />
     {!!data.blurb && <p set:html={data.blurb} />}
     <ol>
       {
         data.children.map(child => (
           <li>
             <h2>
-              <a href={child.scn_href ?? `${data.uid}/${child.uid}`}>
-                {child.root_name}
-                {child.root_name && child.translated_name && '—'}
-                {child.translated_name}
-              </a>
+              <a
+                href={child.scn_href ?? `${data.uid}/${child.uid}`}
+                set:text={`${child.root_name}${child.root_name && child.translated_name ? '—' : ''}${child.translated_name || ''}`}
+              />
             </h2>
             {!!child.blurb && <p set:html={child.blurb} />}
           </li>
