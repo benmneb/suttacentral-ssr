@@ -25,6 +25,7 @@ const suttaplexHits = searchData.suttaplex
 const hasMore = searchData.total > page * limit
 const hasPrevious = page > 1
 
+// TODO: make global
 const dictionaryTitles = {
   ncped: 'New Concise Pali English Dictionary',
   cped: 'Concise Pali English Dictionary',
@@ -38,8 +39,10 @@ const dictionaryTitles = {
 
 <Layout>
   <main>
-    <h1>Search</h1>
-    <p>{searchData.total} results for <b>{query}</b></p>
+    <hgroup>
+      <h1>Search</h1>
+      <p>{searchData.total} results for <b>{query}</b></p>
+    </hgroup>
     <SearchForm />
     <section>
       {
@@ -47,14 +50,16 @@ const dictionaryTitles = {
           <ol>
             {hits.map(hit => (
               <li>
-                <a href={hit.url}>
-                  <h2>
-                    {hit.root_name}—{hit.name}
-                  </h2>
-                </a>
-                <p>
-                  {hit.acronym} ∙ {hit.full_lang} ∙ {hit.author}
-                </p>
+                <hgroup>
+                  <a href={hit.url}>
+                    <h2>
+                      {hit.root_name}—{hit.name}
+                    </h2>
+                  </a>
+                  <p>
+                    {hit.acronym} ∙ {hit.full_lang} ∙ {hit.author}
+                  </p>
+                </hgroup>
                 {hit.highlight.content.map(excerpt => (
                   <span set:html={excerpt} />
                 ))}
@@ -96,7 +101,7 @@ const dictionaryTitles = {
                         {Array.isArray(hit.highlight.detail[0].definition) ? (
                           <ol>
                             {hit.highlight.detail[0].definition.map(d => (
-                              <li>{d}</li>
+                              <li set:html={d} />
                             ))}
                           </ol>
                         ) : (

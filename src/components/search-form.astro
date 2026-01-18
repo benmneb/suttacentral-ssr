@@ -1,47 +1,23 @@
----
-const { host } = Astro.url
----
-
-<form
-  action="https://duckduckgo.com"
-  method="get"
-  role="search"
-  id="search-form"
->
+<form action="/search" method="get" role="search">
   <label for="search-input" class="sr-only">Search site</label>
   <input
     id="search-input"
     type="search"
     placeholder="Search site…"
     autocomplete="off"
-    name="q"
+    autocorrect="off"
+    autocapitalize="off"
+    name="query"
     required
     autofocus
   />
-  <input type="hidden" name="sites" value={host} />
   <button aria-label="Search" type="submit">🔎</button>
 </form>
 
 <script>
   'use strict'
 
-  const button = document.querySelector('button[popovertarget="search-modal"]')
-  button?.setAttribute('type', 'button')
-  button?.setAttribute('title', 'Cmd/Ctrl+K')
-
-  document
-    .querySelector('form:has(button[popovertarget="search-modal"])')
-    ?.addEventListener('submit', e => e.preventDefault())
-
-  const input = document.getElementById('search-input')
-  const form = document.getElementById('search-form')
   const popover = document.getElementById('search-modal')
-
-  if (form) {
-    form.action = '/search'
-    form.querySelector('input[type="hidden"]')?.remove()
-  }
-  if (input) input.name = 'query'
 
   document.addEventListener('keydown', function (event) {
     if (popover && (event.metaKey || event.ctrlKey) && event.key === 'k') {
