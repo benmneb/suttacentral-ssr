@@ -9,19 +9,7 @@
 
 :root {
   color-scheme: light dark;
-
-  font-family:
-    Iowan Old Style,
-    Apple Garamond,
-    Baskerville,
-    Times New Roman,
-    Droid Serif,
-    Times,
-    Source Serif Pro,
-    serif,
-    Apple Color Emoji,
-    Segoe UI Emoji,
-    Segoe UI Symbol;
+  font-family: var(--serif-font);
 }
 
 input,
@@ -36,6 +24,14 @@ h1 {
 }
 h6 {
   font-style: italic;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--headings-color);
 }
 
 :where(article h1, section h1, nav h1, aside h1) {
@@ -55,7 +51,28 @@ h6 {
   border: 0;
 }
 
+a {
+  color: var(--primary-color);
+
+  &:visited {
+    color: var(--primary-color-alt);
+  }
+
+  &:hover,
+  &:active {
+    color: var(--background-color);
+    background-color: var(--primary-color);
+    text-decoration: none;
+  }
+
+  &::selection {
+    background-color: var(--blue-dim);
+  }
+}
+
 body {
+  background: var(--background-color);
+  color: var(--text-color);
   display: flex;
   flex-direction: column;
   min-height: 100vh;

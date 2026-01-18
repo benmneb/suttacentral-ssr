@@ -4,4 +4,75 @@
   --width-minus-padding: calc(100% - 2rem);
   --content-double-width: calc(var(--content-max-width) * 2);
   --content-double-width-gap: calc(var(--content-max-width) * 2 + 1rem);
+
+  --serif-font:
+    Iowan Old Style, Apple Garamond, Baskerville, Times New Roman, Droid Serif,
+    Times, Source Serif Pro, serif, Apple Color Emoji, Segoe UI Emoji,
+    Segoe UI Symbol;
+
+  color-scheme: light dark;
+
+  /* Both palettes adapted from: https://github.com/YV31/gruvbox-css */
+  /* Don't actually use these color variables */
+  --bg-hard: light-dark(#f9f5d7, #1d2021);
+  --bg: light-dark(#fbf1c7, #282828);
+  --bg-soft: light-dark(#f2e5bc, #32302f);
+  --bg-alt-1: light-dark(#ebdbb2, #3c3836);
+  --bg-alt-2: light-dark(#d5c4a1, #504945);
+  --bg-alt-3: light-dark(#bdae93, #665c54);
+  --bg-alt-4: light-dark(#a89984, #7c6f64);
+
+  --fg: light-dark(#282828, #fbf1c7);
+  --fg-alt-1: light-dark(#3c3836, #ebdbb2);
+  --fg-alt-2: light-dark(#504945, #d5c4a1);
+  --fg-alt-3: light-dark(#665c54, #bdae93);
+  --fg-alt-4: light-dark(#7c6f64, #a89984);
+
+  --red: light-dark(#9d0006, #fb4934);
+  --green: light-dark(#79740e, #b8bb26);
+  --yellow: light-dark(#b57614, #fabd2f);
+  --blue: light-dark(#076678, #83a598);
+  --purple: light-dark(#8f3f71, #d3869b);
+  --aqua: light-dark(#427b58, #8ec07c);
+  --gray: #928374;
+  --orange: light-dark(#af3a03, #fe8019);
+  --brown: light-dark(#7c5c40, #d7995b);
+
+  --red-dim: #cc2412;
+  --green-dim: #98971a;
+  --yellow-dim: #d79921;
+  --blue-dim: light-dark(#458598, #458588);
+  --purple-dim: #b16286;
+  --aqua-dim: #689d6a;
+  --gray-dim: light-dark(#7c6f64, #a89984);
+  --orange-dim: #d65d0e;
+  --orange-alt: #7c2a03;
+  --brown-dim: light-dark(#a07448, #b57642);
+
+  --offwhite: #faf9f6;
+  --offerwhite: #f8f6f2;
+
+  /* Use these: */
+  --background-color: light-dark(var(--offwhite), var(--bg));
+  --background-color-secondary: var(--bg-soft);
+  --footer-background-color: var(--bg-alt-1);
+  --popover-background-color: light-dark(var(--offerwhite), var(--bg-alt-1));
+  --text-color: var(--fg-alt-2);
+  --text-color-secondary: var(--fg-alt-4);
+  --headings-color: var(--fg);
+  --primary-color: light-dark(var(--orange), var(--yellow));
+  --primary-color-alt: light-dark(var(--orange-alt), var(--yellow-dim));
+  --shadow-color: light-dark(var(--gray-dim), var(--bg-hard));
+  --tts-highlight-text-color: var(--headings-color);
+  --tts-highlight-background-color: light-dark(var(--bg), var(--bg-alt-1));
+  --tts-hover-background-color: light-dark(
+    var(--background-color-secondary),
+    var(--bg-alt-1)
+  );
+  --details-summary-hover-background: light-dark(
+    var(--bg-alt-1),
+    var(--bg-alt-2)
+  );
+  --comments-background-color: light-dark(var(--offerwhite), var(--bg-hard));
+  --comments-border-color: light-dark(var(--bg-soft), var(--bg-hard));
 }
