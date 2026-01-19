@@ -22,10 +22,12 @@ const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
 ---
 
 <article>
-  <h1>
-    {[entry.original_title, entry.translated_title].filter(Boolean).join('—')}
-  </h1>
-  {!!entry.acronym && <p>{entry.acronym}</p>}
+  <hgroup>
+    <h1>
+      {[entry.original_title, entry.translated_title].filter(Boolean).join('—')}
+    </h1>
+    {!!entry.acronym && <p>{entry.acronym}</p>}
+  </hgroup>
   {!!entry.blurb && <p set:html={entry.blurb} />}
   <section>
     {
