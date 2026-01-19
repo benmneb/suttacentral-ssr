@@ -3,24 +3,36 @@ import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getPreferredLanguage } from '~/utils/language'
 
+// Handle form submissions: /define/?term=X → /define/X
+const queryTerm = Astro.url.searchParams.get('term')
+if (queryTerm) {
+  return Astro.redirect(`/define/${queryTerm}`)
+}
+
 const { term } = Astro.params
 const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = getPreferredLanguage(acceptLanguage)
 
-const dictionaryResponse = await fetch(
-  `https://suttacentral.net/api/dictionary_full/${term}?language=${userLanguage}`
-)
-const dictionaryData = await dictionaryResponse.json()
+let dictionaryData = []
+let similarData = [[]]
+let adjacentData = [[]]
 
-const similarResponse = await fetch(
-  `https://suttacentral.net/api/dictionary_full/similar/${term}?language=${userLanguage}`
-)
-const similarData = await similarResponse.json()
+if (term) {
+  const dictionaryResponse = await fetch(
+    `https://suttacentral.net/api/dictionary_full/${term}?language=${userLanguage}`
+  )
+  dictionaryData = await dictionaryResponse.json()
 
-const adjacentResponse = await fetch(
-  `https://suttacentral.net/api/dictionary_full/adjacent/${term}?language=${userLanguage}`
-)
-const adjacentData = await adjacentResponse.json()
+  const similarResponse = await fetch(
+    `https://suttacentral.net/api/dictionary_full/similar/${term}?language=${userLanguage}`
+  )
+  similarData = await similarResponse.json()
+
+  const adjacentResponse = await fetch(
+    `https://suttacentral.net/api/dictionary_full/adjacent/${term}?language=${userLanguage}`
+  )
+  adjacentData = await adjacentResponse.json()
+}
 
 // TODO: make global
 const dictionaryTitles = {
@@ -34,24 +46,24 @@ const dictionaryTitles = {
 }
 ---
 
-<Layout title={`Definitions for ${term}`}>
+<Layout title={term ? `Definitions for ${term}` : 'Define'}>
   <main>
     <hgroup>
-      <!-- <h1>Definitions for <mark>{term}</mark></h1>
-      <p>{dictionaryData.length} results</p> -->
       <h1>Define</h1>
-      <p>
-        {dictionaryData.length.toLocaleString()}
-        {
-          t(
-            userLanguage,
-            dictionaryData.length !== 1
-              ? 'search:resultsFor'
-              : 'search:resultsFor'
-          )
-        }
-        <b>{term}</b>
-      </p>
+      {
+        term && (
+          <p>
+            {dictionaryData.length.toLocaleString()}
+            {t(
+              userLanguage,
+              dictionaryData.length !== 1
+                ? 'search:resultsFor'
+                : 'search:resultsFor'
+            )}
+            <b>{term}</b>
+          </p>
+        )
+      }
     </hgroup>
     <section>
       {
