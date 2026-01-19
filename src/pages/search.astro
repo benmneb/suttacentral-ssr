@@ -12,7 +12,7 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
 
 const query = searchParams.get('query')
 const matchPartial = searchParams.get('matchpartial') === 'true'
-const limit = 50 // Show 50 results to start with, like .net
+const limit = 50 // SC default (apparently limiting something other than the results count)
 const page = Number(searchParams.get('page')) || 1
 const offset = (page - 1) * limit
 
@@ -63,7 +63,11 @@ const dictionaryTitles = {
         )
       }
     </hgroup>
-    <SearchForm matchPartial={matchPartial} />
+    <SearchForm
+      matchPartial={matchPartial}
+      query={query}
+      autoFocus={!query || !searchData.total}
+    />
     {
       query && (
         <>

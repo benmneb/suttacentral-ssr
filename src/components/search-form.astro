@@ -1,9 +1,11 @@
 ---
 interface Props {
   matchPartial?: boolean
+  query?: string | null
+  autoFocus?: boolean
 }
 
-const { matchPartial = false } = Astro.props
+const { matchPartial = false, query, autoFocus = true } = Astro.props
 ---
 
 <form action="/search" method="get" role="search">
@@ -18,7 +20,8 @@ const { matchPartial = false } = Astro.props
       autocapitalize="off"
       name="query"
       required
-      autofocus
+      autofocus={autoFocus}
+      value={query}
     />
     <button aria-label="Search" type="submit">🔎</button>
   </fieldset>
