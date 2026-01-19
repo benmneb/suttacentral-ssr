@@ -210,3 +210,25 @@ const dictionaryTitles = {
     }
   </main>
 </Layout>
+
+<style>
+  main {
+    max-width: var(--content-double-width-gap);
+
+    & > section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+
+      ol {
+        min-width: 0;
+        overflow-wrap: break-word;
+      }
+    }
+
+    & > nav {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+</style>

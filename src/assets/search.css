@@ -1,36 +1,16 @@
-main {
-  max-width: var(--content-double-width-gap);
+ol li a:has(.reference) {
+  color: unset;
+  background-color: unset;
+  border: 1px solid var(--bg-alt-2);
+  border-radius: var(--rounding);
+  padding: 0.2rem;
+  text-decoration: none;
+  color: var(--fg-alt-4);
+  font-size: 0.7rem;
+  margin-right: 0.3rem;
+  font-weight: initial;
 
-  & > section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1rem;
-
-    ol {
-      min-width: 0;
-      overflow-wrap: break-word;
-
-      li a:has(.reference) {
-        color: unset;
-        background-color: unset;
-        border: 1px solid var(--bg-alt-2);
-        border-radius: var(--rounding);
-        padding: 0.2rem;
-        text-decoration: none;
-        color: var(--fg-alt-4);
-        font-size: 0.7rem;
-        margin-right: 0.3rem;
-        font-weight: initial;
-
-        &:hover {
-          background-color: var(--bg-soft);
-        }
-      }
-    }
-  }
-
-  & > nav {
-    display: flex;
-    justify-content: space-between;
+  &:hover {
+    background-color: var(--bg-soft);
   }
 }
