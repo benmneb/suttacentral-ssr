@@ -79,14 +79,27 @@ const dictionaryTitles = {
                         </a>
                       </h2>
                       <p>
-                        {hit.acronym} ∙ {hit.full_lang} ∙ {hit.author}
+                        {[hit.acronym, hit.full_lang, hit.author]
+                          .filter(Boolean)
+                          .join(' ∙ ')}
                       </p>
                     </hgroup>
-                    {hit.highlight.content.map(excerpt => (
+                    {hit.highlight.content.map((excerpt: string) => (
                       <span
                         set:html={excerpt.replaceAll('target="_blank"', '')}
                       />
                     ))}
+                    {hit.all_reference
+                      ?.split(',')
+                      .map((ref: string, idx: number, arr: string[]) => (
+                        <span>
+                          {/* TODO: */}
+                          <a href={`${hit.url}/en/sujato#${ref.trim()}`}>
+                            {ref}
+                          </a>
+                          {idx !== arr.length - 1 && '∙ '}
+                        </span>
+                      ))}
                   </li>
                 ))}
               </ol>
