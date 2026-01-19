@@ -1,4 +1,7 @@
 ---
+import { t } from '~/i18n'
+import { getPreferredLanguage } from '~/utils/language'
+
 interface Props {
   matchPartial?: boolean
   query?: string | null
@@ -6,6 +9,9 @@ interface Props {
 }
 
 const { matchPartial = false, query, autoFocus = true } = Astro.props
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
 ---
 
 <form action="/search" method="get" role="search">
@@ -26,7 +32,7 @@ const { matchPartial = false, query, autoFocus = true } = Astro.props
     <button aria-label="Search" type="submit">🔎</button>
   </fieldset>
   <label>
-    Match partial
+    {t(userLanguage, 'search:matchPartial')}
     <input
       type="checkbox"
       name="matchpartial"

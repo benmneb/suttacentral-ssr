@@ -211,7 +211,9 @@ const dictionaryTitles = {
                   {matchPartial && (
                     <input type="hidden" name="matchpartial" value="true" />
                   )}
-                  <button type="submit">← Previous</button>
+                  <button type="submit">
+                    ← {t(userLanguage, 'interface:previous')}
+                  </button>
                 </form>
               )}
             </div>
@@ -223,7 +225,9 @@ const dictionaryTitles = {
                   {matchPartial && (
                     <input type="hidden" name="matchpartial" value="true" />
                   )}
-                  <button type="submit">Next →</button>
+                  <button type="submit">
+                    {t(userLanguage, 'interface:next')} →
+                  </button>
                 </form>
               )}
             </div>
