@@ -14,6 +14,7 @@ It's like [SuttaCentral.express](https://suttacentral.express), except
 - Fast and powerful "instant search" from the same API .net uses (includes dictionaries)
 - Even less client-side javascript
 - 1,000% improved developer experience
+- Has a real favicon
 
 ## License
 
