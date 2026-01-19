@@ -151,7 +151,9 @@ const dictionaryTitles = {
               ))}
             {!!suttaplexHits.length &&
               suttaplexHits.map(entry => (
-                <TextMetaContent data={entry} userLanguage={userLanguage} />
+                <li>
+                  <TextMetaContent data={entry} userLanguage={userLanguage} />
+                </li>
               ))}
           </ol>
         )

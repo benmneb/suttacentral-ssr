@@ -21,7 +21,7 @@ const otherTranslations = entry.translations.filter(
 const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
 ---
 
-<li>
+<article>
   <h1>
     {[entry.original_title, entry.translated_title].filter(Boolean).join('—')}
   </h1>
@@ -89,4 +89,4 @@ const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
       )
     }
   </section>
-</li>
+</article>
