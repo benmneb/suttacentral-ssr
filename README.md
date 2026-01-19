@@ -6,6 +6,8 @@
 
 ## Another fast and minimal alternative frontend for [SuttaCentral.net](https://suttacentral.net)
 
+This project fetches data from SuttaCentral's public APIs at request time and serves it as static HTML. The only client-side JavaScript is optional: it persists text view settings in local storage and enables text-to-speech via the Web Speech API.
+
 It's like [SuttaCentral.express](https://suttacentral.express), except
 
 - Pages are rendered on the server at request time, so it always has the latest data
