@@ -1,11 +1,11 @@
 ---
+import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getPreferredLanguage } from '~/utils/language'
 
 const { pathname } = Astro.url
 const uid = pathname?.split('/').pop()
 
-// TODO: add "shortcut to all suttas" links
 const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = getPreferredLanguage(acceptLanguage)
 
@@ -40,6 +40,9 @@ const crumbsResponse = await fetch(
   `https://suttacentral.net/api/navigation_data/${uid}?language=${userLanguage}`
 )
 const crumbsData = await crumbsResponse.json()
+
+const shortcutsResponse = await fetch(`https://suttacentral.net/api/shortcuts`)
+const shortcutsData = await shortcutsResponse.json()
 ---
 
 <Layout breadcrumbs={crumbsData}>
@@ -59,6 +62,13 @@ const crumbsData = await crumbsResponse.json()
               />
             </h2>
             {!!child.blurb && <p set:html={child.blurb} />}
+            {shortcutsData?.[0]?.shortcuts?.includes(child.uid) && (
+              <p>
+                <a href={`/${child.uid}`}>
+                  {t(userLanguage, 'interface:shortcutToFullList')} →
+                </a>
+              </p>
+            )}
           </li>
         ))
       }
