@@ -1,4 +1,6 @@
 ---
+import { siteMetaData } from '~/constants/meta-data'
+
 // Global site footer
 const pathname = Astro.url.pathname
 const renderTime = Astro.locals.renderTime
@@ -12,6 +14,11 @@ const renderTime = Astro.locals.renderTime
     >
   </p>
   <p>This page rendered in {renderTime}s</p>
+  <ul>
+    <li><a href={siteMetaData.source}>Open source</a></li>
+    <li><a href={siteMetaData.analytics}>Open analytics</a></li>
+    <li><a href={siteMetaData.suggestions}>Ideas & bugs</a></li>
+  </ul>
 </footer>
 
 <style>
