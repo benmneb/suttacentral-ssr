@@ -1,5 +1,6 @@
 ---
 import TextMetaContent from '@/components/text-meta-content.astro'
+import { t } from '@/i18n'
 import Layout from '@/layouts/Layout.astro'
 import { getPreferredLanguage } from '@/utils/language'
 
@@ -31,7 +32,9 @@ const isPatimokkha = chapter?.endsWith('-pm')
       {
         isPatimokkha && (
           <details class="patimokkha-details">
-            <summary>Show parallels and details</summary>
+            <summary>
+              {t(userLanguage, 'interface:showParallelsAndDetails')}
+            </summary>
             {suttaplexData.slice(1).map(entry => (
               <TextMetaContent data={entry} userLanguage={userLanguage} />
             ))}

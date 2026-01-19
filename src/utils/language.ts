@@ -5,8 +5,14 @@ export function getPreferredLanguage(
 
   const languages = acceptLanguageHeader.split(',')
   const primary = languages[0].split(';')[0].trim()
+  const code = primary.split('-')[0]
 
-  return primary.split('-')[0]
+  // Handle SC data not matching ISO Accept-Language headers
+  if (code === 'nb' || code === 'nn') return 'no' // generic Norsk codes
+  if (code === 'ja') return 'jpn'
+  if (code === 'kn') return 'kan'
+
+  return code
 }
 
 export function getPreferredLocale(

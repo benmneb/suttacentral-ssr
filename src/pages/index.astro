@@ -1,4 +1,5 @@
 ---
+import { t } from '@/i18n'
 import Layout from '@/layouts/Layout.astro'
 import { getPreferredLanguage } from '@/utils/language'
 
@@ -16,7 +17,7 @@ const tipitaka = json
 
 <Layout>
   <main>
-    <h1>Tipiṭaka—the Three Baskets of the Buddhist canon</h1>
+    <h1 set:html={t(userLanguage, 'home:1')} />
     <ol>
       {
         tipitaka.map(pitaka => (

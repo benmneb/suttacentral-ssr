@@ -1,4 +1,5 @@
 ---
+import { t } from '@/i18n'
 import Layout from '@/layouts/Layout.astro'
 import { getPreferredLanguage } from '@/utils/language'
 
@@ -40,7 +41,15 @@ const dictionaryTitles = {
       <p>{dictionaryData.length} results</p> -->
       <h1>Define</h1>
       <p>
-        {dictionaryData.length} result{dictionaryData.length !== 1 ? 's' : ''} for
+        {dictionaryData.length.toLocaleString()}
+        {
+          t(
+            userLanguage,
+            dictionaryData.length !== 1
+              ? 'search:resultsFor'
+              : 'search:resultsFor'
+          )
+        }
         <b>{term}</b>
       </p>
     </hgroup>
@@ -53,7 +62,7 @@ const dictionaryTitles = {
                 <dt>{entry.word || entry.entry}</dt>
                 <dd>
                   <small>
-                    {dictionaryTitles?.[entry.dictname] || 'Unknown Dictionary'}{' '}
+                    {dictionaryTitles?.[entry.dictname]}{' '}
                     {entry.dictname === 'dpd' && (
                       <a href={`https://dpdict.net/?q=${term}`}>[Link]</a>
                     )}
@@ -115,7 +124,7 @@ const dictionaryTitles = {
         )
       }
       <nav>
-        <form action="/define" method="GET">
+        <form action="/define" method="get">
           <input
             type="search"
             name="term"
@@ -130,7 +139,7 @@ const dictionaryTitles = {
         {
           !!adjacentData?.[0].length && !!dictionaryData.length && (
             <article>
-              <h2>Adjacent terms</h2>
+              <h2>{t(userLanguage, 'dictionary:adjacentTerms')}</h2>
               <ol>
                 {adjacentData[0].map(adjacentTerm =>
                   adjacentTerm === term ? (
@@ -150,7 +159,7 @@ const dictionaryTitles = {
         {
           !!similarData?.[0].length && (
             <article>
-              <h2>Similar spelling</h2>
+              <h2>{t(userLanguage, 'dictionary:similarSpelling')}</h2>
               <ol>
                 {similarData[0].map(similarTerm => (
                   <li>
@@ -168,7 +177,7 @@ const dictionaryTitles = {
 
 <style>
   main {
-    max-width: calc(var(--content-max-width) + 300px);
+    max-width: calc(var(--content-max-width) + 30ch);
     & > section {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -179,15 +188,22 @@ const dictionaryTitles = {
         grid-template-columns: 1fr;
       }
 
+      & > section {
+        max-width: var(--content-max-width);
+      }
+
       & > nav {
         position: sticky;
         top: 1rem;
+        max-width: 30ch;
+
+        h2 {
+          overflow-wrap: break-word;
+        }
       }
     }
   }
-</style>
 
-<style>
   form {
     display: flex;
     border: 1px solid;

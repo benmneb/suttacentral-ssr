@@ -1,6 +1,7 @@
 ---
 import SearchForm from '@/components/search-form.astro'
 import TextMetaContent from '@/components/text-meta-content.astro'
+import { t } from '@/i18n'
 import Layout from '@/layouts/Layout.astro'
 import { getPreferredLanguage } from '@/utils/language'
 
@@ -41,8 +42,12 @@ const dictionaryTitles = {
 <Layout>
   <main>
     <hgroup>
-      <h1>Search</h1>
-      <p>{searchData.total} results for <b>{query}</b></p>
+      <h1>{t(userLanguage, 'search:search')}</h1>
+      <p>
+        {searchData.total.toLocaleString()}
+        {t(userLanguage, 'search:resultsFor')}
+        <b>{query}</b>
+      </p>
     </hgroup>
     <SearchForm />
     <section>
@@ -52,11 +57,11 @@ const dictionaryTitles = {
             {hits.map(hit => (
               <li>
                 <hgroup>
-                  <a href={hit.url}>
-                    <h2>
+                  <h2>
+                    <a href={hit.url}>
                       {hit.root_name}—{hit.name}
-                    </h2>
-                  </a>
+                    </a>
+                  </h2>
                   <p>
                     {hit.acronym} ∙ {hit.full_lang} ∙ {hit.author}
                   </p>
@@ -79,9 +84,7 @@ const dictionaryTitles = {
                     <dt>{hit.highlight.detail[0].word}</dt>
                     <dd>
                       <small>
-                        {dictionaryTitles?.[hit.highlight.detail[0].dictname] ||
-                          'Dictionary'}{' '}
-                        (<a href={hit.url}>see all dictionaries</a>)
+                        {dictionaryTitles?.[hit.highlight.detail[0].dictname]}
                       </small>
                     </dd>
                     {hit.highlight.detail[0].grammar && (
@@ -138,6 +141,12 @@ const dictionaryTitles = {
                       </dd>
                     )}
                   </dl>
+                  <p>
+                    <a href={hit.url}>
+                      {t(userLanguage, 'search:all')}{' '}
+                      {t(userLanguage, 'search:dictionaries')} →
+                    </a>
+                  </p>
                 </li>
               ))}
             {!!suttaplexHits.length &&

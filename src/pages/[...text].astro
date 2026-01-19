@@ -2,8 +2,10 @@
 import '@/assets/text.css'
 import PublicationInfo from '@/components/publication-info.astro'
 import TextMetaContent from '@/components/text-meta-content.astro'
+import { t } from '@/i18n'
 import Layout from '@/layouts/Layout.astro'
 import { getPreferredLanguage } from '@/utils/language'
+import { toSentenceCase } from '@/utils/strings'
 
 const { text } = Astro.params
 const acceptLanguage = Astro.request.headers.get('accept-language')
@@ -58,7 +60,7 @@ function getRootLangHTML() {
       const segment = `
     <span id="${key}" class="segment">
       <span class="reference" id="${ref}">
-        <a href="#${ref}" title="SuttaCentral segment number">${ref}</a>
+        <a href="#${ref}" title="${t(userLanguage, 'text:segmentNumber')}">${ref}</a>
       </span>
       ${
         text
@@ -112,7 +114,7 @@ function getSegmentedHTML() {
       const segment = `
     <span id="${key}" class="segment">
       <span class="reference" id="${ref}">
-        <a href="#${ref}" title="SuttaCentral segment number">${ref}</a>
+        <a href="#${ref}" title="${t(userLanguage, 'text:segmentNumber')}">${ref}</a>
       </span>
       ${
         text
@@ -193,7 +195,7 @@ const articleHTML = rootLangHTML || segmentedHTML || legacyHTML
             popovertarget="info"
             aria-label="Show publication information"
           >
-            Info
+            {toSentenceCase(t(userLanguage, 'interface:infoButtonText'))}
           </button>
         </li>
         <li>
@@ -204,7 +206,7 @@ const articleHTML = rootLangHTML || segmentedHTML || legacyHTML
             aria-label="Text display settings"
             id="views-button"
           >
-            Views
+            {toSentenceCase(t(userLanguage, 'interface:toolsButtonText'))}
           </button>
           <ul
             class="dropdown"
@@ -282,7 +284,11 @@ const articleHTML = rootLangHTML || segmentedHTML || legacyHTML
         </li>
         <li>
           <button popovertarget="parallels" aria-label="Show parallel texts">
-            Parallels
+            {
+              toSentenceCase(
+                t(userLanguage, 'interface:showParallelsButtonText')
+              )
+            }
           </button>
         </li>
         <li>

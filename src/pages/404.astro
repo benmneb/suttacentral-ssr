@@ -1,4 +1,5 @@
 ---
+import { t } from '@/i18n'
 import Layout from '@/layouts/Layout.astro'
 import { getPreferredLanguage } from '@/utils/language'
 const acceptLanguage = Astro.request.headers.get('accept-language')
@@ -7,6 +8,6 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
 
 <Layout>
   <main>
-    <h1>Page not found</h1>
+    <h1>{t(userLanguage, 'error:pageNotFound')}</h1>
   </main>
 </Layout>

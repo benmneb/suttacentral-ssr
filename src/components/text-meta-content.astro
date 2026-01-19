@@ -1,6 +1,7 @@
 ---
 import '@/assets/details.css'
-import { getLanguageName, getPreferredLocale } from '@/utils/language'
+import { t } from '@/i18n'
+import { toSentenceCase } from '@/utils/strings'
 import ParallelsDetails from './parallels-details.astro'
 
 interface Props {
@@ -12,10 +13,6 @@ interface Props {
 }
 
 const { data: entry, userLanguage = 'en', parallelsOpen } = Astro.props
-
-const acceptLanguage = Astro.request.headers.get('accept-language')
-const userLocale = getPreferredLocale(acceptLanguage)
-const languageName = getLanguageName(userLocale)
 
 const translations = entry.translations.filter(t => t.lang === userLanguage)
 const otherTranslations = entry.translations.filter(
@@ -36,7 +33,9 @@ const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
         <>
           <details open>
             <summary>
-              Translation{translations.length > 1 && 's'} in {languageName}
+              {toSentenceCase(
+                `${t(userLanguage, translations.length !== 1 ? 'suttaplex:translationsIn' : 'suttaplex:translationIn')} ${t(userLanguage, translations.length !== 1 ? 'suttaplex:inYourLanguage' : 'suttaplex:inYourLanguage')}`
+              )}
             </summary>
             <ul>
               {translations.map(t => (
@@ -51,7 +50,9 @@ const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
           </details>
           <details open>
             <summary>
-              Edition{rootTexts.length > 1 && 's'} of the root text
+              {toSentenceCase(
+                `${t(userLanguage, rootTexts.length !== 1 ? 'suttaplex:editions' : 'suttaplex:edition')} ${t(userLanguage, translations.length !== 1 ? 'suttaplex:ofRootText' : 'suttaplex:ofRootText')}`
+              )}
             </summary>
             <ul>
               {rootTexts.map(t => (
@@ -63,8 +64,10 @@ const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
           </details>
           <details>
             <summary>
-              Translation{otherTranslations.length > 1 && 's'} in other modern
-              languages ({otherTranslations.length})
+              {toSentenceCase(
+                `${t(userLanguage, otherTranslations.length !== 1 ? 'suttaplex:translationsIn' : 'suttaplex:translationIn')} ${t(userLanguage, otherTranslations.length !== 1 ? 'suttaplex:inModernLanguages' : 'suttaplex:inModernLanguages')}`
+              )}{' '}
+              ({otherTranslations.length})
             </summary>
             <ul>
               {otherTranslations
@@ -81,7 +84,11 @@ const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
     }
     {
       entry.type === 'leaf' && (
-        <ParallelsDetails data={entry} parallelsOpen={parallelsOpen} />
+        <ParallelsDetails
+          data={entry}
+          parallelsOpen={parallelsOpen}
+          userLanguage={userLanguage}
+        />
       )
     }
   </section>

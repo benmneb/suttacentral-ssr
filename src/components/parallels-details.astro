@@ -1,6 +1,8 @@
 ---
 import '@/assets/details.css'
-const { data: entry, parallelsOpen } = Astro.props
+import { t } from '@/i18n'
+import { toSentenceCase } from '@/utils/strings'
+const { data: entry, parallelsOpen, userLanguage } = Astro.props
 
 const parallelsResponse = await fetch(
   `https://suttacentral.net/api/parallels/${entry.uid}`
@@ -47,15 +49,16 @@ function getHashFragment(key: string): string {
   return ''
 }
 
-// Get parallel type title
 function getParallelTypeTitle(type: string): string {
   switch (type) {
     case 'full':
-      return 'Full parallel: different versions of the same text'
+      return t(userLanguage, 'suttaplex:fullParallel')
     case 'mention':
-      return 'Mention: one text is quoted or mentioned in another'
+      return t(userLanguage, 'suttaplex:mention')
     case 'retelling':
-      return 'Retelling: the events of one text are retold in another'
+      return t(userLanguage, 'suttaplex:retellingParallel')
+    case 'resembling': // ¿¿what texts have this??
+      return t(userLanguage, 'suttaplex:resemblingParallel')
     default:
       return ''
   }
@@ -63,82 +66,93 @@ function getParallelTypeTitle(type: string): string {
 
 // Filter out metadata entries
 const segments = Object.entries(parallelsData).filter(
-  ([key]) => !key.includes('scx_fetched_at')
+  ([key]) => !key.startsWith('scn_')
 )
 ---
 
 <details open={parallelsOpen}>
   <summary>
-    Parallels in ancient texts ({entry.parallel_count})
+    {
+      toSentenceCase(
+        `${t(userLanguage, entry.parallel_count.length !== 1 ? 'suttaplex:countParallels' : 'suttaplex:countParallel', { count: null })} ${t(userLanguage, 'suttaplex:inAncientTexts')}`
+      )
+    }
+    ({entry.parallel_count})
   </summary>
   <ul>
     {
-      segments.map(([segmentKey, parallels]) => (
-        <li>
-          {rootTrans ? (
-            <a
-              href={`/${getBasePath(segmentKey)}/${rootTrans.lang}/${rootTrans.author_uid}${getHashFragment(segmentKey)}`}
-            >
-              {segmentKey}
-            </a>
-          ) : (
-            <span>{segmentKey}</span>
-          )}
-          <ul>
-            {(parallels as any[]).map(parallel => {
-              const prettyVolpages = formatVolpages(parallel.to.volpages)
-              const hasTranslations = parallel.to.translations?.length > 0
-              const firstTrans = parallel.to.translations?.[0]
-              const displayTitle =
-                parallel.to.translated_title?.trim() ||
-                parallel.to.original_title?.trim() ||
-                parallel.to.acronym?.trim()
+      !!segments.length ? (
+        segments.map(([segmentKey, parallels]) => (
+          <li>
+            {rootTrans ? (
+              <a
+                href={`/${getBasePath(segmentKey)}/${rootTrans.lang}/${rootTrans.author_uid}${getHashFragment(segmentKey)}`}
+              >
+                {segmentKey}
+              </a>
+            ) : (
+              <span>{segmentKey}</span>
+            )}
+            <ul>
+              {(parallels as any[]).map(parallel => {
+                const prettyVolpages = formatVolpages(parallel.to.volpages)
+                const hasTranslations = parallel.to.translations?.length > 0
+                const firstTrans = parallel.to.translations?.[0]
+                const displayTitle =
+                  parallel.to.translated_title?.trim() ||
+                  parallel.to.original_title?.trim() ||
+                  parallel.to.acronym?.trim()
 
-              return (
-                <li
-                  class={`parallel-list-item-${parallel.to.type}`}
-                  title={getParallelTypeTitle(parallel.to.type)}
-                >
-                  {hasTranslations ? (
-                    <a
-                      href={`/${parallel.to.uid}/${firstTrans.lang}/${firstTrans.author_uid}${getHashFragment(parallel.to.to)}`}
-                      hreflang={firstTrans.lang}
-                    >
-                      {displayTitle}
-                    </a>
-                  ) : (
-                    <span>{displayTitle}</span>
-                  )}
+                return (
+                  <li
+                    class={`parallel-list-item-${parallel.to.type}`}
+                    title={getParallelTypeTitle(parallel.to.type)}
+                  >
+                    {hasTranslations ? (
+                      <a
+                        href={`/${parallel.to.uid}/${firstTrans.lang}/${firstTrans.author_uid}${getHashFragment(parallel.to.to)}`}
+                        hreflang={firstTrans.lang}
+                      >
+                        {displayTitle}
+                      </a>
+                    ) : (
+                      <span>{displayTitle}</span>
+                    )}
 
-                  {/* Secondary info line */}
-                  {parallel.to.translated_title &&
-                  parallel.to.original_title ? (
-                    <>
-                      <br />
-                      {parallel.to.original_title.trim()}
-                      {parallel.to.acronym && (
-                        <> ∙ {parallel.to.acronym.trim()}</>
-                      )}
-                      {prettyVolpages && <> ∙ {prettyVolpages.trim()}</>}
-                    </>
-                  ) : parallel.to.original_title ? (
-                    <>
-                      <br />
-                      {parallel.to.acronym && <>{parallel.to.acronym.trim()}</>}
-                      {prettyVolpages && <> ∙ {prettyVolpages.trim()}</>}
-                    </>
-                  ) : parallel.to.acronym && prettyVolpages ? (
-                    <>
-                      <br />
-                      {prettyVolpages.trim()}
-                    </>
-                  ) : null}
-                </li>
-              )
-            })}
-          </ul>
-        </li>
-      ))
+                    {/* Secondary info line */}
+                    {parallel.to.translated_title &&
+                    parallel.to.original_title ? (
+                      <>
+                        <br />
+                        {parallel.to.original_title.trim()}
+                        {parallel.to.acronym && (
+                          <> ∙ {parallel.to.acronym.trim()}</>
+                        )}
+                        {prettyVolpages && <> ∙ {prettyVolpages.trim()}</>}
+                      </>
+                    ) : parallel.to.original_title ? (
+                      <>
+                        <br />
+                        {parallel.to.acronym && (
+                          <>{parallel.to.acronym.trim()}</>
+                        )}
+                        {prettyVolpages && <> ∙ {prettyVolpages.trim()}</>}
+                      </>
+                    ) : parallel.to.acronym && prettyVolpages ? (
+                      <>
+                        <br />
+                        {prettyVolpages.trim()}
+                      </>
+                    ) : null}
+                  </li>
+                )
+              })}
+            </ul>
+          </li>
+        ))
+      ) : (
+        <li>{t(userLanguage, 'suttaplex:hasNoParallels')}</li>
+      )
     }
   </ul>
 </details>
