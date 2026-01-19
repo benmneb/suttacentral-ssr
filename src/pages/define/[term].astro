@@ -1,7 +1,7 @@
 ---
-import { t } from '@/i18n'
-import Layout from '@/layouts/Layout.astro'
-import { getPreferredLanguage } from '@/utils/language'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
 
 const { term } = Astro.params
 const acceptLanguage = Astro.request.headers.get('accept-language')

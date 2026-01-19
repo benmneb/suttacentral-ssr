@@ -1,11 +1,11 @@
 ---
-import '@/assets/text.css'
-import PublicationInfo from '@/components/publication-info.astro'
-import TextMetaContent from '@/components/text-meta-content.astro'
-import { t } from '@/i18n'
-import Layout from '@/layouts/Layout.astro'
-import { getPreferredLanguage } from '@/utils/language'
-import { toSentenceCase } from '@/utils/strings'
+import '~/assets/text.css'
+import PublicationInfo from '~/components/publication-info.astro'
+import TextMetaContent from '~/components/text-meta-content.astro'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+import { toSentenceCase } from '~/utils/strings'
 
 const { text } = Astro.params
 const acceptLanguage = Astro.request.headers.get('accept-language')
