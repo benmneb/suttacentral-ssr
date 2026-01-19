@@ -9,23 +9,32 @@ const { searchParams } = Astro.url
 const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = getPreferredLanguage(acceptLanguage)
 
-const query = searchParams.get('query') // TODO: handle no query
+const query = searchParams.get('query')
 const matchPartial = false // TODO: add checkbox and param
 const limit = 50 // Show 50 results to start with, like .net
 const page = Number(searchParams.get('page')) || 1
 const offset = (page - 1) * limit
 
-const searchResponse = await fetch(
-  `https://suttacentral.net/api/search/instant?limit=${limit}&offset=${offset}&query=${query}&language=${userLanguage}&restrict=all&matchpartial=${matchPartial}`
-)
-const searchData = await searchResponse.json()
+let hits = []
+let dictionaryHits = []
+let suttaplexHits = []
+let hasMore = false
+let hasPrevious = false
+let searchData = { total: 0 }
 
-const hits = searchData.hits.filter(h => h.category !== 'dictionary')
-const dictionaryHits = searchData.hits.filter(h => h.category === 'dictionary')
-const suttaplexHits = searchData.suttaplex
+if (query) {
+  const searchResponse = await fetch(
+    `https://suttacentral.net/api/search/instant?limit=${limit}&offset=${offset}&query=${query}&language=${userLanguage}&restrict=all&matchpartial=${matchPartial}`
+  )
+  searchData = await searchResponse.json()
 
-const hasMore = searchData.total > page * limit
-const hasPrevious = page > 1
+  hits = searchData.hits.filter(h => h.category !== 'dictionary')
+  dictionaryHits = searchData.hits.filter(h => h.category === 'dictionary')
+  suttaplexHits = searchData.suttaplex
+
+  hasMore = searchData.total > page * limit
+  hasPrevious = page > 1
+}
 
 // TODO: make global
 const dictionaryTitles = {
@@ -43,146 +52,159 @@ const dictionaryTitles = {
   <main>
     <hgroup>
       <h1>{t(userLanguage, 'search:search')}</h1>
-      <p>
-        {searchData.total.toLocaleString()}
-        {t(userLanguage, 'search:resultsFor')}
-        <b>{query}</b>
-      </p>
+      {
+        query && (
+          <p>
+            {searchData.total.toLocaleString()}
+            {t(userLanguage, 'search:resultsFor')}
+            <b>{query}</b>
+          </p>
+        )
+      }
     </hgroup>
     <SearchForm />
-    <section>
-      {
-        !!hits.length && (
-          <ol>
-            {hits.map(hit => (
-              <li>
-                <hgroup>
-                  <h2>
-                    <a href={hit.url}>
-                      {hit.root_name}—{hit.name}
-                    </a>
-                  </h2>
-                  <p>
-                    {hit.acronym} ∙ {hit.full_lang} ∙ {hit.author}
-                  </p>
-                </hgroup>
-                {hit.highlight.content.map(excerpt => (
-                  <span set:html={excerpt} />
+    {
+      query && (
+        <>
+          <section>
+            {!!hits.length && (
+              <ol>
+                {hits.map(hit => (
+                  <li>
+                    <hgroup>
+                      <h2>
+                        <a href={hit.url}>
+                          {hit.root_name}—{hit.name}
+                        </a>
+                      </h2>
+                      <p>
+                        {hit.acronym} ∙ {hit.full_lang} ∙ {hit.author}
+                      </p>
+                    </hgroup>
+                    {hit.highlight.content.map(excerpt => (
+                      <span set:html={excerpt} />
+                    ))}
+                  </li>
                 ))}
-              </li>
-            ))}
-          </ol>
-        )
-      }
-      {
-        (!!dictionaryHits.length || !!suttaplexHits.length) && (
-          <ol>
-            {!!dictionaryHits.length &&
-              dictionaryHits.map(hit => (
-                <li>
-                  <dl>
-                    <dt>{hit.highlight.detail[0].word}</dt>
-                    <dd>
-                      <small>
-                        {dictionaryTitles?.[hit.highlight.detail[0].dictname]}
-                      </small>
-                    </dd>
-                    {hit.highlight.detail[0].grammar && (
-                      <dd>
-                        <em>{hit.highlight.detail[0].grammar}</em>
-                      </dd>
-                    )}
-                    {hit.highlight.detail[0].text && (
-                      <dd
-                        set:html={hit.highlight.detail[0].text.replaceAll(
-                          'https://suttacentral.net',
-                          ''
+              </ol>
+            )}
+            {(!!dictionaryHits.length || !!suttaplexHits.length) && (
+              <ol>
+                {!!dictionaryHits.length &&
+                  dictionaryHits.map(hit => (
+                    <li>
+                      <dl>
+                        <dt>{hit.highlight.detail[0].word}</dt>
+                        <dd>
+                          <small>
+                            {
+                              dictionaryTitles?.[
+                                hit.highlight.detail[0].dictname
+                              ]
+                            }
+                          </small>
+                        </dd>
+                        {hit.highlight.detail[0].grammar && (
+                          <dd>
+                            <em>{hit.highlight.detail[0].grammar}</em>
+                          </dd>
                         )}
-                      />
-                    )}
-                    {hit.highlight.detail[0].definition && (
-                      <dd>
-                        {Array.isArray(hit.highlight.detail[0].definition) ? (
-                          <ol>
-                            {hit.highlight.detail[0].definition.map(d => (
-                              <li set:html={d} />
-                            ))}
-                          </ol>
-                        ) : (
-                          hit.highlight.detail[0].definition
+                        {hit.highlight.detail[0].text && (
+                          <dd
+                            set:html={hit.highlight.detail[0].text.replaceAll(
+                              'https://suttacentral.net',
+                              ''
+                            )}
+                          />
                         )}
-                      </dd>
-                    )}
-                    {hit.highlight.detail[0].xr && (
-                      <dd>
-                        <ul>
-                          {Array.isArray(hit.highlight.detail[0].xr) ? (
-                            <>
-                              {hit.highlight.detail[0].xr.map(d => (
+                        {hit.highlight.detail[0].definition && (
+                          <dd>
+                            {Array.isArray(
+                              hit.highlight.detail[0].definition
+                            ) ? (
+                              <ol>
+                                {hit.highlight.detail[0].definition.map(d => (
+                                  <li set:html={d} />
+                                ))}
+                              </ol>
+                            ) : (
+                              hit.highlight.detail[0].definition
+                            )}
+                          </dd>
+                        )}
+                        {hit.highlight.detail[0].xr && (
+                          <dd>
+                            <ul>
+                              {Array.isArray(hit.highlight.detail[0].xr) ? (
+                                <>
+                                  {hit.highlight.detail[0].xr.map(d => (
+                                    <li>
+                                      <a href={`/define/${d}`}>{d}</a>
+                                    </li>
+                                  ))}
+                                </>
+                              ) : (
                                 <li>
-                                  <a href={`/define/${d}`}>{d}</a>
+                                  <a
+                                    href={`/define/${hit.highlight.detail[0].xr}`}
+                                  >
+                                    {hit.highlight.detail[0].xr}
+                                  </a>
                                 </li>
-                              ))}
-                            </>
-                          ) : (
-                            <li>
-                              <a href={`/define/${hit.highlight.detail[0].xr}`}>
-                                {hit.highlight.detail[0].xr}
-                              </a>
-                            </li>
-                          )}
-                        </ul>
-                      </dd>
-                    )}
-                    {hit.highlight.detail[0].pronunciation && (
-                      <dd>
-                        <strong>Pronunciation:</strong>{' '}
-                        {hit.highlight.detail[0].pronunciation}
-                      </dd>
-                    )}
-                  </dl>
-                  <p>
-                    <a href={hit.url}>
-                      {t(userLanguage, 'search:all')}{' '}
-                      {t(userLanguage, 'search:dictionaries')} →
-                    </a>
-                  </p>
-                </li>
-              ))}
-            {!!suttaplexHits.length &&
-              suttaplexHits.map(entry => (
-                <li>
-                  <TextMetaContent data={entry} userLanguage={userLanguage} />
-                </li>
-              ))}
-          </ol>
-        )
-      }
-    </section>
-    <nav aria-label="Search pagination">
-      <div>
-        {
-          hasPrevious && (
-            <form method="GET" action="/search">
-              <input type="hidden" name="query" value={query} />
-              <input type="hidden" name="page" value={page - 1} />
-              <button type="submit">← Previous</button>
-            </form>
-          )
-        }
-      </div>
-      <div>
-        {
-          hasMore && (
-            <form method="GET" action="/search">
-              <input type="hidden" name="query" value={query} />
-              <input type="hidden" name="page" value={page + 1} />
-              <button type="submit">Next →</button>
-            </form>
-          )
-        }
-      </div>
-    </nav>
+                              )}
+                            </ul>
+                          </dd>
+                        )}
+                        {hit.highlight.detail[0].pronunciation && (
+                          <dd>
+                            <strong>Pronunciation:</strong>{' '}
+                            {hit.highlight.detail[0].pronunciation}
+                          </dd>
+                        )}
+                      </dl>
+                      <p>
+                        <a href={hit.url}>
+                          {t(userLanguage, 'search:all')}{' '}
+                          {t(userLanguage, 'search:dictionaries')} →
+                        </a>
+                      </p>
+                    </li>
+                  ))}
+                {!!suttaplexHits.length &&
+                  suttaplexHits.map(entry => (
+                    <li>
+                      <TextMetaContent
+                        data={entry}
+                        userLanguage={userLanguage}
+                      />
+                    </li>
+                  ))}
+              </ol>
+            )}
+          </section>
+          <nav aria-label="Search pagination">
+            <div>
+              {hasPrevious && (
+                <form method="GET" action="/search">
+                  <input type="hidden" name="query" value={query} />
+                  <input type="hidden" name="page" value={page - 1} />
+                  <button type="submit">← Previous</button>
+                </form>
+              )}
+            </div>
+            <div>
+              {hasMore && (
+                <form method="GET" action="/search">
+                  <input type="hidden" name="query" value={query} />
+                  <input type="hidden" name="page" value={page + 1} />
+                  <button type="submit">Next →</button>
+                </form>
+              )}
+            </div>
+          </nav>
+        </>
+      )
+    }
   </main>
 </Layout>
 
