@@ -6,7 +6,14 @@
 
 ## Another fast and minimal alternative frontend for [SuttaCentral.net](https://suttacentral.net)
 
-(It's like SuttaCentral.net, except with SSR)
+It's like [SuttaCentral.express](https://suttacentral.express), except
+
+- Pages are rendered on the server at request time, so it always has the latest data
+- Includes all translations of all texts in all languages
+- Internationalisation based on your browsers preferred language
+- Fast and powerful "instant search" from the same API .net uses (includes dictionaries)
+- Even less client-side javascript
+- 1,000% improved developer experience
 
 ## License
 

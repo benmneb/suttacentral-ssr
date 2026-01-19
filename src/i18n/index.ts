@@ -38,6 +38,7 @@ for (const path in modules) {
  *
  * @param {string} locale - The language code (e.g., 'en', 'fr', 'ja'). Falls back to 'en' if not found.
  * @param {string} key - The translation key to look up (e.g., 'home:1').
+ * @param {object} variables - Variables to replace with data (e.g., { count: 1 }).
  * @returns {string} The translated string, or the key itself if translation is not found.
  *
  * @example
