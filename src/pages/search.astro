@@ -1,4 +1,5 @@
 ---
+import '~/assets/search.css'
 import SearchForm from '~/components/search-form.astro'
 import TextMetaContent from '~/components/text-meta-content.astro'
 import { t } from '~/i18n'
@@ -82,7 +83,9 @@ const dictionaryTitles = {
                       </p>
                     </hgroup>
                     {hit.highlight.content.map(excerpt => (
-                      <span set:html={excerpt} />
+                      <span
+                        set:html={excerpt.replaceAll('target="_blank"', '')}
+                      />
                     ))}
                   </li>
                 ))}
@@ -207,25 +210,3 @@ const dictionaryTitles = {
     }
   </main>
 </Layout>
-
-<style>
-  main {
-    max-width: var(--content-double-width-gap);
-
-    & > section {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1rem;
-
-      ol {
-        min-width: 0;
-        overflow-wrap: break-word;
-      }
-    }
-
-    & > nav {
-      display: flex;
-      justify-content: space-between;
-    }
-  }
-</style>
