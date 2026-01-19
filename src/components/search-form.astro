@@ -1,47 +1,84 @@
+---
+interface Props {
+  matchPartial?: boolean
+}
+
+const { matchPartial = false } = Astro.props
+---
+
 <form action="/search" method="get" role="search">
-  <label for="search-input" class="sr-only">Search site</label>
-  <input
-    id="search-input"
-    type="search"
-    placeholder="Search site…"
-    autocomplete="off"
-    autocorrect="off"
-    autocapitalize="off"
-    name="query"
-    required
-    autofocus
-  />
-  <button aria-label="Search" type="submit">🔎</button>
+  <fieldset>
+    <label for="search-input" class="sr-only">Search site</label>
+    <input
+      id="search-input"
+      type="search"
+      placeholder="Search site…"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      name="query"
+      required
+      autofocus
+    />
+    <button aria-label="Search" type="submit">🔎</button>
+  </fieldset>
+  <label>
+    Match partial
+    <input
+      type="checkbox"
+      name="matchpartial"
+      value="true"
+      checked={matchPartial}
+    />
+  </label>
 </form>
 
 <style>
   form {
     display: flex;
-    border: 1px solid;
-    padding: 0.4rem;
-    border-radius: var(--rounding);
-    border-color: var(--bg-alt-4);
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 
-    &:focus-within {
-      border-color: inherit;
-    }
+    fieldset {
+      display: flex;
+      flex: 1;
+      margin: 0;
+      padding: 0.4rem;
+      border: 1px solid;
+      border-radius: var(--rounding);
+      border-color: var(--bg-alt-4);
 
-    input {
-      width: 100%;
-      border: none;
-      background-color: inherit;
-      color: inherit;
-      font-size: large;
+      &:focus-within {
+        border-color: inherit;
+      }
 
-      &:focus {
-        outline: none;
+      input {
+        width: 100%;
+        border: none;
+        background-color: inherit;
+        color: inherit;
+        font-size: large;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      button {
+        border: none;
+        background: none;
+        font-size: inherit;
+        cursor: pointer;
       }
     }
 
-    button {
-      border: none;
-      background: none;
-      font-size: inherit;
+    > label {
+      display: flex;
+      align-items: center;
+      align-self: end;
+      gap: 0.25rem;
+      white-space: nowrap;
       cursor: pointer;
     }
   }

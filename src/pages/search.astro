@@ -11,7 +11,7 @@ const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = getPreferredLanguage(acceptLanguage)
 
 const query = searchParams.get('query')
-const matchPartial = false // TODO: add checkbox and param
+const matchPartial = searchParams.get('matchpartial') === 'true'
 const limit = 50 // Show 50 results to start with, like .net
 const page = Number(searchParams.get('page')) || 1
 const offset = (page - 1) * limit
@@ -63,7 +63,7 @@ const dictionaryTitles = {
         )
       }
     </hgroup>
-    <SearchForm />
+    <SearchForm matchPartial={matchPartial} />
     {
       query && (
         <>
@@ -191,6 +191,9 @@ const dictionaryTitles = {
                 <form method="GET" action="/search">
                   <input type="hidden" name="query" value={query} />
                   <input type="hidden" name="page" value={page - 1} />
+                  {matchPartial && (
+                    <input type="hidden" name="matchpartial" value="true" />
+                  )}
                   <button type="submit">← Previous</button>
                 </form>
               )}
@@ -200,6 +203,9 @@ const dictionaryTitles = {
                 <form method="GET" action="/search">
                   <input type="hidden" name="query" value={query} />
                   <input type="hidden" name="page" value={page + 1} />
+                  {matchPartial && (
+                    <input type="hidden" name="matchpartial" value="true" />
+                  )}
                   <button type="submit">Next →</button>
                 </form>
               )}

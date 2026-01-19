@@ -97,6 +97,7 @@ body {
   padding: 1rem;
   background-color: var(--popover-background-color);
   max-width: calc(min(320px, 100vw) - 2rem);
+  width: 100%;
   max-height: 60vh;
   overflow-y: scroll;
 }
