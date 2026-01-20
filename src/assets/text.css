@@ -489,7 +489,7 @@ article {
   button[popovertarget] {
     display: none;
     user-select: none;
-    cursor: help;
+    cursor: zoom-in;
     background: none;
     border: none;
     color: var(--primary-color);
