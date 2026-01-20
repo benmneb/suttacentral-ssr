@@ -14,6 +14,12 @@ const suttaplexResponse = await fetch(
 )
 const suttaplexData = await suttaplexResponse.json()
 
+if (!suttaplexData?.[0]?.uid) {
+  Astro.response.status = 404
+  Astro.response.statusText = 'Suttaplex UID not found'
+  return Astro.rewrite('/404')
+}
+
 const crumbsResponse = await fetch(
   `https://suttacentral.net/api/navigation_data/${chapter}?language=${userLanguage}`
 )

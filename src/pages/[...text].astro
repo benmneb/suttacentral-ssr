@@ -13,23 +13,45 @@ const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = getPreferredLanguage(acceptLanguage)
 
 const parts = text!.split('/') // will be a string like "dn1/en/sujato"
-if (parts.length !== 3) return Astro.redirect('/404') // TODO:
+if (parts.length !== 3) {
+  Astro.response.status = 404
+  Astro.response.statusText = 'Invalid text path format'
+  return Astro.rewrite('/404')
+}
 const [acronym, language, authorUid] = parts
-
-const bilaraResponse = await fetch(
-  `https://suttacentral.net/api/bilarasuttas/${acronym}/${authorUid}?lang=${language}`
-)
-const bilaraData = await bilaraResponse.json()
 
 const suttasResponse = await fetch(
   `https://suttacentral.net/api/suttas/${acronym}/${authorUid}?lang=${language}&siteLanguage=${userLanguage}`
 )
 const suttasData = await suttasResponse.json()
 
+if (!suttasData.root_text && !suttasData.translation) {
+  Astro.response.status = 404
+  Astro.response.statusText = 'Text not found'
+  return Astro.rewrite('/404')
+}
+
 const suttaplexResponse = await fetch(
   `https://suttacentral.net/api/suttaplex/${acronym}?language=${userLanguage}`
 )
 const suttaplexData = await suttaplexResponse.json()
+
+if (!suttaplexData?.[0]?.uid) {
+  Astro.response.status = 404
+  Astro.response.statusText = 'Suttaplex UID not found'
+  return Astro.rewrite('/404')
+}
+
+const bilaraResponse = await fetch(
+  `https://suttacentral.net/api/bilarasuttas/${acronym}/${authorUid}?lang=${language}`
+)
+const bilaraData = await bilaraResponse.json()
+
+if (bilaraData.msg === 'Not Found') {
+  Astro.response.status = 404
+  Astro.response.statusText = 'Bilara data not found'
+  return Astro.rewrite('/404')
+}
 
 const publicationResponse = await fetch(
   `https://suttacentral.net/api/publication_info/${acronym}/${language}/${authorUid}`
