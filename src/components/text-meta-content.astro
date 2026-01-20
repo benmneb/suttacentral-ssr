@@ -1,5 +1,6 @@
 ---
 import '~/assets/details.css'
+import '~/assets/text-meta-content.css'
 import { t } from '~/i18n'
 import { toSentenceCase } from '~/utils/strings'
 import ParallelsDetails from './parallels-details.astro'
@@ -19,6 +20,20 @@ const otherTranslations = entry.translations.filter(
   t => t.lang !== userLanguage && t.lang !== entry.root_lang
 )
 const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
+
+const alignedHTML = `<span title="${t(userLanguage, 'suttaplex:aligned')}: ${t(userLanguage, 'suttaplex:alignedDescription')}" role="icon">🔗</span>`
+const annotatedHTML = `<span title="${t(userLanguage, 'suttaplex:annotated')}: ${t(userLanguage, 'suttaplex:annotatedDescription')}" role="icon">📝</span>`
+
+function printIconsHTML(translation) {
+  const icons = [
+    translation.segmented && alignedHTML,
+    translation.has_comment && annotatedHTML,
+  ]
+    .filter(Boolean)
+    .join(' ')
+
+  return icons ? ` ${icons}` : ''
+}
 ---
 
 <article>
@@ -42,7 +57,7 @@ const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
             <ul>
               {translations.map(t => (
                 <li
-                  set:html={`${t.lang_name}—<a href="/${entry.uid}/${t.lang}/${t.author_uid}">${(t.author || t.author_uid)?.trim()}</a> ${t.publication_date ? `(${t.publication_date})` : ''}`}
+                  set:html={`${t.lang_name}—<a href="/${entry.uid}/${t.lang}/${t.author_uid}">${(t.author || t.author_uid)?.trim()}</a> ${t.publication_date ? `(${t.publication_date})` : ''}${printIconsHTML(t)}`}
                 />
               ))}
             </ul>
@@ -73,7 +88,7 @@ const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
                 .toSorted((a, b) => a.lang - b.lang)
                 .map(t => (
                   <li
-                    set:html={`${t.lang_name}—<a href="/${entry.uid}/${t.lang}/${t.author_uid}">${t.author}</a> ${t.publication_date ? `(${t.publication_date})` : ''}`}
+                    set:html={`${t.lang_name}—<a href="/${entry.uid}/${t.lang}/${t.author_uid}">${t.author}</a> ${t.publication_date ? `(${t.publication_date})` : ''}${printIconsHTML(t)}`}
                   />
                 ))}
             </ul>
