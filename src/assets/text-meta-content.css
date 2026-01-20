@@ -14,3 +14,12 @@ hgroup:has(p) {
     color: var(--text-color-secondary);
   }
 }
+
+.leaf-node {
+  list-style: disc;
+  margin-left: 2rem;
+
+  h1 {
+    font-size: x-large;
+  }
+}

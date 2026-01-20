@@ -45,11 +45,19 @@ const jsonLd =
   <main>
     <ol>
       {
-        (isPatimokkha ? [suttaplexData[0]] : suttaplexData).map(entry => (
-          <li>
-            <TextMetaContent data={entry} userLanguage={userLanguage} />
-          </li>
-        ))
+        (isPatimokkha ? [suttaplexData[0]] : suttaplexData).map(
+          (entry: { type: string }) => (
+            <li
+              class={
+                suttaplexData.length > 1 && entry.type === 'leaf'
+                  ? 'leaf-node'
+                  : ''
+              }
+            >
+              <TextMetaContent data={entry} userLanguage={userLanguage} />
+            </li>
+          )
+        )
       }
       {
         isPatimokkha && (
@@ -99,9 +107,10 @@ const jsonLd =
 
 <style>
   ol {
-    list-style: disc;
     padding: 0;
+    list-style: none;
   }
+
   .patimokkha-details {
     margin-top: 1rem;
 
