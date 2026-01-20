@@ -26,6 +26,16 @@ const suttasResponse = await fetch(
 const suttasData = await suttasResponse.json()
 
 if (!suttasData.root_text && !suttasData.translation) {
+  for (const author of suttasData.candidate_authors ?? []) {
+    const response = await fetch(
+      `https://suttacentral.net/api/suttas/${acronym}/${author}?lang=${language}&siteLanguage=${userLanguage}`
+    )
+    const data = await response.json()
+    if (data.root_text || data.translation) {
+      return Astro.redirect(`/${acronym}/${language}/${author}`)
+    }
+  }
+
   Astro.response.status = 404
   Astro.response.statusText = 'Text not found'
   return Astro.rewrite('/404')
