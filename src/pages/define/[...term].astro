@@ -1,4 +1,5 @@
 ---
+import { dictionaryTitles } from '~/constants/define'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getPreferredLanguage } from '~/utils/language'
@@ -32,17 +33,6 @@ if (term) {
     `https://suttacentral.net/api/dictionary_full/adjacent/${term}?language=${userLanguage}`
   )
   adjacentData = await adjacentResponse.json()
-}
-
-// TODO: make global
-const dictionaryTitles = {
-  ncped: 'New Concise Pali English Dictionary',
-  cped: 'Concise Pali English Dictionary',
-  dhammika: 'Nature and the Environment in Early Buddhism by S. Dhammika',
-  dppn: 'Dictionary of Pali Proper Names',
-  pts: 'PTS Pali English Dictionary',
-  dpd: 'Digital Pāḷi Dictionary',
-  ddb: 'Digital Dictionary of Buddhism',
 }
 ---
 

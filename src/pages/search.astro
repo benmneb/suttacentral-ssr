@@ -2,6 +2,7 @@
 import '~/assets/search.css'
 import SearchForm from '~/components/search-form.astro'
 import TextMetaContent from '~/components/text-meta-content.astro'
+import { dictionaryTitles } from '~/constants/define'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getPreferredLanguage } from '~/utils/language'
@@ -35,17 +36,6 @@ if (query) {
 
   hasMore = searchData.total > page * limit
   hasPrevious = page > 1
-}
-
-// TODO: make global
-const dictionaryTitles = {
-  ncped: 'New Concise Pali English Dictionary',
-  cped: 'Concise Pali English Dictionary',
-  dhammika: 'Nature and the Environment in Early Buddhism by S. Dhammika',
-  dppn: 'Dictionary of Pali Proper Names',
-  pts: 'PTS Pali English Dictionary',
-  dpd: 'Digital Pāḷi Dictionary',
-  ddb: 'Digital Dictionary of Buddhism',
 }
 ---
 
