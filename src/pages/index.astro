@@ -7,16 +7,13 @@ import { getPreferredLanguage } from '~/utils/language'
 const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = getPreferredLanguage(acceptLanguage)
 
-const response = await fetch(
-  `https://suttacentral.net/api/menu?language=${userLanguage}`
+const tipitakaResponse = await fetch(
+  `https://suttacentral.net/api/tipitaka_menu?language=${userLanguage}`
 )
-const json = await response.json()
-const tipitaka = json
-  .filter(m => ['sutta', 'vinaya', 'abhidhamma'].includes(m.uid))
-  .reverse()
+const tipitakaData = await tipitakaResponse.json()
 
 const origin = Astro.site?.origin ?? ''
-const jsonLd = generateIndexJsonLd(tipitaka, origin)
+const jsonLd = generateIndexJsonLd(tipitakaData, origin)
 ---
 
 <Layout jsonLd={jsonLd}>
@@ -24,7 +21,7 @@ const jsonLd = generateIndexJsonLd(tipitaka, origin)
     <h1 set:html={t(userLanguage, 'home:1')} />
     <ol>
       {
-        tipitaka.map(pitaka => (
+        tipitakaData.map(pitaka => (
           <li>
             <article>
               <h2>
