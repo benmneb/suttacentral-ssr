@@ -844,3 +844,30 @@ article {
     }
   }
 }
+
+main ~ nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-self: center;
+  gap: 1rem;
+  margin: 2rem 1rem;
+  width: calc(100vw - 2rem);
+  max-width: calc(var(--content-max-width) * 1.2);
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+    overflow-wrap: anywhere;
+
+    &:nth-of-type(2) {
+      align-items: flex-end;
+      text-align: right;
+    }
+
+    span {
+      font-variant-caps: petite-caps;
+    }
+  }
+}

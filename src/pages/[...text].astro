@@ -384,6 +384,38 @@ const articleHTML = rootLangHTML || segmentedHTML || legacyHTML
       />
     </article>
   </main>
+  <nav aria-label="Article pagination">
+    <div>
+      {
+        suttasData.translation?.previous?.uid && (
+          <>
+            <span>{t(userLanguage, 'interface:previous')}</span>
+            <a
+              href={`/${suttasData.translation.previous.uid}/${suttasData.translation.previous.lang}/${suttasData.translation.previous.author_uid}`}
+              rel="prev"
+            >
+              {suttasData.translation.previous?.name}
+            </a>
+          </>
+        )
+      }
+    </div>
+    <div>
+      {
+        suttasData.translation?.next?.uid && (
+          <>
+            <span>{t(userLanguage, 'interface:next')}</span>
+            <a
+              href={`/${suttasData.translation.next.uid}/${suttasData.translation.next.lang}/${suttasData.translation.next.author_uid}`}
+              rel="next"
+            >
+              {suttasData.translation.next?.name}
+            </a>
+          </>
+        )
+      }
+    </div>
+  </nav>
 </Layout>
 
 <script>

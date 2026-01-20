@@ -49,6 +49,32 @@ const isPatimokkha = chapter?.endsWith('-pm')
       }
     </ol>
   </main>
+  <nav aria-label="Article pagination">
+    <div>
+      {
+        suttaplexData[0]?.previous?.uid && (
+          <>
+            <span>{t(userLanguage, 'interface:previous')}</span>
+            <a href={`/${suttaplexData[0].previous.uid}`} rel="prev">
+              {suttaplexData[0].previous?.name}
+            </a>
+          </>
+        )
+      }
+    </div>
+    <div>
+      {
+        suttaplexData[0]?.next?.uid && (
+          <>
+            <span>{t(userLanguage, 'interface:next')}</span>
+            <a href={`/${suttaplexData[0].next.uid}`} rel="next">
+              {suttaplexData[0].next?.name}
+            </a>
+          </>
+        )
+      }
+    </div>
+  </nav>
 </Layout>
 
 <style>
@@ -69,6 +95,33 @@ const isPatimokkha = chapter?.endsWith('-pm')
       &:hover,
       &:active {
         background-color: var(--bg-alt-1);
+      }
+    }
+  }
+
+  main ~ nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-self: center;
+    gap: 1rem;
+    margin: 2rem 1rem;
+    width: calc(100vw - 2rem);
+    max-width: calc(var(--content-max-width) * 1.2);
+
+    div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: flex-start;
+      overflow-wrap: anywhere;
+
+      &:nth-of-type(2) {
+        align-items: flex-end;
+        text-align: right;
+      }
+
+      span {
+        font-variant-caps: petite-caps;
       }
     }
   }
