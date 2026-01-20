@@ -32,7 +32,7 @@ const {
 } = Astro.props
 
 const pageTitle = title
-  ? `${title} - ${siteMetaData.title}`
+  ? `${title} @ ${siteMetaData.title}`
   : siteMetaData.title
 const pageDescription = description || siteMetaData.description
 const canonicalUrl = canonical || Astro.url.href
@@ -68,7 +68,7 @@ const imageUrl = new URL(ogImage || '/og-image.jpg', Astro.site).href
       content="#1a1a2e"
     />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
-    <title>{title && `${title} ∙ `} {siteMetaData.title}</title>
+    <title>{pageTitle}</title>
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={canonicalUrl} />

@@ -35,9 +35,11 @@ const jsonLd =
 ---
 
 <Layout
-  title={suttaplexData[0]?.translated_name ||
+  title={`${
+    suttaplexData[0]?.translated_name ||
     suttaplexData[0]?.original_title ||
-    chapter}
+    chapter
+  }${suttaplexData[0]?.translated_title ? `—${suttaplexData[0].translated_title}` : ''}`}
   description={suttaplexData[0]?.blurb?.replace(/<[^>]*>/g, '')}
   breadcrumbs={crumbsData}
   jsonLd={jsonLd}

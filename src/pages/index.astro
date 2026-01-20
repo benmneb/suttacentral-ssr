@@ -16,7 +16,7 @@ const origin = Astro.site?.origin ?? ''
 const jsonLd = generateIndexJsonLd(tipitakaData, origin)
 ---
 
-<Layout jsonLd={jsonLd}>
+<Layout jsonLd={jsonLd} title={t(userLanguage, 'home:1')}>
   <main>
     <h1 set:html={t(userLanguage, 'home:1')} />
     <ol>

@@ -223,8 +223,7 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
 ---
 
 <Layout
-  title={suttasData.suttaplex?.translated_name ||
-    suttasData.suttaplex?.original_title}
+  title={`${suttaplexData[0].acronym}: ${suttaplexData[0].original_title}—${suttasData.translation.author || suttasData.root_text.author}`}
   description={suttaplexData[0]?.blurb?.replace(/<[^>]*>/g, '')}
   breadcrumbs={crumbsData}
   jsonLd={jsonLd}
