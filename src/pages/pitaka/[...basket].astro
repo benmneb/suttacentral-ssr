@@ -1,6 +1,7 @@
 ---
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
+import { generatePitakaJsonLd } from '~/utils/json-ld'
 import { getPreferredLanguage } from '~/utils/language'
 
 const { pathname } = Astro.url
@@ -43,9 +44,12 @@ const crumbsData = await crumbsResponse.json()
 
 const shortcutsResponse = await fetch(`https://suttacentral.net/api/shortcuts`)
 const shortcutsData = await shortcutsResponse.json()
+
+const origin = Astro.site?.origin ?? ''
+const jsonLd = generatePitakaJsonLd(data, crumbsData, origin)
 ---
 
-<Layout breadcrumbs={crumbsData}>
+<Layout breadcrumbs={crumbsData} jsonLd={jsonLd}>
   <main>
     <h1
       set:text={`${data.root_name}${data.root_name && data.translated_name ? '—' : ''}${data.translated_name || ''}`}

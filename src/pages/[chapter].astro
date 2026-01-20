@@ -2,6 +2,7 @@
 import TextMetaContent from '~/components/text-meta-content.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
+import { generateChapterJsonLd, generateTextMetaJsonLd } from '~/utils/json-ld'
 import { getPreferredLanguage } from '~/utils/language'
 
 const { chapter } = Astro.params
@@ -19,9 +20,15 @@ const crumbsResponse = await fetch(
 const crumbsData = await crumbsResponse.json()
 
 const isPatimokkha = chapter?.endsWith('-pm')
+
+const origin = Astro.site?.origin ?? ''
+const jsonLd =
+  suttaplexData.length === 1
+    ? generateTextMetaJsonLd(suttaplexData[0], crumbsData, origin)
+    : generateChapterJsonLd(suttaplexData, chapter!, crumbsData, origin)
 ---
 
-<Layout breadcrumbs={crumbsData}>
+<Layout breadcrumbs={crumbsData} jsonLd={jsonLd}>
   <main>
     <ol>
       {

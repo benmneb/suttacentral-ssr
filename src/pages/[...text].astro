@@ -4,6 +4,7 @@ import PublicationInfo from '~/components/publication-info.astro'
 import TextMetaContent from '~/components/text-meta-content.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
+import { generateTextJsonLd } from '~/utils/json-ld'
 import { getPreferredLanguage } from '~/utils/language'
 import { toSentenceCase } from '~/utils/strings'
 
@@ -184,9 +185,12 @@ const segmentedHTML = getSegmentedHTML()
 const legacyHTML = getLegacyHTML()
 
 const articleHTML = rootLangHTML || segmentedHTML || legacyHTML
+
+const origin = Astro.site?.origin ?? ''
+const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
 ---
 
-<Layout breadcrumbs={crumbsData}>
+<Layout breadcrumbs={crumbsData} jsonLd={jsonLd}>
   <aside>
     <fieldset>
       <ul>

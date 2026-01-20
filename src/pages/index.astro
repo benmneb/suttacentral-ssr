@@ -1,6 +1,7 @@
 ---
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
+import { generateIndexJsonLd } from '~/utils/json-ld'
 import { getPreferredLanguage } from '~/utils/language'
 
 const acceptLanguage = Astro.request.headers.get('accept-language')
@@ -13,9 +14,12 @@ const json = await response.json()
 const tipitaka = json
   .filter(m => ['sutta', 'vinaya', 'abhidhamma'].includes(m.uid))
   .reverse()
+
+const origin = Astro.site?.origin ?? ''
+const jsonLd = generateIndexJsonLd(tipitaka, origin)
 ---
 
-<Layout>
+<Layout jsonLd={jsonLd}>
   <main>
     <h1 set:html={t(userLanguage, 'home:1')} />
     <ol>
