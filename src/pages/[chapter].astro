@@ -28,7 +28,14 @@ const jsonLd =
     : generateChapterJsonLd(suttaplexData, chapter!, crumbsData, origin)
 ---
 
-<Layout breadcrumbs={crumbsData} jsonLd={jsonLd}>
+<Layout
+  title={suttaplexData[0]?.translated_name ||
+    suttaplexData[0]?.original_title ||
+    chapter}
+  description={suttaplexData[0]?.blurb?.replace(/<[^>]*>/g, '')}
+  breadcrumbs={crumbsData}
+  jsonLd={jsonLd}
+>
   <main>
     <ol>
       {

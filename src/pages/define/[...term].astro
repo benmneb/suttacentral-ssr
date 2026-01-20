@@ -46,7 +46,15 @@ const dictionaryTitles = {
 }
 ---
 
-<Layout title={term ? `Definitions for ${term}` : 'Define'}>
+<Layout
+  title={term ? `Definitions for ${term}` : 'Define'}
+  description={term && dictionaryData[0]?.definition
+    ? (Array.isArray(dictionaryData[0].definition)
+        ? dictionaryData[0].definition[0]
+        : dictionaryData[0].definition
+      ).replace(/<[^>]*>/g, '')
+    : `Dictionary definitions and Pali term lookup`}
+>
   <main>
     <hgroup>
       <h1>Define</h1>

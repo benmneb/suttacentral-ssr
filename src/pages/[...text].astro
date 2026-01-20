@@ -190,7 +190,14 @@ const origin = Astro.site?.origin ?? ''
 const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
 ---
 
-<Layout breadcrumbs={crumbsData} jsonLd={jsonLd}>
+<Layout
+  title={suttasData.suttaplex?.translated_name ||
+    suttasData.suttaplex?.original_title}
+  description={suttaplexData[0]?.blurb?.replace(/<[^>]*>/g, '')}
+  breadcrumbs={crumbsData}
+  jsonLd={jsonLd}
+  ogType="article"
+>
   <aside>
     <fieldset>
       <ul>

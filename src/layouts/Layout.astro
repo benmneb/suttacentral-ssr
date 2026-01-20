@@ -14,9 +14,29 @@ interface Props {
   description?: string
   breadcrumbs?: any[]
   jsonLd?: string
+  canonical?: string
+  ogImage?: string
+  ogType?: 'website' | 'article'
+  noindex?: boolean
 }
 
-const { title, description, breadcrumbs, jsonLd } = Astro.props
+const {
+  title,
+  description,
+  breadcrumbs,
+  jsonLd,
+  canonical,
+  ogImage,
+  ogType,
+  noindex,
+} = Astro.props
+
+const pageTitle = title
+  ? `${title} - ${siteMetaData.title}`
+  : siteMetaData.title
+const pageDescription = description || siteMetaData.description
+const canonicalUrl = canonical || Astro.url.href
+const imageUrl = new URL(ogImage || '/og-image.jpg', Astro.site).href
 ---
 
 <!doctype html>
@@ -34,12 +54,32 @@ const { title, description, breadcrumbs, jsonLd } = Astro.props
     />
     <link rel="apple-touch-icon" sizes="250x250" href="/favicon-250x250.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="canonical" href={canonicalUrl} />
     <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={pageDescription} />
     <meta
-      name="description"
-      content={description || siteMetaData.description}
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#ffffff"
     />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#1a1a2e"
+    />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <title>{title && `${title} ∙ `} {siteMetaData.title}</title>
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content={siteMetaData.title} />
+    <meta property="og:type" content={ogType || 'website'} />
+    <meta property="og:locale" content={userLanguage} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={imageUrl} />
     {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
     <script
       is:inline

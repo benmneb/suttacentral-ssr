@@ -49,7 +49,12 @@ const origin = Astro.site?.origin ?? ''
 const jsonLd = generatePitakaJsonLd(data, crumbsData, origin)
 ---
 
-<Layout breadcrumbs={crumbsData} jsonLd={jsonLd}>
+<Layout
+  title={`${data.root_name}${data.root_name && data.translated_name ? '—' : ''}${data.translated_name || ''}`}
+  description={data.blurb?.replace(/<[^>]*>/g, '')}
+  breadcrumbs={crumbsData}
+  jsonLd={jsonLd}
+>
   <main>
     <h1
       set:text={`${data.root_name}${data.root_name && data.translated_name ? '—' : ''}${data.translated_name || ''}`}
