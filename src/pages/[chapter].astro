@@ -24,6 +24,12 @@ const crumbsResponse = await fetch(
   `https://suttacentral.net/api/navigation_data/${chapter}?language=${userLanguage}`
 )
 const crumbsData = await crumbsResponse.json()
+const modifiedCrumbsData = [
+  ...crumbsData,
+  ...(suttaplexData.length === 1
+    ? [{ uid: chapter, title: suttaplexData[0].acronym }]
+    : []),
+]
 
 const isPatimokkha = chapter?.endsWith('-pm')
 
@@ -41,7 +47,7 @@ const jsonLd =
     chapter
   }${suttaplexData[0]?.translated_title ? `—${suttaplexData[0].translated_title}` : ''}`}
   description={suttaplexData[0]?.blurb?.replace(/<[^>]*>/g, '')}
-  breadcrumbs={crumbsData}
+  breadcrumbs={modifiedCrumbsData}
   jsonLd={jsonLd}
 >
   <main>

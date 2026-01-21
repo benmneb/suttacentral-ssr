@@ -10,12 +10,20 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
 ---
 
 <header>
-  <nav>
+  <nav aria-label={t(userLanguage, 'header:breadcrumb')}>
     <ul>
-      <li><a href="/">📚</a></li>{
-        breadcrumbs?.map(b => (
-          <li>
-            <a href={b.url}>{b.title}</a>
+      <li>
+        <a href="/" aria-label={t(userLanguage, 'interface:home')}
+          >📚<span class="sr-only">{t(userLanguage, 'interface:home')}</span></a
+        >
+      </li>{
+        breadcrumbs?.map((b, i, a) => (
+          <li aria-current={i === a.length - 1 ? 'page' : undefined}>
+            {b.url && i < a.length - 1 ? (
+              <a href={b.url}>{b.title}</a>
+            ) : (
+              <span>{b.title}</span>
+            )}
           </li>
         ))
       }
