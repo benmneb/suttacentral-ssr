@@ -350,6 +350,11 @@
   width: 100%;
 }
 
+[popover]#info::backdrop,
+[popover]#parallels::backdrop {
+  backdrop-filter: blur(3px);
+}
+
 aside {
   display: flex;
   justify-content: end;

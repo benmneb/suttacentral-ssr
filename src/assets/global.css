@@ -102,6 +102,10 @@ body {
   overflow-y: scroll;
 }
 
+[popover]#search-modal::backdrop {
+  backdrop-filter: blur(3px);
+}
+
 /* These classes come are from SC (they need to be global to work): */
 /* /define */
 dd .eti {
