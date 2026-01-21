@@ -370,9 +370,9 @@ export function generatePitakaJsonLd(
       },
       ...(data.children?.length && {
         hasPart: data.children.map((child: any) => {
-          const childHasDirectLink = !!child.scx_href
+          const childHasDirectLink = !!child._scx_href
           const childPath = childHasDirectLink
-            ? child.scx_href
+            ? child._scx_href
             : `${currentPath}/${child.uid}`
 
           return {
@@ -386,8 +386,8 @@ export function generatePitakaJsonLd(
             url: `${origin}${childPath}`,
             sameAs: childHasDirectLink
               ? [
-                  `https://suttacentral.net${child.scx_href}`,
-                  `https://suttacentral.express${child.scx_href}`,
+                  `https://suttacentral.net${child._scx_href}`,
+                  `https://suttacentral.express${child._scx_href}`,
                 ]
               : [
                   `https://suttacentral.net${currentPath}/${child.uid}`,

@@ -36,7 +36,7 @@ const newKids = await Promise.all(
     const isPatimokkha = child.uid.endsWith('-pm')
 
     if (!hasBranchChildren || isPatimokkha) {
-      return { ...child, scx_href: `/${child.uid}` }
+      return { ...child, _scx_href: `/${child.uid}` }
     }
     return child
   })
@@ -72,7 +72,7 @@ const jsonLd = generatePitakaJsonLd(menuData, crumbsData, origin)
           <li>
             <h2>
               <a
-                href={child.scx_href ?? `${menuData.uid}/${child.uid}`}
+                href={child._scx_href ?? `${menuData.uid}/${child.uid}`}
                 set:text={`${child.root_name}${child.root_name && child.translated_name ? '—' : ''}${child.translated_name || ''}`}
               />
             </h2>
