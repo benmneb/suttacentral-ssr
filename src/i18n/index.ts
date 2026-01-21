@@ -54,8 +54,8 @@ export function t(
   key: string,
   variables?: Record<string, any>
 ): string {
-  const lang = locale in translations ? locale : 'en'
-  let translated = translations[lang]?.[key] || key
+  let translated =
+    translations[locale]?.[key] || translations['en']?.[key] || key
 
   if (variables) {
     translated = translated.replace(/\{(\w+)\}/g, (match, varName) => {

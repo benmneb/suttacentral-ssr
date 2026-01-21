@@ -39,7 +39,7 @@ if (query) {
 }
 ---
 
-<Layout title="Search" noindex>
+<Layout title={t(userLanguage, 'search:search')} noindex>
   <main>
     <hgroup>
       <h1>{t(userLanguage, 'search:search')}</h1>
@@ -167,7 +167,9 @@ if (query) {
                         )}
                         {hit.highlight.detail[0].pronunciation && (
                           <dd>
-                            <strong>Pronunciation:</strong>{' '}
+                            <strong>
+                              {t(userLanguage, 'dictionary:pronunciation')}
+                            </strong>{' '}
                             {hit.highlight.detail[0].pronunciation}
                           </dd>
                         )}
@@ -192,7 +194,7 @@ if (query) {
               </ol>
             )}
           </section>
-          <nav aria-label="Search pagination">
+          <nav aria-label={t(userLanguage, 'search:pagination')}>
             <div>
               {hasPrevious && (
                 <form method="GET" action="/search">

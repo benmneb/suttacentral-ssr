@@ -11,15 +11,14 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
   <main>
     <h1>{t(userLanguage, 'error:pageNotFound')}</h1>
     <p>
-      <a href="/">Go home</a>
+      <a href="/">{t(userLanguage, 'error:goHome')}</a>
     </p>
     <p>
-      <a href="/search">Search for something</a>
+      <a href="/search">{t(userLanguage, 'error:searchForSomething')}</a>
     </p>
     <p>
-      Should there be a page here? <a href={siteMetaData.suggestions}
-        >Report it</a
-      >
+      {t(userLanguage, 'error:shouldBePageHere')}
+      <a href={siteMetaData.suggestions}>{t(userLanguage, 'error:reportIt')}</a>
     </p>
   </main>
 </Layout>

@@ -104,9 +104,9 @@ function getRootLangHTML() {
         ${
           comment
             ? `
-        <button popovertarget="comment-${key}" aria-label="Show variant reading for segment ${ref}">*</button>
-        <span class="inline-comment" aria-label="Variant reading for segment ${ref}">
-          Variant: ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
+        <button popovertarget="comment-${key}" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">*</button>
+        <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">
+          ${t(userLanguage, 'viewoption:variant')} ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
         </span>
         `
             : ''
@@ -121,7 +121,7 @@ function getRootLangHTML() {
       if (comment) {
         commentsHtml += `
       <article id="comment-${key}" popover>
-        Variant: ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
+        ${t(userLanguage, 'viewoption:variant')} ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
       </article>
     `
       }
@@ -157,8 +157,8 @@ function getSegmentedHTML() {
         ${
           comment
             ? `
-        <button popovertarget="comment-${key}" aria-label="Show ${suttasData.translation.author}'s footnote for segment ${key}">*</button>
-        <span class="inline-comment" aria-label="${suttasData.translation.author}'s footnote for segment ${key}">
+        <button popovertarget="comment-${key}" aria-label="${t(userLanguage, 'viewoption:showFootnote', { author: suttasData.translation.author, ref: key })}">*</button>
+        <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showFootnote', { author: suttasData.translation.author, ref: key })}">
           ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
         </span>
         `
@@ -235,7 +235,7 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
         <li>
           <button
             popovertarget="info"
-            aria-label="Show publication information"
+            aria-label={t(userLanguage, 'viewoption:showPublicationInfo')}
           >
             {toSentenceCase(t(userLanguage, 'interface:infoButtonText'))}
           </button>
@@ -245,7 +245,7 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
             aria-haspopup="menu"
             aria-expanded="false"
             aria-controls="views-menu"
-            aria-label="Text display settings"
+            aria-label={t(userLanguage, 'interface:textSettings')}
             id="views-button"
           >
             {toSentenceCase(t(userLanguage, 'interface:toolsButtonText'))}
@@ -264,7 +264,9 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
               ).length > 0 && (
                 <>
                   <li role="menuitem">
-                    <label for="commenter">Show comments</label>
+                    <label for="commenter">
+                      {t(userLanguage, 'viewoption:showComments')}
+                    </label>
                     <input
                       type="checkbox"
                       id="commenter"
@@ -273,7 +275,9 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
                     />
                   </li>
                   <li role="menuitem">
-                    <label for="commenter-inline">↳ Inline</label>
+                    <label for="commenter-inline">
+                      ↳ {t(userLanguage, 'viewoption:inline')}
+                    </label>
                     <input
                       type="checkbox"
                       id="commenter-inline"
@@ -281,7 +285,9 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
                     />
                   </li>
                   <li role="menuitem">
-                    <label for="commenter-side">↳ Side by side</label>
+                    <label for="commenter-side">
+                      ↳ {t(userLanguage, 'viewoption:sideBySide')}
+                    </label>
                     <input type="checkbox" id="commenter-side" />
                   </li>
                 </>
@@ -291,7 +297,9 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
               isSegmented && !isRootText && (
                 <>
                   <li role="menuitem">
-                    <label for="rooter">Show root text</label>
+                    <label for="rooter">
+                      {t(userLanguage, 'viewoption:showRootText')}
+                    </label>
                     <input
                       type="checkbox"
                       id="rooter"
@@ -299,11 +307,15 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
                     />
                   </li>
                   <li role="menuitem">
-                    <label for="rooter-first">↳ Root first</label>
+                    <label for="rooter-first">
+                      ↳ {t(userLanguage, 'viewoption:rootFirst')}
+                    </label>
                     <input type="checkbox" id="rooter-first" />
                   </li>
                   <li role="menuitem">
-                    <label for="rooter-side">↳ Side by side</label>
+                    <label for="rooter-side">
+                      ↳ {t(userLanguage, 'viewoption:sideBySide')}
+                    </label>
                     <input type="checkbox" id="rooter-side" />
                   </li>
                 </>
@@ -313,19 +325,26 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
               (isSegmented ||
                 suttasData.translation.text.includes("class='ref")) && (
                 <li role="menuitem">
-                  <label for="segmenter">Show segments</label>
+                  <label for="segmenter">
+                    {t(userLanguage, 'viewoption:showSegments')}
+                  </label>
                   <input type="checkbox" id="segmenter" />
                 </li>
               )
             }
             <li role="menuitem">
-              <label for="positioner">Pin this menu</label>
+              <label for="positioner"
+                >{t(userLanguage, 'viewoption:pinMenu')}</label
+              >
               <input type="checkbox" id="positioner" checked />
             </li>
           </ul>
         </li>
         <li>
-          <button popovertarget="parallels" aria-label="Show parallel texts">
+          <button
+            popovertarget="parallels"
+            aria-label={t(userLanguage, 'viewoption:showParallelTexts')}
+          >
             {
               toSentenceCase(
                 t(userLanguage, 'interface:showParallelsButtonText')
@@ -338,44 +357,47 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
             aria-haspopup="menu"
             aria-expanded="false"
             aria-controls="listen-menu"
-            aria-label="Text to speech settings"
+            aria-label={t(userLanguage, 'viewoption:ttsSettings')}
             id="listen-menu-button"
           >
-            Listen
+            {t(userLanguage, 'viewoption:listen')}
           </button>
           <ul
             class="dropdown"
             role="menu"
             aria-labelledby="listen-menu-button"
             id="listen-menu"
+            data-label-play={t(userLanguage, 'viewoption:play')}
+            data-label-pause={t(userLanguage, 'viewoption:pause')}
+            data-label-default={t(userLanguage, 'viewoption:voiceDefault')}
           >
             <li>
               <noscript>
-                Please enable javascript to listen to this text. It works 100%
-                locally in your browser via the SpeechSynthesis API, including
-                while offline.
+                {t(userLanguage, 'viewoption:ttsNoscript')}
               </noscript>
             </li>
             <li role="menuitem" class="tts-controls">
               <button id="prev" type="button">
-                <span>⏮️</span><span>Prev</span>
+                <span>⏮️</span><span>{t(userLanguage, 'viewoption:prev')}</span>
               </button>
               <button id="playpause" type="button">
-                <span>▶️</span><span>Play</span>
+                <span>▶️</span><span>{t(userLanguage, 'viewoption:play')}</span>
               </button>
               <button id="stop" type="button">
-                <span>⏹️</span><span>Stop</span>
+                <span>⏹️</span><span>{t(userLanguage, 'viewoption:stop')}</span>
               </button>
               <button id="next" type="button">
-                <span>⏭️</span><span>Next</span>
+                <span>⏭️</span><span>{t(userLanguage, 'viewoption:next')}</span>
               </button>
             </li>
             <li role="menuitem">
-              <label for="voice-select">Voice</label>
+              <label for="voice-select"
+                >{t(userLanguage, 'viewoption:voiceLabel')}</label
+              >
               <select id="voice-select"></select>
             </li>
             <li role="menuitem">
-              <label for="rate">Rate</label>
+              <label for="rate">{t(userLanguage, 'viewoption:rate')}</label>
               <input
                 type="range"
                 min="0.5"
@@ -387,7 +409,7 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
               <div id="rate-value">1.0</div>
             </li>
             <li role="menuitem">
-              <label for="pitch">Pitch</label>
+              <label for="pitch">{t(userLanguage, 'viewoption:pitch')}</label>
               <input
                 type="range"
                 min="0"
@@ -399,7 +421,9 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
               <div id="pitch-value">1.0</div>
             </li>
             <li role="menuitem">
-              <label for="auto-scroll">Auto-scroll</label>
+              <label for="auto-scroll"
+                >{t(userLanguage, 'viewoption:autoScroll')}</label
+              >
               <input type="checkbox" id="auto-scroll" />
             </li>
           </ul>
@@ -426,7 +450,7 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
       />
     </article>
   </main>
-  <nav aria-label="Article pagination">
+  <nav aria-label={t(userLanguage, 'interface:articlePagination')}>
     <div>
       {
         suttasData.translation?.previous?.uid && (
@@ -653,9 +677,6 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
   const TIMEOUT_MS = 60
   const CLASS_HIGHLIGHT = 'tts-highlight'
   const CLASS_CLICKABLE = 'tts-clickable'
-  const LABEL_PLAY = 'Play'
-  const LABEL_PAUSE = 'Pause'
-  const LABEL_RESUME = 'Play'
   const ICON_PLAY = '▶️'
   const ICON_PAUSE = '⏸️'
   const ICON_RESUME = '▶️'
@@ -675,6 +696,10 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
   // DOM
   const menuButton = document.getElementById('listen-menu-button')
   const rootMenuEl = document.getElementById('listen-menu')
+  const LABEL_PLAY = rootMenuEl.dataset.labelPlay
+  const LABEL_PAUSE = rootMenuEl.dataset.labelPause
+  const LABEL_RESUME = LABEL_PLAY
+  const LABEL_DEFAULT = rootMenuEl.dataset.labelDefault
   const voiceSelect = document.getElementById('voice-select')
   const pitch = document.getElementById('pitch')
   const pitchValue = document.getElementById('pitch-value')
@@ -973,7 +998,7 @@ const jsonLd = generateTextJsonLd(suttasData, suttaplexData, crumbsData, origin)
         const list = byLang.get(lang) || []
         for (const v of list) {
           const opt = document.createElement('option')
-          opt.textContent = `${v.name}${v.default ? ' -- DEFAULT' : ''}`
+          opt.textContent = `${v.name}${v.default ? ` -- ${LABEL_DEFAULT}` : ''}`
           opt.setAttribute('data-name', v.name)
           opt.setAttribute('data-lang', v.lang)
           group.appendChild(opt)

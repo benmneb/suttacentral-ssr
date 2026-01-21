@@ -37,17 +37,19 @@ if (term) {
 ---
 
 <Layout
-  title={term ? `Definitions for ${term}` : 'Define'}
+  title={term
+    ? `${t(userLanguage, 'dictionary:dictionaryResultsText')} ${term}`
+    : t(userLanguage, 'dictionary:define')}
   description={term && dictionaryData[0]?.definition
     ? (Array.isArray(dictionaryData[0].definition)
         ? dictionaryData[0].definition[0]
         : dictionaryData[0].definition
       ).replace(/<[^>]*>/g, '')
-    : `Dictionary definitions and Pali term lookup`}
+    : t(userLanguage, 'dictionary:description')}
 >
   <main>
     <hgroup>
-      <h1>Define</h1>
+      <h1>{t(userLanguage, 'dictionary:define')}</h1>
       {
         term && (
           <p>
@@ -74,7 +76,9 @@ if (term) {
                   <small>
                     {dictionaryTitles?.[entry.dictname]}{' '}
                     {entry.dictname === 'dpd' && (
-                      <a href={`https://dpdict.net/?q=${term}`}>[Link]</a>
+                      <a href={`https://dpdict.net/?q=${term}`}>
+                        [{t(userLanguage, 'dictionary:link')}]
+                      </a>
                     )}
                   </small>
                 </dd>
@@ -125,7 +129,10 @@ if (term) {
                 )}
                 {entry.pronunciation && (
                   <dd>
-                    <strong>Pronunciation:</strong> {entry.pronunciation}
+                    <strong>
+                      {t(userLanguage, 'dictionary:pronunciation')}
+                    </strong>{' '}
+                    {entry.pronunciation}
                   </dd>
                 )}
               </dl>
@@ -142,9 +149,12 @@ if (term) {
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
-            placeholder="Search a term…"
+            placeholder={t(userLanguage, 'dictionary:searchPlaceholder')}
           />
-          <button aria-label="Define" type="submit">🔎</button>
+          <button
+            aria-label={t(userLanguage, 'dictionary:define')}
+            type="submit">🔎</button
+          >
         </form>
         {
           !!adjacentData?.[0].length && !!dictionaryData.length && (

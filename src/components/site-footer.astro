@@ -1,22 +1,36 @@
 ---
 import { siteMetaData } from '~/constants/meta-data'
+import { t } from '~/i18n'
+import { getPreferredLanguage } from '~/utils/language'
 
 const pathname = Astro.url.pathname
 const renderTime = Astro.locals.renderTime
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
 ---
 
 <footer>
-  <p>A fast and minimal alternative frontend for SuttaCentral.net</p>
+  <p>{t(userLanguage, 'footer:tagline')}</p>
   <p>
-    View this page on <a href={`https://suttacentral.net${pathname}`}
-      >SuttaCentral.net</a
-    >
+    {t(userLanguage, 'footer:viewPageOn')}
+    <a href={`https://suttacentral.net${pathname}`}>SuttaCentral.net</a>
   </p>
-  <p>This page rendered in {renderTime}s</p>
+  <p>{t(userLanguage, 'footer:renderedIn').replace('{time}', renderTime)}</p>
   <ul>
-    <li><a href={siteMetaData.source}>Open source</a></li>
-    <li><a href={siteMetaData.analytics}>Open analytics</a></li>
-    <li><a href={siteMetaData.suggestions}>Ideas & bugs</a></li>
+    <li>
+      <a href={siteMetaData.source}>{t(userLanguage, 'footer:openSource')}</a>
+    </li>
+    <li>
+      <a href={siteMetaData.analytics}
+        >{t(userLanguage, 'footer:openAnalytics')}</a
+      >
+    </li>
+    <li>
+      <a href={siteMetaData.suggestions}
+        >{t(userLanguage, 'footer:ideasAndBugs')}</a
+      >
+    </li>
   </ul>
 </footer>
 

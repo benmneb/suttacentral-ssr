@@ -16,11 +16,13 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
 
 <form action="/search" method="get" role="search">
   <fieldset>
-    <label for="search-input" class="sr-only">Search site</label>
+    <label for="search-input" class="sr-only"
+      >{t(userLanguage, 'search:search')}</label
+    >
     <input
       id="search-input"
       type="search"
-      placeholder="Search site…"
+      placeholder={`${t(userLanguage, 'search:search')}…`}
       autocomplete="off"
       autocorrect="off"
       autocapitalize="off"
@@ -29,7 +31,9 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
       autofocus={autoFocus}
       value={query}
     />
-    <button aria-label="Search" type="submit">🔎</button>
+    <button aria-label={t(userLanguage, 'search:search')} type="submit"
+      >🔎</button
+    >
   </fieldset>
   <label>
     {t(userLanguage, 'search:matchPartial')}

@@ -1,6 +1,12 @@
 ---
+import { t } from '~/i18n'
+import { getPreferredLanguage } from '~/utils/language'
+
 const { breadcrumbs } = Astro.props
 const pathname = Astro.url.pathname
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
 ---
 
 <header>
@@ -20,8 +26,8 @@ const pathname = Astro.url.pathname
       <button
         type="submit"
         popovertarget="search-modal"
-        aria-label="Search site"
-        title="Cmd/Ctrl+K"
+        aria-label={t(userLanguage, 'search:search')}
+        title={t(userLanguage, 'header:searchShortcut')}
       >
         🔎
       </button>
