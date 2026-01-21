@@ -1,0 +1,14 @@
+---
+export interface HeadingProps {
+  level?: 1 | 2 | 3 | 4 | 5 | 6
+}
+
+const { level = 1, ...attrs } = Astro.props as HeadingProps
+const safeLevel = Math.min(6, Math.max(1, level)) as HeadingProps['level']
+
+const Tag = `h${safeLevel}` as const
+---
+
+<Tag {...attrs}>
+  <slot />
+</Tag>

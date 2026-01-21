@@ -1,6 +1,7 @@
 ---
 import '~/assets/details.css'
 import '~/assets/text-meta-content.css'
+import Heading, { type HeadingProps } from '~/components/heading.astro'
 import { t } from '~/i18n'
 import { toSentenceCase } from '~/utils/strings'
 import ParallelsDetails from './parallels-details.astro'
@@ -11,9 +12,15 @@ interface Props {
   title?: string
   translations?: any
   parallelsOpen?: boolean
+  headingLevel: HeadingProps['level']
 }
 
-const { data: entry, userLanguage = 'en', parallelsOpen } = Astro.props
+const {
+  data: entry,
+  userLanguage = 'en',
+  parallelsOpen,
+  headingLevel,
+} = Astro.props
 
 const translations = entry.translations.filter(t => t.lang === userLanguage)
 const otherTranslations = entry.translations.filter(
@@ -38,9 +45,9 @@ function printIconsHTML(translation) {
 
 <article>
   <hgroup>
-    <h1>
+    <Heading level={headingLevel}>
       {[entry.original_title, entry.translated_title].filter(Boolean).join('—')}
-    </h1>
+    </Heading>
     {!!entry.acronym && <p>{entry.acronym}</p>}
   </hgroup>
   {!!entry.blurb && <p set:html={entry.blurb} />}
