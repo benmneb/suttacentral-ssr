@@ -57,7 +57,7 @@ const bilaraResponse = await fetch(
 )
 const bilaraData = await bilaraResponse.json()
 
-if (bilaraData.msg === 'Not Found') {
+if (suttasData.segmented && bilaraData.msg === 'Not Found') {
   Astro.response.status = 404
   Astro.response.statusText = 'Bilara data not found'
   return Astro.rewrite('/404')
