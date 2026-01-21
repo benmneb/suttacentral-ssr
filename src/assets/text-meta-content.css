@@ -23,3 +23,8 @@ hgroup:has(p) {
     font-size: x-large;
   }
 }
+
+/* The only place this is h2 is in search results */
+h2 {
+  margin-top: 0;
+}
