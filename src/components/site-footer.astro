@@ -3,7 +3,7 @@ import { siteMetaData } from '~/constants/meta-data'
 import { t } from '~/i18n'
 import { getPreferredLanguage } from '~/utils/language'
 
-const pathname = Astro.url.pathname
+const pathname = Astro.originPathname.replace(/\/$/, '') + Astro.url.search
 const renderTime = Astro.locals.renderTime
 
 const acceptLanguage = Astro.request.headers.get('accept-language')
