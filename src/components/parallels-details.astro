@@ -9,10 +9,9 @@ const parallelsResponse = await fetch(
 )
 const parallelsData = await parallelsResponse.json()
 
-// Get root translation for building links
 const rootTrans = entry.translations.find((t: any) => t.is_root)
 
-// Helper to format PTS volpages
+// Make pretty PTS volpages
 function formatVolpages(volpages: string | null): string {
   if (!volpages) return ''
   if (!volpages.includes('PTS')) return volpages
@@ -41,7 +40,6 @@ function getBasePath(segmentKey: string): string {
   return basePath
 }
 
-// Helper to get hash fragment
 function getHashFragment(key: string): string {
   if (key.includes('#')) {
     return '#' + key.split('#')[1]
@@ -122,27 +120,22 @@ const segments = Object.entries(parallelsData).filter(
                     {/* Secondary info line */}
                     {parallel.to.translated_title &&
                     parallel.to.original_title ? (
-                      <>
-                        <br />
+                      <div>
                         {parallel.to.original_title.trim()}
                         {parallel.to.acronym && (
                           <> ∙ {parallel.to.acronym.trim()}</>
                         )}
                         {prettyVolpages && <> ∙ {prettyVolpages.trim()}</>}
-                      </>
+                      </div>
                     ) : parallel.to.original_title ? (
-                      <>
-                        <br />
+                      <div>
                         {parallel.to.acronym && (
                           <>{parallel.to.acronym.trim()}</>
                         )}
                         {prettyVolpages && <> ∙ {prettyVolpages.trim()}</>}
-                      </>
+                      </div>
                     ) : parallel.to.acronym && prettyVolpages ? (
-                      <>
-                        <br />
-                        {prettyVolpages.trim()}
-                      </>
+                      <div>{prettyVolpages.trim()}</div>
                     ) : null}
                   </li>
                 )

@@ -31,11 +31,14 @@ details {
 
   .parallel-list-item-full {
     list-style-type: '⇆  ';
+    cursor: help;
   }
   .parallel-list-item-mention {
     list-style-type: '〞';
+    cursor: help;
   }
   .parallel-list-item-retelling {
     list-style-type: '↺ ';
+    cursor: help;
   }
 }
