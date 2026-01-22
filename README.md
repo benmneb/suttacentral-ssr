@@ -17,6 +17,37 @@ This project fetches data from SuttaCentral's public APIs at request time and se
 - **Minimal JavaScript** — Optional 7.44kb of client-side JS to persist text view settings in local storage and enable text-to-speech via the Web Speech API
 - Has a real favicon
 
+## Performance Comparisons
+
+All benchmarks measured via <https://pagespeed.web.dev> for desktop on 22/01/2026:
+
+### `/`
+
+| &nbsp;                   | SuttaCentral.now | SuttaCentral.net | Performance Gain |
+| ------------------------ | ---------------- | ---------------- | ---------------- |
+| First Contentful Paint   | 0.2s             | 1.1s             | 82% faster       |
+| Largest Contentful Paint | 0.2s             | 1.7s             | 8.5x faster      |
+| Total Blocking Time      | 0ms              | 60ms             | 100% reduction   |
+| Cumulative Layout Shift  | 0                | 0.031            | 100% reduction   |
+
+### `/dn1/en/sujato`
+
+| &nbsp;                   | SuttaCentral.now | SuttaCentral.net | Performance Gain |
+| ------------------------ | ---------------- | ---------------- | ---------------- |
+| First Contentful Paint   | 0.4s             | 0.6s             | 33% faster       |
+| Largest Contentful Paint | 0.4s             | 2.3s             | 5.8x faster      |
+| Total Blocking Time      | 0ms              | 240ms            | 100% reduction   |
+| Cumulative Layout Shift  | 0                | 0.608            | 100% reduction   |
+
+### `/search?query=deva`
+
+| &nbsp;                   | SuttaCentral.now | SuttaCentral.net | Performance Gain |
+| ------------------------ | ---------------- | ---------------- | ---------------- |
+| First Contentful Paint   | 0.3s             | 0.6s             | 50% faster       |
+| Largest Contentful Paint | 0.4s             | 1.7s             | 4.3x faster      |
+| Total Blocking Time      | 0ms              | 280ms            | 100% reduction   |
+| Cumulative Layout Shift  | 0                | 0.003            | 100% reduction   |
+
 ## Related Projects
 
 - [SuttaCentral](https://github.com/suttacentral/suttacentral)
