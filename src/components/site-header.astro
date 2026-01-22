@@ -7,6 +7,20 @@ const pathname = Astro.url.pathname
 
 const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = getPreferredLanguage(acceptLanguage)
+
+function localiseTitle(title: string): string {
+  if (!title) return ''
+  for (const key of [title.toLowerCase(), title]) {
+    const localized = t(userLanguage, `interface:${key}`)
+    if (localized !== `interface:${key}`) return localized
+  }
+  return title
+}
+
+const localisedCrumbs = breadcrumbs?.map(c => ({
+  ...c,
+  title: localiseTitle(c.title),
+}))
 ---
 
 <header>
@@ -17,7 +31,7 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
           >📚<span class="sr-only">{t(userLanguage, 'interface:home')}</span></a
         >
       </li>{
-        breadcrumbs?.map((b, i, a) => (
+        localisedCrumbs?.map((b, i, a) => (
           <li aria-current={i === a.length - 1 ? 'page' : undefined}>
             {b.url && i < a.length - 1 ? (
               <a href={b.url}>{b.title}</a>
