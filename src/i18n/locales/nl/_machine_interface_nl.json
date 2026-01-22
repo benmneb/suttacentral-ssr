@@ -1,0 +1,23 @@
+{
+  "bottomsheet:close": "Sluiten",
+  "bottomsheet:help": "Help",
+  "bottomsheet:help1": "Bron: <cite>Nieuw beknopt Pali-Engels woordenboek</cite>, samengesteld door SuttaCentral uit Buddhadatta's <cite>Beknopt Pali-Engels woordenboek</cite>, bijgewerkt en gecorrigeerd uit Margaret Cone's <cite>Woordenboek van het Pali</cite>.",
+  "bottomsheet:help2": "Pali-woorden worden machinaal geanalyseerd en resultaten zijn niet altijd nauwkeurig.",
+  "bottomsheet:help3": "Klik op een trefwoord om naar de volledige woordenboekinvoer te gaan",
+  "bottomsheet:help4": "Navigeer met het toetsenbord.",
+  "bottomsheet:help5": "Volgende",
+  "bottomsheet:help6": "Terug",
+  "bottomsheet:help7": "Als dit niet voor u werkt, controleer dan de <a href='https://en.wikipedia.org/wiki/Access_key#Access_in_different_browsers' target='_blank'>HTML-toegangstoets voor uw browser</a>.",
+  "interface:chooseYourLanguage": "Kies uw taal",
+  "interface:chooseYourLanguageDescription": "Waar beschikbaar, bekijk vertalingen en site-UI in de geselecteerde taal.",
+  "interface:languagesDetail": "Taaldetails",
+  "interface:navigationTitle": "Navigatie",
+  "interface:next": "Volgende",
+  "interface:overview": "Overzicht Pali Canon",
+  "interface:palitipitaka": "De drie manden van de Pāḷi Canon",
+  "interface:parallelsTitle": "Sutta's en parallellen",
+  "interface:previous": "Vorige",
+  "interface:publicationEditions": "Edities",
+  "interface:searchFilter": "Zoekfilter",
+  "interface:tableOfContent": "Inhoudsopgave"
+}

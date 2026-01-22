@@ -1,0 +1,22 @@
+{
+  "bottomsheet:close": "Cerrar",
+  "bottomsheet:help": "Ayuda",
+  "bottomsheet:help1": "Fuente: <cite>Nuevo diccionario conciso pali-inglés</cite>, compilado por SuttaCentral a partir del <cite>Diccionario conciso pali-inglés</cite> de Buddhadatta, actualizado y corregido con el <cite>Diccionario de pali</cite> de Margaret Cone.",
+  "bottomsheet:help2": "Las palabras en pali son analizadas por máquina y los resultados no siempre son precisos.",
+  "bottomsheet:help3": "Haga clic en una palabra principal para ir a la entrada completa del diccionario",
+  "bottomsheet:help4": "Navegue usando el teclado.",
+  "bottomsheet:help5": "Siguiente",
+  "bottomsheet:help6": "Atrás",
+  "bottomsheet:help7": "Si esto no funciona para usted, consulte la <a href='https://en.wikipedia.org/wiki/Access_key#Access_in_different_browsers' target='_blank'>tecla de acceso HTML para su navegador</a>.",
+  "interface:languagesDetail": "Detalles del idioma",
+  "interface:navigationTitle": "Navegación",
+  "interface:next": "Siguiente",
+  "interface:overview": "Panorama del Canon Pali",
+  "interface:palitipitaka": "Las tres cestas del Canon Pāḷi",
+  "interface:parallelsTitle": "Suttas y paralelos",
+  "interface:previous": "Anterior",
+  "interface:publicationEditions": "Ediciones",
+  "interface:searchFilter": "Filtro de búsqueda",
+  "interface:tableOfContent": "Tabla de contenidos",
+  "interface:useoffline": "Usar sin conexión"
+}

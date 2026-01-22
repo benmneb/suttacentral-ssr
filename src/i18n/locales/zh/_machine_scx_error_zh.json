@@ -1,0 +1,6 @@
+{
+  "error:goHome": "返回首页",
+  "error:searchForSomething": "搜索内容",
+  "error:shouldBePageHere": "这里应该有页面吗？",
+  "error:reportIt": "报告问题"
+}

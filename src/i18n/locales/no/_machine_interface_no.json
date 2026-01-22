@@ -1,0 +1,20 @@
+{
+  "bottomsheet:close": "Lukk",
+  "bottomsheet:help": "Hjelp",
+  "bottomsheet:help1": "Kilde: <cite>Ny kortfattet pali-engelsk ordbok</cite>, samlet av SuttaCentral fra Buddhadattas <cite>Kortfattet pali-engelsk ordbok</cite>, oppdatert og korrigert fra Margaret Cones <cite>Ordbok for pali</cite>.",
+  "bottomsheet:help2": "Pali-ord analyseres av maskin og resultatene er ikke alltid nøyaktige.",
+  "bottomsheet:help3": "Klikk på et hovedord for å gå til fullstendig ordbokoppføring",
+  "bottomsheet:help4": "Naviger med tastaturet.",
+  "bottomsheet:help5": "Neste",
+  "bottomsheet:help6": "Tilbake",
+  "bottomsheet:help7": "Hvis dette ikke fungerer for deg, sjekk <a href='https://en.wikipedia.org/wiki/Access_key#Access_in_different_browsers' target='_blank'>HTML-tilgangstasten for nettleseren din</a>.",
+  "interface:languagesDetail": "Språkdetaljer",
+  "interface:navigationTitle": "Navigasjon",
+  "interface:next": "Neste",
+  "interface:overview": "Oversikt over Pali-kanon",
+  "interface:palitipitaka": "De tre kurvene i Pāḷi-kanon",
+  "interface:parallelsTitle": "Suttaer og paralleller",
+  "interface:previous": "Forrige",
+  "interface:publicationEditions": "Utgaver",
+  "interface:searchFilter": "Søkefilter"
+}

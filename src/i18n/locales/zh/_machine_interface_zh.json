@@ -1,0 +1,18 @@
+{
+  "bottomsheet:help1": "来源：<cite>新简明巴利-英语词典</cite>，由 SuttaCentral 从佛陀达多的<cite>简明巴利-英语词典</cite>编纂，并根据 Margaret Cone 的<cite>巴利词典</cite>更新和修正。",
+  "bottomsheet:help2": "巴利词汇由机器分析，结果不一定总是准确的。",
+  "bottomsheet:help3": "点击词头进入完整词典条目",
+  "bottomsheet:help4": "使用键盘导航。",
+  "bottomsheet:help5": "下一个",
+  "bottomsheet:help6": "返回",
+  "bottomsheet:help7": "如果这对您不起作用，请检查<a href='https://en.wikipedia.org/wiki/Access_key#Access_in_different_browsers' target='_blank'>您浏览器的 HTML 访问键</a>。",
+  "interface:expandSection": "展开部分",
+  "interface:goBack": "返回上一菜单",
+  "interface:languagesDetail": "语言详情",
+  "interface:navigationTitle": "导航",
+  "interface:overview": "巴利三藏概览",
+  "interface:palitipitaka": "巴利三藏",
+  "interface:parallelsTitle": "经文与平行文",
+  "interface:publicationEditions": "版本",
+  "interface:searchFilter": "搜索筛选"
+}

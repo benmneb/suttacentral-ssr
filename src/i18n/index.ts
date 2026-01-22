@@ -1,8 +1,15 @@
 /**
- * Translation system for internationalization (i18n).
+ * Translation system for internationalization.
  *
  * Automatically discovers and loads all translation files from the locales directory.
  * Translation files should be organized as: ./locales/{language_code}/{filename}.json
+ *
+ * Translation file names are the same as SC repo, except:
+ * Translation files specific to this project are prefixed with `_scx_`
+ * Translations not translated by humans are prefixed with `_machine_`
+ *
+ * If there is ever a conflict between translations in the future, so long as this
+ * naming convention and file structure remain, human translations will be given preference.
  */
 
 /**
@@ -16,7 +23,17 @@ const translations: Record<string, Record<string, string>> = {}
 // Dynamically import all translation files
 const modules = import.meta.glob('./locales/*/*.json', { eager: true })
 
-for (const path in modules) {
+// Sort paths to ensure _machine_ files are processed first
+// This way official translations overwrite machine translations if keys conflict
+const sortedPaths = Object.keys(modules).sort((a, b) => {
+  const aIsMachine = a.includes('/_machine_')
+  const bIsMachine = b.includes('/_machine_')
+  if (aIsMachine && !bIsMachine) return -1 // machine files first
+  if (!aIsMachine && bIsMachine) return 1 // official files last
+  return a.localeCompare(b) // alphabetical within each group
+})
+
+for (const path of sortedPaths) {
   const match = path.match(/\.\/locales\/([^/]+)\/([^/]+)\.json$/)
   if (match) {
     const [, locale, filename] = match
