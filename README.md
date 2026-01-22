@@ -4,19 +4,23 @@
 
 # [SuttaCentral.now](https://suttacentral.now) [![builds.sr.ht status](https://builds.sr.ht/~benmneb/suttacentral-ssr.svg?search=refs/heads/main)](https://builds.sr.ht/~benmneb/suttacentral-ssr?search=refs/heads/main)
 
-## Another fast and minimal alternative frontend for [SuttaCentral.net](https://suttacentral.net)
+## A fast and minimal alternative frontend for [SuttaCentral.net](https://suttacentral.net)
 
-This project fetches data from SuttaCentral's public APIs at request time and serves it as static HTML. The only client-side JavaScript is optional: it persists text view settings in local storage and enables text-to-speech via the Web Speech API.
+This project fetches data from SuttaCentral's public APIs at request time and serves it as static HTML.
 
-It's like [SuttaCentral.express](https://suttacentral.express), except
-
-- Pages are rendered on the server at request time, so it always has the latest data
-- Includes all translations of all texts in all languages
-- Internationalisation based on your browsers preferred language
-- Fast and powerful "instant search" from the same API .net uses (includes dictionaries)
-- Even less client-side javascript
-- 1,000% improved developer experience
+- **Complete text library** — All suttas, vinaya, and abhidhamma in root languages and every available translation
+- **Server-side rendering** — Pages rendered on-demand with latest data from SuttaCentral's APIs
+- **Internationalised** — Automatic language detection from your browsers preferred language
+- **Instant search** — Fast, powerful search using SuttaCentral's API (includes Pali dictionary lookups)
+- **URLs you know and love** — Mirrors SuttaCentral.net URL structure (just change `.net` to `.now`)
+- **Flexible text settings** — Customizable reading preferences for footnotes, root-text views, and reference links
+- **Minimal JavaScript** — Optional 7.44kb of client-side JS to persist text view settings in local storage and enable text-to-speech via the Web Speech API
 - Has a real favicon
+
+## Related
+
+- [SuttaCentral](https://github.com/suttacentral/suttacentral)
+- [SuttaCentral Static](https://sr.ht/~benmneb/suttacentral-static)
 
 ## License
 
