@@ -87,7 +87,7 @@ if (query) {
                       ?.split(',')
                       .map((ref: string, idx: number, arr: string[]) => (
                         <span>
-                          {/* TODO: */}
+                          {/* TODO: wtf is going on here */}
                           <a href={`${hit.url}/en/sujato#${ref.trim()}`}>
                             {ref}
                           </a>
@@ -102,18 +102,15 @@ if (query) {
               <ol>
                 {!!dictionaryHits.length &&
                   dictionaryHits.map(hit => (
-                    <li>
+                    <li class="dictionary-hit">
+                      <p>
+                        <small>
+                          {dictionaryTitles?.[hit.highlight.detail[0].dictname]}
+                        </small>
+                      </p>
                       <dl>
                         <dt>{hit.highlight.detail[0].word}</dt>
-                        <dd>
-                          <small>
-                            {
-                              dictionaryTitles?.[
-                                hit.highlight.detail[0].dictname
-                              ]
-                            }
-                          </small>
-                        </dd>
+                        <dd />
                         {hit.highlight.detail[0].grammar && (
                           <dd>
                             <em>{hit.highlight.detail[0].grammar}</em>
@@ -249,6 +246,21 @@ if (query) {
         }
         li:first-of-type h2 {
           margin-top: 0;
+        }
+      }
+
+      .dictionary-hit {
+        border: 1px solid;
+        border-radius: var(--rounding);
+        border-color: var(--bg-alt-4);
+        padding: 1rem;
+        list-style: none;
+
+        p:first-of-type {
+          margin-top: 0;
+        }
+        p:last-of-type {
+          margin-bottom: 0;
         }
       }
     }
