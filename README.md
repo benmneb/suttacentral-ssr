@@ -12,15 +12,16 @@ This project fetches data from SuttaCentral's public APIs at request time and se
 - **Server-side rendering** — Pages rendered on-demand with latest data from SuttaCentral's APIs
 - **Internationalised** — Automatic language detection from your browsers preferred language
 - **Instant search** — Fast, powerful search using SuttaCentral's API (includes Pali dictionary lookups)
-- **URLs you know and love** — Mirrors SuttaCentral.net URL structure (just change `.net` to `.now`)
+- **URLs you know and love** — Mirrors SuttaCentral.net URL structure (just change `.net` to `.now`, or use the [browser extension](https://sr.ht/~benmneb/suttacentral-redirect))
 - **Flexible text settings** — Customizable reading preferences for footnotes, root-text views, and reference links
 - **Minimal JavaScript** — Optional 7.44kb of client-side JS to persist text view settings in local storage and enable text-to-speech via the Web Speech API
 - Has a real favicon
 
-## Related
+## Related Projects
 
 - [SuttaCentral](https://github.com/suttacentral/suttacentral)
 - [SuttaCentral Static](https://sr.ht/~benmneb/suttacentral-static)
+- [SuttaCentral Redirect](https://sr.ht/~benmneb/suttacentral-redirect)
 
 ## License
 
