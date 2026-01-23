@@ -17,13 +17,17 @@ function getPublisherSchema() {
   }
 }
 
-function buildBreadcrumbList(breadcrumbs: Breadcrumb[], currentPath: string) {
+function buildBreadcrumbList(
+  breadcrumbs: Breadcrumb[],
+  currentPath: string,
+  origin: string
+) {
   const items = [
     {
       '@type': 'ListItem',
       position: 1,
       name: 'Home',
-      item: '/',
+      item: origin,
     },
   ]
 
@@ -32,7 +36,7 @@ function buildBreadcrumbList(breadcrumbs: Breadcrumb[], currentPath: string) {
       '@type': 'ListItem',
       position: index + 2,
       name: crumb.title,
-      item: crumb.url,
+      item: `${origin}${crumb.url}`,
     })
   })
 
@@ -106,7 +110,7 @@ export function generateIndexJsonLd(tipitaka: any[], origin: string) {
             '@type': 'ListItem',
             position: 1,
             name: 'Home',
-            item: '/',
+            item: origin,
           },
         ],
       },
@@ -214,7 +218,7 @@ export function generateChapterJsonLd(
           },
         })),
       }),
-      breadcrumb: buildBreadcrumbList(breadcrumbs, currentPath),
+      breadcrumb: buildBreadcrumbList(breadcrumbs, currentPath, origin),
       publisher: getPublisherSchema(),
       mainEntityOfPage: {
         '@type': 'WebPage',
@@ -306,7 +310,7 @@ export function generateTextMetaJsonLd(
         '@id': '/#website',
         name: 'SuttaCentral',
       },
-      breadcrumb: buildBreadcrumbList(breadcrumbs, currentPath),
+      breadcrumb: buildBreadcrumbList(breadcrumbs, currentPath, origin),
       publisher: getPublisherSchema(),
       mainEntityOfPage: {
         '@type': 'WebPage',
@@ -400,7 +404,7 @@ export function generatePitakaJsonLd(
           }
         }),
       }),
-      breadcrumb: buildBreadcrumbList(breadcrumbs, currentPath),
+      breadcrumb: buildBreadcrumbList(breadcrumbs, currentPath, origin),
       publisher: getPublisherSchema(),
       mainEntityOfPage: {
         '@type': 'WebPage',
@@ -496,7 +500,7 @@ export function generateTextJsonLd(
         '@id': '/#website',
         name: 'SuttaCentral',
       },
-      breadcrumb: buildBreadcrumbList(breadcrumbs, currentPath),
+      breadcrumb: buildBreadcrumbList(breadcrumbs, currentPath, origin),
       publisher: getPublisherSchema(),
       mainEntityOfPage: {
         '@type': 'WebPage',
