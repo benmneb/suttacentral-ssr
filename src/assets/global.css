@@ -12,6 +12,11 @@
   font-family: var(--serif-font);
 }
 
+::selection {
+  color: var(--background-color);
+  background-color: var(--primary-color);
+}
+
 input,
 textarea,
 select,
