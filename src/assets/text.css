@@ -360,6 +360,11 @@ input[type='checkbox'] {
   backdrop-filter: blur(3px);
 }
 
+body:has([popover]#info:popover-open),
+body:has([popover]#parallels:popover-open) {
+  overflow: hidden;
+}
+
 aside {
   display: flex;
   justify-content: end;

@@ -10,6 +10,7 @@
 :root {
   color-scheme: light dark;
   font-family: var(--serif-font);
+  scrollbar-gutter: stable;
 }
 
 ::selection {
@@ -91,6 +92,10 @@ body {
     padding: 0 1rem;
     max-width: var(--content-max-width);
     width: var(--width-minus-padding);
+  }
+
+  &:has([popover]#search-modal:popover-open) {
+    overflow: hidden;
   }
 }
 
