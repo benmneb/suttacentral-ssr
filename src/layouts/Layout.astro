@@ -84,6 +84,7 @@ const imageUrl = new URL(ogImage || '/og-image.jpg', Astro.site).href
     <script
       is:inline
       defer
+      data-allow-params="query"
       src="https://scripts.simpleanalyticscdn.com/light.js"></script>
   </head>
   <body>
