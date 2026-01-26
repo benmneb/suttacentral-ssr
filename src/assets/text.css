@@ -331,6 +331,11 @@
   }
 }
 
+input[type='range'],
+input[type='checkbox'] {
+  accent-color: var(--primary-color);
+}
+
 [popover] {
   dl dt {
     color: var(--text-color-secondary);
