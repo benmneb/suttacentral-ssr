@@ -1,7 +1,7 @@
 {
   "bottomsheet:close": "Zapri",
   "bottomsheet:help": "Pomoč",
-  "bottomsheet:help1": "Vir: <cite>Nov kratki pali-angleški slovar</cite>, ki ga je sestavil SuttaCentral iz Buddhadattovega <cite>Kratkega pali-angleškega slovarja</cite>, posodobljen in popravljen iz <cite>Slovarja palija</cite> Margaret Cone.",
+  "bottomsheet:help1": "Vir: <cite>Digital Pāḷi Dictionary https://digitalpalidictionary.github.io/</cite> ",
   "bottomsheet:help2": "Pali besede analizira stroj in rezultati niso vedno natančni.",
   "bottomsheet:help3": "Kliknite na glavno besedo za popoln slovarski vnos",
   "bottomsheet:help4": "Navigirajte s tipkovnico.",

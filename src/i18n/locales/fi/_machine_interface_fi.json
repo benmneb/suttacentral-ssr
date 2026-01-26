@@ -1,7 +1,7 @@
 {
   "bottomsheet:close": "Sulje",
   "bottomsheet:help": "Ohje",
-  "bottomsheet:help1": "Lähde: <cite>Uusi tiivis paali-englanti-sanakirja</cite>, SuttaCentralin kokoama Buddhadattan <cite>Tiiviistä paali-englanti-sanakirjasta</cite>, päivitetty ja korjattu Margaret Conen <cite>Paalin sanakirjasta</cite>.",
+  "bottomsheet:help1": "Lähde: <cite>Digital Pāḷi Dictionary https://digitalpalidictionary.github.io/</cite> ",
   "bottomsheet:help2": "Paalisanat analysoidaan koneellisesti ja tulokset eivät ole aina tarkkoja.",
   "bottomsheet:help3": "Napsauta hakusanaa siirtyäksesi täydelliseen sanakirjamerkintään",
   "bottomsheet:help4": "Navigoi näppäimistöllä.",

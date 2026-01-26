@@ -1,7 +1,7 @@
 {
   "bottomsheet:close": "Lukk",
   "bottomsheet:help": "Hjelp",
-  "bottomsheet:help1": "Kilde: <cite>Ny kortfattet pali-engelsk ordbok</cite>, samlet av SuttaCentral fra Buddhadattas <cite>Kortfattet pali-engelsk ordbok</cite>, oppdatert og korrigert fra Margaret Cones <cite>Ordbok for pali</cite>.",
+  "bottomsheet:help1": "Kilde: <cite>Digital Pāḷi Dictionary https://digitalpalidictionary.github.io/</cite> ",
   "bottomsheet:help2": "Pali-ord analyseres av maskin og resultatene er ikke alltid nøyaktige.",
   "bottomsheet:help3": "Klikk på et hovedord for å gå til fullstendig ordbokoppføring",
   "bottomsheet:help4": "Naviger med tastaturet.",
