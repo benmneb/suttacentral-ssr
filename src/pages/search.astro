@@ -39,7 +39,7 @@ if (query) {
 }
 ---
 
-<Layout title={t(userLanguage, 'search:search')} noindex>
+<Layout title={query || t(userLanguage, 'search:search')} noindex>
   <main>
     <hgroup>
       <h1>{t(userLanguage, 'search:search')}</h1>
