@@ -14,3 +14,9 @@ ol li a:has(.reference) {
     background-color: var(--bg-soft);
   }
 }
+
+/* This class comes through from SC to highlight search term(s) in results  */
+.highlight {
+  background-color: var(--tts-hover-background-color);
+  color: var(--tts-highlight-text-color);
+}
