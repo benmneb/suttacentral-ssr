@@ -238,6 +238,22 @@ const jsonLd = generateTextJsonLd(
   breadcrumbs={modifiedCrumbsData}
   jsonLd={jsonLd}
   ogType="article"
+  ogData={{
+    'article:author': suttasData.translation?.author,
+    'article:published_time': suttaplexData[0]?.translations?.find(
+      t => t.author_uid === authorUid
+    )?.publication_date,
+    'article:section': 'Buddhist Texts',
+    'article:tag': [
+      'Early Buddhism',
+      'Buddhism',
+      'Buddhist Texts',
+      'Pali Canon',
+      'Tipitaka',
+      'Theravada',
+      'Suttas',
+    ],
+  }}
 >
   <aside>
     <fieldset>
