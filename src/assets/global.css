@@ -100,8 +100,10 @@ body {
 }
 
 [popover] {
-  color: var(--text-color);
+  /* color: var(--text-color); */
+  color: ButtonText;
   border: none;
+  /* box-shadow: 0 0.3rem 1rem Canvas; */
   box-shadow: 0 0.3rem 1rem var(--shadow-color);
   border-radius: var(--rounding);
   padding: 1rem;

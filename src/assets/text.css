@@ -15,10 +15,10 @@
       height: fit-content;
       margin: 0.5rem;
       padding: 0.5rem;
-      color: var(--text-color-secondary);
-      background-color: var(--comments-background-color);
-      border-radius: var(--rounding);
-      border: 1px solid var(--comments-border-color);
+      color: FieldText;
+      background-color: Field;
+      border-radius: 0.2rem;
+      border: 1px solid ButtonFace;
     }
 
     .segment button[popovertarget] {
@@ -338,7 +338,7 @@ input[type='checkbox'] {
 
 [popover] {
   dl dt {
-    color: var(--text-color-secondary);
+    /* color: var(--text-color-secondary); */
   }
 
   .texts-list > details > summary {
@@ -395,12 +395,12 @@ aside {
       font-weight: bold;
       cursor: pointer;
       background-color: inherit;
-      color: GrayText;
+      color: ButtonText;
 
       &:focus:not(button[disabled]),
       &:hover:not(button[disabled]) {
-        background-color: var(--primary-color);
-        color: var(--background-color);
+        background-color: AccentColor;
+        color: AccentColorText;
       }
     }
 
@@ -419,8 +419,8 @@ aside {
       border-bottom-left-radius: var(--rounding);
 
       &:first-of-type > button {
-        border-top-left-radius: var(--rounding);
-        border-bottom-left-radius: var(--rounding);
+        border-top-left-radius: 0.2rem;
+        border-bottom-left-radius: 0.2rem;
       }
     }
 
@@ -430,10 +430,10 @@ aside {
       right: 0;
       top: 100%;
       width: max-content;
-      background-color: ButtonBorder;
+      background-color: ButtonFace;
       color: var(--text-color);
       padding-right: 0.3rem;
-      border-radius: var(--rounding);
+      border-radius: 0.2rem;
       border-top-right-radius: unset;
 
       li {
@@ -445,14 +445,15 @@ aside {
         &:hover,
         &:focus-within {
           background: ButtonFace;
+          /* background: var(--bg-soft); */
           border-radius: unset;
 
           &:first-of-type {
-            border-top-left-radius: var(--rounding);
+            border-top-left-radius: 0.2rem;
           }
           &:last-of-type {
-            border-bottom-left-radius: var(--rounding);
-            border-bottom-right-radius: var(--rounding);
+            border-bottom-left-radius: 0.2rem;
+            border-bottom-right-radius: 0.2rem;
           }
         }
 
@@ -488,9 +489,9 @@ aside {
 
 hr {
   width: 30%;
-  border-radius: var(--rounding);
+  border-radius: 0.2rem;
   border: none;
-  border-top: 1px solid var(--gray);
+  border-top: 1px solid GrayText;
 }
 
 section,
@@ -507,14 +508,14 @@ article {
     cursor: zoom-in;
     background: none;
     border: none;
-    color: var(--primary-color);
+    color: LinkText;
     padding: 0;
     margin: 0 0.1rem 0 0;
     vertical-align: text-top;
 
     &:focus {
-      background-color: var(--primary-color);
-      color: var(--background-color);
+      background-color: Highlight;
+      color: HighlightText;
     }
   }
 
@@ -546,7 +547,7 @@ article {
         border-radius: var(--rounding);
         padding: 0.2rem;
         text-decoration: none;
-        color: GrayText;
+        color: ButtonText;
         font-size: 0.7rem;
         font-weight: initial;
 
@@ -567,8 +568,8 @@ article {
 
   .reference:target a,
   a.ref:target {
-    background-color: var(--primary-color);
-    color: var(--background-color);
+    background-color: SelectedItem;
+    color: SelectedItemText;
 
     &:hover {
       color: unset;
@@ -797,7 +798,7 @@ article {
   .suttainfo {
     background-color: ButtonFace;
     padding: 1rem;
-    border-radius: var(--rounding);
+    border-radius: 0.2rem;
     margin-bottom: 2rem;
   }
   .suppliedmetre {
@@ -849,7 +850,7 @@ article {
     border-radius: var(--rounding);
     padding: 0.2rem;
     text-decoration: none;
-    color: GrayText;
+    color: ButtonText;
     font-size: 0.7rem;
     margin-right: 0.3rem;
     font-weight: initial;
