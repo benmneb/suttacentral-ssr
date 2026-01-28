@@ -399,6 +399,7 @@ const jsonLd = generateTextJsonLd(
             data-label-play={t(userLanguage, 'viewoption:play')}
             data-label-pause={t(userLanguage, 'viewoption:pause')}
             data-label-default={t(userLanguage, 'viewoption:voiceDefault')}
+            data-text-lang={language}
           >
             <li>
               <noscript>
@@ -999,16 +1000,36 @@ const jsonLd = generateTextJsonLd(
         })
       }
 
-      // Determine preferred voice to select: default voice first, otherwise match browser lang
+      // Determine preferred voice to select: text language first, then default voice, then browser lang
       const defaultVoice = voices.find(v => v.default)
+      const textLang = rootMenuEl?.dataset?.textLang ?? ''
       const browserLang = (
         navigator.language ||
         navigator.userLanguage ||
         ''
       ).toString()
       const primaryBrowserLang = browserLang.split('-')[0]
-      let suitableVoiceName = defaultVoice ? defaultVoice.name : null
+      let suitableVoiceName = null
 
+      // First try to match text language (prefer default voice if multiple matches)
+      if (textLang) {
+        const textLangVoices = voices.filter(
+          v => v.lang === textLang || (v.lang && v.lang.startsWith(textLang))
+        )
+        if (textLangVoices.length > 0) {
+          const defaultInLang = textLangVoices.find(v => v.default)
+          suitableVoiceName = defaultInLang
+            ? defaultInLang.name
+            : textLangVoices[0].name
+        }
+      }
+
+      // Fall back to default voice
+      if (!suitableVoiceName && defaultVoice) {
+        suitableVoiceName = defaultVoice.name
+      }
+
+      // Fall back to browser language
       if (!suitableVoiceName && browserLang) {
         // find first voice matching full lang, then primary subtag
         let found = voices.find(v => v.lang === browserLang)
