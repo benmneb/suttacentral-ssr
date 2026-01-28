@@ -228,7 +228,7 @@
     }
     .translation {
       order: 2;
-      color: var(--fg-alt-4);
+      color: GrayText;
     }
   }
 }
@@ -380,7 +380,7 @@ aside {
     padding: 0;
     border: none;
     margin: 0;
-    background-color: var(--bg-alt-1);
+    background-color: ButtonFace;
     border-top-left-radius: var(--rounding);
     border-bottom-left-radius: var(--rounding);
     pointer-events: auto;
@@ -395,7 +395,7 @@ aside {
       font-weight: bold;
       cursor: pointer;
       background-color: inherit;
-      color: var(--fg-alt-3);
+      color: GrayText;
 
       &:focus:not(button[disabled]),
       &:hover:not(button[disabled]) {
@@ -414,7 +414,7 @@ aside {
     li {
       display: block;
       position: relative;
-      color: var(--fg-alt-3);
+      color: GrayText;
       border-top-left-radius: var(--rounding);
       border-bottom-left-radius: var(--rounding);
 
@@ -430,7 +430,7 @@ aside {
       right: 0;
       top: 100%;
       width: max-content;
-      background-color: var(--bg-alt-2);
+      background-color: ButtonBorder;
       color: var(--text-color);
       padding-right: 0.3rem;
       border-radius: var(--rounding);
@@ -444,7 +444,7 @@ aside {
 
         &:hover,
         &:focus-within {
-          background: var(--bg-soft);
+          background: ButtonFace;
           border-radius: unset;
 
           &:first-of-type {
@@ -535,23 +535,23 @@ article {
   .segment {
     .root {
       display: none;
-      color: var(--fg-alt-4);
+      color: GrayText;
       /* word-break: break-all; */
     }
 
     .reference {
       a {
         display: none;
-        border: 1px solid var(--bg-alt-2);
+        border: 1px solid ButtonBorder;
         border-radius: var(--rounding);
         padding: 0.2rem;
         text-decoration: none;
-        color: var(--fg-alt-4);
+        color: GrayText;
         font-size: 0.7rem;
         font-weight: initial;
 
         &:hover {
-          background-color: var(--bg-soft);
+          background-color: ButtonFace;
         }
       }
     }
@@ -795,7 +795,7 @@ article {
   /* For Chinese root texts / Descriptive classes */
   .xu,
   .suttainfo {
-    background-color: var(--bg-alt-1);
+    background-color: ButtonFace;
     padding: 1rem;
     border-radius: var(--rounding);
     margin-bottom: 2rem;
@@ -845,17 +845,17 @@ article {
   /* From Sutta Central with the non-segment texts. */
   a.ref {
     display: none;
-    border: 1px solid var(--bg-alt-2);
+    border: 1px solid ButtonBorder;
     border-radius: var(--rounding);
     padding: 0.2rem;
     text-decoration: none;
-    color: var(--fg-alt-4);
+    color: GrayText;
     font-size: 0.7rem;
     margin-right: 0.3rem;
     font-weight: initial;
 
     &:hover {
-      background-color: var(--bg-soft);
+      background-color: ButtonFace;
     }
   }
 }

@@ -1,17 +1,17 @@
 ol li a:has(.reference) {
   color: unset;
   background-color: unset;
-  border: 1px solid var(--bg-alt-2);
+  border: 1px solid ButtonBorder;
   border-radius: var(--rounding);
   padding: 0.2rem;
   text-decoration: none;
-  color: var(--fg-alt-4);
+  color: GrayText;
   font-size: 0.7rem;
   margin-right: 0.3rem;
   font-weight: initial;
 
   &:hover {
-    background-color: var(--bg-soft);
+    background-color: ButtonFace;
   }
 }
 

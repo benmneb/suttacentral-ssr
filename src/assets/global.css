@@ -72,7 +72,7 @@ a {
   }
 
   &::selection {
-    background-color: var(--blue-dim);
+    background-color: Highlight;
   }
 }
 
