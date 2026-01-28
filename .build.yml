@@ -7,7 +7,7 @@ packages:
 git.sr.ht:
   enabled: true
   allow-refs:
-    - refs/heads/main
+    - refs/heads/*
 
 secrets:
   - 34a7d712-4558-4943-a03d-c8057965f23c # SSH for srht-builds
@@ -35,8 +35,12 @@ tasks:
   - deploy: |
       cd suttacentral-ssr
       export CLOUDFLARE_API_TOKEN=$(cat ~/.cloudflare)
-      npx wrangler pages deploy dist --project-name=suttacentral-ssr --branch=main
+      BRANCH="${GIT_REF#refs/heads/}"
+      npx wrangler pages deploy dist --project-name=suttacentral-ssr --branch="$BRANCH"
   - mirror: |
       cd suttacentral-ssr
-      GIT_SSH_COMMAND="ssh -i ~/.ssh/62aca017-2dfb-4fb1-aecf-b1c3d1e4d4a0 -o StrictHostKeyChecking=no" git push --mirror git@codeberg.org:benmneb/suttacentral-ssr.git
-      GIT_SSH_COMMAND="ssh -i ~/.ssh/62aca017-2dfb-4fb1-aecf-b1c3d1e4d4a0 -o StrictHostKeyChecking=no" git push --mirror git@github.com:benmneb/suttacentral-ssr.git
+      BRANCH="${GIT_REF#refs/heads/}"
+      if [ "$BRANCH" = "main" ]; then
+        GIT_SSH_COMMAND="ssh -i ~/.ssh/62aca017-2dfb-4fb1-aecf-b1c3d1e4d4a0 -o StrictHostKeyChecking=no" git push --mirror git@codeberg.org:benmneb/suttacentral-ssr.git
+        GIT_SSH_COMMAND="ssh -i ~/.ssh/62aca017-2dfb-4fb1-aecf-b1c3d1e4d4a0 -o StrictHostKeyChecking=no" git push --mirror git@github.com:benmneb/suttacentral-ssr.git
+      fi
