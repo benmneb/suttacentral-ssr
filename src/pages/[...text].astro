@@ -52,15 +52,18 @@ if (!suttaplexData?.[0]?.uid) {
   return Astro.rewrite('/404')
 }
 
-const bilaraResponse = await fetch(
-  `https://suttacentral.net/api/bilarasuttas/${acronym}/${authorUid}?lang=${language}`
-)
-const bilaraData = await bilaraResponse.json()
+let bilaraData = {}
+if (suttasData.segmented) {
+  const bilaraResponse = await fetch(
+    `https://suttacentral.net/api/bilarasuttas/${acronym}/${authorUid}?lang=${language}`
+  )
+  bilaraData = await bilaraResponse.json()
 
-if (suttasData.segmented && bilaraData.msg === 'Not Found') {
-  Astro.response.status = 404
-  Astro.response.statusText = 'Bilara data not found'
-  return Astro.rewrite('/404')
+  if (bilaraData.msg === 'Not Found') {
+    Astro.response.status = 404
+    Astro.response.statusText = 'Bilara data not found'
+    return Astro.rewrite('/404')
+  }
 }
 
 const publicationResponse = await fetch(
