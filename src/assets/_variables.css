@@ -18,9 +18,10 @@
   --text-color: CanvasText;
   --text-color-secondary: GrayText;
   --headings-color: CanvasText;
-  --primary-color: AccentColor;
-  --primary-color-alt: AccentColor;
-  --shadow-color: GrayText;
+  /* Use Link/VisitedText as AccentColor(Text) has bad support, unfortunately */
+  --primary-color: LinkText;
+  --primary-color-alt: VisitedText;
+  --shadow-color: Canvas;
   --tts-highlight-text-color: HighlightText;
   --tts-highlight-background-color: Highlight;
   --tts-hover-background-color: ButtonFace;

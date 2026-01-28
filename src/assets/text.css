@@ -414,7 +414,7 @@ aside {
     li {
       display: block;
       position: relative;
-      color: GrayText;
+      color: ButtonText;
       border-top-left-radius: var(--rounding);
       border-bottom-left-radius: var(--rounding);
 

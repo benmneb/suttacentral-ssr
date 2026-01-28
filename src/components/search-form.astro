@@ -60,7 +60,7 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
       padding: 0.4rem;
       border: 1px solid;
       border-radius: var(--rounding);
-      border-color: var(--bg-alt-4);
+      border-color: ButtonBorder;
 
       &:focus-within {
         border-color: inherit;
@@ -72,6 +72,10 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
         background-color: inherit;
         color: inherit;
         font-size: large;
+
+        &::placeholder {
+          color: var(--text-color-secondary);
+        }
 
         &:focus {
           outline: none;
