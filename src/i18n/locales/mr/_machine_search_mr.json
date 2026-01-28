@@ -5,20 +5,10 @@
   "autocomplete:collection": "संग्रह",
   "autocomplete:tipsForSearchSyntax": "शोध सिंटॅक्ससाठी टिपा",
   "autocomplete:change": "बदला",
-  "search:all": "सर्व",
-  "search:dictionaries": "शब्दकोश",
-  "search:filter": "फिल्टर",
   "search:searchOptions": "शोध पर्याय",
-  "search:hint": "संकेत: उदा. mn34 किंवा sn3.2 शोधा त्या सुत्तावर थेट जाण्यासाठी.",
   "search:inAllLanguage": "सर्व भाषांमध्ये",
   "search:inputSearchTerm": "शोध शब्द प्रविष्ट करा",
-  "search:loadMore": "अधिक लोड करा",
   "search:matchPartial": "आंशिक जुळणी",
   "search:noResult": "'{searchTerm}' साठी कोणतेही परिणाम नाहीत. <br/> <a target='_blank' href='https://discourse.suttacentral.net/search?q={searchTerm}'>फोरमवर शोधा</a> किंवा <a target='_blank' href='https://discourse.suttacentral.net'>नवीन प्रश्न पोस्ट करा</a>.",
-  "search:resultsFor": "परिणाम",
-  "search:rootTexts": "मूळ मजकूर",
-  "search:search": "शोधा",
-  "search:searchInAllText": "सर्व मजकुरात शोधा",
-  "search:searchResultsText": "शोध परिणाम:",
-  "search:translations": "भाषांतरे"
+  "search:searchInAllText": "सर्व मजकुरात शोधा"
 }

@@ -5,20 +5,10 @@
   "autocomplete:collection": "kokoelmaan",
   "autocomplete:tipsForSearchSyntax": "Vinkkejä hakusyntaksiin",
   "autocomplete:change": "Muuta",
-  "search:all": "Kaikki",
-  "search:dictionaries": "Sanakirjat",
-  "search:filter": "Suodatin",
   "search:searchOptions": "Hakuasetukset",
-  "search:hint": "Vinkki: Hae esim. mn34 tai sn3.2 siirtyäksesi suoraan kyseiseen suttaan.",
   "search:inAllLanguage": "kaikilla kielillä",
   "search:inputSearchTerm": "Syötä hakutermi",
-  "search:loadMore": "Lataa lisää",
   "search:matchPartial": "Osittainen vastaavuus",
   "search:noResult": "Haulla '{searchTerm}' ei löytynyt tuloksia. <br/> Harkitse <a target='_blank' href='https://discourse.suttacentral.net/search?q={searchTerm}'>hakua foorumilta</a> tai <a target='_blank' href='https://discourse.suttacentral.net'>uuden kysymyksen lähettämistä</a>.",
-  "search:resultsFor": "tulosta haulle",
-  "search:rootTexts": "Lähdetekstit",
-  "search:search": "Haku",
-  "search:searchInAllText": "Hae kaikista teksteistä",
-  "search:searchResultsText": "Hakutulokset haulle",
-  "search:translations": "Käännökset"
+  "search:searchInAllText": "Hae kaikista teksteistä"
 }

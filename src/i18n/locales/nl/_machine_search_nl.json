@@ -5,20 +5,10 @@
   "autocomplete:collection": "verzameling",
   "autocomplete:tipsForSearchSyntax": "Tips voor zoeksyntaxis",
   "autocomplete:change": "Wijzig",
-  "search:all": "Alles",
-  "search:dictionaries": "Woordenboeken",
-  "search:filter": "Filter",
   "search:searchOptions": "Zoekopties",
-  "search:hint": "Tip: Zoek bijv. mn34 of sn3.2 om direct naar die sutta te gaan.",
   "search:inAllLanguage": "in alle talen",
   "search:inputSearchTerm": "Voer zoekterm in",
-  "search:loadMore": "Meer laden",
   "search:matchPartial": "Gedeeltelijke overeenkomst",
   "search:noResult": "Er waren geen resultaten voor '{searchTerm}'. <br/> Overweeg <a target='_blank' href='https://discourse.suttacentral.net/search?q={searchTerm}'>te zoeken op het forum</a> of <a target='_blank' href='https://discourse.suttacentral.net'>een nieuwe vraag te stellen</a>.",
-  "search:resultsFor": "resultaten voor",
-  "search:rootTexts": "Bronteksten",
-  "search:search": "Zoeken",
-  "search:searchInAllText": "Zoek in alle teksten",
-  "search:searchResultsText": "Zoekresultaten voor",
-  "search:translations": "Vertalingen"
+  "search:searchInAllText": "Zoek in alle teksten"
 }

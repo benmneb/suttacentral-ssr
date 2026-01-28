@@ -4,9 +4,12 @@
  * Automatically discovers and loads all translation files from the locales directory.
  * Translation files should be organized as: ./locales/{language_code}/{filename}.json
  *
- * Translation file names are the same as SC repo, except:
- * Translation files specific to this project are prefixed with `_scx_`
- * Translations not translated by humans are prefixed with `_machine_`
+ * Translation file names are the same as `suttacentral` repo,
+ * even when the files have come from `sc-data` repo,
+ * I've renamed them for consistency and minimalism.
+ *
+ * Translation files specific to this project are prefixed with `_scx_`.
+ * Translations not translated by humans are prefixed with `_machine_`.
  *
  * If there is ever a conflict between translations in the future, so long as this
  * naming convention and file structure remain, human translations will be given preference.

@@ -5,20 +5,10 @@
   "autocomplete:collection": "එකතුව",
   "autocomplete:tipsForSearchSyntax": "සෙවුම් වාක්‍ය රීති සඳහා ඉඟි",
   "autocomplete:change": "වෙනස් කරන්න",
-  "search:all": "සියල්ල",
-  "search:dictionaries": "ශබ්දකෝෂ",
-  "search:filter": "පෙරහන",
   "search:searchOptions": "සෙවුම් විකල්ප",
-  "search:hint": "ඉඟිය: උදා. mn34 හෝ sn3.2 සොයන්න එම සූත්‍රයට කෙලින්ම යාමට.",
   "search:inAllLanguage": "සියලු භාෂාවලින්",
   "search:inputSearchTerm": "සෙවුම් පදය ඇතුළත් කරන්න",
-  "search:loadMore": "තවත් පූරණය කරන්න",
   "search:matchPartial": "අර්ධ ගැලපීම",
   "search:noResult": "'{searchTerm}' සඳහා ප්‍රතිඵල නොමැත. <br/> <a target='_blank' href='https://discourse.suttacentral.net/search?q={searchTerm}'>සංසදයේ සෙවීම</a> හෝ <a target='_blank' href='https://discourse.suttacentral.net'>නව ප්‍රශ්නයක් පළ කිරීම</a> සලකා බලන්න.",
-  "search:resultsFor": "ප්‍රතිඵල",
-  "search:rootTexts": "මූල පාඨ",
-  "search:search": "සොයන්න",
-  "search:searchInAllText": "සියලු පාඨවල සොයන්න",
-  "search:searchResultsText": "සෙවුම් ප්‍රතිඵල:",
-  "search:translations": "පරිවර්තන"
+  "search:searchInAllText": "සියලු පාඨවල සොයන්න"
 }

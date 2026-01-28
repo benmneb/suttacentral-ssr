@@ -5,20 +5,10 @@
   "autocomplete:collection": "kolekcji",
   "autocomplete:tipsForSearchSyntax": "Wskazówki dotyczące składni wyszukiwania",
   "autocomplete:change": "Zmień",
-  "search:all": "Wszystko",
-  "search:dictionaries": "Słowniki",
-  "search:filter": "Filtr",
   "search:searchOptions": "Opcje wyszukiwania",
-  "search:hint": "Wskazówka: Wyszukaj np. mn34 lub sn3.2, aby przejść bezpośrednio do tej sutty.",
   "search:inAllLanguage": "we wszystkich językach",
   "search:inputSearchTerm": "Wprowadź wyszukiwany termin",
-  "search:loadMore": "Załaduj więcej",
   "search:matchPartial": "Częściowe dopasowanie",
   "search:noResult": "Brak wyników dla '{searchTerm}'. <br/> Rozważ <a target='_blank' href='https://discourse.suttacentral.net/search?q={searchTerm}'>wyszukiwanie na forum</a> lub <a target='_blank' href='https://discourse.suttacentral.net'>zadanie nowego pytania</a>.",
-  "search:resultsFor": "wyników dla",
-  "search:rootTexts": "Teksty źródłowe",
-  "search:search": "Szukaj",
-  "search:searchInAllText": "Szukaj we wszystkich tekstach",
-  "search:searchResultsText": "Wyniki wyszukiwania dla",
-  "search:translations": "Tłumaczenia"
+  "search:searchInAllText": "Szukaj we wszystkich tekstach"
 }
