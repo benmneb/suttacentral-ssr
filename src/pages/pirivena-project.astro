@@ -1,4 +1,5 @@
 ---
+import '~/assets/figure.css'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getPreferredLanguage } from '~/utils/language'
@@ -14,18 +15,21 @@ const crumbsData = [{ title }]
   <main>
     <article>
       <h1>{t(userLanguage, 'pirivenaPage:title')}</h1>
-      <!-- <figure>
+      <figure>
         <picture>
-          <source srcset="/img/static-pages/pirivena-monks-walking.avif" type="image/avif" />
+          <source
+            srcset="https://suttacentral.net/img/static-pages/pirivena-monks-walking.avif"
+            type="image/avif"
+          />
           <img
             class="image-home-full"
-            src="/img/static-pages/pirivena-monks-walking.jpg"
+            src="https://suttacentral.net/img/static-pages/pirivena-monks-walking.jpg"
             width="100%"
             alt={t(userLanguage, 'pirivenaPage:imageAlt')}
           />
         </picture>
         <figcaption>{t(userLanguage, 'pirivenaPage:photoCaption')}</figcaption>
-      </figure> -->
+      </figure>
       <p>{t(userLanguage, 'pirivenaPage:1')}</p>
       <p>{t(userLanguage, 'pirivenaPage:2')}</p>
       <p>{t(userLanguage, 'pirivenaPage:3')}</p>

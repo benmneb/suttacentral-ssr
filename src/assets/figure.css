@@ -1,0 +1,20 @@
+figure {
+  margin: 1rem 0;
+
+  picture {
+    margin: auto;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+    margin: auto;
+  }
+
+  figcaption {
+    font-size: small;
+    color: var(--text-color-secondary);
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+}

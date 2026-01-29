@@ -1,4 +1,5 @@
 ---
+import '~/assets/figure.css'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getPreferredLanguage } from '~/utils/language'
@@ -18,41 +19,41 @@ const crumbsData = [{ title }]
       <p set:html={t(userLanguage, 'introduction:3')} />
       <p set:html={t(userLanguage, 'introduction:4')} />
       <p set:html={t(userLanguage, 'introduction:5')} />
-      <!-- <figure>
+      <figure>
         <picture>
           <source
-            srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.avif"
+            srcset="https://suttacentral.net/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.avif"
             type="image/avif"
           />
           <img
             alt={t(userLanguage, 'introduction:6')}
             class="image-home-full"
-            src="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.jpg"
+            src="https://suttacentral.net/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.jpg"
             width="640px"
           />
         </picture>
         <figcaption>{t(userLanguage, 'introduction:7')}</figcaption>
-      </figure> -->
+      </figure>
       <h2 set:html={t(userLanguage, 'introduction:8')} />
       <p set:html={t(userLanguage, 'introduction:9')} />
       <p set:html={t(userLanguage, 'introduction:10')} />
       <p set:html={t(userLanguage, 'introduction:11')} />
       <h2 set:html={t(userLanguage, 'introduction:12')} />
       <p>
-        <!-- <figure>
+        <figure>
           <picture>
             <source
-              srcset="/img/static-pages/birchbark_w400.avif"
+              srcset="https://suttacentral.net/img/static-pages/birchbark_w400.avif"
               type="image/avif"
             />
             <img
               alt={t(userLanguage, 'introduction:13')}
               class="image-home"
-              src="/img/static-pages/birchbark_w400.jpg"
+              src="https://suttacentral.net/img/static-pages/birchbark_w400.jpg"
             />
           </picture>
           <figcaption>{t(userLanguage, 'introduction:14')}</figcaption>
-        </figure> -->
+        </figure>
         <span set:html={t(userLanguage, 'introduction:15')} />
         <i lang="pi" set:html={t(userLanguage, 'introduction:16')} />
         <span set:html={t(userLanguage, 'introduction:17')} />
@@ -83,18 +84,21 @@ const crumbsData = [{ title }]
       </ul>
       <h2 set:html={t(userLanguage, 'introduction:34')} />
       <p>
-        <!-- <figure>
+        <figure>
           <picture>
-            <source srcset="/img/static-pages/dn20.avif" type="image/avif" />
+            <source
+              srcset="https://suttacentral.net/img/static-pages/dn20.avif"
+              type="image/avif"
+            />
             <img
               alt={t(userLanguage, 'introduction:35')}
               class="image-home"
-              src="/img/static-pages/dn20.jpg"
+              src="https://suttacentral.net/img/static-pages/dn20.jpg"
               width="640px"
             />
           </picture>
           <figcaption>{t(userLanguage, 'introduction:36')}</figcaption>
-        </figure> -->
+        </figure>
         <span set:html={t(userLanguage, 'introduction:37')} />
       </p>
       <p set:html={t(userLanguage, 'introduction:38')} />
