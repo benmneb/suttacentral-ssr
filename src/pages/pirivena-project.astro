@@ -1,0 +1,62 @@
+---
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'pirivenaPage:title')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1>{t(userLanguage, 'pirivenaPage:title')}</h1>
+      <!-- <figure>
+        <picture>
+          <source srcset="/img/static-pages/pirivena-monks-walking.avif" type="image/avif" />
+          <img
+            class="image-home-full"
+            src="/img/static-pages/pirivena-monks-walking.jpg"
+            width="100%"
+            alt={t(userLanguage, 'pirivenaPage:imageAlt')}
+          />
+        </picture>
+        <figcaption>{t(userLanguage, 'pirivenaPage:photoCaption')}</figcaption>
+      </figure> -->
+      <p>{t(userLanguage, 'pirivenaPage:1')}</p>
+      <p>{t(userLanguage, 'pirivenaPage:2')}</p>
+      <p>{t(userLanguage, 'pirivenaPage:3')}</p>
+      <p>{t(userLanguage, 'pirivenaPage:4')}</p>
+      <p>{t(userLanguage, 'pirivenaPage:5')}</p>
+      <ul>
+        <li>Vinayapiṭaka — 6 {t(userLanguage, 'pirivenaPage:volumes')}</li>
+        <li>Dīghanikāya — 3 {t(userLanguage, 'pirivenaPage:volumes')}</li>
+        <li>Majjhimanikāya — 3 {t(userLanguage, 'pirivenaPage:volumes')}</li>
+        <li>Saṁyuttanikāya — 5 {t(userLanguage, 'pirivenaPage:volumes')}</li>
+        <li>Aṅguttaranikāya — 5 {t(userLanguage, 'pirivenaPage:volumes')}</li>
+        <li>
+          Khuddakanikāya — Dhammapada, Udāna, Itivuttaka, Suttanipāta,
+          Theragāthā, Therīgāthā; {t(userLanguage, 'pirivenaPage:1volume')}
+        </li>
+      </ul>
+      <p>{t(userLanguage, 'pirivenaPage:6')}</p>
+      <p>{t(userLanguage, 'pirivenaPage:7')}</p>
+      <p>{t(userLanguage, 'pirivenaPage:8')}</p>
+      <p>
+        {t(userLanguage, 'pirivenaPage:contact')}: Deepika Weerakoon
+        (suttacentraldevelopmenttrust@gmail.com).
+      </p>
+      <div class="donate-button-container">
+        <a
+          class="link-button block-link"
+          href="https://suttacentral-pirivena-pitaka.raiselysite.com/"
+        >
+          {t(userLanguage, 'pirivenaPage:button')}
+        </a>
+      </div>
+    </article>
+  </main>
+</Layout>
