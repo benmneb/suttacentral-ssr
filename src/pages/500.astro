@@ -1,0 +1,24 @@
+---
+import { siteMetaData } from '~/constants/meta-data'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+---
+
+<Layout>
+  <main>
+    <h1>{t(userLanguage, 'error:pageNotFound')}</h1>
+    <p>
+      <a href="/">{t(userLanguage, 'error:goHome')}</a>
+    </p>
+    <p>
+      <a href="/search">{t(userLanguage, 'error:searchForSomething')}</a>
+    </p>
+    <p>
+      {t(userLanguage, 'error:shouldBePageHere')}
+      <a href={siteMetaData.suggestions}>{t(userLanguage, 'error:reportIt')}</a>
+    </p>
+  </main>
+</Layout>
