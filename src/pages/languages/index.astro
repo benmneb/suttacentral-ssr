@@ -1,0 +1,58 @@
+---
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const response = await fetch('https://suttacentral.net/api/translation_count')
+const languages = await response.json()
+
+const title = t(userLanguage, 'interface:languages')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'languages:languagesOnSuttaCentral')} />
+
+      <h2>
+        <span set:html={t(userLanguage, 'languages:ancientLanguages')} />
+        ({languages.ancient.length})
+      </h2>
+      <ul class="languages-list">
+        {
+          languages.ancient.map(
+            (lang: { iso_code: string; name: string; total: number }) => (
+              <li>
+                <a class="block-link" href={`/languages/${lang.iso_code}`}>
+                  {lang.name} ({lang.total})
+                </a>
+              </li>
+            )
+          )
+        }
+      </ul>
+
+      <h2>
+        <span set:html={t(userLanguage, 'languages:modernLanguages')} />
+        ({languages.modern.length})
+      </h2>
+      <ul class="languages-list">
+        {
+          languages.modern.map(
+            (lang: { iso_code: string; name: string; total: number }) => (
+              <li>
+                <a class="block-link" href={`/languages/${lang.iso_code}`}>
+                  {lang.name} ({lang.total})
+                </a>
+              </li>
+            )
+          )
+        }
+      </ul>
+    </article>
+  </main>
+</Layout>

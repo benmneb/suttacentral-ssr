@@ -1,0 +1,334 @@
+---
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'methodology:1')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'methodology:1')} />
+      <nav class="contents">
+        <ol>
+          <li set:html={t(userLanguage, 'methodology:2')} />
+          <li set:html={t(userLanguage, 'methodology:3')} />
+          <li set:html={t(userLanguage, 'methodology:4')} />
+          <li set:html={t(userLanguage, 'methodology:5')} />
+          <li set:html={t(userLanguage, 'methodology:6')} />
+          <li set:html={t(userLanguage, 'methodology:7')} />
+        </ol>
+      </nav>
+      <h2 id="item1" set:html={t(userLanguage, 'methodology:8')} />
+      <p set:html={t(userLanguage, 'methodology:9')} />
+      <blockquote set:html={t(userLanguage, 'methodology:10')} />
+      <p set:html={t(userLanguage, 'methodology:11')} />
+      <p set:html={t(userLanguage, 'methodology:12')} />
+      <p set:html={t(userLanguage, 'methodology:13')} />
+      <p set:html={t(userLanguage, 'methodology:14')} />
+      <h2 id="item2" set:html={t(userLanguage, 'methodology:15')} />
+      <p class="byline" set:html={t(userLanguage, 'methodology:16')} />
+      <h3 set:html={t(userLanguage, 'methodology:17')} />
+      <p set:html={t(userLanguage, 'methodology:18')} />
+      <ul>
+        <li set:html={t(userLanguage, 'methodology:19')} />
+        <li set:html={t(userLanguage, 'methodology:20')} />
+      </ul>
+      <p set:html={t(userLanguage, 'methodology:21')} />
+      <p set:html={t(userLanguage, 'methodology:22')} />
+      <p set:html={t(userLanguage, 'methodology:23')} />
+      <ul>
+        <li set:html={t(userLanguage, 'methodology:24')} />
+        <li set:html={t(userLanguage, 'methodology:25')} />
+        <li set:html={t(userLanguage, 'methodology:26')} />
+        <li set:html={t(userLanguage, 'methodology:27')} />
+      </ul>
+      <p set:html={t(userLanguage, 'methodology:28')} />
+      <h3 set:html={t(userLanguage, 'methodology:29')} />
+      <p set:html={t(userLanguage, 'methodology:30')} />
+      <p set:html={t(userLanguage, 'methodology:31')} />
+      <h2 id="item3" set:html={t(userLanguage, 'methodology:32')} />
+      <p class="byline" set:html={t(userLanguage, 'methodology:33')} />
+      <p set:html={t(userLanguage, 'methodology:34')} />
+      <p set:html={t(userLanguage, 'methodology:35')} />
+      <p set:html={t(userLanguage, 'methodology:36')} />
+      <p set:html={t(userLanguage, 'methodology:37')} />
+      <p set:html={t(userLanguage, 'methodology:38')} />
+      <p set:html={t(userLanguage, 'methodology:39')} />
+      <p set:html={t(userLanguage, 'methodology:40')} />
+      <p set:html={t(userLanguage, 'methodology:41')} />
+      <p set:html={t(userLanguage, 'methodology:42')} />
+      <p set:html={t(userLanguage, 'methodology:43')} />
+      <h2 id="item4" set:html={t(userLanguage, 'methodology:44')} />
+      <h3 set:html={t(userLanguage, 'methodology:45')} />
+      <p set:html={t(userLanguage, 'methodology:46')} />
+      <p set:html={t(userLanguage, 'methodology:47')} />
+      <p set:html={t(userLanguage, 'methodology:48')} />
+      <p set:html={t(userLanguage, 'methodology:49')} />
+      <p set:html={t(userLanguage, 'methodology:50')} />
+      <h3 set:html={t(userLanguage, 'methodology:51')} />
+      <p set:html={t(userLanguage, 'methodology:52')} />
+      <h3 set:html={t(userLanguage, 'methodology:53')} />
+      <p set:html={t(userLanguage, 'methodology:54')} />
+      <h3 set:html={t(userLanguage, 'methodology:55')} />
+      <p set:html={t(userLanguage, 'methodology:56')} />
+      <h3 set:html={t(userLanguage, 'methodology:57')} />
+      <p set:html={t(userLanguage, 'methodology:58')} />
+      <h2 id="item5" set:html={t(userLanguage, 'methodology:59')} />
+      <p set:html={t(userLanguage, 'methodology:60')} />
+      <p set:html={t(userLanguage, 'methodology:61')} />
+      <p set:html={t(userLanguage, 'methodology:62')} />
+      <h3 set:html={t(userLanguage, 'methodology:63')} />
+      <p set:html={t(userLanguage, 'methodology:64')} />
+      <h3 set:html={t(userLanguage, 'methodology:65')} />
+      <p set:html={t(userLanguage, 'methodology:66')} />
+      <p set:html={t(userLanguage, 'methodology:67')} />
+      <p set:html={t(userLanguage, 'methodology:68')} />
+      <h3 set:html={t(userLanguage, 'methodology:69')} />
+      <p set:html={t(userLanguage, 'methodology:70')} />
+      <ul>
+        <li set:html={t(userLanguage, 'methodology:71')} />
+        <li set:html={t(userLanguage, 'methodology:72')} />
+        <li set:html={t(userLanguage, 'methodology:73')} />
+        <li set:html={t(userLanguage, 'methodology:74')} />
+        <li set:html={t(userLanguage, 'methodology:75')} />
+      </ul>
+      <p set:html={t(userLanguage, 'methodology:76')} />
+      <h2 id="item6" set:html={t(userLanguage, 'methodology:77')} />
+      <h3 set:html={t(userLanguage, 'methodology:78')} />
+      <p set:html={t(userLanguage, 'methodology:79')} />
+      <ul>
+        <li set:html={t(userLanguage, 'methodology:80')} />
+        <li set:html={t(userLanguage, 'methodology:81')} />
+        <li set:html={t(userLanguage, 'methodology:82')} />
+        <li set:html={t(userLanguage, 'methodology:83')} />
+        <li set:html={t(userLanguage, 'methodology:84')} />
+        <li set:html={t(userLanguage, 'methodology:85')} />
+        <li set:html={t(userLanguage, 'methodology:86')} />
+        <li set:html={t(userLanguage, 'methodology:87')} />
+        <li set:html={t(userLanguage, 'methodology:88')} />
+        <li set:html={t(userLanguage, 'methodology:89')} />
+        <li set:html={t(userLanguage, 'methodology:90')} />
+        <li set:html={t(userLanguage, 'methodology:91')} />
+        <li set:html={t(userLanguage, 'methodology:92')} />
+        <li set:html={t(userLanguage, 'methodology:93')} />
+        <li set:html={t(userLanguage, 'methodology:94')} />
+        <li set:html={t(userLanguage, 'methodology:95')} />
+        <li set:html={t(userLanguage, 'methodology:96')} />
+        <li set:html={t(userLanguage, 'methodology:97')} />
+        <li set:html={t(userLanguage, 'methodology:98')} />
+        <li set:html={t(userLanguage, 'methodology:99')} />
+        <li set:html={t(userLanguage, 'methodology:100')} />
+        <li set:html={t(userLanguage, 'methodology:101')} />
+        <li set:html={t(userLanguage, 'methodology:102')} />
+        <li set:html={t(userLanguage, 'methodology:103')} />
+        <li set:html={t(userLanguage, 'methodology:104')} />
+        <li set:html={t(userLanguage, 'methodology:105')} />
+        <li set:html={t(userLanguage, 'methodology:106')} />
+        <li set:html={t(userLanguage, 'methodology:107')} />
+        <li set:html={t(userLanguage, 'methodology:108')} />
+        <li set:html={t(userLanguage, 'methodology:109')} />
+        <li set:html={t(userLanguage, 'methodology:110')} />
+        <li set:html={t(userLanguage, 'methodology:111')} />
+        <li set:html={t(userLanguage, 'methodology:112')} />
+        <li set:html={t(userLanguage, 'methodology:113')} />
+        <li set:html={t(userLanguage, 'methodology:114')} />
+        <li set:html={t(userLanguage, 'methodology:115')} />
+        <li set:html={t(userLanguage, 'methodology:116')} />
+        <li set:html={t(userLanguage, 'methodology:117')} />
+        <li set:html={t(userLanguage, 'methodology:118')} />
+        <li set:html={t(userLanguage, 'methodology:119')} />
+        <li set:html={t(userLanguage, 'methodology:120')} />
+        <li set:html={t(userLanguage, 'methodology:121')} />
+        <li set:html={t(userLanguage, 'methodology:122')} />
+        <li set:html={t(userLanguage, 'methodology:123')} />
+        <li set:html={t(userLanguage, 'methodology:124')} />
+        <li set:html={t(userLanguage, 'methodology:125')} />
+        <li set:html={t(userLanguage, 'methodology:126')} />
+        <li set:html={t(userLanguage, 'methodology:127')} />
+        <li set:html={t(userLanguage, 'methodology:128')} />
+        <li set:html={t(userLanguage, 'methodology:129')} />
+        <li set:html={t(userLanguage, 'methodology:130')} />
+        <li set:html={t(userLanguage, 'methodology:131')} />
+        <li set:html={t(userLanguage, 'methodology:132')} />
+        <li set:html={t(userLanguage, 'methodology:133')} />
+        <li set:html={t(userLanguage, 'methodology:134')} />
+        <li set:html={t(userLanguage, 'methodology:135')} />
+        <li set:html={t(userLanguage, 'methodology:136')} />
+        <li set:html={t(userLanguage, 'methodology:137')} />
+        <li set:html={t(userLanguage, 'methodology:138')} />
+        <li set:html={t(userLanguage, 'methodology:139')} />
+        <li set:html={t(userLanguage, 'methodology:140')} />
+        <li set:html={t(userLanguage, 'methodology:141')} />
+        <li set:html={t(userLanguage, 'methodology:142')} />
+        <li set:html={t(userLanguage, 'methodology:143')} />
+        <li set:html={t(userLanguage, 'methodology:144')} />
+        <li set:html={t(userLanguage, 'methodology:145')} />
+        <li set:html={t(userLanguage, 'methodology:146')} />
+        <li set:html={t(userLanguage, 'methodology:147')} />
+        <li set:html={t(userLanguage, 'methodology:148')} />
+        <li set:html={t(userLanguage, 'methodology:149')} />
+        <li set:html={t(userLanguage, 'methodology:150')} />
+        <li set:html={t(userLanguage, 'methodology:151')} />
+        <li set:html={t(userLanguage, 'methodology:152')} />
+        <li set:html={t(userLanguage, 'methodology:153')} />
+        <li set:html={t(userLanguage, 'methodology:154')} />
+        <li set:html={t(userLanguage, 'methodology:155')} />
+        <li set:html={t(userLanguage, 'methodology:156')} />
+        <li set:html={t(userLanguage, 'methodology:157')} />
+        <li set:html={t(userLanguage, 'methodology:158')} />
+        <li set:html={t(userLanguage, 'methodology:159')} />
+        <li set:html={t(userLanguage, 'methodology:160')} />
+        <li set:html={t(userLanguage, 'methodology:161')} />
+        <li set:html={t(userLanguage, 'methodology:162')} />
+        <li set:html={t(userLanguage, 'methodology:163')} />
+        <li set:html={t(userLanguage, 'methodology:164')} />
+        <li set:html={t(userLanguage, 'methodology:165')} />
+        <li set:html={t(userLanguage, 'methodology:166')} />
+        <li set:html={t(userLanguage, 'methodology:167')} />
+        <li set:html={t(userLanguage, 'methodology:168')} />
+        <li set:html={t(userLanguage, 'methodology:169')} />
+        <li set:html={t(userLanguage, 'methodology:170')} />
+        <li set:html={t(userLanguage, 'methodology:171')} />
+        <li set:html={t(userLanguage, 'methodology:172')} />
+        <li set:html={t(userLanguage, 'methodology:173')} />
+        <li set:html={t(userLanguage, 'methodology:174')} />
+        <li set:html={t(userLanguage, 'methodology:175')} />
+        <li set:html={t(userLanguage, 'methodology:176')} />
+        <li set:html={t(userLanguage, 'methodology:177')} />
+        <li set:html={t(userLanguage, 'methodology:178')} />
+        <li set:html={t(userLanguage, 'methodology:179')} />
+        <li set:html={t(userLanguage, 'methodology:180')} />
+        <li set:html={t(userLanguage, 'methodology:181')} />
+        <li set:html={t(userLanguage, 'methodology:182')} />
+        <li set:html={t(userLanguage, 'methodology:183')} />
+        <li set:html={t(userLanguage, 'methodology:184')} />
+        <li set:html={t(userLanguage, 'methodology:185')} />
+        <li set:html={t(userLanguage, 'methodology:186')} />
+        <li set:html={t(userLanguage, 'methodology:187')} />
+        <li set:html={t(userLanguage, 'methodology:188')} />
+        <li set:html={t(userLanguage, 'methodology:189')} />
+        <li set:html={t(userLanguage, 'methodology:190')} />
+        <li set:html={t(userLanguage, 'methodology:191')} />
+        <li set:html={t(userLanguage, 'methodology:192')} />
+        <li set:html={t(userLanguage, 'methodology:193')} />
+        <li set:html={t(userLanguage, 'methodology:194')} />
+        <li set:html={t(userLanguage, 'methodology:195')} />
+        <li set:html={t(userLanguage, 'methodology:196')} />
+        <li set:html={t(userLanguage, 'methodology:197')} />
+        <li set:html={t(userLanguage, 'methodology:198')} />
+        <li set:html={t(userLanguage, 'methodology:199')} />
+        <li set:html={t(userLanguage, 'methodology:200')} />
+        <li set:html={t(userLanguage, 'methodology:201')} />
+        <li set:html={t(userLanguage, 'methodology:202')} />
+        <li set:html={t(userLanguage, 'methodology:203')} />
+        <li set:html={t(userLanguage, 'methodology:204')} />
+        <li set:html={t(userLanguage, 'methodology:205')} />
+        <li set:html={t(userLanguage, 'methodology:206')} />
+        <li set:html={t(userLanguage, 'methodology:207')} />
+        <li set:html={t(userLanguage, 'methodology:208')} />
+        <li set:html={t(userLanguage, 'methodology:209')} />
+        <li set:html={t(userLanguage, 'methodology:210')} />
+        <li set:html={t(userLanguage, 'methodology:211')} />
+        <li set:html={t(userLanguage, 'methodology:212')} />
+        <li set:html={t(userLanguage, 'methodology:213')} />
+        <li set:html={t(userLanguage, 'methodology:214')} />
+        <li set:html={t(userLanguage, 'methodology:215')} />
+        <li set:html={t(userLanguage, 'methodology:216')} />
+        <li set:html={t(userLanguage, 'methodology:217')} />
+        <li set:html={t(userLanguage, 'methodology:218')} />
+        <li set:html={t(userLanguage, 'methodology:219')} />
+        <li set:html={t(userLanguage, 'methodology:220')} />
+        <li set:html={t(userLanguage, 'methodology:221')} />
+        <li set:html={t(userLanguage, 'methodology:222')} />
+        <li set:html={t(userLanguage, 'methodology:223')} />
+        <li set:html={t(userLanguage, 'methodology:224')} />
+        <li set:html={t(userLanguage, 'methodology:225')} />
+        <li set:html={t(userLanguage, 'methodology:226')} />
+        <li set:html={t(userLanguage, 'methodology:227')} />
+        <li set:html={t(userLanguage, 'methodology:228')} />
+        <li set:html={t(userLanguage, 'methodology:229')} />
+        <li set:html={t(userLanguage, 'methodology:230')} />
+        <li set:html={t(userLanguage, 'methodology:231')} />
+        <li set:html={t(userLanguage, 'methodology:232')} />
+        <li set:html={t(userLanguage, 'methodology:233')} />
+        <li set:html={t(userLanguage, 'methodology:234')} />
+        <li set:html={t(userLanguage, 'methodology:235')} />
+        <li set:html={t(userLanguage, 'methodology:236')} />
+        <li set:html={t(userLanguage, 'methodology:237')} />
+        <li set:html={t(userLanguage, 'methodology:238')} />
+        <li set:html={t(userLanguage, 'methodology:239')} />
+        <li set:html={t(userLanguage, 'methodology:240')} />
+        <li set:html={t(userLanguage, 'methodology:241')} />
+        <li set:html={t(userLanguage, 'methodology:242')} />
+        <li set:html={t(userLanguage, 'methodology:243')} />
+        <li set:html={t(userLanguage, 'methodology:244')} />
+        <li set:html={t(userLanguage, 'methodology:245')} />
+        <li set:html={t(userLanguage, 'methodology:246')} />
+        <li set:html={t(userLanguage, 'methodology:247')} />
+        <li set:html={t(userLanguage, 'methodology:248')} />
+        <li set:html={t(userLanguage, 'methodology:249')} />
+        <li set:html={t(userLanguage, 'methodology:250')} />
+        <li set:html={t(userLanguage, 'methodology:251')} />
+        <li set:html={t(userLanguage, 'methodology:252')} />
+        <li set:html={t(userLanguage, 'methodology:253')} />
+        <li set:html={t(userLanguage, 'methodology:254')} />
+        <li set:html={t(userLanguage, 'methodology:255')} />
+        <li set:html={t(userLanguage, 'methodology:256')} />
+        <li set:html={t(userLanguage, 'methodology:257')} />
+        <li set:html={t(userLanguage, 'methodology:258')} />
+        <li set:html={t(userLanguage, 'methodology:259')} />
+        <li set:html={t(userLanguage, 'methodology:260')} />
+        <li set:html={t(userLanguage, 'methodology:261')} />
+        <li set:html={t(userLanguage, 'methodology:262')} />
+        <li set:html={t(userLanguage, 'methodology:263')} />
+        <li set:html={t(userLanguage, 'methodology:264')} />
+        <li set:html={t(userLanguage, 'methodology:265')} />
+        <li set:html={t(userLanguage, 'methodology:266')} />
+        <li set:html={t(userLanguage, 'methodology:267')} />
+        <li set:html={t(userLanguage, 'methodology:268')} />
+        <li set:html={t(userLanguage, 'methodology:269')} />
+        <li set:html={t(userLanguage, 'methodology:270')} />
+      </ul>
+      <h3 set:html={t(userLanguage, 'methodology:271')} />
+      <ul>
+        <li set:html={t(userLanguage, 'methodology:272')} />
+        <li set:html={t(userLanguage, 'methodology:273')} />
+        <li set:html={t(userLanguage, 'methodology:274')} />
+        <li set:html={t(userLanguage, 'methodology:275')} />
+        <li set:html={t(userLanguage, 'methodology:276')} />
+        <li set:html={t(userLanguage, 'methodology:277')} />
+        <li set:html={t(userLanguage, 'methodology:278')} />
+        <li set:html={t(userLanguage, 'methodology:279')} />
+        <li set:html={t(userLanguage, 'methodology:280')} />
+        <li set:html={t(userLanguage, 'methodology:281')} />
+        <li set:html={t(userLanguage, 'methodology:282')} />
+        <li set:html={t(userLanguage, 'methodology:283')} />
+        <li set:html={t(userLanguage, 'methodology:284')} />
+        <li set:html={t(userLanguage, 'methodology:285')} />
+        <li set:html={t(userLanguage, 'methodology:286')} />
+        <li set:html={t(userLanguage, 'methodology:287')} />
+        <li set:html={t(userLanguage, 'methodology:288')} />
+        <li set:html={t(userLanguage, 'methodology:289')} />
+        <li set:html={t(userLanguage, 'methodology:290')} />
+        <li set:html={t(userLanguage, 'methodology:291')} />
+        <li set:html={t(userLanguage, 'methodology:292')} />
+        <li set:html={t(userLanguage, 'methodology:293')} />
+        <li set:html={t(userLanguage, 'methodology:294')} />
+      </ul>
+      <h3 set:html={t(userLanguage, 'methodology:295')} />
+      <ul>
+        <li set:html={t(userLanguage, 'methodology:296')} />
+        <li set:html={t(userLanguage, 'methodology:297')} />
+        <li set:html={t(userLanguage, 'methodology:298')} />
+        <li set:html={t(userLanguage, 'methodology:299')} />
+        <li set:html={t(userLanguage, 'methodology:300')} />
+      </ul>
+    </article>
+  </main>
+</Layout>

@@ -1,0 +1,154 @@
+---
+import '~/assets/guides.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'interface:mnGuideSujato')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'mn-guide-sujato:1')} />
+      <p class="byline" set:html={t(userLanguage, 'mn-guide-sujato:2')} />
+      <nav class="contents">
+        <ol>
+          <li set:html={t(userLanguage, 'mn-guide-sujato:3')} />
+          <li set:html={t(userLanguage, 'mn-guide-sujato:4')} />
+          <li set:html={t(userLanguage, 'mn-guide-sujato:5')} />
+          <li set:html={t(userLanguage, 'mn-guide-sujato:6')} />
+          <li set:html={t(userLanguage, 'mn-guide-sujato:7')} />
+          <li set:html={t(userLanguage, 'mn-guide-sujato:8')} />
+          <li set:html={t(userLanguage, 'mn-guide-sujato:9')} />
+          <li set:html={t(userLanguage, 'mn-guide-sujato:10')} />
+          <li set:html={t(userLanguage, 'mn-guide-sujato:11')} />
+        </ol>
+      </nav>
+      <p set:html={t(userLanguage, 'mn-guide-sujato:12')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:13')} />
+      <blockquote>
+        <p set:html={t(userLanguage, 'mn-guide-sujato:14')} />
+      </blockquote>
+      <p set:html={t(userLanguage, 'mn-guide-sujato:15')} />
+      <h2 id="item1" set:html={t(userLanguage, 'mn-guide-sujato:16')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:17')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:18')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'mn-guide-sujato:19')} />
+        <dd set:html={t(userLanguage, 'mn-guide-sujato:20')} />
+        <dt set:html={t(userLanguage, 'mn-guide-sujato:21')} />
+        <dd set:html={t(userLanguage, 'mn-guide-sujato:22')} />
+        <dt set:html={t(userLanguage, 'mn-guide-sujato:23')} />
+        <dd set:html={t(userLanguage, 'mn-guide-sujato:24')} />
+        <dt set:html={t(userLanguage, 'mn-guide-sujato:25')} />
+        <dd set:html={t(userLanguage, 'mn-guide-sujato:26')} />
+        <dt set:html={t(userLanguage, 'mn-guide-sujato:27')} />
+        <dd set:html={t(userLanguage, 'mn-guide-sujato:28')} />
+      </dl>
+      <h2 id="item2" set:html={t(userLanguage, 'mn-guide-sujato:29')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:30')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:31')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:32')} />
+      <h2 id="item3" set:html={t(userLanguage, 'mn-guide-sujato:33')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:34')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:35')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:36')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:37')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:38')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:39')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:40')} />
+      <h2 id="item4" set:html={t(userLanguage, 'mn-guide-sujato:41')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:42')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:43')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:44')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:45')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:46')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:47')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:48')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:49')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:50')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:51')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:52')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:53')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:54')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:55')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:56')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:57')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:58')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:59')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:60')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:61')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:62')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:63')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:64')} />
+      <h2 id="item5" set:html={t(userLanguage, 'mn-guide-sujato:65')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:66')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:67')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:68')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:69')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:70')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:71')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:72')} />
+      <h2 id="item6" set:html={t(userLanguage, 'mn-guide-sujato:73')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:74')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:75')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:76')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:77')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:78')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:79')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:80')} />
+      <h2 id="item7" set:html={t(userLanguage, 'mn-guide-sujato:81')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:82')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:83')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:84')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:85')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:86')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:87')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:88')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:89')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:90')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:91')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:92')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:93')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:94')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:95')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:96')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:97')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:98')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:99')} />
+      <h2 id="item8" set:html={t(userLanguage, 'mn-guide-sujato:100')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:101')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:102')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:103')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:104')} />
+      <ol>
+        <li set:html={t(userLanguage, 'mn-guide-sujato:105')} />
+        <li set:html={t(userLanguage, 'mn-guide-sujato:106')} />
+        <li set:html={t(userLanguage, 'mn-guide-sujato:107')} />
+        <li set:html={t(userLanguage, 'mn-guide-sujato:108')} />
+        <li set:html={t(userLanguage, 'mn-guide-sujato:109')} />
+        <li set:html={t(userLanguage, 'mn-guide-sujato:110')} />
+        <li set:html={t(userLanguage, 'mn-guide-sujato:111')} />
+        <li set:html={t(userLanguage, 'mn-guide-sujato:112')} />
+        <li set:html={t(userLanguage, 'mn-guide-sujato:113')} />
+        <li set:html={t(userLanguage, 'mn-guide-sujato:114')} />
+      </ol>
+      <p set:html={t(userLanguage, 'mn-guide-sujato:115')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:116')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:117')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:118')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:119')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:120')} />
+      <h2 id="item9" set:html={t(userLanguage, 'mn-guide-sujato:121')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:122')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:123')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:124')} />
+      <p set:html={t(userLanguage, 'mn-guide-sujato:125')} />
+    </article>
+  </main>
+</Layout>

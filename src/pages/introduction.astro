@@ -1,0 +1,138 @@
+---
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'introduction:1')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'introduction:1')} />
+      <h2 set:html={t(userLanguage, 'introduction:2')} />
+      <p set:html={t(userLanguage, 'introduction:3')} />
+      <p set:html={t(userLanguage, 'introduction:4')} />
+      <p set:html={t(userLanguage, 'introduction:5')} />
+      <!-- <figure>
+        <picture>
+          <source
+            srcset="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.avif"
+            type="image/avif"
+          />
+          <img
+            alt={t(userLanguage, 'introduction:6')}
+            class="image-home-full"
+            src="/img/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.jpg"
+            width="640px"
+          />
+        </picture>
+        <figcaption>{t(userLanguage, 'introduction:7')}</figcaption>
+      </figure> -->
+      <h2 set:html={t(userLanguage, 'introduction:8')} />
+      <p set:html={t(userLanguage, 'introduction:9')} />
+      <p set:html={t(userLanguage, 'introduction:10')} />
+      <p set:html={t(userLanguage, 'introduction:11')} />
+      <h2 set:html={t(userLanguage, 'introduction:12')} />
+      <p>
+        <!-- <figure>
+          <picture>
+            <source
+              srcset="/img/static-pages/birchbark_w400.avif"
+              type="image/avif"
+            />
+            <img
+              alt={t(userLanguage, 'introduction:13')}
+              class="image-home"
+              src="/img/static-pages/birchbark_w400.jpg"
+            />
+          </picture>
+          <figcaption>{t(userLanguage, 'introduction:14')}</figcaption>
+        </figure> -->
+        <span set:html={t(userLanguage, 'introduction:15')} />
+        <i lang="pi" set:html={t(userLanguage, 'introduction:16')} />
+        <span set:html={t(userLanguage, 'introduction:17')} />
+        <i lang="san" set:html={t(userLanguage, 'introduction:18')} />
+        <span set:html={t(userLanguage, 'introduction:19')} />
+      </p>
+      <ul>
+        <li set:html={t(userLanguage, 'introduction:20')} />
+        <li set:html={t(userLanguage, 'introduction:21')} />
+        <li set:html={t(userLanguage, 'introduction:22')} />
+      </ul>
+      <p set:html={t(userLanguage, 'introduction:23')} />
+      <p set:html={t(userLanguage, 'introduction:24')} />
+      <p set:html={t(userLanguage, 'introduction:25')} />
+      <ul>
+        <li>
+          <strong set:html={t(userLanguage, 'introduction:26')} />
+          <span set:html={t(userLanguage, 'introduction:27')} />
+          <ul>
+            <li set:html={t(userLanguage, 'introduction:28')} />
+            <li set:html={t(userLanguage, 'introduction:29')} />
+            <li set:html={t(userLanguage, 'introduction:30')} />
+            <li set:html={t(userLanguage, 'introduction:31')} />
+          </ul>
+        </li>
+        <li set:html={t(userLanguage, 'introduction:32')} />
+        <li set:html={t(userLanguage, 'introduction:33')} />
+      </ul>
+      <h2 set:html={t(userLanguage, 'introduction:34')} />
+      <p>
+        <!-- <figure>
+          <picture>
+            <source srcset="/img/static-pages/dn20.avif" type="image/avif" />
+            <img
+              alt={t(userLanguage, 'introduction:35')}
+              class="image-home"
+              src="/img/static-pages/dn20.jpg"
+              width="640px"
+            />
+          </picture>
+          <figcaption>{t(userLanguage, 'introduction:36')}</figcaption>
+        </figure> -->
+        <span set:html={t(userLanguage, 'introduction:37')} />
+      </p>
+      <p set:html={t(userLanguage, 'introduction:38')} />
+      <p set:html={t(userLanguage, 'introduction:39')} />
+      <h2 set:html={t(userLanguage, 'introduction:40')} />
+      <p set:html={t(userLanguage, 'introduction:41')} />
+      <h3 set:html={t(userLanguage, 'introduction:42')} />
+      <p set:html={t(userLanguage, 'introduction:43')} />
+      <h4 set:html={t(userLanguage, 'introduction:44')} />
+      <p set:html={t(userLanguage, 'introduction:45')} />
+      <p set:html={t(userLanguage, 'introduction:46')} />
+      <h4 set:html={t(userLanguage, 'introduction:47')} />
+      <p set:html={t(userLanguage, 'introduction:48')} />
+      <h4 set:html={t(userLanguage, 'introduction:49')} />
+      <p set:html={t(userLanguage, 'introduction:50')} />
+      <h3 set:html={t(userLanguage, 'introduction:51')} />
+      <p set:html={t(userLanguage, 'introduction:52')} />
+      <h4 set:html={t(userLanguage, 'introduction:53')} />
+      <p set:html={t(userLanguage, 'introduction:54')} />
+      <p set:html={t(userLanguage, 'introduction:55')} />
+      <p set:html={t(userLanguage, 'introduction:56')} />
+      <h4 set:html={t(userLanguage, 'introduction:57')} />
+      <p set:html={t(userLanguage, 'introduction:58')} />
+      <p set:html={t(userLanguage, 'introduction:59')} />
+      <ul>
+        <li set:html={t(userLanguage, 'introduction:60')} />
+        <li set:html={t(userLanguage, 'introduction:61')} />
+        <li set:html={t(userLanguage, 'introduction:62')} />
+      </ul>
+      <p set:html={t(userLanguage, 'introduction:63')} />
+      <h4 set:html={t(userLanguage, 'introduction:64')} />
+      <p set:html={t(userLanguage, 'introduction:65')} />
+      <h3 set:html={t(userLanguage, 'introduction:66')} />
+      <p set:html={t(userLanguage, 'introduction:67')} />
+      <p set:html={t(userLanguage, 'introduction:68')} />
+      <h3 set:html={t(userLanguage, 'introduction:69')} />
+      <p set:html={t(userLanguage, 'introduction:70')} />
+      <p set:html={t(userLanguage, 'introduction:71')} />
+    </article>
+  </main>
+</Layout>

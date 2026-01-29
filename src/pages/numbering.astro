@@ -1,0 +1,82 @@
+---
+import '~/assets/numbering.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'numbering:1')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'numbering:1')} />
+      <p set:html={t(userLanguage, 'numbering:2')} />
+      <p set:html={t(userLanguage, 'numbering:3')} />
+      <p set:html={t(userLanguage, 'numbering:4')} />
+      <ul>
+        <li set:html={t(userLanguage, 'numbering:5')} />
+        <li set:html={t(userLanguage, 'numbering:6')} />
+        <li set:html={t(userLanguage, 'numbering:7')} />
+        <li set:html={t(userLanguage, 'numbering:8')} />
+        <li set:html={t(userLanguage, 'numbering:9')} />
+      </ul>
+      <h2 set:html={t(userLanguage, 'numbering:10')} />
+      <p set:html={t(userLanguage, 'numbering:11')} />
+      <p set:html={t(userLanguage, 'numbering:12')} />
+      <p set:html={t(userLanguage, 'numbering:13')} />
+      <div class="pre" set:html={t(userLanguage, 'numbering:14')} />
+      <p set:html={t(userLanguage, 'numbering:15')} />
+      <h2 set:html={t(userLanguage, 'numbering:16')} />
+      <p set:html={t(userLanguage, 'numbering:17')} />
+      <p set:html={t(userLanguage, 'numbering:18')} />
+      <h3 set:html={t(userLanguage, 'numbering:19')} />
+      <p set:html={t(userLanguage, 'numbering:20')} />
+      <ul>
+        <li set:html={t(userLanguage, 'numbering:21')} />
+        <li set:html={t(userLanguage, 'numbering:22')} />
+        <li set:html={t(userLanguage, 'numbering:23')} />
+      </ul>
+      <p set:html={t(userLanguage, 'numbering:24')} />
+      <h3 set:html={t(userLanguage, 'numbering:25')} />
+      <p set:html={t(userLanguage, 'numbering:26')} />
+      <h3 set:html={t(userLanguage, 'numbering:27')} />
+      <p set:html={t(userLanguage, 'numbering:28')} />
+      <ul>
+        <li set:html={t(userLanguage, 'numbering:29')} />
+        <li set:html={t(userLanguage, 'numbering:30')} />
+        <li set:html={t(userLanguage, 'numbering:31')} />
+        <li set:html={t(userLanguage, 'numbering:32')} />
+        <li set:html={t(userLanguage, 'numbering:33')} />
+        <li set:html={t(userLanguage, 'numbering:34')} />
+        <li set:html={t(userLanguage, 'numbering:35')} />
+        <li set:html={t(userLanguage, 'numbering:36')} />
+        <li set:html={t(userLanguage, 'numbering:37')} />
+        <li set:html={t(userLanguage, 'numbering:38')} />
+      </ul>
+      <p set:html={t(userLanguage, 'numbering:39')} />
+      <h3 set:html={t(userLanguage, 'numbering:40')} />
+      <p set:html={t(userLanguage, 'numbering:41')} />
+      <p set:html={t(userLanguage, 'numbering:42')} />
+      <h3 set:html={t(userLanguage, 'numbering:43')} />
+      <p set:html={t(userLanguage, 'numbering:44')} />
+      <p set:html={t(userLanguage, 'numbering:45')} />
+      <h2 set:html={t(userLanguage, 'numbering:46')} />
+      <p set:html={t(userLanguage, 'numbering:47')} />
+      <p set:html={t(userLanguage, 'numbering:48')} />
+      <ul>
+        <li set:html={t(userLanguage, 'numbering:49')} />
+        <li set:html={t(userLanguage, 'numbering:50')} />
+        <li set:html={t(userLanguage, 'numbering:51')} />
+      </ul>
+      <h2 set:html={t(userLanguage, 'numbering:52')} />
+      <p set:html={t(userLanguage, 'numbering:53')} />
+      <h2 set:html={t(userLanguage, 'numbering:54')} />
+      <p set:html={t(userLanguage, 'numbering:55')} />
+    </article>
+  </main>
+</Layout>

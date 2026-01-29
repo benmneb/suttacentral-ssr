@@ -1,0 +1,257 @@
+---
+import '~/assets/guides.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'an-introduction-bodhi:1')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'an-introduction-bodhi:1')} />
+      <p class="byline" set:html={t(userLanguage, 'an-introduction-bodhi:2')} />
+      <nav class="contents">
+        <ol>
+          <li set:html={t(userLanguage, 'an-introduction-bodhi:3')} />
+          <li set:html={t(userLanguage, 'an-introduction-bodhi:4')} />
+          <li set:html={t(userLanguage, 'an-introduction-bodhi:5')} />
+          <li set:html={t(userLanguage, 'an-introduction-bodhi:6')} />
+          <li set:html={t(userLanguage, 'an-introduction-bodhi:7')} />
+          <li set:html={t(userLanguage, 'an-introduction-bodhi:8')} />
+          <li set:html={t(userLanguage, 'an-introduction-bodhi:9')} />
+          <li set:html={t(userLanguage, 'an-introduction-bodhi:10')} />
+          <li set:html={t(userLanguage, 'an-introduction-bodhi:11')} />
+          <li set:html={t(userLanguage, 'an-introduction-bodhi:12')} />
+          <li set:html={t(userLanguage, 'an-introduction-bodhi:13')} />
+          <li set:html={t(userLanguage, 'an-introduction-bodhi:14')} />
+          <li set:html={t(userLanguage, 'an-introduction-bodhi:15')} />
+        </ol>
+      </nav>
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:16')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:17')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:18')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:19')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:20')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:21')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:22')} />
+      <h2 id="item1" set:html={t(userLanguage, 'an-introduction-bodhi:23')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:24')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:25')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:26')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:27')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:28')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:29')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:30')} />
+      <h2 id="item2" set:html={t(userLanguage, 'an-introduction-bodhi:31')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:32')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:33')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:34')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:35')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:36')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:37')} />
+      <h2 id="item3" set:html={t(userLanguage, 'an-introduction-bodhi:38')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:39')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:40')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:41')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:42')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:43')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:44')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:45')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:46')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:47')} />
+      <h2 id="item4" set:html={t(userLanguage, 'an-introduction-bodhi:48')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:49')} />
+      <table>
+        <caption set:html={t(userLanguage, 'an-introduction-bodhi:50')} />
+        <tbody>
+          <tr>
+            <th></th>
+            <th set:html={t(userLanguage, 'an-introduction-bodhi:51')} />
+            <th set:html={t(userLanguage, 'an-introduction-bodhi:52')} />
+            <th set:html={t(userLanguage, 'an-introduction-bodhi:53')} />
+            <th set:html={t(userLanguage, 'an-introduction-bodhi:54')} />
+            <th set:html={t(userLanguage, 'an-introduction-bodhi:55')} />
+          </tr>
+          <tr>
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:56')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:57')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:58')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:59')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:60')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:61')} />
+          </tr>
+          <tr>
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:62')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:63')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:64')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:65')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:66')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:67')} />
+          </tr>
+          <tr>
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:68')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:69')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:70')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:71')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:72')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:73')} />
+          </tr>
+          <tr>
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:74')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:75')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:76')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:77')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:78')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:79')} />
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:80')} />
+          </tr>
+        </tfoot>
+      </table>
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:81')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:82')} />
+      <h2 id="item5" set:html={t(userLanguage, 'an-introduction-bodhi:83')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:84')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:85')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:86')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:87')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:88')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:89')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:90')} />
+      <table>
+        <caption set:html={t(userLanguage, 'an-introduction-bodhi:91')} />
+        <tbody>
+          <tr>
+            <th set:html={t(userLanguage, 'an-introduction-bodhi:92')} />
+            <th set:html={t(userLanguage, 'an-introduction-bodhi:93')} />
+            <th set:html={t(userLanguage, 'an-introduction-bodhi:94')} />
+            <th set:html={t(userLanguage, 'an-introduction-bodhi:95')} />
+            <th set:html={t(userLanguage, 'an-introduction-bodhi:96')} />
+            <th set:html={t(userLanguage, 'an-introduction-bodhi:97')} />
+            <th set:html={t(userLanguage, 'an-introduction-bodhi:98')} />
+          </tr>
+          <tr>
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:99')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:100')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:101')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:102')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:103')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:104')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:105')} />
+          </tr>
+          <tr>
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:106')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:107')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:108')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:109')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:110')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:111')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:112')} />
+          </tr>
+          <tr>
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:113')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:114')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:115')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:116')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:117')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:118')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:119')} />
+          </tr>
+          <tr>
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:120')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:121')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:122')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:123')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:124')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:125')} />
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:126')} />
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td set:html={t(userLanguage, 'an-introduction-bodhi:127')} />
+          </tr>
+        </tfoot>
+      </table>
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:128')} />
+      <h2 id="item6" set:html={t(userLanguage, 'an-introduction-bodhi:129')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:130')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:131')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:132')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:133')} />
+      <h2 id="item7" set:html={t(userLanguage, 'an-introduction-bodhi:134')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:135')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:136')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:137')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:138')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:139')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:140')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:141')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:142')} />
+      <h2 id="item8" set:html={t(userLanguage, 'an-introduction-bodhi:143')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:144')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:145')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:146')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:147')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:148')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:149')} />
+      <h2 id="item9" set:html={t(userLanguage, 'an-introduction-bodhi:150')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:151')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:152')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:153')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:154')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:155')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:156')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:157')} />
+      <h2 id="item10" set:html={t(userLanguage, 'an-introduction-bodhi:158')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:159')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:160')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:161')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:162')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:163')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:164')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:165')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:166')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:167')} />
+      <h2 id="item11" set:html={t(userLanguage, 'an-introduction-bodhi:168')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:169')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:170')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:171')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:172')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:173')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:174')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:175')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:176')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:177')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:178')} />
+      <h2 id="item12" set:html={t(userLanguage, 'an-introduction-bodhi:179')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:180')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:181')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:182')} />
+      <h2 id="item13" set:html={t(userLanguage, 'an-introduction-bodhi:183')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:184')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:185')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:186')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:187')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:188')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:189')} />
+      <p set:html={t(userLanguage, 'an-introduction-bodhi:190')} />
+      <aside class="static-copyright">
+        <p set:html={t(userLanguage, 'an-introduction-bodhi:191')} />
+        <blockquote>
+          <p set:html={t(userLanguage, 'an-introduction-bodhi:192')} />
+          <p set:html={t(userLanguage, 'an-introduction-bodhi:193')} />
+        </blockquote>
+      </aside>
+    </article>
+  </main>
+</Layout>

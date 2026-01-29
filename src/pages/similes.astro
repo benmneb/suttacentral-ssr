@@ -1,0 +1,1187 @@
+---
+import '~/assets/indexes.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'similes:1')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'similes:1')} />
+      <nav class="contents">
+        <ul class="entry-list">
+          <li set:html={t(userLanguage, 'similes:2')} />
+          <li set:html={t(userLanguage, 'similes:3')} />
+          <li set:html={t(userLanguage, 'similes:4')} />
+          <li set:html={t(userLanguage, 'similes:5')} />
+          <li set:html={t(userLanguage, 'similes:6')} />
+          <li set:html={t(userLanguage, 'similes:7')} />
+          <li set:html={t(userLanguage, 'similes:8')} />
+          <li set:html={t(userLanguage, 'similes:9')} />
+          <li set:html={t(userLanguage, 'similes:10')} />
+          <li set:html={t(userLanguage, 'similes:11')} />
+          <li set:html={t(userLanguage, 'similes:12')} />
+          <li set:html={t(userLanguage, 'similes:13')} />
+          <li set:html={t(userLanguage, 'similes:14')} />
+          <li set:html={t(userLanguage, 'similes:15')} />
+          <li set:html={t(userLanguage, 'similes:16')} />
+          <li set:html={t(userLanguage, 'similes:17')} />
+          <li set:html={t(userLanguage, 'similes:18')} />
+          <li set:html={t(userLanguage, 'similes:19')} />
+          <li set:html={t(userLanguage, 'similes:20')} />
+          <li set:html={t(userLanguage, 'similes:21')} />
+          <li set:html={t(userLanguage, 'similes:22')} />
+          <li set:html={t(userLanguage, 'similes:23')} />
+          <li set:html={t(userLanguage, 'similes:24')} />
+          <li set:html={t(userLanguage, 'similes:25')} />
+        </ul>
+      </nav>
+      <h2 set:html={t(userLanguage, 'similes:26')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:27')} />
+        <dd set:html={t(userLanguage, 'similes:28')} />
+        <dt set:html={t(userLanguage, 'similes:29')} />
+        <dd set:html={t(userLanguage, 'similes:30')} />
+        <dt set:html={t(userLanguage, 'similes:31')} />
+        <dd set:html={t(userLanguage, 'similes:32')} />
+        <dt id="archer" set:html={t(userLanguage, 'similes:33')} />
+        <dd set:html={t(userLanguage, 'similes:34')} />
+        <dd set:html={t(userLanguage, 'similes:35')} />
+        <dd set:html={t(userLanguage, 'similes:36')} />
+        <dd set:html={t(userLanguage, 'similes:37')} />
+        <dt id="arrow" set:html={t(userLanguage, 'similes:38')} />
+        <dd set:html={t(userLanguage, 'similes:39')} />
+        <dd set:html={t(userLanguage, 'similes:40')} />
+        <dd set:html={t(userLanguage, 'similes:41')} />
+        <dd set:html={t(userLanguage, 'similes:42')} />
+        <dd set:html={t(userLanguage, 'similes:43')} />
+        <dd set:html={t(userLanguage, 'similes:44')} />
+        <dd set:html={t(userLanguage, 'similes:45')} />
+        <dd set:html={t(userLanguage, 'similes:46')} />
+        <dd set:html={t(userLanguage, 'similes:47')} />
+        <dd set:html={t(userLanguage, 'similes:48')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:49')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:50')} />
+        <dd set:html={t(userLanguage, 'similes:51')} />
+        <dd set:html={t(userLanguage, 'similes:52')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:53')} />
+        <dd set:html={t(userLanguage, 'similes:54')} />
+        <dt set:html={t(userLanguage, 'similes:55')} />
+        <dd set:html={t(userLanguage, 'similes:56')} />
+        <dt set:html={t(userLanguage, 'similes:57')} />
+        <dd set:html={t(userLanguage, 'similes:58')} />
+        <dt set:html={t(userLanguage, 'similes:59')} />
+        <dd set:html={t(userLanguage, 'similes:60')} />
+        <dt set:html={t(userLanguage, 'similes:61')} />
+        <dd set:html={t(userLanguage, 'similes:62')} />
+        <dt set:html={t(userLanguage, 'similes:63')} />
+        <dd set:html={t(userLanguage, 'similes:64')} />
+        <dt set:html={t(userLanguage, 'similes:65')} />
+        <dd set:html={t(userLanguage, 'similes:66')} />
+        <dd set:html={t(userLanguage, 'similes:67')} />
+        <dd set:html={t(userLanguage, 'similes:68')} />
+        <dd set:html={t(userLanguage, 'similes:69')} />
+        <dd set:html={t(userLanguage, 'similes:70')} />
+        <dd set:html={t(userLanguage, 'similes:71')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:72')} />
+        <dd set:html={t(userLanguage, 'similes:73')} />
+        <dt set:html={t(userLanguage, 'similes:74')} />
+        <dd set:html={t(userLanguage, 'similes:75')} />
+        <dd set:html={t(userLanguage, 'similes:76')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:77')} />
+        <dd set:html={t(userLanguage, 'similes:78')} />
+        <dt set:html={t(userLanguage, 'similes:79')} />
+        <dd set:html={t(userLanguage, 'similes:80')} />
+        <dt set:html={t(userLanguage, 'similes:81')} />
+        <dd set:html={t(userLanguage, 'similes:82')} />
+        <dt set:html={t(userLanguage, 'similes:83')} />
+        <dd set:html={t(userLanguage, 'similes:84')} />
+        <dt set:html={t(userLanguage, 'similes:85')} />
+        <dd set:html={t(userLanguage, 'similes:86')} />
+        <dd set:html={t(userLanguage, 'similes:87')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:88')} />
+        <dd set:html={t(userLanguage, 'similes:89')} />
+        <dt set:html={t(userLanguage, 'similes:90')} />
+        <dd set:html={t(userLanguage, 'similes:91')} />
+        <dt set:html={t(userLanguage, 'similes:92')} />
+        <dd set:html={t(userLanguage, 'similes:93')} />
+        <dt set:html={t(userLanguage, 'similes:94')} />
+        <dd set:html={t(userLanguage, 'similes:95')} />
+        <dt set:html={t(userLanguage, 'similes:96')} />
+        <dd set:html={t(userLanguage, 'similes:97')} />
+        <dt id="bull" set:html={t(userLanguage, 'similes:98')} />
+        <dd set:html={t(userLanguage, 'similes:99')} />
+        <dd set:html={t(userLanguage, 'similes:100')} />
+        <dd set:html={t(userLanguage, 'similes:101')} />
+        <dt set:html={t(userLanguage, 'similes:102')} />
+        <dd set:html={t(userLanguage, 'similes:103')} />
+        <dt set:html={t(userLanguage, 'similes:104')} />
+        <dd set:html={t(userLanguage, 'similes:105')} />
+        <dt set:html={t(userLanguage, 'similes:106')} />
+        <dd set:html={t(userLanguage, 'similes:107')} />
+        <dt set:html={t(userLanguage, 'similes:108')} />
+        <dd set:html={t(userLanguage, 'similes:109')} />
+        <dd set:html={t(userLanguage, 'similes:110')} />
+        <dd set:html={t(userLanguage, 'similes:111')} />
+        <dt set:html={t(userLanguage, 'similes:112')} />
+        <dd set:html={t(userLanguage, 'similes:113')} />
+        <dt set:html={t(userLanguage, 'similes:114')} />
+        <dd set:html={t(userLanguage, 'similes:115')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:116')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:117')} />
+        <dd set:html={t(userLanguage, 'similes:118')} />
+        <dt id="carpenter" set:html={t(userLanguage, 'similes:119')} />
+        <dd set:html={t(userLanguage, 'similes:120')} />
+        <dd set:html={t(userLanguage, 'similes:121')} />
+        <dd set:html={t(userLanguage, 'similes:122')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:123')} />
+        <dd set:html={t(userLanguage, 'similes:124')} />
+        <dt set:html={t(userLanguage, 'similes:125')} />
+        <dd set:html={t(userLanguage, 'similes:126')} />
+        <dd set:html={t(userLanguage, 'similes:127')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:128')} />
+        <dd set:html={t(userLanguage, 'similes:129')} />
+        <dd set:html={t(userLanguage, 'similes:130')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:131')} />
+        <dd set:html={t(userLanguage, 'similes:132')} />
+        <dt set:html={t(userLanguage, 'similes:133')} />
+        <dd set:html={t(userLanguage, 'similes:134')} />
+        <dd set:html={t(userLanguage, 'similes:135')} />
+        <dd set:html={t(userLanguage, 'similes:136')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:137')} />
+        <dd set:html={t(userLanguage, 'similes:138')} />
+        <dt set:html={t(userLanguage, 'similes:139')} />
+        <dd set:html={t(userLanguage, 'similes:140')} />
+        <dd set:html={t(userLanguage, 'similes:141')} />
+        <dd set:html={t(userLanguage, 'similes:142')} />
+        <dd set:html={t(userLanguage, 'similes:143')} />
+        <dd set:html={t(userLanguage, 'similes:144')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:145')} />
+        <dd set:html={t(userLanguage, 'similes:146')} />
+        <dt id="charioteer" set:html={t(userLanguage, 'similes:147')} />
+        <dd set:html={t(userLanguage, 'similes:148')} />
+        <dt set:html={t(userLanguage, 'similes:149')} />
+        <dd set:html={t(userLanguage, 'similes:150')} />
+        <dt set:html={t(userLanguage, 'similes:151')} />
+        <dd set:html={t(userLanguage, 'similes:152')} />
+        <dt set:html={t(userLanguage, 'similes:153')} />
+        <dd set:html={t(userLanguage, 'similes:154')} />
+        <dt set:html={t(userLanguage, 'similes:155')} />
+        <dd set:html={t(userLanguage, 'similes:156')} />
+        <dt set:html={t(userLanguage, 'similes:157')} />
+        <dd set:html={t(userLanguage, 'similes:158')} />
+        <dt set:html={t(userLanguage, 'similes:159')} />
+        <dd set:html={t(userLanguage, 'similes:160')} />
+        <dt set:html={t(userLanguage, 'similes:161')} />
+        <dd set:html={t(userLanguage, 'similes:162')} />
+        <dt set:html={t(userLanguage, 'similes:163')} />
+        <dd set:html={t(userLanguage, 'similes:164')} />
+        <dd set:html={t(userLanguage, 'similes:165')} />
+        <dd set:html={t(userLanguage, 'similes:166')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:167')} />
+        <dd set:html={t(userLanguage, 'similes:168')} />
+        <dt set:html={t(userLanguage, 'similes:169')} />
+        <dd set:html={t(userLanguage, 'similes:170')} />
+        <dt set:html={t(userLanguage, 'similes:171')} />
+        <dd set:html={t(userLanguage, 'similes:172')} />
+        <dt set:html={t(userLanguage, 'similes:173')} />
+        <dd set:html={t(userLanguage, 'similes:174')} />
+        <dt set:html={t(userLanguage, 'similes:175')} />
+        <dd set:html={t(userLanguage, 'similes:176')} />
+        <dt set:html={t(userLanguage, 'similes:177')} />
+        <dd set:html={t(userLanguage, 'similes:178')} />
+        <dt id="cow" set:html={t(userLanguage, 'similes:179')} />
+        <dd set:html={t(userLanguage, 'similes:180')} />
+        <dd set:html={t(userLanguage, 'similes:181')} />
+        <dd set:html={t(userLanguage, 'similes:182')} />
+        <dd set:html={t(userLanguage, 'similes:183')} />
+        <dd set:html={t(userLanguage, 'similes:184')} />
+        <dd set:html={t(userLanguage, 'similes:185')} />
+        <dd set:html={t(userLanguage, 'similes:186')} />
+        <dd set:html={t(userLanguage, 'similes:187')} />
+        <dd set:html={t(userLanguage, 'similes:188')} />
+        <dd set:html={t(userLanguage, 'similes:189')} />
+        <dt id="cowherd" set:html={t(userLanguage, 'similes:190')} />
+        <dd set:html={t(userLanguage, 'similes:191')} />
+        <dd set:html={t(userLanguage, 'similes:192')} />
+        <dd set:html={t(userLanguage, 'similes:193')} />
+        <dd set:html={t(userLanguage, 'similes:194')} />
+        <dd set:html={t(userLanguage, 'similes:195')} />
+        <dd set:html={t(userLanguage, 'similes:196')} />
+        <dd set:html={t(userLanguage, 'similes:197')} />
+        <dd set:html={t(userLanguage, 'similes:198')} />
+        <dt id="crafts" set:html={t(userLanguage, 'similes:199')} />
+        <dd set:html={t(userLanguage, 'similes:200')} />
+        <dt set:html={t(userLanguage, 'similes:201')} />
+        <dd set:html={t(userLanguage, 'similes:202')} />
+        <dt set:html={t(userLanguage, 'similes:203')} />
+        <dd set:html={t(userLanguage, 'similes:204')} />
+        <dt set:html={t(userLanguage, 'similes:205')} />
+        <dd set:html={t(userLanguage, 'similes:206')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:207')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:208')} />
+        <dd set:html={t(userLanguage, 'similes:209')} />
+        <dt set:html={t(userLanguage, 'similes:210')} />
+        <dd set:html={t(userLanguage, 'similes:211')} />
+        <dt set:html={t(userLanguage, 'similes:212')} />
+        <dd set:html={t(userLanguage, 'similes:213')} />
+        <dt set:html={t(userLanguage, 'similes:214')} />
+        <dd set:html={t(userLanguage, 'similes:215')} />
+        <dt set:html={t(userLanguage, 'similes:216')} />
+        <dd set:html={t(userLanguage, 'similes:217')} />
+        <dt set:html={t(userLanguage, 'similes:218')} />
+        <dd set:html={t(userLanguage, 'similes:219')} />
+        <dt id="doctor" set:html={t(userLanguage, 'similes:220')} />
+        <dd set:html={t(userLanguage, 'similes:221')} />
+        <dt set:html={t(userLanguage, 'similes:222')} />
+        <dd set:html={t(userLanguage, 'similes:223')} />
+        <dd set:html={t(userLanguage, 'similes:224')} />
+        <dd set:html={t(userLanguage, 'similes:225')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:226')} />
+        <dd set:html={t(userLanguage, 'similes:227')} />
+        <dt set:html={t(userLanguage, 'similes:228')} />
+        <dd set:html={t(userLanguage, 'similes:229')} />
+        <dt set:html={t(userLanguage, 'similes:230')} />
+        <dd set:html={t(userLanguage, 'similes:231')} />
+        <dd set:html={t(userLanguage, 'similes:232')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:233')} />
+        <dd set:html={t(userLanguage, 'similes:234')} />
+        <dd set:html={t(userLanguage, 'similes:235')} />
+        <dd set:html={t(userLanguage, 'similes:236')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:237')} />
+        <dd set:html={t(userLanguage, 'similes:238')} />
+        <dt set:html={t(userLanguage, 'similes:239')} />
+        <dd set:html={t(userLanguage, 'similes:240')} />
+        <dt set:html={t(userLanguage, 'similes:241')} />
+        <dd set:html={t(userLanguage, 'similes:242')} />
+        <dt set:html={t(userLanguage, 'similes:243')} />
+        <dd set:html={t(userLanguage, 'similes:244')} />
+        <dd set:html={t(userLanguage, 'similes:245')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:246')} />
+        <dd set:html={t(userLanguage, 'similes:247')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:248')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:249')} />
+        <dd set:html={t(userLanguage, 'similes:250')} />
+        <dt id="elephant" set:html={t(userLanguage, 'similes:251')} />
+        <dd set:html={t(userLanguage, 'similes:252')} />
+        <dd set:html={t(userLanguage, 'similes:253')} />
+        <dd set:html={t(userLanguage, 'similes:254')} />
+        <dd set:html={t(userLanguage, 'similes:255')} />
+        <dd set:html={t(userLanguage, 'similes:256')} />
+        <dd set:html={t(userLanguage, 'similes:257')} />
+        <dd set:html={t(userLanguage, 'similes:258')} />
+        <dd set:html={t(userLanguage, 'similes:259')} />
+        <dd set:html={t(userLanguage, 'similes:260')} />
+        <dd set:html={t(userLanguage, 'similes:261')} />
+        <dd set:html={t(userLanguage, 'similes:262')} />
+        <dd set:html={t(userLanguage, 'similes:263')} />
+        <dd></dd>
+        <dt id="e-tamer" set:html={t(userLanguage, 'similes:264')} />
+        <dd set:html={t(userLanguage, 'similes:265')} />
+        <dt set:html={t(userLanguage, 'similes:266')} />
+        <dd set:html={t(userLanguage, 'similes:267')} />
+        <dt set:html={t(userLanguage, 'similes:268')} />
+        <dd set:html={t(userLanguage, 'similes:269')} />
+        <dt set:html={t(userLanguage, 'similes:270')} />
+        <dd set:html={t(userLanguage, 'similes:271')} />
+        <dd set:html={t(userLanguage, 'similes:272')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:273')} />
+        <dd set:html={t(userLanguage, 'similes:274')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:275')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:276')} />
+        <dd set:html={t(userLanguage, 'similes:277')} />
+        <dt set:html={t(userLanguage, 'similes:278')} />
+        <dd set:html={t(userLanguage, 'similes:279')} />
+        <dt set:html={t(userLanguage, 'similes:280')} />
+        <dd set:html={t(userLanguage, 'similes:281')} />
+        <dd set:html={t(userLanguage, 'similes:282')} />
+        <dd></dd>
+        <dt id="fire" set:html={t(userLanguage, 'similes:283')} />
+        <dd set:html={t(userLanguage, 'similes:284')} />
+        <dd set:html={t(userLanguage, 'similes:285')} />
+        <dd set:html={t(userLanguage, 'similes:286')} />
+        <dd set:html={t(userLanguage, 'similes:287')} />
+        <dd set:html={t(userLanguage, 'similes:288')} />
+        <dd set:html={t(userLanguage, 'similes:289')} />
+        <dd set:html={t(userLanguage, 'similes:290')} />
+        <dd set:html={t(userLanguage, 'similes:291')} />
+        <dd set:html={t(userLanguage, 'similes:292')} />
+        <dd set:html={t(userLanguage, 'similes:293')} />
+        <dd set:html={t(userLanguage, 'similes:294')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:295')} />
+        <dd set:html={t(userLanguage, 'similes:296')} />
+        <dd set:html={t(userLanguage, 'similes:297')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:298')} />
+        <dd set:html={t(userLanguage, 'similes:299')} />
+        <dd set:html={t(userLanguage, 'similes:300')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:301')} />
+        <dd set:html={t(userLanguage, 'similes:302')} />
+        <dd set:html={t(userLanguage, 'similes:303')} />
+        <dd set:html={t(userLanguage, 'similes:304')} />
+        <dd set:html={t(userLanguage, 'similes:305')} />
+        <dd set:html={t(userLanguage, 'similes:306')} />
+        <dd set:html={t(userLanguage, 'similes:307')} />
+        <dd set:html={t(userLanguage, 'similes:308')} />
+        <dd set:html={t(userLanguage, 'similes:309')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:310')} />
+        <dd set:html={t(userLanguage, 'similes:311')} />
+        <dt set:html={t(userLanguage, 'similes:312')} />
+        <dd set:html={t(userLanguage, 'similes:313')} />
+        <dd set:html={t(userLanguage, 'similes:314')} />
+        <dd set:html={t(userLanguage, 'similes:315')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:316')} />
+        <dd set:html={t(userLanguage, 'similes:317')} />
+        <dd set:html={t(userLanguage, 'similes:318')} />
+        <dd set:html={t(userLanguage, 'similes:319')} />
+        <dd set:html={t(userLanguage, 'similes:320')} />
+        <dt set:html={t(userLanguage, 'similes:321')} />
+        <dd set:html={t(userLanguage, 'similes:322')} />
+        <dt id="flood" set:html={t(userLanguage, 'similes:323')} />
+        <dd set:html={t(userLanguage, 'similes:324')} />
+        <dd set:html={t(userLanguage, 'similes:325')} />
+        <dd set:html={t(userLanguage, 'similes:326')} />
+        <dd set:html={t(userLanguage, 'similes:327')} />
+        <dt id="flower" set:html={t(userLanguage, 'similes:328')} />
+        <dd set:html={t(userLanguage, 'similes:329')} />
+        <dd set:html={t(userLanguage, 'similes:330')} />
+        <dd set:html={t(userLanguage, 'similes:331')} />
+        <dd set:html={t(userLanguage, 'similes:332')} />
+        <dt set:html={t(userLanguage, 'similes:333')} />
+        <dd set:html={t(userLanguage, 'similes:334')} />
+        <dt set:html={t(userLanguage, 'similes:335')} />
+        <dd set:html={t(userLanguage, 'similes:336')} />
+        <dt set:html={t(userLanguage, 'similes:337')} />
+        <dd set:html={t(userLanguage, 'similes:338')} />
+        <dt set:html={t(userLanguage, 'similes:339')} />
+        <dd set:html={t(userLanguage, 'similes:340')} />
+        <dd set:html={t(userLanguage, 'similes:341')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:342')} />
+        <dd set:html={t(userLanguage, 'similes:343')} />
+        <dt set:html={t(userLanguage, 'similes:344')} />
+        <dd set:html={t(userLanguage, 'similes:345')} />
+        <dd set:html={t(userLanguage, 'similes:346')} />
+        <dd set:html={t(userLanguage, 'similes:347')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:348')} />
+        <dd set:html={t(userLanguage, 'similes:349')} />
+        <dd set:html={t(userLanguage, 'similes:350')} />
+        <dd set:html={t(userLanguage, 'similes:351')} />
+        <dd set:html={t(userLanguage, 'similes:352')} />
+        <dd set:html={t(userLanguage, 'similes:353')} />
+        <dd set:html={t(userLanguage, 'similes:354')} />
+        <dd set:html={t(userLanguage, 'similes:355')} />
+        <dd set:html={t(userLanguage, 'similes:356')} />
+        <dd set:html={t(userLanguage, 'similes:357')} />
+        <dd set:html={t(userLanguage, 'similes:358')} />
+        <dd set:html={t(userLanguage, 'similes:359')} />
+        <dd set:html={t(userLanguage, 'similes:360')} />
+        <dd set:html={t(userLanguage, 'similes:361')} />
+        <dd set:html={t(userLanguage, 'similes:362')} />
+        <dd set:html={t(userLanguage, 'similes:363')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:364')} />
+        <dd set:html={t(userLanguage, 'similes:365')} />
+        <dt set:html={t(userLanguage, 'similes:366')} />
+        <dd set:html={t(userLanguage, 'similes:367')} />
+        <dt set:html={t(userLanguage, 'similes:368')} />
+        <dd set:html={t(userLanguage, 'similes:369')} />
+        <dt set:html={t(userLanguage, 'similes:370')} />
+        <dd set:html={t(userLanguage, 'similes:371')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:372')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:373')} />
+        <dd set:html={t(userLanguage, 'similes:374')} />
+        <dt set:html={t(userLanguage, 'similes:375')} />
+        <dd set:html={t(userLanguage, 'similes:376')} />
+        <dt set:html={t(userLanguage, 'similes:377')} />
+        <dd set:html={t(userLanguage, 'similes:378')} />
+        <dt set:html={t(userLanguage, 'similes:379')} />
+        <dd set:html={t(userLanguage, 'similes:380')} />
+        <dd set:html={t(userLanguage, 'similes:381')} />
+        <dd set:html={t(userLanguage, 'similes:382')} />
+        <dd set:html={t(userLanguage, 'similes:383')} />
+        <dd set:html={t(userLanguage, 'similes:384')} />
+        <dd></dd>
+        <dt id="goldsmith" set:html={t(userLanguage, 'similes:385')} />
+        <dd set:html={t(userLanguage, 'similes:386')} />
+        <dd set:html={t(userLanguage, 'similes:387')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:388')} />
+        <dd set:html={t(userLanguage, 'similes:389')} />
+        <dt set:html={t(userLanguage, 'similes:390')} />
+        <dd set:html={t(userLanguage, 'similes:391')} />
+        <dt set:html={t(userLanguage, 'similes:392')} />
+        <dd set:html={t(userLanguage, 'similes:393')} />
+        <dd set:html={t(userLanguage, 'similes:394')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:395')} />
+        <dd set:html={t(userLanguage, 'similes:396')} />
+        <dt set:html={t(userLanguage, 'similes:397')} />
+        <dd set:html={t(userLanguage, 'similes:398')} />
+        <dt set:html={t(userLanguage, 'similes:399')} />
+        <dd set:html={t(userLanguage, 'similes:400')} />
+        <dt set:html={t(userLanguage, 'similes:401')} />
+        <dd set:html={t(userLanguage, 'similes:402')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:403')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:404')} />
+        <dd set:html={t(userLanguage, 'similes:405')} />
+        <dt set:html={t(userLanguage, 'similes:406')} />
+        <dd set:html={t(userLanguage, 'similes:407')} />
+        <dt set:html={t(userLanguage, 'similes:408')} />
+        <dd set:html={t(userLanguage, 'similes:409')} />
+        <dt set:html={t(userLanguage, 'similes:410')} />
+        <dd set:html={t(userLanguage, 'similes:411')} />
+        <dt set:html={t(userLanguage, 'similes:412')} />
+        <dd set:html={t(userLanguage, 'similes:413')} />
+        <dt set:html={t(userLanguage, 'similes:414')} />
+        <dd set:html={t(userLanguage, 'similes:415')} />
+        <dt set:html={t(userLanguage, 'similes:416')} />
+        <dd set:html={t(userLanguage, 'similes:417')} />
+        <dd set:html={t(userLanguage, 'similes:418')} />
+        <dd set:html={t(userLanguage, 'similes:419')} />
+        <dd set:html={t(userLanguage, 'similes:420')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:421')} />
+        <dd set:html={t(userLanguage, 'similes:422')} />
+        <dt set:html={t(userLanguage, 'similes:423')} />
+        <dd set:html={t(userLanguage, 'similes:424')} />
+        <dt set:html={t(userLanguage, 'similes:425')} />
+        <dd set:html={t(userLanguage, 'similes:426')} />
+        <dt set:html={t(userLanguage, 'similes:427')} />
+        <dd set:html={t(userLanguage, 'similes:428')} />
+        <dt set:html={t(userLanguage, 'similes:429')} />
+        <dd set:html={t(userLanguage, 'similes:430')} />
+        <dt set:html={t(userLanguage, 'similes:431')} />
+        <dd set:html={t(userLanguage, 'similes:432')} />
+        <dt set:html={t(userLanguage, 'similes:433')} />
+        <dd set:html={t(userLanguage, 'similes:434')} />
+        <dt set:html={t(userLanguage, 'similes:435')} />
+        <dd set:html={t(userLanguage, 'similes:436')} />
+        <dt id="horse" set:html={t(userLanguage, 'similes:437')} />
+        <dd set:html={t(userLanguage, 'similes:438')} />
+        <dd set:html={t(userLanguage, 'similes:439')} />
+        <dd set:html={t(userLanguage, 'similes:440')} />
+        <dd set:html={t(userLanguage, 'similes:441')} />
+        <dd set:html={t(userLanguage, 'similes:442')} />
+        <dd set:html={t(userLanguage, 'similes:443')} />
+        <dd set:html={t(userLanguage, 'similes:444')} />
+        <dd set:html={t(userLanguage, 'similes:445')} />
+        <dd set:html={t(userLanguage, 'similes:446')} />
+        <dd set:html={t(userLanguage, 'similes:447')} />
+        <dd></dd>
+        <dt id="horsetrainer" set:html={t(userLanguage, 'similes:448')} />
+        <dd set:html={t(userLanguage, 'similes:449')} />
+        <dt id="house" set:html={t(userLanguage, 'similes:450')} />
+        <dd set:html={t(userLanguage, 'similes:451')} />
+        <dd set:html={t(userLanguage, 'similes:452')} />
+        <dd set:html={t(userLanguage, 'similes:453')} />
+        <dd set:html={t(userLanguage, 'similes:454')} />
+        <dd set:html={t(userLanguage, 'similes:455')} />
+        <dd></dd>
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:456')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:457')} />
+        <dd set:html={t(userLanguage, 'similes:458')} />
+        <dt set:html={t(userLanguage, 'similes:459')} />
+        <dd set:html={t(userLanguage, 'similes:460')} />
+        <dt set:html={t(userLanguage, 'similes:461')} />
+        <dd set:html={t(userLanguage, 'similes:462')} />
+        <dt set:html={t(userLanguage, 'similes:463')} />
+        <dd set:html={t(userLanguage, 'similes:464')} />
+        <dt set:html={t(userLanguage, 'similes:465')} />
+        <dd set:html={t(userLanguage, 'similes:466')} />
+        <dt set:html={t(userLanguage, 'similes:467')} />
+        <dd set:html={t(userLanguage, 'similes:468')} />
+        <dd set:html={t(userLanguage, 'similes:469')} />
+        <dd></dd>
+        <dt id="irrigator" set:html={t(userLanguage, 'similes:470')} />
+        <dd set:html={t(userLanguage, 'similes:471')} />
+        <dt set:html={t(userLanguage, 'similes:472')} />
+        <dd set:html={t(userLanguage, 'similes:473')} />
+        <dt set:html={t(userLanguage, 'similes:474')} />
+        <dd set:html={t(userLanguage, 'similes:475')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:476')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:477')} />
+        <dd set:html={t(userLanguage, 'similes:478')} />
+        <dt set:html={t(userLanguage, 'similes:479')} />
+        <dd set:html={t(userLanguage, 'similes:480')} />
+        <dt id="jar" set:html={t(userLanguage, 'similes:481')} />
+        <dd set:html={t(userLanguage, 'similes:482')} />
+        <dd set:html={t(userLanguage, 'similes:483')} />
+        <dd set:html={t(userLanguage, 'similes:484')} />
+        <dd></dd>
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:485')} />
+      <dl>
+        <dt id="king" set:html={t(userLanguage, 'similes:486')} />
+        <dd set:html={t(userLanguage, 'similes:487')} />
+        <dd set:html={t(userLanguage, 'similes:488')} />
+        <dd set:html={t(userLanguage, 'similes:489')} />
+        <dd></dd>
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:490')} />
+      <dl>
+        <dt id="lake" set:html={t(userLanguage, 'similes:491')} />
+        <dd set:html={t(userLanguage, 'similes:492')} />
+        <dd set:html={t(userLanguage, 'similes:493')} />
+        <dd set:html={t(userLanguage, 'similes:494')} />
+        <dd set:html={t(userLanguage, 'similes:495')} />
+        <dd set:html={t(userLanguage, 'similes:496')} />
+        <dd set:html={t(userLanguage, 'similes:497')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:498')} />
+        <dd set:html={t(userLanguage, 'similes:499')} />
+        <dd set:html={t(userLanguage, 'similes:500')} />
+        <dd set:html={t(userLanguage, 'similes:501')} />
+        <dd set:html={t(userLanguage, 'similes:502')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:503')} />
+        <dd set:html={t(userLanguage, 'similes:504')} />
+        <dt set:html={t(userLanguage, 'similes:505')} />
+        <dd set:html={t(userLanguage, 'similes:506')} />
+        <dt set:html={t(userLanguage, 'similes:507')} />
+        <dd set:html={t(userLanguage, 'similes:508')} />
+        <dd set:html={t(userLanguage, 'similes:509')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:510')} />
+        <dd set:html={t(userLanguage, 'similes:511')} />
+        <dt set:html={t(userLanguage, 'similes:512')} />
+        <dd set:html={t(userLanguage, 'similes:513')} />
+        <dt set:html={t(userLanguage, 'similes:514')} />
+        <dd set:html={t(userLanguage, 'similes:515')} />
+        <dt set:html={t(userLanguage, 'similes:516')} />
+        <dd set:html={t(userLanguage, 'similes:517')} />
+        <dt id="lion" set:html={t(userLanguage, 'similes:518')} />
+        <dd set:html={t(userLanguage, 'similes:519')} />
+        <dd set:html={t(userLanguage, 'similes:520')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:521')} />
+        <dd set:html={t(userLanguage, 'similes:522')} />
+        <dt set:html={t(userLanguage, 'similes:523')} />
+        <dd set:html={t(userLanguage, 'similes:524')} />
+        <dt set:html={t(userLanguage, 'similes:525')} />
+        <dd set:html={t(userLanguage, 'similes:526')} />
+        <dt set:html={t(userLanguage, 'similes:527')} />
+        <dd set:html={t(userLanguage, 'similes:528')} />
+        <dt id="lotus" set:html={t(userLanguage, 'similes:529')} />
+        <dd set:html={t(userLanguage, 'similes:530')} />
+        <dd set:html={t(userLanguage, 'similes:531')} />
+        <dd set:html={t(userLanguage, 'similes:532')} />
+        <dd set:html={t(userLanguage, 'similes:533')} />
+        <dd set:html={t(userLanguage, 'similes:534')} />
+        <dd set:html={t(userLanguage, 'similes:535')} />
+        <dd set:html={t(userLanguage, 'similes:536')} />
+        <dd set:html={t(userLanguage, 'similes:537')} />
+        <dt set:html={t(userLanguage, 'similes:538')} />
+        <dd set:html={t(userLanguage, 'similes:539')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:540')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:541')} />
+        <dd set:html={t(userLanguage, 'similes:542')} />
+        <dt id="magician" set:html={t(userLanguage, 'similes:543')} />
+        <dd set:html={t(userLanguage, 'similes:544')} />
+        <dt id="man" set:html={t(userLanguage, 'similes:545')} />
+        <dd set:html={t(userLanguage, 'similes:546')} />
+        <dd set:html={t(userLanguage, 'similes:547')} />
+        <dd set:html={t(userLanguage, 'similes:548')} />
+        <dd set:html={t(userLanguage, 'similes:549')} />
+        <dd set:html={t(userLanguage, 'similes:550')} />
+        <dd set:html={t(userLanguage, 'similes:551')} />
+        <dd set:html={t(userLanguage, 'similes:552')} />
+        <dd set:html={t(userLanguage, 'similes:553')} />
+        <dd set:html={t(userLanguage, 'similes:554')} />
+        <dd set:html={t(userLanguage, 'similes:555')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:556')} />
+        <dd set:html={t(userLanguage, 'similes:557')} />
+        <dt set:html={t(userLanguage, 'similes:558')} />
+        <dd set:html={t(userLanguage, 'similes:559')} />
+        <dt set:html={t(userLanguage, 'similes:560')} />
+        <dd set:html={t(userLanguage, 'similes:561')} />
+        <dt set:html={t(userLanguage, 'similes:562')} />
+        <dd set:html={t(userLanguage, 'similes:563')} />
+        <dt set:html={t(userLanguage, 'similes:564')} />
+        <dd set:html={t(userLanguage, 'similes:565')} />
+        <dd set:html={t(userLanguage, 'similes:566')} />
+        <dd set:html={t(userLanguage, 'similes:567')} />
+        <dd set:html={t(userLanguage, 'similes:568')} />
+        <dt set:html={t(userLanguage, 'similes:569')} />
+        <dd set:html={t(userLanguage, 'similes:570')} />
+        <dd set:html={t(userLanguage, 'similes:571')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:572')} />
+        <dd set:html={t(userLanguage, 'similes:573')} />
+        <dt set:html={t(userLanguage, 'similes:574')} />
+        <dd set:html={t(userLanguage, 'similes:575')} />
+        <dt set:html={t(userLanguage, 'similes:576')} />
+        <dd set:html={t(userLanguage, 'similes:577')} />
+        <dt id="monkey" set:html={t(userLanguage, 'similes:578')} />
+        <dd set:html={t(userLanguage, 'similes:579')} />
+        <dd set:html={t(userLanguage, 'similes:580')} />
+        <dd set:html={t(userLanguage, 'similes:581')} />
+        <dd set:html={t(userLanguage, 'similes:582')} />
+        <dd></dd>
+        <dt id="moon" set:html={t(userLanguage, 'similes:583')} />
+        <dd set:html={t(userLanguage, 'similes:584')} />
+        <dd set:html={t(userLanguage, 'similes:585')} />
+        <dd set:html={t(userLanguage, 'similes:586')} />
+        <dd set:html={t(userLanguage, 'similes:587')} />
+        <dd set:html={t(userLanguage, 'similes:588')} />
+        <dd set:html={t(userLanguage, 'similes:589')} />
+        <dd set:html={t(userLanguage, 'similes:590')} />
+        <dd set:html={t(userLanguage, 'similes:591')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:592')} />
+        <dd set:html={t(userLanguage, 'similes:593')} />
+        <dt set:html={t(userLanguage, 'similes:594')} />
+        <dd set:html={t(userLanguage, 'similes:595')} />
+        <dt set:html={t(userLanguage, 'similes:596')} />
+        <dd set:html={t(userLanguage, 'similes:597')} />
+        <dd set:html={t(userLanguage, 'similes:598')} />
+        <dd set:html={t(userLanguage, 'similes:599')} />
+        <dd set:html={t(userLanguage, 'similes:600')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:601')} />
+        <dd set:html={t(userLanguage, 'similes:602')} />
+        <dt set:html={t(userLanguage, 'similes:603')} />
+        <dd set:html={t(userLanguage, 'similes:604')} />
+        <dt set:html={t(userLanguage, 'similes:605')} />
+        <dd set:html={t(userLanguage, 'similes:606')} />
+        <dt set:html={t(userLanguage, 'similes:607')} />
+        <dd set:html={t(userLanguage, 'similes:608')} />
+        <dt set:html={t(userLanguage, 'similes:609')} />
+        <dd set:html={t(userLanguage, 'similes:610')} />
+        <dd set:html={t(userLanguage, 'similes:611')} />
+        <dd></dd>
+        <dt id="mustardseed" set:html={t(userLanguage, 'similes:612')} />
+        <dd set:html={t(userLanguage, 'similes:613')} />
+        <dd set:html={t(userLanguage, 'similes:614')} />
+        <dd set:html={t(userLanguage, 'similes:615')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:616')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:617')} />
+        <dd set:html={t(userLanguage, 'similes:618')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:619')} />
+      <dl>
+        <dt id="ocean" set:html={t(userLanguage, 'similes:620')} />
+        <dd set:html={t(userLanguage, 'similes:621')} />
+        <dd set:html={t(userLanguage, 'similes:622')} />
+        <dd set:html={t(userLanguage, 'similes:623')} />
+        <dd set:html={t(userLanguage, 'similes:624')} />
+        <dd set:html={t(userLanguage, 'similes:625')} />
+        <dd set:html={t(userLanguage, 'similes:626')} />
+        <dd set:html={t(userLanguage, 'similes:627')} />
+        <dd set:html={t(userLanguage, 'similes:628')} />
+        <dd set:html={t(userLanguage, 'similes:629')} />
+        <dd set:html={t(userLanguage, 'similes:630')} />
+        <dd set:html={t(userLanguage, 'similes:631')} />
+        <dd set:html={t(userLanguage, 'similes:632')} />
+        <dt set:html={t(userLanguage, 'similes:633')} />
+        <dd set:html={t(userLanguage, 'similes:634')} />
+        <dt set:html={t(userLanguage, 'similes:635')} />
+        <dd set:html={t(userLanguage, 'similes:636')} />
+        <dd set:html={t(userLanguage, 'similes:637')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:638')} />
+        <dd set:html={t(userLanguage, 'similes:639')} />
+        <dt id="ox" set:html={t(userLanguage, 'similes:640')} />
+        <dd set:html={t(userLanguage, 'similes:641')} />
+        <dd set:html={t(userLanguage, 'similes:642')} />
+        <dd set:html={t(userLanguage, 'similes:643')} />
+        <dd set:html={t(userLanguage, 'similes:644')} />
+        <dd></dd>
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:645')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:646')} />
+        <dd set:html={t(userLanguage, 'similes:647')} />
+        <dd set:html={t(userLanguage, 'similes:648')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:649')} />
+        <dd set:html={t(userLanguage, 'similes:650')} />
+        <dt set:html={t(userLanguage, 'similes:651')} />
+        <dd set:html={t(userLanguage, 'similes:652')} />
+        <dd set:html={t(userLanguage, 'similes:653')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:654')} />
+        <dd set:html={t(userLanguage, 'similes:655')} />
+        <dt set:html={t(userLanguage, 'similes:656')} />
+        <dd set:html={t(userLanguage, 'similes:657')} />
+        <dt set:html={t(userLanguage, 'similes:658')} />
+        <dd set:html={t(userLanguage, 'similes:659')} />
+        <dt set:html={t(userLanguage, 'similes:660')} />
+        <dd set:html={t(userLanguage, 'similes:661')} />
+        <dt set:html={t(userLanguage, 'similes:662')} />
+        <dd set:html={t(userLanguage, 'similes:663')} />
+        <dt set:html={t(userLanguage, 'similes:664')} />
+        <dd set:html={t(userLanguage, 'similes:665')} />
+        <dt set:html={t(userLanguage, 'similes:666')} />
+        <dd set:html={t(userLanguage, 'similes:667')} />
+        <dt set:html={t(userLanguage, 'similes:668')} />
+        <dd set:html={t(userLanguage, 'similes:669')} />
+        <dt set:html={t(userLanguage, 'similes:670')} />
+        <dd set:html={t(userLanguage, 'similes:671')} />
+        <dd set:html={t(userLanguage, 'similes:672')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:673')} />
+        <dd set:html={t(userLanguage, 'similes:674')} />
+        <dt set:html={t(userLanguage, 'similes:675')} />
+        <dd set:html={t(userLanguage, 'similes:676')} />
+        <dt set:html={t(userLanguage, 'similes:677')} />
+        <dd set:html={t(userLanguage, 'similes:678')} />
+        <dd set:html={t(userLanguage, 'similes:679')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:680')} />
+        <dd set:html={t(userLanguage, 'similes:681')} />
+        <dt set:html={t(userLanguage, 'similes:682')} />
+        <dd set:html={t(userLanguage, 'similes:683')} />
+        <dd set:html={t(userLanguage, 'similes:684')} />
+        <dd></dd>
+        <dt id="pool" set:html={t(userLanguage, 'similes:685')} />
+        <dd set:html={t(userLanguage, 'similes:686')} />
+        <dd set:html={t(userLanguage, 'similes:687')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:688')} />
+        <dd set:html={t(userLanguage, 'similes:689')} />
+        <dd set:html={t(userLanguage, 'similes:690')} />
+        <dd></dd>
+        <dt id="pot" set:html={t(userLanguage, 'similes:691')} />
+        <dd set:html={t(userLanguage, 'similes:692')} />
+        <dd set:html={t(userLanguage, 'similes:693')} />
+        <dd set:html={t(userLanguage, 'similes:694')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:695')} />
+        <dd set:html={t(userLanguage, 'similes:696')} />
+        <dt set:html={t(userLanguage, 'similes:697')} />
+        <dd set:html={t(userLanguage, 'similes:698')} />
+        <dt set:html={t(userLanguage, 'similes:699')} />
+        <dd set:html={t(userLanguage, 'similes:700')} />
+        <dt set:html={t(userLanguage, 'similes:701')} />
+        <dd set:html={t(userLanguage, 'similes:702')} />
+        <dt set:html={t(userLanguage, 'similes:703')} />
+        <dd set:html={t(userLanguage, 'similes:704')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:705')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:706')} />
+        <dd set:html={t(userLanguage, 'similes:707')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:708')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:709')} />
+        <dd set:html={t(userLanguage, 'similes:710')} />
+        <dt set:html={t(userLanguage, 'similes:711')} />
+        <dd set:html={t(userLanguage, 'similes:712')} />
+        <dt set:html={t(userLanguage, 'similes:713')} />
+        <dd set:html={t(userLanguage, 'similes:714')} />
+        <dd set:html={t(userLanguage, 'similes:715')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:716')} />
+        <dd set:html={t(userLanguage, 'similes:717')} />
+        <dt id="rain" set:html={t(userLanguage, 'similes:718')} />
+        <dd set:html={t(userLanguage, 'similes:719')} />
+        <dd set:html={t(userLanguage, 'similes:720')} />
+        <dd set:html={t(userLanguage, 'similes:721')} />
+        <dd set:html={t(userLanguage, 'similes:722')} />
+        <dd set:html={t(userLanguage, 'similes:723')} />
+        <dd set:html={t(userLanguage, 'similes:724')} />
+        <dd set:html={t(userLanguage, 'similes:725')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:726')} />
+        <dd set:html={t(userLanguage, 'similes:727')} />
+        <dt set:html={t(userLanguage, 'similes:728')} />
+        <dd set:html={t(userLanguage, 'similes:729')} />
+        <dd set:html={t(userLanguage, 'similes:730')} />
+        <dd set:html={t(userLanguage, 'similes:731')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:732')} />
+        <dd set:html={t(userLanguage, 'similes:733')} />
+        <dd set:html={t(userLanguage, 'similes:734')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:735')} />
+        <dd set:html={t(userLanguage, 'similes:736')} />
+        <dt set:html={t(userLanguage, 'similes:737')} />
+        <dd set:html={t(userLanguage, 'similes:738')} />
+        <dt set:html={t(userLanguage, 'similes:739')} />
+        <dd set:html={t(userLanguage, 'similes:740')} />
+        <dt set:html={t(userLanguage, 'similes:741')} />
+        <dd set:html={t(userLanguage, 'similes:742')} />
+        <dt set:html={t(userLanguage, 'similes:743')} />
+        <dd set:html={t(userLanguage, 'similes:744')} />
+        <dt id="river" set:html={t(userLanguage, 'similes:745')} />
+        <dd set:html={t(userLanguage, 'similes:746')} />
+        <dd set:html={t(userLanguage, 'similes:747')} />
+        <dd set:html={t(userLanguage, 'similes:748')} />
+        <dd set:html={t(userLanguage, 'similes:749')} />
+        <dd set:html={t(userLanguage, 'similes:750')} />
+        <dd set:html={t(userLanguage, 'similes:751')} />
+        <dd set:html={t(userLanguage, 'similes:752')} />
+        <dt set:html={t(userLanguage, 'similes:753')} />
+        <dd set:html={t(userLanguage, 'similes:754')} />
+        <dd set:html={t(userLanguage, 'similes:755')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:756')} />
+        <dd set:html={t(userLanguage, 'similes:757')} />
+        <dd set:html={t(userLanguage, 'similes:758')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:759')} />
+        <dd set:html={t(userLanguage, 'similes:760')} />
+        <dt set:html={t(userLanguage, 'similes:761')} />
+        <dd set:html={t(userLanguage, 'similes:762')} />
+        <dt set:html={t(userLanguage, 'similes:763')} />
+        <dd set:html={t(userLanguage, 'similes:764')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:765')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:766')} />
+        <dd set:html={t(userLanguage, 'similes:767')} />
+        <dt set:html={t(userLanguage, 'similes:768')} />
+        <dd set:html={t(userLanguage, 'similes:769')} />
+        <dd set:html={t(userLanguage, 'similes:770')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:771')} />
+        <dd set:html={t(userLanguage, 'similes:772')} />
+        <dt set:html={t(userLanguage, 'similes:773')} />
+        <dd set:html={t(userLanguage, 'similes:774')} />
+        <dt set:html={t(userLanguage, 'similes:775')} />
+        <dd set:html={t(userLanguage, 'similes:776')} />
+        <dd set:html={t(userLanguage, 'similes:777')} />
+        <dd set:html={t(userLanguage, 'similes:778')} />
+        <dd set:html={t(userLanguage, 'similes:779')} />
+        <dd set:html={t(userLanguage, 'similes:780')} />
+        <dd set:html={t(userLanguage, 'similes:781')} />
+        <dd set:html={t(userLanguage, 'similes:782')} />
+        <dd set:html={t(userLanguage, 'similes:783')} />
+        <dt set:html={t(userLanguage, 'similes:784')} />
+        <dd set:html={t(userLanguage, 'similes:785')} />
+        <dt set:html={t(userLanguage, 'similes:786')} />
+        <dd set:html={t(userLanguage, 'similes:787')} />
+        <dt set:html={t(userLanguage, 'similes:788')} />
+        <dd set:html={t(userLanguage, 'similes:789')} />
+        <dt set:html={t(userLanguage, 'similes:790')} />
+        <dd set:html={t(userLanguage, 'similes:791')} />
+        <dt set:html={t(userLanguage, 'similes:792')} />
+        <dd set:html={t(userLanguage, 'similes:793')} />
+        <dt set:html={t(userLanguage, 'similes:794')} />
+        <dd set:html={t(userLanguage, 'similes:795')} />
+        <dt set:html={t(userLanguage, 'similes:796')} />
+        <dd set:html={t(userLanguage, 'similes:797')} />
+        <dt set:html={t(userLanguage, 'similes:798')} />
+        <dd set:html={t(userLanguage, 'similes:799')} />
+        <dt id="shore" set:html={t(userLanguage, 'similes:800')} />
+        <dd set:html={t(userLanguage, 'similes:801')} />
+        <dd set:html={t(userLanguage, 'similes:802')} />
+        <dd set:html={t(userLanguage, 'similes:803')} />
+        <dd set:html={t(userLanguage, 'similes:804')} />
+        <dd set:html={t(userLanguage, 'similes:805')} />
+        <dt set:html={t(userLanguage, 'similes:806')} />
+        <dd set:html={t(userLanguage, 'similes:807')} />
+        <dd set:html={t(userLanguage, 'similes:808')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:809')} />
+        <dd set:html={t(userLanguage, 'similes:810')} />
+        <dt id="silversmith" set:html={t(userLanguage, 'similes:811')} />
+        <dd set:html={t(userLanguage, 'similes:812')} />
+        <dt set:html={t(userLanguage, 'similes:813')} />
+        <dd set:html={t(userLanguage, 'similes:814')} />
+        <dt set:html={t(userLanguage, 'similes:815')} />
+        <dd set:html={t(userLanguage, 'similes:816')} />
+        <dt id="snake" set:html={t(userLanguage, 'similes:817')} />
+        <dd set:html={t(userLanguage, 'similes:818')} />
+        <dd set:html={t(userLanguage, 'similes:819')} />
+        <dd set:html={t(userLanguage, 'similes:820')} />
+        <dd set:html={t(userLanguage, 'similes:821')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:822')} />
+        <dd set:html={t(userLanguage, 'similes:823')} />
+        <dt set:html={t(userLanguage, 'similes:824')} />
+        <dd set:html={t(userLanguage, 'similes:825')} />
+        <dt set:html={t(userLanguage, 'similes:826')} />
+        <dd set:html={t(userLanguage, 'similes:827')} />
+        <dt set:html={t(userLanguage, 'similes:828')} />
+        <dd set:html={t(userLanguage, 'similes:829')} />
+        <dt set:html={t(userLanguage, 'similes:830')} />
+        <dd set:html={t(userLanguage, 'similes:831')} />
+        <dt set:html={t(userLanguage, 'similes:832')} />
+        <dd set:html={t(userLanguage, 'similes:833')} />
+        <dt set:html={t(userLanguage, 'similes:834')} />
+        <dd set:html={t(userLanguage, 'similes:835')} />
+        <dt set:html={t(userLanguage, 'similes:836')} />
+        <dd set:html={t(userLanguage, 'similes:837')} />
+        <dt set:html={t(userLanguage, 'similes:838')} />
+        <dd set:html={t(userLanguage, 'similes:839')} />
+        <dt set:html={t(userLanguage, 'similes:840')} />
+        <dd set:html={t(userLanguage, 'similes:841')} />
+        <dt set:html={t(userLanguage, 'similes:842')} />
+        <dd set:html={t(userLanguage, 'similes:843')} />
+        <dt set:html={t(userLanguage, 'similes:844')} />
+        <dd set:html={t(userLanguage, 'similes:845')} />
+        <dt set:html={t(userLanguage, 'similes:846')} />
+        <dd set:html={t(userLanguage, 'similes:847')} />
+        <dt set:html={t(userLanguage, 'similes:848')} />
+        <dd set:html={t(userLanguage, 'similes:849')} />
+        <dt set:html={t(userLanguage, 'similes:850')} />
+        <dd set:html={t(userLanguage, 'similes:851')} />
+        <dt id="stream" set:html={t(userLanguage, 'similes:852')} />
+        <dd set:html={t(userLanguage, 'similes:853')} />
+        <dd set:html={t(userLanguage, 'similes:854')} />
+        <dd set:html={t(userLanguage, 'similes:855')} />
+        <dd set:html={t(userLanguage, 'similes:856')} />
+        <dt set:html={t(userLanguage, 'similes:857')} />
+        <dd set:html={t(userLanguage, 'similes:858')} />
+        <dd set:html={t(userLanguage, 'similes:859')} />
+        <dd set:html={t(userLanguage, 'similes:860')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:861')} />
+        <dd set:html={t(userLanguage, 'similes:862')} />
+        <dd set:html={t(userLanguage, 'similes:863')} />
+        <dd set:html={t(userLanguage, 'similes:864')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:865')} />
+        <dd set:html={t(userLanguage, 'similes:866')} />
+        <dt set:html={t(userLanguage, 'similes:867')} />
+        <dd set:html={t(userLanguage, 'similes:868')} />
+        <dd set:html={t(userLanguage, 'similes:869')} />
+        <dd set:html={t(userLanguage, 'similes:870')} />
+        <dd set:html={t(userLanguage, 'similes:871')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:872')} />
+        <dd set:html={t(userLanguage, 'similes:873')} />
+        <dd set:html={t(userLanguage, 'similes:874')} />
+        <dd set:html={t(userLanguage, 'similes:875')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:876')} />
+        <dd set:html={t(userLanguage, 'similes:877')} />
+        <dt set:html={t(userLanguage, 'similes:878')} />
+        <dd set:html={t(userLanguage, 'similes:879')} />
+        <dd set:html={t(userLanguage, 'similes:880')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:881')} />
+        <dd set:html={t(userLanguage, 'similes:882')} />
+        <dt set:html={t(userLanguage, 'similes:883')} />
+        <dd set:html={t(userLanguage, 'similes:884')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:885')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:886')} />
+        <dd set:html={t(userLanguage, 'similes:887')} />
+        <dt set:html={t(userLanguage, 'similes:888')} />
+        <dd set:html={t(userLanguage, 'similes:889')} />
+        <dt set:html={t(userLanguage, 'similes:890')} />
+        <dd set:html={t(userLanguage, 'similes:891')} />
+        <dt set:html={t(userLanguage, 'similes:892')} />
+        <dd set:html={t(userLanguage, 'similes:893')} />
+        <dt set:html={t(userLanguage, 'similes:894')} />
+        <dd set:html={t(userLanguage, 'similes:895')} />
+        <dt set:html={t(userLanguage, 'similes:896')} />
+        <dd set:html={t(userLanguage, 'similes:897')} />
+        <dt set:html={t(userLanguage, 'similes:898')} />
+        <dd set:html={t(userLanguage, 'similes:899')} />
+        <dt set:html={t(userLanguage, 'similes:900')} />
+        <dd set:html={t(userLanguage, 'similes:901')} />
+        <dd set:html={t(userLanguage, 'similes:902')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:903')} />
+        <dd set:html={t(userLanguage, 'similes:904')} />
+        <dt set:html={t(userLanguage, 'similes:905')} />
+        <dd set:html={t(userLanguage, 'similes:906')} />
+        <dt set:html={t(userLanguage, 'similes:907')} />
+        <dd set:html={t(userLanguage, 'similes:908')} />
+        <dt set:html={t(userLanguage, 'similes:909')} />
+        <dd set:html={t(userLanguage, 'similes:910')} />
+        <dt set:html={t(userLanguage, 'similes:911')} />
+        <dd set:html={t(userLanguage, 'similes:912')} />
+        <dt set:html={t(userLanguage, 'similes:913')} />
+        <dd set:html={t(userLanguage, 'similes:914')} />
+        <dd set:html={t(userLanguage, 'similes:915')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:916')} />
+        <dd set:html={t(userLanguage, 'similes:917')} />
+        <dt id="tree" set:html={t(userLanguage, 'similes:918')} />
+        <dd set:html={t(userLanguage, 'similes:919')} />
+        <dd set:html={t(userLanguage, 'similes:920')} />
+        <dd set:html={t(userLanguage, 'similes:921')} />
+        <dd set:html={t(userLanguage, 'similes:922')} />
+        <dd set:html={t(userLanguage, 'similes:923')} />
+        <dd set:html={t(userLanguage, 'similes:924')} />
+        <dd set:html={t(userLanguage, 'similes:925')} />
+        <dd set:html={t(userLanguage, 'similes:926')} />
+        <dd set:html={t(userLanguage, 'similes:927')} />
+        <dd set:html={t(userLanguage, 'similes:928')} />
+        <dd set:html={t(userLanguage, 'similes:929')} />
+        <dd set:html={t(userLanguage, 'similes:930')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:931')} />
+        <dd set:html={t(userLanguage, 'similes:932')} />
+        <dt set:html={t(userLanguage, 'similes:933')} />
+        <dd set:html={t(userLanguage, 'similes:934')} />
+        <dt set:html={t(userLanguage, 'similes:935')} />
+        <dd set:html={t(userLanguage, 'similes:936')} />
+        <dt set:html={t(userLanguage, 'similes:937')} />
+        <dd set:html={t(userLanguage, 'similes:938')} />
+        <dt set:html={t(userLanguage, 'similes:939')} />
+        <dd set:html={t(userLanguage, 'similes:940')} />
+        <dd set:html={t(userLanguage, 'similes:941')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:942')} />
+        <dd set:html={t(userLanguage, 'similes:943')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:944')} />
+      <dl>
+        <dt id="upright" set:html={t(userLanguage, 'similes:945')} />
+        <dd set:html={t(userLanguage, 'similes:946')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:947')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:948')} />
+        <dd set:html={t(userLanguage, 'similes:949')} />
+        <dd set:html={t(userLanguage, 'similes:950')} />
+        <dd></dd>
+        <dt id="vine" set:html={t(userLanguage, 'similes:951')} />
+        <dd set:html={t(userLanguage, 'similes:952')} />
+        <dd set:html={t(userLanguage, 'similes:953')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:954')} />
+        <dd set:html={t(userLanguage, 'similes:955')} />
+        <dt set:html={t(userLanguage, 'similes:956')} />
+        <dd set:html={t(userLanguage, 'similes:957')} />
+        <dt set:html={t(userLanguage, 'similes:958')} />
+        <dd set:html={t(userLanguage, 'similes:959')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:960')} />
+      <dl>
+        <dt id="warrior" set:html={t(userLanguage, 'similes:961')} />
+        <dd set:html={t(userLanguage, 'similes:962')} />
+        <dd set:html={t(userLanguage, 'similes:963')} />
+        <dd set:html={t(userLanguage, 'similes:964')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:965')} />
+        <dd set:html={t(userLanguage, 'similes:966')} />
+        <dt id="water" set:html={t(userLanguage, 'similes:967')} />
+        <dd set:html={t(userLanguage, 'similes:968')} />
+        <dd set:html={t(userLanguage, 'similes:969')} />
+        <dd set:html={t(userLanguage, 'similes:970')} />
+        <dd set:html={t(userLanguage, 'similes:971')} />
+        <dd set:html={t(userLanguage, 'similes:972')} />
+        <dd set:html={t(userLanguage, 'similes:973')} />
+        <dd set:html={t(userLanguage, 'similes:974')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:975')} />
+        <dd set:html={t(userLanguage, 'similes:976')} />
+        <dt set:html={t(userLanguage, 'similes:977')} />
+        <dd set:html={t(userLanguage, 'similes:978')} />
+        <dt set:html={t(userLanguage, 'similes:979')} />
+        <dd set:html={t(userLanguage, 'similes:980')} />
+        <dt set:html={t(userLanguage, 'similes:981')} />
+        <dd set:html={t(userLanguage, 'similes:982')} />
+        <dd set:html={t(userLanguage, 'similes:983')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:984')} />
+        <dd set:html={t(userLanguage, 'similes:985')} />
+        <dd set:html={t(userLanguage, 'similes:986')} />
+        <dt id="wind" set:html={t(userLanguage, 'similes:987')} />
+        <dd set:html={t(userLanguage, 'similes:988')} />
+        <dd set:html={t(userLanguage, 'similes:989')} />
+        <dd set:html={t(userLanguage, 'similes:990')} />
+        <dd set:html={t(userLanguage, 'similes:991')} />
+        <dd set:html={t(userLanguage, 'similes:992')} />
+        <dd set:html={t(userLanguage, 'similes:993')} />
+        <dd></dd>
+        <dt set:html={t(userLanguage, 'similes:994')} />
+        <dd set:html={t(userLanguage, 'similes:995')} />
+        <dt set:html={t(userLanguage, 'similes:996')} />
+        <dd set:html={t(userLanguage, 'similes:997')} />
+        <dt set:html={t(userLanguage, 'similes:998')} />
+        <dd set:html={t(userLanguage, 'similes:999')} />
+        <dt set:html={t(userLanguage, 'similes:1000')} />
+        <dd set:html={t(userLanguage, 'similes:1001')} />
+        <dt set:html={t(userLanguage, 'similes:1002')} />
+        <dd set:html={t(userLanguage, 'similes:1003')} />
+      </dl>
+      <h2 set:html={t(userLanguage, 'similes:1004')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'similes:1005')} />
+        <dd set:html={t(userLanguage, 'similes:1006')} />
+        <dd set:html={t(userLanguage, 'similes:1007')} />
+        <dd></dd>
+        <dt id="yokes" set:html={t(userLanguage, 'similes:1008')} />
+        <dd set:html={t(userLanguage, 'similes:1009')} />
+        <dd set:html={t(userLanguage, 'similes:1010')} />
+        <dd set:html={t(userLanguage, 'similes:1011')} />
+        <dd set:html={t(userLanguage, 'similes:1012')} />
+      </dl>
+      <aside class="about-index">
+        <p set:html={t(userLanguage, 'similes:1013')} />
+        <ul>
+          <li set:html={t(userLanguage, 'similes:1014')} />
+          <li set:html={t(userLanguage, 'similes:1015')} />
+          <li set:html={t(userLanguage, 'similes:1016')} />
+          <li set:html={t(userLanguage, 'similes:1017')} />
+          <li set:html={t(userLanguage, 'similes:1018')} />
+          <li set:html={t(userLanguage, 'similes:1019')} />
+        </ul>
+        <p set:html={t(userLanguage, 'similes:1020')} />
+        <blockquote set:html={t(userLanguage, 'similes:1021')} />
+        <p set:html={t(userLanguage, 'similes:1022')} />
+        <ul>
+          <li set:html={t(userLanguage, 'similes:1023')} />
+          <li set:html={t(userLanguage, 'similes:1024')} />
+        </ul>
+      </aside>
+      <aside class="static-copyright">
+        <p set:html={t(userLanguage, 'similes:1025')} />
+        <blockquote set:html={t(userLanguage, 'similes:1026')} />
+        <p set:html={t(userLanguage, 'similes:1027')} />
+      </aside>
+    </article>
+  </main>
+</Layout>
+
+<style></style>

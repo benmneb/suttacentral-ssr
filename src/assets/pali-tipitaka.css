@@ -1,0 +1,33 @@
+main {
+  li:has(h1) {
+    list-style: none;
+  }
+
+  h1,
+  li a {
+    display: inline-flex;
+    flex-direction: column;
+    text-decoration: none;
+  }
+
+  dfn:not(h1 dfn) {
+    font-size: larger;
+  }
+  dfn + span {
+    color: var(--text-color-secondary);
+  }
+
+  a:hover dfn + span {
+    color: unset;
+  }
+
+  .horizontal .second {
+    padding-left: 0;
+    list-style: unset;
+
+    > li > a:first-of-type {
+      font-size: larger;
+      margin: 1rem 0;
+    }
+  }
+}

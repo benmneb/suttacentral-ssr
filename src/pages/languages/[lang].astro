@@ -1,0 +1,153 @@
+---
+import PieChart from '~/components/pie-chart.astro'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const { lang } = Astro.params
+
+const [translationCountRes, languageDataRes] = await Promise.all([
+  fetch('https://suttacentral.net/api/translation_count'),
+  fetch(`https://suttacentral.net/api/translation_count/${lang}`),
+])
+
+const translationCount = await translationCountRes.json()
+const languageData = await languageDataRes.json()
+
+const allLanguages = [...translationCount.ancient, ...translationCount.modern]
+const currentLanguage = allLanguages.find(
+  (l: { iso_code: string }) => l.iso_code === lang
+)
+
+if (!currentLanguage) {
+  return Astro.redirect('/languages')
+}
+
+const { name, percent } = currentLanguage
+
+interface Division {
+  name: string
+  total: number
+  root_lang?: string
+  rootLanguageFullName?: string
+}
+
+interface Author {
+  name: string
+  author_uid: string
+  total: number
+}
+
+languageData.division.forEach((item: Division) => {
+  if (item.root_lang) {
+    const rootLang = allLanguages.find(
+      (l: { iso_code: string }) => l.iso_code === item.root_lang
+    )
+    item.rootLanguageFullName = rootLang?.name || item.root_lang
+  } else {
+    item.rootLanguageFullName = t(userLanguage, 'languages:other')
+  }
+})
+
+const rootLanguages = [
+  ...new Set(
+    languageData.division.map((item: Division) => item.rootLanguageFullName)
+  ),
+]
+
+const title = name
+const crumbsData = [
+  {
+    title: t(userLanguage, 'interface:languages'),
+    url: '/languages',
+  },
+  { title },
+]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1>{name}</h1>
+
+      {
+        percent && (
+          <figure>
+            <PieChart percent={percent} />
+            <figcaption
+              set:html={t(userLanguage, 'languages:percentageOfOriginalTexts', {
+                lang: name,
+              })}
+            />
+          </figure>
+        )
+      }
+
+      {
+        rootLanguages.map(rootLang => (
+          <Fragment>
+            <h3>{rootLang}</h3>
+            <ul class="language-count-list">
+              {languageData.division
+                .filter(
+                  (item: Division) => item.rootLanguageFullName === rootLang
+                )
+                .map((item: Division) => (
+                  <li>
+                    {item.name} ({item.total})
+                  </li>
+                ))}
+            </ul>
+          </Fragment>
+        ))
+      }
+
+      {
+        percent ? (
+          <Fragment>
+            <h2 set:html={t(userLanguage, 'languages:translators')} />
+            <ul class="author-count-list">
+              {languageData.author.map((item: Author) => (
+                <li>
+                  <a href={`/search?query=by:${item.author_uid}`}>
+                    {item.name}
+                  </a>{' '}
+                  ({item.total})
+                </li>
+              ))}
+            </ul>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <h2 set:html={t(userLanguage, 'languages:authors')} />
+            <ul class="author-count-list">
+              {languageData.author.map((item: Author) => (
+                <li>
+                  <a href={`/search?query=by:${item.author_uid}`}>
+                    {item.name}
+                  </a>{' '}
+                  ({item.total})
+                </li>
+              ))}
+            </ul>
+          </Fragment>
+        )
+      }
+    </article>
+  </main>
+</Layout>
+
+<style>
+  figure {
+    max-width: 16rem;
+    float: right;
+
+    figcaption {
+      text-align: center;
+      text-wrap: balance;
+    }
+  }
+</style>

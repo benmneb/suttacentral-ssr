@@ -1,0 +1,555 @@
+---
+import '~/assets/indexes.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'terminology:1')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'terminology:1')} />
+      <nav class="contents">
+        <ul class="entry-list">
+          <li set:html={t(userLanguage, 'terminology:2')} />
+          <li set:html={t(userLanguage, 'terminology:3')} />
+          <li set:html={t(userLanguage, 'terminology:4')} />
+          <li set:html={t(userLanguage, 'terminology:5')} />
+          <li set:html={t(userLanguage, 'terminology:6')} />
+          <li set:html={t(userLanguage, 'terminology:7')} />
+          <li set:html={t(userLanguage, 'terminology:8')} />
+          <li set:html={t(userLanguage, 'terminology:9')} />
+          <li set:html={t(userLanguage, 'terminology:10')} />
+          <li set:html={t(userLanguage, 'terminology:11')} />
+          <li set:html={t(userLanguage, 'terminology:12')} />
+          <li set:html={t(userLanguage, 'terminology:13')} />
+          <li set:html={t(userLanguage, 'terminology:14')} />
+          <li set:html={t(userLanguage, 'terminology:15')} />
+          <li set:html={t(userLanguage, 'terminology:16')} />
+          <li set:html={t(userLanguage, 'terminology:17')} />
+          <li set:html={t(userLanguage, 'terminology:18')} />
+          <li set:html={t(userLanguage, 'terminology:19')} />
+          <li set:html={t(userLanguage, 'terminology:20')} />
+          <li set:html={t(userLanguage, 'terminology:21')} />
+          <li set:html={t(userLanguage, 'terminology:22')} />
+          <li set:html={t(userLanguage, 'terminology:23')} />
+        </ul>
+      </nav>
+      <h2 id="a" set:html={t(userLanguage, 'terminology:24')} />
+      <dl>
+        <dt id="abhidhamma" set:html={t(userLanguage, 'terminology:25')} />
+        <dd>
+          <ol>
+            <li set:html={t(userLanguage, 'terminology:26')} />
+            <li set:html={t(userLanguage, 'terminology:27')} />
+          </ol>
+        </dd>
+        <dt id="abhinna" set:html={t(userLanguage, 'terminology:28')} />
+        <dd set:html={t(userLanguage, 'terminology:29')} />
+        <dt id="acariya" set:html={t(userLanguage, 'terminology:30')} />
+        <dd set:html={t(userLanguage, 'terminology:31')} />
+        <dt id="adhitthana" set:html={t(userLanguage, 'terminology:32')} />
+        <dd set:html={t(userLanguage, 'terminology:33')} />
+        <dt id="akaliko" set:html={t(userLanguage, 'terminology:34')} />
+        <dd set:html={t(userLanguage, 'terminology:35')} />
+        <dt id="akusala" set:html={t(userLanguage, 'terminology:36')} />
+        <dd set:html={t(userLanguage, 'terminology:37')} />
+        <dt id="anagami" set:html={t(userLanguage, 'terminology:38')} />
+        <dd set:html={t(userLanguage, 'terminology:39')} />
+        <dt id="anapanasati" set:html={t(userLanguage, 'terminology:40')} />
+        <dd set:html={t(userLanguage, 'terminology:41')} />
+        <dt id="anatta" set:html={t(userLanguage, 'terminology:42')} />
+        <dd set:html={t(userLanguage, 'terminology:43')} />
+        <dt id="anicca" set:html={t(userLanguage, 'terminology:44')} />
+        <dd set:html={t(userLanguage, 'terminology:45')} />
+        <dt
+          id="anupadisesa-nibbana"
+          set:html={t(userLanguage, 'terminology:46')}
+        />
+        <dd set:html={t(userLanguage, 'terminology:47')} />
+        <dt id="anupubbi" set:html={t(userLanguage, 'terminology:48')} />
+        <dd set:html={t(userLanguage, 'terminology:49')} />
+        <dt id="anusaya" set:html={t(userLanguage, 'terminology:50')} />
+        <dd set:html={t(userLanguage, 'terminology:51')} />
+        <dt id="apaya-bhumi" set:html={t(userLanguage, 'terminology:52')} />
+        <dd set:html={t(userLanguage, 'terminology:53')} />
+        <dt id="appamada" set:html={t(userLanguage, 'terminology:54')} />
+        <dd set:html={t(userLanguage, 'terminology:55')} />
+        <dt id="arahant" set:html={t(userLanguage, 'terminology:56')} />
+        <dd set:html={t(userLanguage, 'terminology:57')} />
+        <dt id="arammana" set:html={t(userLanguage, 'terminology:58')} />
+        <dd set:html={t(userLanguage, 'terminology:59')} />
+        <dt id="ariya" set:html={t(userLanguage, 'terminology:60')} />
+        <dd set:html={t(userLanguage, 'terminology:61')} />
+        <dt id="ariyadhana" set:html={t(userLanguage, 'terminology:62')} />
+        <dd set:html={t(userLanguage, 'terminology:63')} />
+        <dt id="ariya-puggala" set:html={t(userLanguage, 'terminology:64')} />
+        <dd set:html={t(userLanguage, 'terminology:65')} />
+        <dt id="ariya-sacca" set:html={t(userLanguage, 'terminology:66')} />
+        <dd set:html={t(userLanguage, 'terminology:67')} />
+        <dt id="asava" set:html={t(userLanguage, 'terminology:68')} />
+        <dd set:html={t(userLanguage, 'terminology:69')} />
+        <dt id="asubha" set:html={t(userLanguage, 'terminology:70')} />
+        <dd set:html={t(userLanguage, 'terminology:71')} />
+        <dt id="asura" set:html={t(userLanguage, 'terminology:72')} />
+        <dd set:html={t(userLanguage, 'terminology:73')} />
+        <dt id="avijja" set:html={t(userLanguage, 'terminology:74')} />
+        <dd set:html={t(userLanguage, 'terminology:75')} />
+        <dt id="ayatana" set:html={t(userLanguage, 'terminology:76')} />
+        <dd set:html={t(userLanguage, 'terminology:77')} />
+      </dl>
+      <h2 id="b" set:html={t(userLanguage, 'terminology:78')} />
+      <dl>
+        <dt id="bhante" set:html={t(userLanguage, 'terminology:79')} />
+        <dd set:html={t(userLanguage, 'terminology:80')} />
+        <dt id="bhava" set:html={t(userLanguage, 'terminology:81')} />
+        <dd set:html={t(userLanguage, 'terminology:82')} />
+        <dt id="bhavana" set:html={t(userLanguage, 'terminology:83')} />
+        <dd set:html={t(userLanguage, 'terminology:84')} />
+        <dt id="bhikkhu" set:html={t(userLanguage, 'terminology:85')} />
+        <dd set:html={t(userLanguage, 'terminology:86')} />
+        <dt id="bhikkhuni" set:html={t(userLanguage, 'terminology:87')} />
+        <dd set:html={t(userLanguage, 'terminology:88')} />
+        <dt
+          id="bodhi-pakkhiya-dhamma"
+          set:html={t(userLanguage, 'terminology:89')}
+        />
+        <dd>
+          <span set:html={t(userLanguage, 'terminology:90')} />
+          <ol>
+            <li set:html={t(userLanguage, 'terminology:91')} />
+            <li set:html={t(userLanguage, 'terminology:92')} />
+            <li set:html={t(userLanguage, 'terminology:93')} />
+            <li set:html={t(userLanguage, 'terminology:94')} />
+            <li set:html={t(userLanguage, 'terminology:95')} />
+            <li set:html={t(userLanguage, 'terminology:96')} />
+            <li set:html={t(userLanguage, 'terminology:97')} />
+          </ol>
+        </dd>
+        <dt id="bodhisatta" set:html={t(userLanguage, 'terminology:98')} />
+        <dd set:html={t(userLanguage, 'terminology:99')} />
+        <dt id="brahma" set:html={t(userLanguage, 'terminology:100')} />
+        <dd set:html={t(userLanguage, 'terminology:101')} />
+        <dt id="brahma-vihara" set:html={t(userLanguage, 'terminology:102')} />
+        <dd set:html={t(userLanguage, 'terminology:103')} />
+        <dt id="brahman" set:html={t(userLanguage, 'terminology:104')} />
+        <dd set:html={t(userLanguage, 'terminology:105')} />
+        <dt id="buddha" set:html={t(userLanguage, 'terminology:106')} />
+        <dd set:html={t(userLanguage, 'terminology:107')} />
+      </dl>
+      <h2 id="c" set:html={t(userLanguage, 'terminology:108')} />
+      <dl>
+        <dt id="cankama" set:html={t(userLanguage, 'terminology:109')} />
+        <dd set:html={t(userLanguage, 'terminology:110')} />
+        <dt id="cetasika" set:html={t(userLanguage, 'terminology:111')} />
+        <dd set:html={t(userLanguage, 'terminology:112')} />
+        <dt set:html={t(userLanguage, 'terminology:113')} />
+        <dd set:html={t(userLanguage, 'terminology:114')} />
+        <dt id="citta" set:html={t(userLanguage, 'terminology:115')} />
+        <dd set:html={t(userLanguage, 'terminology:116')} />
+      </dl>
+      <h2 id="d" set:html={t(userLanguage, 'terminology:117')} />
+      <dl>
+        <dt id="dana" set:html={t(userLanguage, 'terminology:118')} />
+        <dd set:html={t(userLanguage, 'terminology:119')} />
+        <dt set:html={t(userLanguage, 'terminology:120')} />
+        <dd set:html={t(userLanguage, 'terminology:121')} />
+        <dt id="deva" set:html={t(userLanguage, 'terminology:122')} />
+        <dd set:html={t(userLanguage, 'terminology:123')} />
+        <dt id="devadatta" set:html={t(userLanguage, 'terminology:124')} />
+        <dd set:html={t(userLanguage, 'terminology:125')} />
+        <dt id="dhamma" set:html={t(userLanguage, 'terminology:126')} />
+        <dd set:html={t(userLanguage, 'terminology:127')} />
+        <dt id="dhamma-vinaya" set:html={t(userLanguage, 'terminology:128')} />
+        <dd set:html={t(userLanguage, 'terminology:129')} />
+        <dt id="dhana" set:html={t(userLanguage, 'terminology:130')} />
+        <dd set:html={t(userLanguage, 'terminology:131')} />
+        <dt id="dhatu" set:html={t(userLanguage, 'terminology:132')} />
+        <dd set:html={t(userLanguage, 'terminology:133')} />
+        <dt id="dhutanga" set:html={t(userLanguage, 'terminology:134')} />
+        <dd>
+          <span set:html={t(userLanguage, 'terminology:135')} />
+          <ol>
+            <li set:html={t(userLanguage, 'terminology:136')} />
+            <li set:html={t(userLanguage, 'terminology:137')} />
+            <li set:html={t(userLanguage, 'terminology:138')} />
+            <li set:html={t(userLanguage, 'terminology:139')} />
+            <li set:html={t(userLanguage, 'terminology:140')} />
+            <li set:html={t(userLanguage, 'terminology:141')} />
+            <li set:html={t(userLanguage, 'terminology:142')} />
+            <li set:html={t(userLanguage, 'terminology:143')} />
+            <li set:html={t(userLanguage, 'terminology:144')} />
+            <li set:html={t(userLanguage, 'terminology:145')} />
+            <li set:html={t(userLanguage, 'terminology:146')} />
+            <li set:html={t(userLanguage, 'terminology:147')} />
+            <li set:html={t(userLanguage, 'terminology:148')} />
+          </ol>
+        </dd>
+        <dt id="dosa" set:html={t(userLanguage, 'terminology:149')} />
+        <dd set:html={t(userLanguage, 'terminology:150')} />
+        <dt id="dukkha" set:html={t(userLanguage, 'terminology:151')} />
+        <dd set:html={t(userLanguage, 'terminology:152')} />
+      </dl>
+      <h2 id="e" set:html={t(userLanguage, 'terminology:153')} />
+      <dl>
+        <dt
+          id="ekaggatarammana"
+          set:html={t(userLanguage, 'terminology:154')}
+        />
+        <dd set:html={t(userLanguage, 'terminology:155')} />
+        <dt id="ekayana" set:html={t(userLanguage, 'terminology:156')} />
+        <dd set:html={t(userLanguage, 'terminology:157')} />
+      </dl>
+      <h2 id="f" set:html={t(userLanguage, 'terminology:158')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'terminology:159')} />
+        <dd set:html={t(userLanguage, 'terminology:160')} />
+        <dt id="frame" set:html={t(userLanguage, 'terminology:161')} />
+        <dd set:html={t(userLanguage, 'terminology:162')} />
+      </dl>
+      <h2 id="g" set:html={t(userLanguage, 'terminology:163')} />
+      <dl>
+        <dt id="gotarabhu" set:html={t(userLanguage, 'terminology:164')} />
+        <dd set:html={t(userLanguage, 'terminology:165')} />
+      </dl>
+      <h2 id="h" set:html={t(userLanguage, 'terminology:166')} />
+      <dl>
+        <dt id="hiri-ottappa" set:html={t(userLanguage, 'terminology:167')} />
+        <dd set:html={t(userLanguage, 'terminology:168')} />
+      </dl>
+      <h2 id="i" set:html={t(userLanguage, 'terminology:169')} />
+      <dl>
+        <dt id="idappaccayata" set:html={t(userLanguage, 'terminology:170')} />
+        <dd set:html={t(userLanguage, 'terminology:171')} />
+        <dt id="indriya" set:html={t(userLanguage, 'terminology:172')} />
+        <dd set:html={t(userLanguage, 'terminology:173')} />
+      </dl>
+      <h2 id="j" set:html={t(userLanguage, 'terminology:174')} />
+      <dl>
+        <dt id="jhana" set:html={t(userLanguage, 'terminology:175')} />
+        <dd set:html={t(userLanguage, 'terminology:176')} />
+      </dl>
+      <h2 id="k" set:html={t(userLanguage, 'terminology:177')} />
+      <dl>
+        <dt id="kalyanamitta" set:html={t(userLanguage, 'terminology:178')} />
+        <dd set:html={t(userLanguage, 'terminology:179')} />
+        <dt id="kamaguna" set:html={t(userLanguage, 'terminology:180')} />
+        <dd set:html={t(userLanguage, 'terminology:181')} />
+        <dt id="kamma" set:html={t(userLanguage, 'terminology:182')} />
+        <dd set:html={t(userLanguage, 'terminology:183')} />
+        <dt id="karuna" set:html={t(userLanguage, 'terminology:184')} />
+        <dd set:html={t(userLanguage, 'terminology:185')} />
+        <dt id="kathina" set:html={t(userLanguage, 'terminology:186')} />
+        <dd set:html={t(userLanguage, 'terminology:187')} />
+        <dt id="kaya" set:html={t(userLanguage, 'terminology:188')} />
+        <dd set:html={t(userLanguage, 'terminology:189')} />
+        <dt id="kayagata-sati" set:html={t(userLanguage, 'terminology:190')} />
+        <dd set:html={t(userLanguage, 'terminology:191')} />
+        <dt id="khandha" set:html={t(userLanguage, 'terminology:192')} />
+        <dd set:html={t(userLanguage, 'terminology:193')} />
+        <dt id="khanti" set:html={t(userLanguage, 'terminology:194')} />
+        <dd set:html={t(userLanguage, 'terminology:195')} />
+        <dt id="kilesa" set:html={t(userLanguage, 'terminology:196')} />
+        <dd set:html={t(userLanguage, 'terminology:197')} />
+        <dt id="kusala" set:html={t(userLanguage, 'terminology:198')} />
+        <dd set:html={t(userLanguage, 'terminology:199')} />
+      </dl>
+      <h2 id="l" set:html={t(userLanguage, 'terminology:200')} />
+      <dl>
+        <dt id="lakkhana" set:html={t(userLanguage, 'terminology:201')} />
+        <dd set:html={t(userLanguage, 'terminology:202')} />
+        <dt id="lobha" set:html={t(userLanguage, 'terminology:203')} />
+        <dd set:html={t(userLanguage, 'terminology:204')} />
+        <dt id="loka-dhamma" set:html={t(userLanguage, 'terminology:205')} />
+        <dd set:html={t(userLanguage, 'terminology:206')} />
+        <dt id="lokavidu" set:html={t(userLanguage, 'terminology:207')} />
+        <dd set:html={t(userLanguage, 'terminology:208')} />
+        <dt id="lokuttara" set:html={t(userLanguage, 'terminology:209')} />
+        <dd set:html={t(userLanguage, 'terminology:210')} />
+      </dl>
+      <h2 id="m" set:html={t(userLanguage, 'terminology:211')} />
+      <dl>
+        <dt id="magga" set:html={t(userLanguage, 'terminology:212')} />
+        <dd set:html={t(userLanguage, 'terminology:213')} />
+        <dt id="majjhima" set:html={t(userLanguage, 'terminology:214')} />
+        <dd set:html={t(userLanguage, 'terminology:215')} />
+        <dt id="mara" set:html={t(userLanguage, 'terminology:216')} />
+        <dd set:html={t(userLanguage, 'terminology:217')} />
+        <dt id="metta" set:html={t(userLanguage, 'terminology:218')} />
+        <dd set:html={t(userLanguage, 'terminology:219')} />
+        <dt id="moha" set:html={t(userLanguage, 'terminology:220')} />
+        <dd set:html={t(userLanguage, 'terminology:221')} />
+        <dt id="mudita" set:html={t(userLanguage, 'terminology:222')} />
+        <dd set:html={t(userLanguage, 'terminology:223')} />
+        <dt id="mula" set:html={t(userLanguage, 'terminology:224')} />
+        <dd set:html={t(userLanguage, 'terminology:225')} />
+      </dl>
+      <h2 id="n" set:html={t(userLanguage, 'terminology:226')} />
+      <dl>
+        <dt id="naga" set:html={t(userLanguage, 'terminology:227')} />
+        <dd set:html={t(userLanguage, 'terminology:228')} />
+        <dt id="nama" set:html={t(userLanguage, 'terminology:229')} />
+        <dd set:html={t(userLanguage, 'terminology:230')} />
+        <dt id="nama-rupa" set:html={t(userLanguage, 'terminology:231')} />
+        <dd set:html={t(userLanguage, 'terminology:232')} />
+        <dt id="nekkhamma" set:html={t(userLanguage, 'terminology:233')} />
+        <dd set:html={t(userLanguage, 'terminology:234')} />
+        <dt id="nibbana" set:html={t(userLanguage, 'terminology:235')} />
+        <dd set:html={t(userLanguage, 'terminology:236')} />
+        <dt id="nibbida" set:html={t(userLanguage, 'terminology:237')} />
+        <dd set:html={t(userLanguage, 'terminology:238')} />
+        <dt id="nimitta" set:html={t(userLanguage, 'terminology:239')} />
+        <dd set:html={t(userLanguage, 'terminology:240')} />
+        <dt id="nirodha" set:html={t(userLanguage, 'terminology:241')} />
+        <dd set:html={t(userLanguage, 'terminology:242')} />
+        <dt id="nivarana" set:html={t(userLanguage, 'terminology:243')} />
+        <dd set:html={t(userLanguage, 'terminology:244')} />
+      </dl>
+      <h2 id="o" set:html={t(userLanguage, 'terminology:245')} />
+      <dl>
+        <dt id="opanayiko" set:html={t(userLanguage, 'terminology:246')} />
+        <dd set:html={t(userLanguage, 'terminology:247')} />
+      </dl>
+      <h2 id="pq" set:html={t(userLanguage, 'terminology:248')} />
+      <dl>
+        <dt id="pabbajja" set:html={t(userLanguage, 'terminology:249')} />
+        <dd set:html={t(userLanguage, 'terminology:250')} />
+        <dt id="paccattam" set:html={t(userLanguage, 'terminology:251')} />
+        <dd set:html={t(userLanguage, 'terminology:252')} />
+        <dt id="pacceka" set:html={t(userLanguage, 'terminology:253')} />
+        <dd set:html={t(userLanguage, 'terminology:254')} />
+        <dt id="panna" set:html={t(userLanguage, 'terminology:255')} />
+        <dd set:html={t(userLanguage, 'terminology:256')} />
+        <dt set:html={t(userLanguage, 'terminology:257')} />
+        <dd set:html={t(userLanguage, 'terminology:258')} />
+        <dt id="papanca" set:html={t(userLanguage, 'terminology:259')} />
+        <dd set:html={t(userLanguage, 'terminology:260')} />
+        <dt id="parami" set:html={t(userLanguage, 'terminology:261')} />
+        <dd set:html={t(userLanguage, 'terminology:262')} />
+        <dt id="parinibbana" set:html={t(userLanguage, 'terminology:263')} />
+        <dd set:html={t(userLanguage, 'terminology:264')} />
+        <dt id="parisa" set:html={t(userLanguage, 'terminology:265')} />
+        <dd set:html={t(userLanguage, 'terminology:266')} />
+        <dt id="pariyatti" set:html={t(userLanguage, 'terminology:267')} />
+        <dd set:html={t(userLanguage, 'terminology:268')} />
+        <dt id="ps" set:html={t(userLanguage, 'terminology:269')} />
+        <dd set:html={t(userLanguage, 'terminology:270')} />
+        <dt id="patimokkha" set:html={t(userLanguage, 'terminology:271')} />
+        <dd set:html={t(userLanguage, 'terminology:272')} />
+        <dt id="patipada" set:html={t(userLanguage, 'terminology:273')} />
+        <dd set:html={t(userLanguage, 'terminology:274')} />
+        <dt id="patipatti" set:html={t(userLanguage, 'terminology:275')} />
+        <dd set:html={t(userLanguage, 'terminology:276')} />
+        <dt id="pativedha" set:html={t(userLanguage, 'terminology:277')} />
+        <dd set:html={t(userLanguage, 'terminology:278')} />
+        <dt id="peta" set:html={t(userLanguage, 'terminology:279')} />
+        <dd set:html={t(userLanguage, 'terminology:280')} />
+        <dt id="phala" set:html={t(userLanguage, 'terminology:281')} />
+        <dd set:html={t(userLanguage, 'terminology:282')} />
+        <dt id="piti" set:html={t(userLanguage, 'terminology:283')} />
+        <dd set:html={t(userLanguage, 'terminology:284')} />
+        <dt id="puja" set:html={t(userLanguage, 'terminology:285')} />
+        <dd set:html={t(userLanguage, 'terminology:286')} />
+        <dt id="punna" set:html={t(userLanguage, 'terminology:287')} />
+        <dd set:html={t(userLanguage, 'terminology:288')} />
+        <dt id="puthujjana" set:html={t(userLanguage, 'terminology:289')} />
+        <dd set:html={t(userLanguage, 'terminology:290')} />
+      </dl>
+      <h2 id="r" set:html={t(userLanguage, 'terminology:291')} />
+      <dl>
+        <dt id="raga" set:html={t(userLanguage, 'terminology:292')} />
+        <dd set:html={t(userLanguage, 'terminology:293')} />
+        <dt id="rupa" set:html={t(userLanguage, 'terminology:294')} />
+        <dd set:html={t(userLanguage, 'terminology:295')} />
+      </dl>
+      <h2 id="s" set:html={t(userLanguage, 'terminology:296')} />
+      <dl>
+        <dt id="sacca" set:html={t(userLanguage, 'terminology:297')} />
+        <dd set:html={t(userLanguage, 'terminology:298')} />
+        <dt id="saddha" set:html={t(userLanguage, 'terminology:299')} />
+        <dd set:html={t(userLanguage, 'terminology:300')} />
+        <dt id="sadhu" set:html={t(userLanguage, 'terminology:301')} />
+        <dd set:html={t(userLanguage, 'terminology:302')} />
+        <dt id="sagga" set:html={t(userLanguage, 'terminology:303')} />
+        <dd set:html={t(userLanguage, 'terminology:304')} />
+        <dt id="sakadagami" set:html={t(userLanguage, 'terminology:305')} />
+        <dd set:html={t(userLanguage, 'terminology:306')} />
+        <dt id="sakkaya-ditthi" set:html={t(userLanguage, 'terminology:307')} />
+        <dd set:html={t(userLanguage, 'terminology:308')} />
+        <dt id="sakyamuni" set:html={t(userLanguage, 'terminology:309')} />
+        <dd set:html={t(userLanguage, 'terminology:310')} />
+        <dt id="sakya-putta" set:html={t(userLanguage, 'terminology:311')} />
+        <dd set:html={t(userLanguage, 'terminology:312')} />
+        <dt
+          id="sallekha-dhamma"
+          set:html={t(userLanguage, 'terminology:313')}
+        />
+        <dd set:html={t(userLanguage, 'terminology:314')} />
+        <dt id="samadhi" set:html={t(userLanguage, 'terminology:315')} />
+        <dd set:html={t(userLanguage, 'terminology:316')} />
+        <dt id="samana" set:html={t(userLanguage, 'terminology:317')} />
+        <dd set:html={t(userLanguage, 'terminology:318')} />
+        <dt set:html={t(userLanguage, 'terminology:319')} />
+        <dd set:html={t(userLanguage, 'terminology:320')} />
+        <dt id="sambhavesin" set:html={t(userLanguage, 'terminology:321')} />
+        <dd set:html={t(userLanguage, 'terminology:322')} />
+        <dt id="sammuti" set:html={t(userLanguage, 'terminology:323')} />
+        <dd set:html={t(userLanguage, 'terminology:324')} />
+        <dt id="sampajanna" set:html={t(userLanguage, 'terminology:325')} />
+        <dd set:html={t(userLanguage, 'terminology:326')} />
+        <dt id="samsara" set:html={t(userLanguage, 'terminology:327')} />
+        <dd set:html={t(userLanguage, 'terminology:328')} />
+        <dt id="samvega" set:html={t(userLanguage, 'terminology:329')} />
+        <dd set:html={t(userLanguage, 'terminology:330')} />
+        <dt id="samyojana" set:html={t(userLanguage, 'terminology:331')} />
+        <dd set:html={t(userLanguage, 'terminology:332')} />
+        <dt id="sanditthiko" set:html={t(userLanguage, 'terminology:333')} />
+        <dd set:html={t(userLanguage, 'terminology:334')} />
+        <dt id="sangha" set:html={t(userLanguage, 'terminology:335')} />
+        <dd>
+          <span set:html={t(userLanguage, 'terminology:336')} />
+          <ul>
+            <li set:html={t(userLanguage, 'terminology:337')} />
+            <li set:html={t(userLanguage, 'terminology:338')} />
+          </ul>
+          <span set:html={t(userLanguage, 'terminology:339')} />
+          <a href="#parisa" set:html={t(userLanguage, 'terminology:340')} />
+          <span set:html={t(userLanguage, 'terminology:341')} />
+        </dd>
+        <dt id="sankhara" set:html={t(userLanguage, 'terminology:342')} />
+        <dd set:html={t(userLanguage, 'terminology:343')} />
+        <dt id="sanna" set:html={t(userLanguage, 'terminology:344')} />
+        <dd set:html={t(userLanguage, 'terminology:345')} />
+        <dt id="sanyojana" set:html={t(userLanguage, 'terminology:346')} />
+        <dd set:html={t(userLanguage, 'terminology:347')} />
+        <dt id="sasana" set:html={t(userLanguage, 'terminology:348')} />
+        <dd set:html={t(userLanguage, 'terminology:349')} />
+        <dt id="sati" set:html={t(userLanguage, 'terminology:350')} />
+        <dd set:html={t(userLanguage, 'terminology:351')} />
+        <dt id="satipatthana" set:html={t(userLanguage, 'terminology:352')} />
+        <dd set:html={t(userLanguage, 'terminology:353')} />
+        <dt
+          id="sa-upadisesa-nibbana"
+          set:html={t(userLanguage, 'terminology:354')}
+        />
+        <dd set:html={t(userLanguage, 'terminology:355')} />
+        <dt id="savaka" set:html={t(userLanguage, 'terminology:356')} />
+        <dd set:html={t(userLanguage, 'terminology:357')} />
+        <dt id="sekha" set:html={t(userLanguage, 'terminology:358')} />
+        <dd set:html={t(userLanguage, 'terminology:359')} />
+        <dt id="sila" set:html={t(userLanguage, 'terminology:360')} />
+        <dd set:html={t(userLanguage, 'terminology:361')} />
+        <dt id="sima" set:html={t(userLanguage, 'terminology:362')} />
+        <dd set:html={t(userLanguage, 'terminology:363')} />
+        <dt id="sotapanna" set:html={t(userLanguage, 'terminology:364')} />
+        <dd set:html={t(userLanguage, 'terminology:365')} />
+        <dt set:html={t(userLanguage, 'terminology:366')} />
+        <dd set:html={t(userLanguage, 'terminology:367')} />
+        <dt set:html={t(userLanguage, 'terminology:368')} />
+        <dd set:html={t(userLanguage, 'terminology:369')} />
+        <dt id="stupa" set:html={t(userLanguage, 'terminology:370')} />
+        <dd set:html={t(userLanguage, 'terminology:371')} />
+        <dt id="sugati" set:html={t(userLanguage, 'terminology:372')} />
+        <dd set:html={t(userLanguage, 'terminology:373')} />
+        <dt id="sugato" set:html={t(userLanguage, 'terminology:374')} />
+        <dd set:html={t(userLanguage, 'terminology:375')} />
+        <dt id="sukha" set:html={t(userLanguage, 'terminology:376')} />
+        <dd set:html={t(userLanguage, 'terminology:377')} />
+        <dt id="sutta" set:html={t(userLanguage, 'terminology:378')} />
+        <dd set:html={t(userLanguage, 'terminology:379')} />
+      </dl>
+      <h2 id="t" set:html={t(userLanguage, 'terminology:380')} />
+      <dl>
+        <dt id="tanha" set:html={t(userLanguage, 'terminology:381')} />
+        <dd set:html={t(userLanguage, 'terminology:382')} />
+        <dt id="tapas" set:html={t(userLanguage, 'terminology:383')} />
+        <dd set:html={t(userLanguage, 'terminology:384')} />
+        <dt id="tathagata" set:html={t(userLanguage, 'terminology:385')} />
+        <dd set:html={t(userLanguage, 'terminology:386')} />
+        <dt id="ti-lakkhana" set:html={t(userLanguage, 'terminology:387')} />
+        <dd set:html={t(userLanguage, 'terminology:388')} />
+        <dt id="tipitaka" set:html={t(userLanguage, 'terminology:389')} />
+        <dd set:html={t(userLanguage, 'terminology:390')} />
+        <dt id="tiratana" set:html={t(userLanguage, 'terminology:391')} />
+        <dd set:html={t(userLanguage, 'terminology:392')} />
+        <dt id="tisarana" set:html={t(userLanguage, 'terminology:393')} />
+        <dd set:html={t(userLanguage, 'terminology:394')} />
+      </dl>
+      <h2 id="u" set:html={t(userLanguage, 'terminology:395')} />
+      <dl>
+        <dt id="ugghatitannu" set:html={t(userLanguage, 'terminology:396')} />
+        <dd set:html={t(userLanguage, 'terminology:397')} />
+        <dt id="upadana" set:html={t(userLanguage, 'terminology:398')} />
+        <dd set:html={t(userLanguage, 'terminology:399')} />
+        <dt id="upasampada" set:html={t(userLanguage, 'terminology:400')} />
+        <dd set:html={t(userLanguage, 'terminology:401')} />
+        <dt id="upasika" set:html={t(userLanguage, 'terminology:402')} />
+        <dd set:html={t(userLanguage, 'terminology:403')} />
+        <dt id="upekkha" set:html={t(userLanguage, 'terminology:404')} />
+        <dd set:html={t(userLanguage, 'terminology:405')} />
+        <dt id="uposatha" set:html={t(userLanguage, 'terminology:406')} />
+        <dd set:html={t(userLanguage, 'terminology:407')} />
+      </dl>
+      <h2 id="v" set:html={t(userLanguage, 'terminology:408')} />
+      <dl>
+        <dt id="vassa" set:html={t(userLanguage, 'terminology:409')} />
+        <dd set:html={t(userLanguage, 'terminology:410')} />
+        <dt id="vatta" set:html={t(userLanguage, 'terminology:411')} />
+        <dd set:html={t(userLanguage, 'terminology:412')} />
+        <dt id="vedana" set:html={t(userLanguage, 'terminology:413')} />
+        <dd set:html={t(userLanguage, 'terminology:414')} />
+        <dt id="vesak" set:html={t(userLanguage, 'terminology:415')} />
+        <dd set:html={t(userLanguage, 'terminology:416')} />
+        <dt id="vicara" set:html={t(userLanguage, 'terminology:417')} />
+        <dd set:html={t(userLanguage, 'terminology:418')} />
+        <dt id="vijja" set:html={t(userLanguage, 'terminology:419')} />
+        <dd set:html={t(userLanguage, 'terminology:420')} />
+        <dt id="vijja-carana" set:html={t(userLanguage, 'terminology:421')} />
+        <dd set:html={t(userLanguage, 'terminology:422')} />
+        <dt id="vimutti" set:html={t(userLanguage, 'terminology:423')} />
+        <dd set:html={t(userLanguage, 'terminology:424')} />
+        <dt id="vinaya" set:html={t(userLanguage, 'terminology:425')} />
+        <dd set:html={t(userLanguage, 'terminology:426')} />
+        <dt id="vinnana" set:html={t(userLanguage, 'terminology:427')} />
+        <dd set:html={t(userLanguage, 'terminology:428')} />
+        <dt id="vipaka" set:html={t(userLanguage, 'terminology:429')} />
+        <dd set:html={t(userLanguage, 'terminology:430')} />
+        <dt id="vipassana" set:html={t(userLanguage, 'terminology:431')} />
+        <dd set:html={t(userLanguage, 'terminology:432')} />
+        <dt id="viriya" set:html={t(userLanguage, 'terminology:433')} />
+        <dd set:html={t(userLanguage, 'terminology:434')} />
+        <dt id="vitakka" set:html={t(userLanguage, 'terminology:435')} />
+        <dd set:html={t(userLanguage, 'terminology:436')} />
+      </dl>
+      <h2 id="wxyz" set:html={t(userLanguage, 'terminology:437')} />
+      <dl>
+        <dt id="yakkha" set:html={t(userLanguage, 'terminology:438')} />
+        <dd set:html={t(userLanguage, 'terminology:439')} />
+      </dl>
+      <aside class="about-index">
+        <p set:html={t(userLanguage, 'terminology:440')} />
+        <ul>
+          <li set:html={t(userLanguage, 'terminology:441')} />
+          <li set:html={t(userLanguage, 'terminology:442')} />
+          <li set:html={t(userLanguage, 'terminology:443')} />
+        </ul>
+        <p set:html={t(userLanguage, 'terminology:444')} />
+        <ul>
+          <li set:html={t(userLanguage, 'terminology:445')} />
+          <li set:html={t(userLanguage, 'terminology:446')} />
+        </ul>
+      </aside>
+      <aside class="static-copyright">
+        <p set:html={t(userLanguage, 'terminology:447')} />
+        <blockquote set:html={t(userLanguage, 'terminology:448')} />
+        <p set:html={t(userLanguage, 'terminology:449')} />
+      </aside>
+    </article>
+  </main>
+</Layout>

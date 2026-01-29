@@ -1,0 +1,99 @@
+---
+import '~/assets/guides.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'interface:vinaya')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'vinaya:1')} />
+      <p class="byline" set:html={t(userLanguage, 'vinaya:2')} />
+      <nav class="contents">
+        <ol>
+          <li set:html={t(userLanguage, 'vinaya:3')} />
+          <li set:html={t(userLanguage, 'vinaya:4')} />
+          <li set:html={t(userLanguage, 'vinaya:5')} />
+          <li set:html={t(userLanguage, 'vinaya:6')} />
+          <li set:html={t(userLanguage, 'vinaya:7')} />
+          <li set:html={t(userLanguage, 'vinaya:8')} />
+        </ol>
+      </nav>
+      <p set:html={t(userLanguage, 'vinaya:9')} />
+      <h2 id="item1" set:html={t(userLanguage, 'vinaya:10')} />
+      <p set:html={t(userLanguage, 'vinaya:11')} />
+      <p set:html={t(userLanguage, 'vinaya:12')} />
+      <p set:html={t(userLanguage, 'vinaya:13')} />
+      <p set:html={t(userLanguage, 'vinaya:14')} />
+      <p set:html={t(userLanguage, 'vinaya:15')} />
+      <h2 id="item2" set:html={t(userLanguage, 'vinaya:16')} />
+      <p set:html={t(userLanguage, 'vinaya:17')} />
+      <p set:html={t(userLanguage, 'vinaya:18')} />
+      <p set:html={t(userLanguage, 'vinaya:19')} />
+      <p set:html={t(userLanguage, 'vinaya:20')} />
+      <ul>
+        <li set:html={t(userLanguage, 'vinaya:21')} />
+        <li set:html={t(userLanguage, 'vinaya:22')} />
+        <li set:html={t(userLanguage, 'vinaya:23')} />
+        <li set:html={t(userLanguage, 'vinaya:24')} />
+        <li set:html={t(userLanguage, 'vinaya:25')} />
+        <li set:html={t(userLanguage, 'vinaya:26')} />
+      </ul>
+      <h2 id="item3" set:html={t(userLanguage, 'vinaya:27')} />
+      <p set:html={t(userLanguage, 'vinaya:28')} />
+      <h3 set:html={t(userLanguage, 'vinaya:29')} />
+      <p set:html={t(userLanguage, 'vinaya:30')} />
+      <p set:html={t(userLanguage, 'vinaya:31')} />
+      <p set:html={t(userLanguage, 'vinaya:32')} />
+      <p set:html={t(userLanguage, 'vinaya:33')} />
+      <p set:html={t(userLanguage, 'vinaya:34')} />
+      <p set:html={t(userLanguage, 'vinaya:35')} />
+      <p set:html={t(userLanguage, 'vinaya:36')} />
+      <p set:html={t(userLanguage, 'vinaya:37')} />
+      <p set:html={t(userLanguage, 'vinaya:38')} />
+      <h3 set:html={t(userLanguage, 'vinaya:39')} />
+      <p set:html={t(userLanguage, 'vinaya:40')} />
+      <p set:html={t(userLanguage, 'vinaya:41')} />
+      <p set:html={t(userLanguage, 'vinaya:42')} />
+      <p set:html={t(userLanguage, 'vinaya:43')} />
+      <p set:html={t(userLanguage, 'vinaya:44')} />
+      <p set:html={t(userLanguage, 'vinaya:45')} />
+      <p set:html={t(userLanguage, 'vinaya:46')} />
+      <p set:html={t(userLanguage, 'vinaya:47')} />
+      <p set:html={t(userLanguage, 'vinaya:48')} />
+      <h3 set:html={t(userLanguage, 'vinaya:49')} />
+      <p set:html={t(userLanguage, 'vinaya:50')} />
+      <p set:html={t(userLanguage, 'vinaya:51')} />
+      <h2 id="item4" set:html={t(userLanguage, 'vinaya:52')} />
+      <p set:html={t(userLanguage, 'vinaya:53')} />
+      <p set:html={t(userLanguage, 'vinaya:54')} />
+      <p set:html={t(userLanguage, 'vinaya:55')} />
+      <h2 id="item5" set:html={t(userLanguage, 'vinaya:56')} />
+      <p set:html={t(userLanguage, 'vinaya:57')} />
+      <p set:html={t(userLanguage, 'vinaya:58')} />
+      <p set:html={t(userLanguage, 'vinaya:59')} />
+      <p set:html={t(userLanguage, 'vinaya:60')} />
+      <p set:html={t(userLanguage, 'vinaya:61')} />
+      <h2 id="item6" set:html={t(userLanguage, 'vinaya:62')} />
+      <ul>
+        <li set:html={t(userLanguage, 'vinaya:63')} />
+        <li set:html={t(userLanguage, 'vinaya:64')} />
+        <li set:html={t(userLanguage, 'vinaya:65')} />
+        <li set:html={t(userLanguage, 'vinaya:66')} />
+        <li set:html={t(userLanguage, 'vinaya:67')} />
+        <li set:html={t(userLanguage, 'vinaya:68')} />
+        <li set:html={t(userLanguage, 'vinaya:69')} />
+        <li set:html={t(userLanguage, 'vinaya:70')} />
+        <li set:html={t(userLanguage, 'vinaya:71')} />
+        <li set:html={t(userLanguage, 'vinaya:72')} />
+      </ul>
+    </article>
+  </main>
+</Layout>

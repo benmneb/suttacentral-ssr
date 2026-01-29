@@ -1,0 +1,152 @@
+---
+import '~/assets/guides.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'interface:dnGuideSujato')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'dn-guide-sujato:1')} />
+      <p class="byline" set:html={t(userLanguage, 'dn-guide-sujato:2')} />
+      <nav class="contents">
+        <ol>
+          <li set:html={t(userLanguage, 'dn-guide-sujato:3')} />
+          <li set:html={t(userLanguage, 'dn-guide-sujato:4')} />
+          <li set:html={t(userLanguage, 'dn-guide-sujato:5')} />
+          <li set:html={t(userLanguage, 'dn-guide-sujato:6')} />
+          <li set:html={t(userLanguage, 'dn-guide-sujato:7')} />
+        </ol>
+      </nav>
+      <p set:html={t(userLanguage, 'dn-guide-sujato:8')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:9')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:10')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:11')} />
+      <h2 id="item1" set:html={t(userLanguage, 'dn-guide-sujato:12')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:13')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:14')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:15')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:16')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:17')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:18')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:19')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:20')} />
+      <h2 id="item2" set:html={t(userLanguage, 'dn-guide-sujato:21')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:22')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:23')} />
+      <ul>
+        <li set:html={t(userLanguage, 'dn-guide-sujato:24')} />
+        <li set:html={t(userLanguage, 'dn-guide-sujato:25')} />
+        <li set:html={t(userLanguage, 'dn-guide-sujato:26')} />
+      </ul>
+      <p set:html={t(userLanguage, 'dn-guide-sujato:27')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:28')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:29')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:30')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:31')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:32')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:33')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:34')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:35')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:36')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:37')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'dn-guide-sujato:38')} />
+        <dd set:html={t(userLanguage, 'dn-guide-sujato:39')} />
+        <dt set:html={t(userLanguage, 'dn-guide-sujato:40')} />
+        <dd set:html={t(userLanguage, 'dn-guide-sujato:41')} />
+        <dt set:html={t(userLanguage, 'dn-guide-sujato:42')} />
+        <dd set:html={t(userLanguage, 'dn-guide-sujato:43')} />
+        <dt set:html={t(userLanguage, 'dn-guide-sujato:44')} />
+        <dd set:html={t(userLanguage, 'dn-guide-sujato:45')} />
+        <dt set:html={t(userLanguage, 'dn-guide-sujato:46')} />
+        <dd set:html={t(userLanguage, 'dn-guide-sujato:47')} />
+      </dl>
+      <p set:html={t(userLanguage, 'dn-guide-sujato:48')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:49')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:50')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:51')} />
+      <ol>
+        <li set:html={t(userLanguage, 'dn-guide-sujato:52')} />
+        <li set:html={t(userLanguage, 'dn-guide-sujato:53')} />
+        <li set:html={t(userLanguage, 'dn-guide-sujato:54')} />
+        <li set:html={t(userLanguage, 'dn-guide-sujato:55')} />
+      </ol>
+      <p set:html={t(userLanguage, 'dn-guide-sujato:56')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:57')} />
+      <h2 id="item3" set:html={t(userLanguage, 'dn-guide-sujato:58')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:59')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:60')} />
+      <h3 set:html={t(userLanguage, 'dn-guide-sujato:61')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:62')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:63')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:64')} />
+      <h3 set:html={t(userLanguage, 'dn-guide-sujato:65')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:66')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:67')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:68')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:69')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:70')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:71')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:72')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:73')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:74')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:75')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:76')} />
+      <h3 set:html={t(userLanguage, 'dn-guide-sujato:77')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:78')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:79')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:80')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:81')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:82')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:83')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:84')} />
+      <h2 id="item4" set:html={t(userLanguage, 'dn-guide-sujato:85')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:86')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:87')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'dn-guide-sujato:88')} />
+        <dd set:html={t(userLanguage, 'dn-guide-sujato:89')} />
+        <dt set:html={t(userLanguage, 'dn-guide-sujato:90')} />
+        <dd set:html={t(userLanguage, 'dn-guide-sujato:91')} />
+        <dt set:html={t(userLanguage, 'dn-guide-sujato:92')} />
+        <dd set:html={t(userLanguage, 'dn-guide-sujato:93')} />
+        <dt set:html={t(userLanguage, 'dn-guide-sujato:94')} />
+        <dd set:html={t(userLanguage, 'dn-guide-sujato:95')} />
+      </dl>
+      <p set:html={t(userLanguage, 'dn-guide-sujato:96')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'dn-guide-sujato:97')} />
+        <dd set:html={t(userLanguage, 'dn-guide-sujato:98')} />
+        <dt set:html={t(userLanguage, 'dn-guide-sujato:99')} />
+        <dd set:html={t(userLanguage, 'dn-guide-sujato:100')} />
+        <dt set:html={t(userLanguage, 'dn-guide-sujato:101')} />
+        <dd set:html={t(userLanguage, 'dn-guide-sujato:102')} />
+        <dt set:html={t(userLanguage, 'dn-guide-sujato:103')} />
+        <dd set:html={t(userLanguage, 'dn-guide-sujato:104')} />
+        <dt set:html={t(userLanguage, 'dn-guide-sujato:105')} />
+        <dd set:html={t(userLanguage, 'dn-guide-sujato:106')} />
+      </dl>
+      <p set:html={t(userLanguage, 'dn-guide-sujato:107')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:108')} />
+      <h2 id="item5" set:html={t(userLanguage, 'dn-guide-sujato:109')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:110')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:111')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:112')} />
+      <p set:html={t(userLanguage, 'dn-guide-sujato:113')} />
+      <ul>
+        <li set:html={t(userLanguage, 'dn-guide-sujato:114')} />
+        <li set:html={t(userLanguage, 'dn-guide-sujato:115')} />
+        <li set:html={t(userLanguage, 'dn-guide-sujato:116')} />
+        <li set:html={t(userLanguage, 'dn-guide-sujato:117')} />
+      </ul>
+    </article>
+  </main>
+</Layout>

@@ -1,0 +1,96 @@
+---
+import '~/assets/guides.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'interface:abhidhamma')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'abhidhamma:1')} />
+      <p class="byline" set:html={t(userLanguage, 'abhidhamma:2')} />
+      <nav class="contents">
+        <ol>
+          <li set:html={t(userLanguage, 'abhidhamma:3')} />
+          <li set:html={t(userLanguage, 'abhidhamma:4')} />
+          <li set:html={t(userLanguage, 'abhidhamma:5')} />
+          <li set:html={t(userLanguage, 'abhidhamma:6')} />
+          <li set:html={t(userLanguage, 'abhidhamma:7')} />
+          <li set:html={t(userLanguage, 'abhidhamma:8')} />
+        </ol>
+      </nav>
+      <p set:html={t(userLanguage, 'abhidhamma:9')} />
+      <p set:html={t(userLanguage, 'abhidhamma:10')} />
+      <p set:html={t(userLanguage, 'abhidhamma:11')} />
+      <p set:html={t(userLanguage, 'abhidhamma:12')} />
+      <h2 id="item1" set:html={t(userLanguage, 'abhidhamma:13')} />
+      <p set:html={t(userLanguage, 'abhidhamma:14')} />
+      <p set:html={t(userLanguage, 'abhidhamma:15')} />
+      <p set:html={t(userLanguage, 'abhidhamma:16')} />
+      <p set:html={t(userLanguage, 'abhidhamma:17')} />
+      <h2 id="item2" set:html={t(userLanguage, 'abhidhamma:18')} />
+      <p set:html={t(userLanguage, 'abhidhamma:19')} />
+      <p set:html={t(userLanguage, 'abhidhamma:20')} />
+      <h3 set:html={t(userLanguage, 'abhidhamma:21')} />
+      <p set:html={t(userLanguage, 'abhidhamma:22')} />
+      <p set:html={t(userLanguage, 'abhidhamma:23')} />
+      <h3 set:html={t(userLanguage, 'abhidhamma:24')} />
+      <p set:html={t(userLanguage, 'abhidhamma:25')} />
+      <ol>
+        <li set:html={t(userLanguage, 'abhidhamma:26')} />
+        <li set:html={t(userLanguage, 'abhidhamma:27')} />
+        <li set:html={t(userLanguage, 'abhidhamma:28')} />
+      </ol>
+      <p set:html={t(userLanguage, 'abhidhamma:29')} />
+      <h3 set:html={t(userLanguage, 'abhidhamma:30')} />
+      <p set:html={t(userLanguage, 'abhidhamma:31')} />
+      <h3 set:html={t(userLanguage, 'abhidhamma:32')} />
+      <p set:html={t(userLanguage, 'abhidhamma:33')} />
+      <h3 set:html={t(userLanguage, 'abhidhamma:34')} />
+      <p set:html={t(userLanguage, 'abhidhamma:35')} />
+      <p set:html={t(userLanguage, 'abhidhamma:36')} />
+      <p set:html={t(userLanguage, 'abhidhamma:37')} />
+      <h3 set:html={t(userLanguage, 'abhidhamma:38')} />
+      <p set:html={t(userLanguage, 'abhidhamma:39')} />
+      <h3 set:html={t(userLanguage, 'abhidhamma:40')} />
+      <p set:html={t(userLanguage, 'abhidhamma:41')} />
+      <p set:html={t(userLanguage, 'abhidhamma:42')} />
+      <h2 id="item3" set:html={t(userLanguage, 'abhidhamma:43')} />
+      <p set:html={t(userLanguage, 'abhidhamma:44')} />
+      <p set:html={t(userLanguage, 'abhidhamma:45')} />
+      <h3 set:html={t(userLanguage, 'abhidhamma:46')} />
+      <p set:html={t(userLanguage, 'abhidhamma:47')} />
+      <h3 set:html={t(userLanguage, 'abhidhamma:48')} />
+      <p set:html={t(userLanguage, 'abhidhamma:49')} />
+      <h3 set:html={t(userLanguage, 'abhidhamma:50')} />
+      <p set:html={t(userLanguage, 'abhidhamma:51')} />
+      <h3 set:html={t(userLanguage, 'abhidhamma:52')} />
+      <p set:html={t(userLanguage, 'abhidhamma:53')} />
+      <h3 set:html={t(userLanguage, 'abhidhamma:54')} />
+      <p set:html={t(userLanguage, 'abhidhamma:55')} />
+      <h3 set:html={t(userLanguage, 'abhidhamma:56')} />
+      <p set:html={t(userLanguage, 'abhidhamma:57')} />
+      <h3 set:html={t(userLanguage, 'abhidhamma:58')} />
+      <p set:html={t(userLanguage, 'abhidhamma:59')} />
+      <h2 id="item4" set:html={t(userLanguage, 'abhidhamma:60')} />
+      <p set:html={t(userLanguage, 'abhidhamma:61')} />
+      <h2 id="item5" set:html={t(userLanguage, 'abhidhamma:62')} />
+      <p set:html={t(userLanguage, 'abhidhamma:63')} />
+      <p set:html={t(userLanguage, 'abhidhamma:64')} />
+      <p set:html={t(userLanguage, 'abhidhamma:65')} />
+      <h2 id="item6" set:html={t(userLanguage, 'abhidhamma:66')} />
+      <p set:html={t(userLanguage, 'abhidhamma:67')} />
+      <p set:html={t(userLanguage, 'abhidhamma:68')} />
+      <p set:html={t(userLanguage, 'abhidhamma:69')} />
+      <p set:html={t(userLanguage, 'abhidhamma:70')} />
+      <p set:html={t(userLanguage, 'abhidhamma:71')} />
+    </article>
+  </main>
+</Layout>

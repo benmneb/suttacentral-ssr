@@ -1,0 +1,2502 @@
+---
+import '~/assets/indexes.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'names:1')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'names:1')} />
+      <nav class="contents">
+        <ul class="entry-list">
+          <li set:html={t(userLanguage, 'names:2')} />
+          <li set:html={t(userLanguage, 'names:3')} />
+          <li set:html={t(userLanguage, 'names:4')} />
+          <li set:html={t(userLanguage, 'names:5')} />
+          <li set:html={t(userLanguage, 'names:6')} />
+          <li set:html={t(userLanguage, 'names:7')} />
+          <li set:html={t(userLanguage, 'names:8')} />
+          <li set:html={t(userLanguage, 'names:9')} />
+          <li set:html={t(userLanguage, 'names:10')} />
+          <li set:html={t(userLanguage, 'names:11')} />
+          <li set:html={t(userLanguage, 'names:12')} />
+          <li set:html={t(userLanguage, 'names:13')} />
+          <li set:html={t(userLanguage, 'names:14')} />
+          <li set:html={t(userLanguage, 'names:15')} />
+          <li set:html={t(userLanguage, 'names:16')} />
+          <li set:html={t(userLanguage, 'names:17')} />
+          <li set:html={t(userLanguage, 'names:18')} />
+          <li set:html={t(userLanguage, 'names:19')} />
+          <li set:html={t(userLanguage, 'names:20')} />
+          <li set:html={t(userLanguage, 'names:21')} />
+          <li set:html={t(userLanguage, 'names:22')} />
+          <li set:html={t(userLanguage, 'names:23')} />
+        </ul>
+      </nav>
+      <h2 id="a" set:html={t(userLanguage, 'names:24')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:25')} />
+        <dd set:html={t(userLanguage, 'names:26')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:27')} />
+        <dt set:html={t(userLanguage, 'names:28')} />
+        <dd class="type" set:html={t(userLanguage, 'names:29')} />
+        <dd set:html={t(userLanguage, 'names:30')} />
+        <dt set:html={t(userLanguage, 'names:31')} />
+        <dd class="type" set:html={t(userLanguage, 'names:32')} />
+        <dd set:html={t(userLanguage, 'names:33')} />
+        <dt set:html={t(userLanguage, 'names:34')} />
+        <dd class="type" set:html={t(userLanguage, 'names:35')} />
+        <dd set:html={t(userLanguage, 'names:36')} />
+        <dt set:html={t(userLanguage, 'names:37')} />
+        <dd class="type" set:html={t(userLanguage, 'names:38')} />
+        <dd set:html={t(userLanguage, 'names:39')} />
+        <dt set:html={t(userLanguage, 'names:40')} />
+        <dd class="type" set:html={t(userLanguage, 'names:41')} />
+        <dd set:html={t(userLanguage, 'names:42')} />
+        <dt set:html={t(userLanguage, 'names:43')} />
+        <dd class="type" set:html={t(userLanguage, 'names:44')} />
+        <dd set:html={t(userLanguage, 'names:45')} />
+        <dt set:html={t(userLanguage, 'names:46')} />
+        <dd class="type" set:html={t(userLanguage, 'names:47')} />
+        <dd set:html={t(userLanguage, 'names:48')} />
+        <dt set:html={t(userLanguage, 'names:49')} />
+        <dd class="type" set:html={t(userLanguage, 'names:50')} />
+        <dd set:html={t(userLanguage, 'names:51')} />
+        <dt set:html={t(userLanguage, 'names:52')} />
+        <dd class="type" set:html={t(userLanguage, 'names:53')} />
+        <dd set:html={t(userLanguage, 'names:54')} />
+        <dt set:html={t(userLanguage, 'names:55')} />
+        <dd class="type" set:html={t(userLanguage, 'names:56')} />
+        <dd set:html={t(userLanguage, 'names:57')} />
+        <dt set:html={t(userLanguage, 'names:58')} />
+        <dd class="type" set:html={t(userLanguage, 'names:59')} />
+        <dd set:html={t(userLanguage, 'names:60')} />
+        <dt id="ajatasattu" set:html={t(userLanguage, 'names:61')} />
+        <dd class="type" set:html={t(userLanguage, 'names:62')} />
+        <dd set:html={t(userLanguage, 'names:63')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:64')} />
+        <dt set:html={t(userLanguage, 'names:65')} />
+        <dd class="type" set:html={t(userLanguage, 'names:66')} />
+        <dd set:html={t(userLanguage, 'names:67')} />
+        <dt set:html={t(userLanguage, 'names:68')} />
+        <dd set:html={t(userLanguage, 'names:69')} />
+        <dt set:html={t(userLanguage, 'names:70')} />
+        <dd class="type" set:html={t(userLanguage, 'names:71')} />
+        <dd set:html={t(userLanguage, 'names:72')} />
+        <dt id="akasa" set:html={t(userLanguage, 'names:73')} />
+        <dd class="type" set:html={t(userLanguage, 'names:74')} />
+        <dd set:html={t(userLanguage, 'names:75')} />
+        <dt id="akkosaka" set:html={t(userLanguage, 'names:76')} />
+        <dd class="type" set:html={t(userLanguage, 'names:77')} />
+        <dd set:html={t(userLanguage, 'names:78')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:79')} />
+        <dt set:html={t(userLanguage, 'names:80')} />
+        <dd class="type" set:html={t(userLanguage, 'names:81')} />
+        <dd set:html={t(userLanguage, 'names:82')} />
+        <dt set:html={t(userLanguage, 'names:83')} />
+        <dd class="type" set:html={t(userLanguage, 'names:84')} />
+        <dd set:html={t(userLanguage, 'names:85')} />
+        <dt set:html={t(userLanguage, 'names:86')} />
+        <dd class="type" set:html={t(userLanguage, 'names:87')} />
+        <dd set:html={t(userLanguage, 'names:88')} />
+        <dt set:html={t(userLanguage, 'names:89')} />
+        <dd class="type" set:html={t(userLanguage, 'names:90')} />
+        <dd set:html={t(userLanguage, 'names:91')} />
+        <dt set:html={t(userLanguage, 'names:92')} />
+        <dd class="type" set:html={t(userLanguage, 'names:93')} />
+        <dd set:html={t(userLanguage, 'names:94')} />
+        <dt set:html={t(userLanguage, 'names:95')} />
+        <dd class="type" set:html={t(userLanguage, 'names:96')} />
+        <dd set:html={t(userLanguage, 'names:97')} />
+        <dt set:html={t(userLanguage, 'names:98')} />
+        <dd class="type" set:html={t(userLanguage, 'names:99')} />
+        <dd set:html={t(userLanguage, 'names:100')} />
+        <dt set:html={t(userLanguage, 'names:101')} />
+        <dd class="type" set:html={t(userLanguage, 'names:102')} />
+        <dd set:html={t(userLanguage, 'names:103')} />
+        <dt set:html={t(userLanguage, 'names:104')} />
+        <dd class="type" set:html={t(userLanguage, 'names:105')} />
+        <dd set:html={t(userLanguage, 'names:106')} />
+        <dt set:html={t(userLanguage, 'names:107')} />
+        <dd class="type" set:html={t(userLanguage, 'names:108')} />
+        <dd set:html={t(userLanguage, 'names:109')} />
+        <dt id="ananda" set:html={t(userLanguage, 'names:110')} />
+        <dd class="type" set:html={t(userLanguage, 'names:111')} />
+        <dd set:html={t(userLanguage, 'names:112')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:113')} />
+        <dt set:html={t(userLanguage, 'names:114')} />
+        <dd class="type" set:html={t(userLanguage, 'names:115')} />
+        <dd set:html={t(userLanguage, 'names:116')} />
+        <dt id="anathapindika" set:html={t(userLanguage, 'names:117')} />
+        <dd class="type" set:html={t(userLanguage, 'names:118')} />
+        <dd set:html={t(userLanguage, 'names:119')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:120')} />
+        <dt id="anathapindika-park" set:html={t(userLanguage, 'names:121')} />
+        <dd set:html={t(userLanguage, 'names:122')} />
+        <dt set:html={t(userLanguage, 'names:123')} />
+        <dd class="type" set:html={t(userLanguage, 'names:124')} />
+        <dd set:html={t(userLanguage, 'names:125')} />
+        <dt set:html={t(userLanguage, 'names:126')} />
+        <dd class="type" set:html={t(userLanguage, 'names:127')} />
+        <dd set:html={t(userLanguage, 'names:128')} />
+        <dt set:html={t(userLanguage, 'names:129')} />
+        <dd class="type" set:html={t(userLanguage, 'names:130')} />
+        <dd set:html={t(userLanguage, 'names:131')} />
+        <dt set:html={t(userLanguage, 'names:132')} />
+        <dd class="type" set:html={t(userLanguage, 'names:133')} />
+        <dd set:html={t(userLanguage, 'names:134')} />
+        <dt set:html={t(userLanguage, 'names:135')} />
+        <dd class="type" set:html={t(userLanguage, 'names:136')} />
+        <dd set:html={t(userLanguage, 'names:137')} />
+        <dt set:html={t(userLanguage, 'names:138')} />
+        <dd class="type" set:html={t(userLanguage, 'names:139')} />
+        <dd set:html={t(userLanguage, 'names:140')} />
+        <dt set:html={t(userLanguage, 'names:141')} />
+        <dd class="type" set:html={t(userLanguage, 'names:142')} />
+        <dd set:html={t(userLanguage, 'names:143')} />
+        <dt set:html={t(userLanguage, 'names:144')} />
+        <dd class="type" set:html={t(userLanguage, 'names:145')} />
+        <dd set:html={t(userLanguage, 'names:146')} />
+        <dt set:html={t(userLanguage, 'names:147')} />
+        <dd class="type" set:html={t(userLanguage, 'names:148')} />
+        <dd set:html={t(userLanguage, 'names:149')} />
+        <dt set:html={t(userLanguage, 'names:150')} />
+        <dd class="type" set:html={t(userLanguage, 'names:151')} />
+        <dd set:html={t(userLanguage, 'names:152')} />
+        <dt set:html={t(userLanguage, 'names:153')} />
+        <dd class="type" set:html={t(userLanguage, 'names:154')} />
+        <dd set:html={t(userLanguage, 'names:155')} />
+        <dt set:html={t(userLanguage, 'names:156')} />
+        <dd class="type" set:html={t(userLanguage, 'names:157')} />
+        <dd set:html={t(userLanguage, 'names:158')} />
+        <dt id="anuruddha" set:html={t(userLanguage, 'names:159')} />
+        <dd class="type" set:html={t(userLanguage, 'names:160')} />
+        <dd set:html={t(userLanguage, 'names:161')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:162')} />
+        <dt set:html={t(userLanguage, 'names:163')} />
+        <dd class="type" set:html={t(userLanguage, 'names:164')} />
+        <dd set:html={t(userLanguage, 'names:165')} />
+        <dt set:html={t(userLanguage, 'names:166')} />
+        <dd class="type" set:html={t(userLanguage, 'names:167')} />
+        <dd set:html={t(userLanguage, 'names:168')} />
+        <dt set:html={t(userLanguage, 'names:169')} />
+        <dd class="type" set:html={t(userLanguage, 'names:170')} />
+        <dd set:html={t(userLanguage, 'names:171')} />
+        <dt set:html={t(userLanguage, 'names:172')} />
+        <dd class="type" set:html={t(userLanguage, 'names:173')} />
+        <dd set:html={t(userLanguage, 'names:174')} />
+        <dt set:html={t(userLanguage, 'names:175')} />
+        <dd set:html={t(userLanguage, 'names:176')} />
+        <dt set:html={t(userLanguage, 'names:177')} />
+        <dd class="type" set:html={t(userLanguage, 'names:178')} />
+        <dd set:html={t(userLanguage, 'names:179')} />
+        <dt set:html={t(userLanguage, 'names:180')} />
+        <dd class="type" set:html={t(userLanguage, 'names:181')} />
+        <dd set:html={t(userLanguage, 'names:182')} />
+        <dt set:html={t(userLanguage, 'names:183')} />
+        <dd class="type" set:html={t(userLanguage, 'names:184')} />
+        <dd set:html={t(userLanguage, 'names:185')} />
+        <dt set:html={t(userLanguage, 'names:186')} />
+        <dd class="type" set:html={t(userLanguage, 'names:187')} />
+        <dd set:html={t(userLanguage, 'names:188')} />
+        <dt set:html={t(userLanguage, 'names:189')} />
+        <dd class="type" set:html={t(userLanguage, 'names:190')} />
+        <dd set:html={t(userLanguage, 'names:191')} />
+        <dt set:html={t(userLanguage, 'names:192')} />
+        <dd class="type" set:html={t(userLanguage, 'names:193')} />
+        <dd set:html={t(userLanguage, 'names:194')} />
+        <dt set:html={t(userLanguage, 'names:195')} />
+        <dd class="type" set:html={t(userLanguage, 'names:196')} />
+        <dd set:html={t(userLanguage, 'names:197')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:198')} />
+        <dt set:html={t(userLanguage, 'names:199')} />
+        <dd class="type" set:html={t(userLanguage, 'names:200')} />
+        <dd set:html={t(userLanguage, 'names:201')} />
+        <dt set:html={t(userLanguage, 'names:202')} />
+        <dd class="type" set:html={t(userLanguage, 'names:203')} />
+        <dd set:html={t(userLanguage, 'names:204')} />
+        <dt set:html={t(userLanguage, 'names:205')} />
+        <dd class="type" set:html={t(userLanguage, 'names:206')} />
+        <dd set:html={t(userLanguage, 'names:207')} />
+        <dt set:html={t(userLanguage, 'names:208')} />
+        <dd class="type" set:html={t(userLanguage, 'names:209')} />
+        <dd set:html={t(userLanguage, 'names:210')} />
+        <dt set:html={t(userLanguage, 'names:211')} />
+        <dd class="type" set:html={t(userLanguage, 'names:212')} />
+        <dd set:html={t(userLanguage, 'names:213')} />
+        <dt set:html={t(userLanguage, 'names:214')} />
+        <dd class="type" set:html={t(userLanguage, 'names:215')} />
+        <dd set:html={t(userLanguage, 'names:216')} />
+        <dt set:html={t(userLanguage, 'names:217')} />
+        <dd class="type" set:html={t(userLanguage, 'names:218')} />
+        <dd set:html={t(userLanguage, 'names:219')} />
+        <dt set:html={t(userLanguage, 'names:220')} />
+        <dd class="type" set:html={t(userLanguage, 'names:221')} />
+        <dd set:html={t(userLanguage, 'names:222')} />
+        <dt set:html={t(userLanguage, 'names:223')} />
+        <dd class="type" set:html={t(userLanguage, 'names:224')} />
+        <dd set:html={t(userLanguage, 'names:225')} />
+        <dt set:html={t(userLanguage, 'names:226')} />
+        <dd class="type" set:html={t(userLanguage, 'names:227')} />
+        <dd set:html={t(userLanguage, 'names:228')} />
+        <dt set:html={t(userLanguage, 'names:229')} />
+        <dd class="type" set:html={t(userLanguage, 'names:230')} />
+        <dd set:html={t(userLanguage, 'names:231')} />
+        <dt set:html={t(userLanguage, 'names:232')} />
+        <dd class="type" set:html={t(userLanguage, 'names:233')} />
+        <dd set:html={t(userLanguage, 'names:234')} />
+        <dt set:html={t(userLanguage, 'names:235')} />
+        <dd class="type" set:html={t(userLanguage, 'names:236')} />
+        <dd set:html={t(userLanguage, 'names:237')} />
+        <dt set:html={t(userLanguage, 'names:238')} />
+        <dd set:html={t(userLanguage, 'names:239')} />
+        <dt set:html={t(userLanguage, 'names:240')} />
+        <dd class="type" set:html={t(userLanguage, 'names:241')} />
+        <dd set:html={t(userLanguage, 'names:242')} />
+        <dt set:html={t(userLanguage, 'names:243')} />
+        <dd class="type" set:html={t(userLanguage, 'names:244')} />
+        <dd set:html={t(userLanguage, 'names:245')} />
+        <dt set:html={t(userLanguage, 'names:246')} />
+        <dd class="type" set:html={t(userLanguage, 'names:247')} />
+        <dd set:html={t(userLanguage, 'names:248')} />
+      </dl>
+      <h2 id="b" set:html={t(userLanguage, 'names:249')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:250')} />
+        <dd class="type" set:html={t(userLanguage, 'names:251')} />
+        <dd set:html={t(userLanguage, 'names:252')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:253')} />
+        <dt set:html={t(userLanguage, 'names:254')} />
+        <dd class="type" set:html={t(userLanguage, 'names:255')} />
+        <dd set:html={t(userLanguage, 'names:256')} />
+        <dt set:html={t(userLanguage, 'names:257')} />
+        <dd class="type" set:html={t(userLanguage, 'names:258')} />
+        <dd set:html={t(userLanguage, 'names:259')} />
+        <dt set:html={t(userLanguage, 'names:260')} />
+        <dd class="type" set:html={t(userLanguage, 'names:261')} />
+        <dd set:html={t(userLanguage, 'names:262')} />
+        <dt set:html={t(userLanguage, 'names:263')} />
+        <dd class="type" set:html={t(userLanguage, 'names:264')} />
+        <dd set:html={t(userLanguage, 'names:265')} />
+        <dt set:html={t(userLanguage, 'names:266')} />
+        <dd set:html={t(userLanguage, 'names:267')} />
+        <dt set:html={t(userLanguage, 'names:268')} />
+        <dd class="type" set:html={t(userLanguage, 'names:269')} />
+        <dd set:html={t(userLanguage, 'names:270')} />
+        <dt set:html={t(userLanguage, 'names:271')} />
+        <dd class="type" set:html={t(userLanguage, 'names:272')} />
+        <dd set:html={t(userLanguage, 'names:273')} />
+        <dt set:html={t(userLanguage, 'names:274')} />
+        <dd set:html={t(userLanguage, 'names:275')} />
+        <dt set:html={t(userLanguage, 'names:276')} />
+        <dd set:html={t(userLanguage, 'names:277')} />
+        <dt set:html={t(userLanguage, 'names:278')} />
+        <dd class="type" set:html={t(userLanguage, 'names:279')} />
+        <dd set:html={t(userLanguage, 'names:280')} />
+        <dt set:html={t(userLanguage, 'names:281')} />
+        <dd class="type" set:html={t(userLanguage, 'names:282')} />
+        <dd set:html={t(userLanguage, 'names:283')} />
+        <dt set:html={t(userLanguage, 'names:284')} />
+        <dd set:html={t(userLanguage, 'names:285')} />
+        <dt id="bhadda" set:html={t(userLanguage, 'names:286')} />
+        <dd class="type" set:html={t(userLanguage, 'names:287')} />
+        <dd set:html={t(userLanguage, 'names:288')} />
+        <dt set:html={t(userLanguage, 'names:289')} />
+        <dd class="type" set:html={t(userLanguage, 'names:290')} />
+        <dd set:html={t(userLanguage, 'names:291')} />
+        <dt id="bhaddiya" set:html={t(userLanguage, 'names:292')} />
+        <dd class="type" set:html={t(userLanguage, 'names:293')} />
+        <dd set:html={t(userLanguage, 'names:294')} />
+        <dt set:html={t(userLanguage, 'names:295')} />
+        <dd class="type" set:html={t(userLanguage, 'names:296')} />
+        <dd set:html={t(userLanguage, 'names:297')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:298')} />
+        <dt set:html={t(userLanguage, 'names:299')} />
+        <dd set:html={t(userLanguage, 'names:300')} />
+        <dt set:html={t(userLanguage, 'names:301')} />
+        <dd class="type" set:html={t(userLanguage, 'names:302')} />
+        <dd set:html={t(userLanguage, 'names:303')} />
+        <dt set:html={t(userLanguage, 'names:304')} />
+        <dd class="type" set:html={t(userLanguage, 'names:305')} />
+        <dd set:html={t(userLanguage, 'names:306')} />
+        <dt set:html={t(userLanguage, 'names:307')} />
+        <dd class="type" set:html={t(userLanguage, 'names:308')} />
+        <dd set:html={t(userLanguage, 'names:309')} />
+        <dt set:html={t(userLanguage, 'names:310')} />
+        <dd class="type" set:html={t(userLanguage, 'names:311')} />
+        <dd set:html={t(userLanguage, 'names:312')} />
+        <dt set:html={t(userLanguage, 'names:313')} />
+        <dd class="type" set:html={t(userLanguage, 'names:314')} />
+        <dd set:html={t(userLanguage, 'names:315')} />
+        <dt set:html={t(userLanguage, 'names:316')} />
+        <dd class="type" set:html={t(userLanguage, 'names:317')} />
+        <dd set:html={t(userLanguage, 'names:318')} />
+        <dt set:html={t(userLanguage, 'names:319')} />
+        <dd set:html={t(userLanguage, 'names:320')} />
+        <dt set:html={t(userLanguage, 'names:321')} />
+        <dd class="type" set:html={t(userLanguage, 'names:322')} />
+        <dd set:html={t(userLanguage, 'names:323')} />
+        <dt set:html={t(userLanguage, 'names:324')} />
+        <dd set:html={t(userLanguage, 'names:325')} />
+        <dt set:html={t(userLanguage, 'names:326')} />
+        <dd set:html={t(userLanguage, 'names:327')} />
+        <dt set:html={t(userLanguage, 'names:328')} />
+        <dd set:html={t(userLanguage, 'names:329')} />
+        <dt set:html={t(userLanguage, 'names:330')} />
+        <dd set:html={t(userLanguage, 'names:331')} />
+        <dt set:html={t(userLanguage, 'names:332')} />
+        <dd set:html={t(userLanguage, 'names:333')} />
+        <dt set:html={t(userLanguage, 'names:334')} />
+        <dd set:html={t(userLanguage, 'names:335')} />
+        <dt set:html={t(userLanguage, 'names:336')} />
+        <dd class="type" set:html={t(userLanguage, 'names:337')} />
+        <dd set:html={t(userLanguage, 'names:338')} />
+        <dt set:html={t(userLanguage, 'names:339')} />
+        <dd class="type" set:html={t(userLanguage, 'names:340')} />
+        <dd set:html={t(userLanguage, 'names:341')} />
+        <dt set:html={t(userLanguage, 'names:342')} />
+        <dd class="type" set:html={t(userLanguage, 'names:343')} />
+        <dd set:html={t(userLanguage, 'names:344')} />
+        <dt set:html={t(userLanguage, 'names:345')} />
+        <dd class="type" set:html={t(userLanguage, 'names:346')} />
+        <dd set:html={t(userLanguage, 'names:347')} />
+        <dt set:html={t(userLanguage, 'names:348')} />
+        <dd class="type" set:html={t(userLanguage, 'names:349')} />
+        <dd set:html={t(userLanguage, 'names:350')} />
+        <dt set:html={t(userLanguage, 'names:351')} />
+        <dd class="type" set:html={t(userLanguage, 'names:352')} />
+        <dd set:html={t(userLanguage, 'names:353')} />
+        <dt set:html={t(userLanguage, 'names:354')} />
+        <dd class="type" set:html={t(userLanguage, 'names:355')} />
+        <dd set:html={t(userLanguage, 'names:356')} />
+        <dt set:html={t(userLanguage, 'names:357')} />
+        <dd class="type" set:html={t(userLanguage, 'names:358')} />
+        <dd set:html={t(userLanguage, 'names:359')} />
+        <dt set:html={t(userLanguage, 'names:360')} />
+        <dd class="type" set:html={t(userLanguage, 'names:361')} />
+        <dd set:html={t(userLanguage, 'names:362')} />
+        <dt set:html={t(userLanguage, 'names:363')} />
+        <dd class="type" set:html={t(userLanguage, 'names:364')} />
+        <dd set:html={t(userLanguage, 'names:365')} />
+        <dt set:html={t(userLanguage, 'names:366')} />
+        <dd class="type" set:html={t(userLanguage, 'names:367')} />
+        <dd set:html={t(userLanguage, 'names:368')} />
+        <dt set:html={t(userLanguage, 'names:369')} />
+        <dd set:html={t(userLanguage, 'names:370')} />
+        <dt set:html={t(userLanguage, 'names:371')} />
+        <dd class="type" set:html={t(userLanguage, 'names:372')} />
+        <dd set:html={t(userLanguage, 'names:373')} />
+        <dt set:html={t(userLanguage, 'names:374')} />
+        <dd class="type" set:html={t(userLanguage, 'names:375')} />
+        <dd set:html={t(userLanguage, 'names:376')} />
+        <dt set:html={t(userLanguage, 'names:377')} />
+        <dd class="type" set:html={t(userLanguage, 'names:378')} />
+        <dd set:html={t(userLanguage, 'names:379')} />
+      </dl>
+      <h2 id="c" set:html={t(userLanguage, 'names:380')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:381')} />
+        <dd class="type" set:html={t(userLanguage, 'names:382')} />
+        <dd set:html={t(userLanguage, 'names:383')} />
+        <dt set:html={t(userLanguage, 'names:384')} />
+        <dd class="type" set:html={t(userLanguage, 'names:385')} />
+        <dd set:html={t(userLanguage, 'names:386')} />
+        <dt set:html={t(userLanguage, 'names:387')} />
+        <dd class="type" set:html={t(userLanguage, 'names:388')} />
+        <dd set:html={t(userLanguage, 'names:389')} />
+        <dt set:html={t(userLanguage, 'names:390')} />
+        <dd class="type" set:html={t(userLanguage, 'names:391')} />
+        <dd set:html={t(userLanguage, 'names:392')} />
+        <dt set:html={t(userLanguage, 'names:393')} />
+        <dd class="type" set:html={t(userLanguage, 'names:394')} />
+        <dd set:html={t(userLanguage, 'names:395')} />
+        <dt set:html={t(userLanguage, 'names:396')} />
+        <dd class="type" set:html={t(userLanguage, 'names:397')} />
+        <dd set:html={t(userLanguage, 'names:398')} />
+        <dt set:html={t(userLanguage, 'names:399')} />
+        <dd class="type" set:html={t(userLanguage, 'names:400')} />
+        <dd set:html={t(userLanguage, 'names:401')} />
+        <dt set:html={t(userLanguage, 'names:402')} />
+        <dd class="type" set:html={t(userLanguage, 'names:403')} />
+        <dd set:html={t(userLanguage, 'names:404')} />
+        <dt set:html={t(userLanguage, 'names:405')} />
+        <dd class="type" set:html={t(userLanguage, 'names:406')} />
+        <dd set:html={t(userLanguage, 'names:407')} />
+        <dt set:html={t(userLanguage, 'names:408')} />
+        <dd class="type" set:html={t(userLanguage, 'names:409')} />
+        <dd set:html={t(userLanguage, 'names:410')} />
+        <dt set:html={t(userLanguage, 'names:411')} />
+        <dd class="type" set:html={t(userLanguage, 'names:412')} />
+        <dd set:html={t(userLanguage, 'names:413')} />
+        <dt set:html={t(userLanguage, 'names:414')} />
+        <dd class="type" set:html={t(userLanguage, 'names:415')} />
+        <dd set:html={t(userLanguage, 'names:416')} />
+        <dt id="ciravasi" set:html={t(userLanguage, 'names:417')} />
+        <dd class="type" set:html={t(userLanguage, 'names:418')} />
+        <dd set:html={t(userLanguage, 'names:419')} />
+        <dt set:html={t(userLanguage, 'names:420')} />
+        <dd class="type" set:html={t(userLanguage, 'names:421')} />
+        <dd set:html={t(userLanguage, 'names:422')} />
+        <dt set:html={t(userLanguage, 'names:423')} />
+        <dd set:html={t(userLanguage, 'names:424')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:425')} />
+        <dt set:html={t(userLanguage, 'names:426')} />
+        <dd class="type" set:html={t(userLanguage, 'names:427')} />
+        <dd set:html={t(userLanguage, 'names:428')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:429')} />
+        <dt set:html={t(userLanguage, 'names:430')} />
+        <dd class="type" set:html={t(userLanguage, 'names:431')} />
+        <dd set:html={t(userLanguage, 'names:432')} />
+        <dt set:html={t(userLanguage, 'names:433')} />
+        <dd class="type" set:html={t(userLanguage, 'names:434')} />
+        <dd set:html={t(userLanguage, 'names:435')} />
+        <dt set:html={t(userLanguage, 'names:436')} />
+        <dd set:html={t(userLanguage, 'names:437')} />
+        <dt set:html={t(userLanguage, 'names:438')} />
+        <dd class="type" set:html={t(userLanguage, 'names:439')} />
+        <dd set:html={t(userLanguage, 'names:440')} />
+        <dt set:html={t(userLanguage, 'names:441')} />
+        <dd class="type" set:html={t(userLanguage, 'names:442')} />
+        <dd set:html={t(userLanguage, 'names:443')} />
+        <dt set:html={t(userLanguage, 'names:444')} />
+        <dd class="type" set:html={t(userLanguage, 'names:445')} />
+        <dd set:html={t(userLanguage, 'names:446')} />
+        <dt set:html={t(userLanguage, 'names:447')} />
+        <dd class="type" set:html={t(userLanguage, 'names:448')} />
+        <dd set:html={t(userLanguage, 'names:449')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:450')} />
+        <dt set:html={t(userLanguage, 'names:451')} />
+        <dd set:html={t(userLanguage, 'names:452')} />
+        <dt set:html={t(userLanguage, 'names:453')} />
+        <dd class="type" set:html={t(userLanguage, 'names:454')} />
+        <dd set:html={t(userLanguage, 'names:455')} />
+      </dl>
+      <h2 id="d" set:html={t(userLanguage, 'names:456')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:457')} />
+        <dd class="type" set:html={t(userLanguage, 'names:458')} />
+        <dd set:html={t(userLanguage, 'names:459')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:460')} />
+        <dt set:html={t(userLanguage, 'names:461')} />
+        <dd class="type" set:html={t(userLanguage, 'names:462')} />
+        <dd set:html={t(userLanguage, 'names:463')} />
+        <dt set:html={t(userLanguage, 'names:464')} />
+        <dd class="type" set:html={t(userLanguage, 'names:465')} />
+        <dd set:html={t(userLanguage, 'names:466')} />
+        <dt set:html={t(userLanguage, 'names:467')} />
+        <dd class="type" set:html={t(userLanguage, 'names:468')} />
+        <dd set:html={t(userLanguage, 'names:469')} />
+        <dt set:html={t(userLanguage, 'names:470')} />
+        <dd set:html={t(userLanguage, 'names:471')} />
+        <dt set:html={t(userLanguage, 'names:472')} />
+        <dd class="type" set:html={t(userLanguage, 'names:473')} />
+        <dd set:html={t(userLanguage, 'names:474')} />
+        <dt set:html={t(userLanguage, 'names:475')} />
+        <dd class="type" set:html={t(userLanguage, 'names:476')} />
+        <dd set:html={t(userLanguage, 'names:477')} />
+        <dt set:html={t(userLanguage, 'names:478')} />
+        <dd class="type" set:html={t(userLanguage, 'names:479')} />
+        <dd set:html={t(userLanguage, 'names:480')} />
+        <dt set:html={t(userLanguage, 'names:481')} />
+        <dd class="type" set:html={t(userLanguage, 'names:482')} />
+        <dd set:html={t(userLanguage, 'names:483')} />
+        <dt set:html={t(userLanguage, 'names:484')} />
+        <dd class="type" set:html={t(userLanguage, 'names:485')} />
+        <dd set:html={t(userLanguage, 'names:486')} />
+        <dt set:html={t(userLanguage, 'names:487')} />
+        <dd class="type" set:html={t(userLanguage, 'names:488')} />
+        <dd set:html={t(userLanguage, 'names:489')} />
+        <dt set:html={t(userLanguage, 'names:490')} />
+        <dd class="type" set:html={t(userLanguage, 'names:491')} />
+        <dd set:html={t(userLanguage, 'names:492')} />
+        <dt set:html={t(userLanguage, 'names:493')} />
+        <dd class="type" set:html={t(userLanguage, 'names:494')} />
+        <dd set:html={t(userLanguage, 'names:495')} />
+        <dt set:html={t(userLanguage, 'names:496')} />
+        <dd class="type" set:html={t(userLanguage, 'names:497')} />
+        <dd set:html={t(userLanguage, 'names:498')} />
+        <dt id="dhammadinna" set:html={t(userLanguage, 'names:499')} />
+        <dd class="type" set:html={t(userLanguage, 'names:500')} />
+        <dd set:html={t(userLanguage, 'names:501')} />
+        <dt set:html={t(userLanguage, 'names:502')} />
+        <dd class="type" set:html={t(userLanguage, 'names:503')} />
+        <dd set:html={t(userLanguage, 'names:504')} />
+        <dt set:html={t(userLanguage, 'names:505')} />
+        <dd set:html={t(userLanguage, 'names:506')} />
+        <dt set:html={t(userLanguage, 'names:507')} />
+        <dd class="type" set:html={t(userLanguage, 'names:508')} />
+        <dd set:html={t(userLanguage, 'names:509')} />
+        <dt set:html={t(userLanguage, 'names:510')} />
+        <dd class="type" set:html={t(userLanguage, 'names:511')} />
+        <dd set:html={t(userLanguage, 'names:512')} />
+        <dt set:html={t(userLanguage, 'names:513')} />
+        <dd class="type" set:html={t(userLanguage, 'names:514')} />
+        <dd set:html={t(userLanguage, 'names:515')} />
+        <dt set:html={t(userLanguage, 'names:516')} />
+        <dd class="type" set:html={t(userLanguage, 'names:517')} />
+        <dd set:html={t(userLanguage, 'names:518')} />
+        <dt set:html={t(userLanguage, 'names:519')} />
+        <dd class="type" set:html={t(userLanguage, 'names:520')} />
+        <dd set:html={t(userLanguage, 'names:521')} />
+        <dt set:html={t(userLanguage, 'names:522')} />
+        <dd class="type" set:html={t(userLanguage, 'names:523')} />
+        <dd set:html={t(userLanguage, 'names:524')} />
+        <dt set:html={t(userLanguage, 'names:525')} />
+        <dd class="type" set:html={t(userLanguage, 'names:526')} />
+        <dd set:html={t(userLanguage, 'names:527')} />
+        <dt id="dighajanu" set:html={t(userLanguage, 'names:528')} />
+        <dd class="type" set:html={t(userLanguage, 'names:529')} />
+        <dd set:html={t(userLanguage, 'names:530')} />
+        <dt id="dighavu" set:html={t(userLanguage, 'names:531')} />
+        <dd class="type" set:html={t(userLanguage, 'names:532')} />
+        <dd set:html={t(userLanguage, 'names:533')} />
+        <dt set:html={t(userLanguage, 'names:534')} />
+        <dd class="type" set:html={t(userLanguage, 'names:535')} />
+        <dd set:html={t(userLanguage, 'names:536')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:537')} />
+        <dt id="dighiti" set:html={t(userLanguage, 'names:538')} />
+        <dd class="type" set:html={t(userLanguage, 'names:539')} />
+        <dd set:html={t(userLanguage, 'names:540')} />
+        <dt set:html={t(userLanguage, 'names:541')} />
+        <dd class="type" set:html={t(userLanguage, 'names:542')} />
+        <dd set:html={t(userLanguage, 'names:543')} />
+        <dt set:html={t(userLanguage, 'names:544')} />
+        <dd class="type" set:html={t(userLanguage, 'names:545')} />
+        <dd set:html={t(userLanguage, 'names:546')} />
+        <dt set:html={t(userLanguage, 'names:547')} />
+        <dd class="type" set:html={t(userLanguage, 'names:548')} />
+        <dd set:html={t(userLanguage, 'names:549')} />
+      </dl>
+      <h2 id="e" set:html={t(userLanguage, 'names:550')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:551')} />
+        <dd class="type" set:html={t(userLanguage, 'names:552')} />
+        <dd set:html={t(userLanguage, 'names:553')} />
+        <dt set:html={t(userLanguage, 'names:554')} />
+        <dd class="type" set:html={t(userLanguage, 'names:555')} />
+        <dd set:html={t(userLanguage, 'names:556')} />
+        <dt set:html={t(userLanguage, 'names:557')} />
+        <dd class="type" set:html={t(userLanguage, 'names:558')} />
+        <dd set:html={t(userLanguage, 'names:559')} />
+        <dt set:html={t(userLanguage, 'names:560')} />
+        <dd class="type" set:html={t(userLanguage, 'names:561')} />
+        <dd set:html={t(userLanguage, 'names:562')} />
+        <dt set:html={t(userLanguage, 'names:563')} />
+        <dd class="type" set:html={t(userLanguage, 'names:564')} />
+        <dd set:html={t(userLanguage, 'names:565')} />
+      </dl>
+      <h2 id="f" set:html={t(userLanguage, 'names:566')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:567')} />
+        <dd class="type" set:html={t(userLanguage, 'names:568')} />
+        <dd set:html={t(userLanguage, 'names:569')} />
+      </dl>
+      <h2 id="g" set:html={t(userLanguage, 'names:570')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:571')} />
+        <dd class="type" set:html={t(userLanguage, 'names:572')} />
+        <dd set:html={t(userLanguage, 'names:573')} />
+        <dt set:html={t(userLanguage, 'names:574')} />
+        <dd class="type" set:html={t(userLanguage, 'names:575')} />
+        <dd set:html={t(userLanguage, 'names:576')} />
+        <dt set:html={t(userLanguage, 'names:577')} />
+        <dd class="type" set:html={t(userLanguage, 'names:578')} />
+        <dd set:html={t(userLanguage, 'names:579')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:580')} />
+        <dt id="gandhabhaka" set:html={t(userLanguage, 'names:581')} />
+        <dd class="type" set:html={t(userLanguage, 'names:582')} />
+        <dd set:html={t(userLanguage, 'names:583')} />
+        <dt set:html={t(userLanguage, 'names:584')} />
+        <dd class="type" set:html={t(userLanguage, 'names:585')} />
+        <dd set:html={t(userLanguage, 'names:586')} />
+        <dt set:html={t(userLanguage, 'names:587')} />
+        <dd class="type" set:html={t(userLanguage, 'names:588')} />
+        <dd set:html={t(userLanguage, 'names:589')} />
+        <dt set:html={t(userLanguage, 'names:590')} />
+        <dd class="type" set:html={t(userLanguage, 'names:591')} />
+        <dd set:html={t(userLanguage, 'names:592')} />
+        <dt set:html={t(userLanguage, 'names:593')} />
+        <dd class="type" set:html={t(userLanguage, 'names:594')} />
+        <dd set:html={t(userLanguage, 'names:595')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:596')} />
+        <dt set:html={t(userLanguage, 'names:597')} />
+        <dd class="type" set:html={t(userLanguage, 'names:598')} />
+        <dd set:html={t(userLanguage, 'names:599')} />
+        <dt set:html={t(userLanguage, 'names:600')} />
+        <dd class="type" set:html={t(userLanguage, 'names:601')} />
+        <dd set:html={t(userLanguage, 'names:602')} />
+        <dt set:html={t(userLanguage, 'names:603')} />
+        <dd class="type" set:html={t(userLanguage, 'names:604')} />
+        <dd set:html={t(userLanguage, 'names:605')} />
+        <dt set:html={t(userLanguage, 'names:606')} />
+        <dd class="type" set:html={t(userLanguage, 'names:607')} />
+        <dd set:html={t(userLanguage, 'names:608')} />
+        <dt set:html={t(userLanguage, 'names:609')} />
+        <dd set:html={t(userLanguage, 'names:610')} />
+        <dt set:html={t(userLanguage, 'names:611')} />
+        <dd class="type" set:html={t(userLanguage, 'names:612')} />
+        <dd set:html={t(userLanguage, 'names:613')} />
+        <dt set:html={t(userLanguage, 'names:614')} />
+        <dd class="type" set:html={t(userLanguage, 'names:615')} />
+        <dd set:html={t(userLanguage, 'names:616')} />
+        <dt set:html={t(userLanguage, 'names:617')} />
+        <dd class="type" set:html={t(userLanguage, 'names:618')} />
+        <dd set:html={t(userLanguage, 'names:619')} />
+        <dt set:html={t(userLanguage, 'names:620')} />
+        <dd class="type" set:html={t(userLanguage, 'names:621')} />
+        <dd set:html={t(userLanguage, 'names:622')} />
+        <dt set:html={t(userLanguage, 'names:623')} />
+        <dd class="type" set:html={t(userLanguage, 'names:624')} />
+        <dd set:html={t(userLanguage, 'names:625')} />
+        <dt set:html={t(userLanguage, 'names:626')} />
+        <dd class="type" set:html={t(userLanguage, 'names:627')} />
+        <dd set:html={t(userLanguage, 'names:628')} />
+        <dt set:html={t(userLanguage, 'names:629')} />
+        <dd class="type" set:html={t(userLanguage, 'names:630')} />
+        <dd set:html={t(userLanguage, 'names:631')} />
+        <dt set:html={t(userLanguage, 'names:632')} />
+        <dd class="type" set:html={t(userLanguage, 'names:633')} />
+        <dd set:html={t(userLanguage, 'names:634')} />
+        <dt set:html={t(userLanguage, 'names:635')} />
+        <dd class="type" set:html={t(userLanguage, 'names:636')} />
+        <dd set:html={t(userLanguage, 'names:637')} />
+        <dt set:html={t(userLanguage, 'names:638')} />
+        <dd class="type" set:html={t(userLanguage, 'names:639')} />
+        <dd set:html={t(userLanguage, 'names:640')} />
+        <dt set:html={t(userLanguage, 'names:641')} />
+        <dd class="type" set:html={t(userLanguage, 'names:642')} />
+        <dd set:html={t(userLanguage, 'names:643')} />
+        <dt set:html={t(userLanguage, 'names:644')} />
+        <dd class="type" set:html={t(userLanguage, 'names:645')} />
+        <dd set:html={t(userLanguage, 'names:646')} />
+        <dt set:html={t(userLanguage, 'names:647')} />
+        <dd class="type" set:html={t(userLanguage, 'names:648')} />
+        <dd set:html={t(userLanguage, 'names:649')} />
+      </dl>
+      <h2 id="h" set:html={t(userLanguage, 'names:650')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:651')} />
+        <dd set:html={t(userLanguage, 'names:652')} />
+        <dt set:html={t(userLanguage, 'names:653')} />
+        <dd class="type" set:html={t(userLanguage, 'names:654')} />
+        <dd set:html={t(userLanguage, 'names:655')} />
+        <dt set:html={t(userLanguage, 'names:656')} />
+        <dd class="type" set:html={t(userLanguage, 'names:657')} />
+        <dd set:html={t(userLanguage, 'names:658')} />
+        <dt set:html={t(userLanguage, 'names:659')} />
+        <dd class="type" set:html={t(userLanguage, 'names:660')} />
+        <dd set:html={t(userLanguage, 'names:661')} />
+        <dt set:html={t(userLanguage, 'names:662')} />
+        <dd class="type" set:html={t(userLanguage, 'names:663')} />
+        <dd set:html={t(userLanguage, 'names:664')} />
+        <dt set:html={t(userLanguage, 'names:665')} />
+        <dd class="type" set:html={t(userLanguage, 'names:666')} />
+        <dd set:html={t(userLanguage, 'names:667')} />
+        <dt set:html={t(userLanguage, 'names:668')} />
+        <dd class="type" set:html={t(userLanguage, 'names:669')} />
+        <dd set:html={t(userLanguage, 'names:670')} />
+        <dt set:html={t(userLanguage, 'names:671')} />
+        <dd class="type" set:html={t(userLanguage, 'names:672')} />
+        <dd set:html={t(userLanguage, 'names:673')} />
+        <dt set:html={t(userLanguage, 'names:674')} />
+        <dd class="type" set:html={t(userLanguage, 'names:675')} />
+        <dd set:html={t(userLanguage, 'names:676')} />
+        <dt set:html={t(userLanguage, 'names:677')} />
+        <dd class="type" set:html={t(userLanguage, 'names:678')} />
+        <dd set:html={t(userLanguage, 'names:679')} />
+        <dt set:html={t(userLanguage, 'names:680')} />
+        <dd class="type" set:html={t(userLanguage, 'names:681')} />
+        <dd set:html={t(userLanguage, 'names:682')} />
+        <dt set:html={t(userLanguage, 'names:683')} />
+        <dd class="type" set:html={t(userLanguage, 'names:684')} />
+        <dd set:html={t(userLanguage, 'names:685')} />
+      </dl>
+      <h2 id="i" set:html={t(userLanguage, 'names:686')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:687')} />
+        <dd class="type" set:html={t(userLanguage, 'names:688')} />
+        <dd set:html={t(userLanguage, 'names:689')} />
+        <dt set:html={t(userLanguage, 'names:690')} />
+        <dd class="type" set:html={t(userLanguage, 'names:691')} />
+        <dd set:html={t(userLanguage, 'names:692')} />
+        <dt set:html={t(userLanguage, 'names:693')} />
+        <dd class="type" set:html={t(userLanguage, 'names:694')} />
+        <dd set:html={t(userLanguage, 'names:695')} />
+        <dt set:html={t(userLanguage, 'names:696')} />
+        <dd class="type" set:html={t(userLanguage, 'names:697')} />
+        <dd set:html={t(userLanguage, 'names:698')} />
+        <dt set:html={t(userLanguage, 'names:699')} />
+        <dd class="type" set:html={t(userLanguage, 'names:700')} />
+        <dd set:html={t(userLanguage, 'names:701')} />
+        <dt set:html={t(userLanguage, 'names:702')} />
+        <dd class="type" set:html={t(userLanguage, 'names:703')} />
+        <dd set:html={t(userLanguage, 'names:704')} />
+        <dt set:html={t(userLanguage, 'names:705')} />
+        <dd class="type" set:html={t(userLanguage, 'names:706')} />
+        <dd set:html={t(userLanguage, 'names:707')} />
+      </dl>
+      <h2 id="j" set:html={t(userLanguage, 'names:708')} />
+      <dl>
+        <dt id="jains" set:html={t(userLanguage, 'names:709')} />
+        <dd class="type" set:html={t(userLanguage, 'names:710')} />
+        <dd set:html={t(userLanguage, 'names:711')} />
+        <dt set:html={t(userLanguage, 'names:712')} />
+        <dd class="type" set:html={t(userLanguage, 'names:713')} />
+        <dd set:html={t(userLanguage, 'names:714')} />
+        <dt set:html={t(userLanguage, 'names:715')} />
+        <dd class="type" set:html={t(userLanguage, 'names:716')} />
+        <dd set:html={t(userLanguage, 'names:717')} />
+        <dt set:html={t(userLanguage, 'names:718')} />
+        <dd class="type" set:html={t(userLanguage, 'names:719')} />
+        <dd set:html={t(userLanguage, 'names:720')} />
+        <dt set:html={t(userLanguage, 'names:721')} />
+        <dd class="type" set:html={t(userLanguage, 'names:722')} />
+        <dd set:html={t(userLanguage, 'names:723')} />
+        <dt set:html={t(userLanguage, 'names:724')} />
+        <dd class="type" set:html={t(userLanguage, 'names:725')} />
+        <dd set:html={t(userLanguage, 'names:726')} />
+        <dt set:html={t(userLanguage, 'names:727')} />
+        <dd class="type" set:html={t(userLanguage, 'names:728')} />
+        <dd set:html={t(userLanguage, 'names:729')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:730')} />
+        <dt id="jata" set:html={t(userLanguage, 'names:731')} />
+        <dd set:html={t(userLanguage, 'names:732')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:733')} />
+        <dt set:html={t(userLanguage, 'names:734')} />
+        <dd class="type" set:html={t(userLanguage, 'names:735')} />
+        <dd set:html={t(userLanguage, 'names:736')} />
+        <dt set:html={t(userLanguage, 'names:737')} />
+        <dd class="type" set:html={t(userLanguage, 'names:738')} />
+        <dd set:html={t(userLanguage, 'names:739')} />
+        <dt set:html={t(userLanguage, 'names:740')} />
+        <dd class="type" set:html={t(userLanguage, 'names:741')} />
+        <dd set:html={t(userLanguage, 'names:742')} />
+        <dt set:html={t(userLanguage, 'names:743')} />
+        <dd class="type" set:html={t(userLanguage, 'names:744')} />
+        <dd set:html={t(userLanguage, 'names:745')} />
+        <dt set:html={t(userLanguage, 'names:746')} />
+        <dd class="type" set:html={t(userLanguage, 'names:747')} />
+        <dd set:html={t(userLanguage, 'names:748')} />
+        <dt set:html={t(userLanguage, 'names:749')} />
+        <dd class="type" set:html={t(userLanguage, 'names:750')} />
+        <dd set:html={t(userLanguage, 'names:751')} />
+        <dt set:html={t(userLanguage, 'names:752')} />
+        <dd class="type" set:html={t(userLanguage, 'names:753')} />
+        <dd set:html={t(userLanguage, 'names:754')} />
+        <dt set:html={t(userLanguage, 'names:755')} />
+        <dd class="type" set:html={t(userLanguage, 'names:756')} />
+        <dd set:html={t(userLanguage, 'names:757')} />
+        <dt set:html={t(userLanguage, 'names:758')} />
+        <dd class="type" set:html={t(userLanguage, 'names:759')} />
+        <dd set:html={t(userLanguage, 'names:760')} />
+        <dt set:html={t(userLanguage, 'names:761')} />
+        <dd set:html={t(userLanguage, 'names:762')} />
+        <dt set:html={t(userLanguage, 'names:763')} />
+        <dd class="type" set:html={t(userLanguage, 'names:764')} />
+        <dd set:html={t(userLanguage, 'names:765')} />
+        <dt set:html={t(userLanguage, 'names:766')} />
+        <dd class="type" set:html={t(userLanguage, 'names:767')} />
+        <dd set:html={t(userLanguage, 'names:768')} />
+      </dl>
+      <h2 id="k" set:html={t(userLanguage, 'names:769')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:770')} />
+        <dd class="type" set:html={t(userLanguage, 'names:771')} />
+        <dd set:html={t(userLanguage, 'names:772')} />
+        <dt set:html={t(userLanguage, 'names:773')} />
+        <dd class="type" set:html={t(userLanguage, 'names:774')} />
+        <dd set:html={t(userLanguage, 'names:775')} />
+        <dt set:html={t(userLanguage, 'names:776')} />
+        <dd class="type" set:html={t(userLanguage, 'names:777')} />
+        <dd set:html={t(userLanguage, 'names:778')} />
+        <dt set:html={t(userLanguage, 'names:779')} />
+        <dd set:html={t(userLanguage, 'names:780')} />
+        <dt set:html={t(userLanguage, 'names:781')} />
+        <dd class="type" set:html={t(userLanguage, 'names:782')} />
+        <dd set:html={t(userLanguage, 'names:783')} />
+        <dt set:html={t(userLanguage, 'names:784')} />
+        <dd class="type" set:html={t(userLanguage, 'names:785')} />
+        <dd set:html={t(userLanguage, 'names:786')} />
+        <dt set:html={t(userLanguage, 'names:787')} />
+        <dd class="type" set:html={t(userLanguage, 'names:788')} />
+        <dd set:html={t(userLanguage, 'names:789')} />
+        <dt set:html={t(userLanguage, 'names:790')} />
+        <dd class="type" set:html={t(userLanguage, 'names:791')} />
+        <dd set:html={t(userLanguage, 'names:792')} />
+        <dt set:html={t(userLanguage, 'names:793')} />
+        <dd class="type" set:html={t(userLanguage, 'names:794')} />
+        <dd set:html={t(userLanguage, 'names:795')} />
+        <dt set:html={t(userLanguage, 'names:796')} />
+        <dd class="type" set:html={t(userLanguage, 'names:797')} />
+        <dd set:html={t(userLanguage, 'names:798')} />
+        <dt set:html={t(userLanguage, 'names:799')} />
+        <dd class="type" set:html={t(userLanguage, 'names:800')} />
+        <dd set:html={t(userLanguage, 'names:801')} />
+        <dt set:html={t(userLanguage, 'names:802')} />
+        <dd set:html={t(userLanguage, 'names:803')} />
+        <dt set:html={t(userLanguage, 'names:804')} />
+        <dd class="type" set:html={t(userLanguage, 'names:805')} />
+        <dd set:html={t(userLanguage, 'names:806')} />
+        <dt set:html={t(userLanguage, 'names:807')} />
+        <dd class="type" set:html={t(userLanguage, 'names:808')} />
+        <dd set:html={t(userLanguage, 'names:809')} />
+        <dt set:html={t(userLanguage, 'names:810')} />
+        <dd class="type" set:html={t(userLanguage, 'names:811')} />
+        <dd set:html={t(userLanguage, 'names:812')} />
+        <dt set:html={t(userLanguage, 'names:813')} />
+        <dd class="type" set:html={t(userLanguage, 'names:814')} />
+        <dd set:html={t(userLanguage, 'names:815')} />
+        <dt set:html={t(userLanguage, 'names:816')} />
+        <dd class="type" set:html={t(userLanguage, 'names:817')} />
+        <dd set:html={t(userLanguage, 'names:818')} />
+        <dt set:html={t(userLanguage, 'names:819')} />
+        <dd class="type" set:html={t(userLanguage, 'names:820')} />
+        <dd set:html={t(userLanguage, 'names:821')} />
+        <dt set:html={t(userLanguage, 'names:822')} />
+        <dd class="type" set:html={t(userLanguage, 'names:823')} />
+        <dd set:html={t(userLanguage, 'names:824')} />
+        <dt set:html={t(userLanguage, 'names:825')} />
+        <dd class="type" set:html={t(userLanguage, 'names:826')} />
+        <dd set:html={t(userLanguage, 'names:827')} />
+        <dt set:html={t(userLanguage, 'names:828')} />
+        <dd class="type" set:html={t(userLanguage, 'names:829')} />
+        <dd set:html={t(userLanguage, 'names:830')} />
+        <dt set:html={t(userLanguage, 'names:831')} />
+        <dd class="type" set:html={t(userLanguage, 'names:832')} />
+        <dd set:html={t(userLanguage, 'names:833')} />
+        <dt set:html={t(userLanguage, 'names:834')} />
+        <dd class="type" set:html={t(userLanguage, 'names:835')} />
+        <dd set:html={t(userLanguage, 'names:836')} />
+        <dt set:html={t(userLanguage, 'names:837')} />
+        <dd class="type" set:html={t(userLanguage, 'names:838')} />
+        <dd set:html={t(userLanguage, 'names:839')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:840')} />
+        <dt set:html={t(userLanguage, 'names:841')} />
+        <dd class="type" set:html={t(userLanguage, 'names:842')} />
+        <dd set:html={t(userLanguage, 'names:843')} />
+        <dt set:html={t(userLanguage, 'names:844')} />
+        <dd class="type" set:html={t(userLanguage, 'names:845')} />
+        <dd set:html={t(userLanguage, 'names:846')} />
+        <dt set:html={t(userLanguage, 'names:847')} />
+        <dd class="type" set:html={t(userLanguage, 'names:848')} />
+        <dd set:html={t(userLanguage, 'names:849')} />
+        <dt set:html={t(userLanguage, 'names:850')} />
+        <dd class="type" set:html={t(userLanguage, 'names:851')} />
+        <dd set:html={t(userLanguage, 'names:852')} />
+        <dt set:html={t(userLanguage, 'names:853')} />
+        <dd class="type" set:html={t(userLanguage, 'names:854')} />
+        <dd set:html={t(userLanguage, 'names:855')} />
+        <dt set:html={t(userLanguage, 'names:856')} />
+        <dd class="type" set:html={t(userLanguage, 'names:857')} />
+        <dd set:html={t(userLanguage, 'names:858')} />
+        <dt set:html={t(userLanguage, 'names:859')} />
+        <dd class="type" set:html={t(userLanguage, 'names:860')} />
+        <dd set:html={t(userLanguage, 'names:861')} />
+        <dt id="kasi" set:html={t(userLanguage, 'names:862')} />
+        <dd class="type" set:html={t(userLanguage, 'names:863')} />
+        <dd set:html={t(userLanguage, 'names:864')} />
+        <dt id="kasibharadvaja" set:html={t(userLanguage, 'names:865')} />
+        <dd class="type" set:html={t(userLanguage, 'names:866')} />
+        <dd set:html={t(userLanguage, 'names:867')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:868')} />
+        <dt set:html={t(userLanguage, 'names:869')} />
+        <dd class="type" set:html={t(userLanguage, 'names:870')} />
+        <dd set:html={t(userLanguage, 'names:871')} />
+        <dt set:html={t(userLanguage, 'names:872')} />
+        <dd class="type" set:html={t(userLanguage, 'names:873')} />
+        <dd set:html={t(userLanguage, 'names:874')} />
+        <dt set:html={t(userLanguage, 'names:875')} />
+        <dd class="type" set:html={t(userLanguage, 'names:876')} />
+        <dd set:html={t(userLanguage, 'names:877')} />
+        <dt set:html={t(userLanguage, 'names:878')} />
+        <dd class="type" set:html={t(userLanguage, 'names:879')} />
+        <dd set:html={t(userLanguage, 'names:880')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:881')} />
+        <dt set:html={t(userLanguage, 'names:882')} />
+        <dd set:html={t(userLanguage, 'names:883')} />
+        <dt set:html={t(userLanguage, 'names:884')} />
+        <dd class="type" set:html={t(userLanguage, 'names:885')} />
+        <dd set:html={t(userLanguage, 'names:886')} />
+        <dt set:html={t(userLanguage, 'names:887')} />
+        <dd class="type" set:html={t(userLanguage, 'names:888')} />
+        <dd set:html={t(userLanguage, 'names:889')} />
+        <dt set:html={t(userLanguage, 'names:890')} />
+        <dd class="type" set:html={t(userLanguage, 'names:891')} />
+        <dd set:html={t(userLanguage, 'names:892')} />
+        <dt set:html={t(userLanguage, 'names:893')} />
+        <dd class="type" set:html={t(userLanguage, 'names:894')} />
+        <dd set:html={t(userLanguage, 'names:895')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:896')} />
+        <dt set:html={t(userLanguage, 'names:897')} />
+        <dd class="type" set:html={t(userLanguage, 'names:898')} />
+        <dd set:html={t(userLanguage, 'names:899')} />
+        <dt set:html={t(userLanguage, 'names:900')} />
+        <dd class="type" set:html={t(userLanguage, 'names:901')} />
+        <dd set:html={t(userLanguage, 'names:902')} />
+        <dt set:html={t(userLanguage, 'names:903')} />
+        <dd class="type" set:html={t(userLanguage, 'names:904')} />
+        <dd set:html={t(userLanguage, 'names:905')} />
+        <dt set:html={t(userLanguage, 'names:906')} />
+        <dd class="type" set:html={t(userLanguage, 'names:907')} />
+        <dd set:html={t(userLanguage, 'names:908')} />
+        <dt set:html={t(userLanguage, 'names:909')} />
+        <dd class="type" set:html={t(userLanguage, 'names:910')} />
+        <dd set:html={t(userLanguage, 'names:911')} />
+        <dt set:html={t(userLanguage, 'names:912')} />
+        <dd class="type" set:html={t(userLanguage, 'names:913')} />
+        <dd set:html={t(userLanguage, 'names:914')} />
+        <dt set:html={t(userLanguage, 'names:915')} />
+        <dd class="type" set:html={t(userLanguage, 'names:916')} />
+        <dd set:html={t(userLanguage, 'names:917')} />
+        <dt set:html={t(userLanguage, 'names:918')} />
+        <dd class="type" set:html={t(userLanguage, 'names:919')} />
+        <dd set:html={t(userLanguage, 'names:920')} />
+        <dt set:html={t(userLanguage, 'names:921')} />
+        <dd class="type" set:html={t(userLanguage, 'names:922')} />
+        <dd set:html={t(userLanguage, 'names:923')} />
+        <dt set:html={t(userLanguage, 'names:924')} />
+        <dd class="type" set:html={t(userLanguage, 'names:925')} />
+        <dt set:html={t(userLanguage, 'names:926')} />
+        <dd class="type" set:html={t(userLanguage, 'names:927')} />
+        <dd set:html={t(userLanguage, 'names:928')} />
+        <dt set:html={t(userLanguage, 'names:929')} />
+        <dd class="type" set:html={t(userLanguage, 'names:930')} />
+        <dd set:html={t(userLanguage, 'names:931')} />
+        <dt set:html={t(userLanguage, 'names:932')} />
+        <dd class="type" set:html={t(userLanguage, 'names:933')} />
+        <dd set:html={t(userLanguage, 'names:934')} />
+        <dt set:html={t(userLanguage, 'names:935')} />
+        <dd class="type" set:html={t(userLanguage, 'names:936')} />
+        <dd set:html={t(userLanguage, 'names:937')} />
+        <dt set:html={t(userLanguage, 'names:938')} />
+        <dd class="type" set:html={t(userLanguage, 'names:939')} />
+        <dd set:html={t(userLanguage, 'names:940')} />
+        <dt set:html={t(userLanguage, 'names:941')} />
+        <dd class="type" set:html={t(userLanguage, 'names:942')} />
+        <dd set:html={t(userLanguage, 'names:943')} />
+        <dt set:html={t(userLanguage, 'names:944')} />
+        <dd class="type" set:html={t(userLanguage, 'names:945')} />
+        <dd set:html={t(userLanguage, 'names:946')} />
+        <dt set:html={t(userLanguage, 'names:947')} />
+        <dd class="type" set:html={t(userLanguage, 'names:948')} />
+        <dd set:html={t(userLanguage, 'names:949')} />
+        <dt set:html={t(userLanguage, 'names:950')} />
+        <dd class="type" set:html={t(userLanguage, 'names:951')} />
+        <dd set:html={t(userLanguage, 'names:952')} />
+        <dt set:html={t(userLanguage, 'names:953')} />
+        <dd set:html={t(userLanguage, 'names:954')} />
+        <dt set:html={t(userLanguage, 'names:955')} />
+        <dd class="type" set:html={t(userLanguage, 'names:956')} />
+        <dd set:html={t(userLanguage, 'names:957')} />
+        <dt set:html={t(userLanguage, 'names:958')} />
+        <dd class="type" set:html={t(userLanguage, 'names:959')} />
+        <dd set:html={t(userLanguage, 'names:960')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:961')} />
+        <dt set:html={t(userLanguage, 'names:962')} />
+        <dd class="type" set:html={t(userLanguage, 'names:963')} />
+        <dd set:html={t(userLanguage, 'names:964')} />
+        <dt set:html={t(userLanguage, 'names:965')} />
+        <dd class="type" set:html={t(userLanguage, 'names:966')} />
+        <dd set:html={t(userLanguage, 'names:967')} />
+        <dt id="kosala" set:html={t(userLanguage, 'names:968')} />
+        <dd class="type" set:html={t(userLanguage, 'names:969')} />
+        <dd set:html={t(userLanguage, 'names:970')} />
+        <dt id="kosambi" set:html={t(userLanguage, 'names:971')} />
+        <dd set:html={t(userLanguage, 'names:972')} />
+        <dt set:html={t(userLanguage, 'names:973')} />
+        <dd class="type" set:html={t(userLanguage, 'names:974')} />
+        <dd set:html={t(userLanguage, 'names:975')} />
+        <dt set:html={t(userLanguage, 'names:976')} />
+        <dd class="type" set:html={t(userLanguage, 'names:977')} />
+        <dd set:html={t(userLanguage, 'names:978')} />
+        <dt set:html={t(userLanguage, 'names:979')} />
+        <dd class="type" set:html={t(userLanguage, 'names:980')} />
+        <dd set:html={t(userLanguage, 'names:981')} />
+        <dt set:html={t(userLanguage, 'names:982')} />
+        <dd class="type" set:html={t(userLanguage, 'names:983')} />
+        <dd set:html={t(userLanguage, 'names:984')} />
+        <dt set:html={t(userLanguage, 'names:985')} />
+        <dd class="type" set:html={t(userLanguage, 'names:986')} />
+        <dd set:html={t(userLanguage, 'names:987')} />
+        <dt id="kusavati" set:html={t(userLanguage, 'names:988')} />
+        <dd class="type" set:html={t(userLanguage, 'names:989')} />
+        <dd set:html={t(userLanguage, 'names:990')} />
+        <dt id="kusinara" set:html={t(userLanguage, 'names:991')} />
+        <dd class="type" set:html={t(userLanguage, 'names:992')} />
+        <dd set:html={t(userLanguage, 'names:993')} />
+        <dt set:html={t(userLanguage, 'names:994')} />
+        <dd class="type" set:html={t(userLanguage, 'names:995')} />
+        <dd set:html={t(userLanguage, 'names:996')} />
+        <dt set:html={t(userLanguage, 'names:997')} />
+        <dd class="type" set:html={t(userLanguage, 'names:998')} />
+        <dd set:html={t(userLanguage, 'names:999')} />
+        <dt set:html={t(userLanguage, 'names:1000')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1001')} />
+        <dd set:html={t(userLanguage, 'names:1002')} />
+      </dl>
+      <h2 id="l" set:html={t(userLanguage, 'names:1003')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:1004')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1005')} />
+        <dd set:html={t(userLanguage, 'names:1006')} />
+        <dt set:html={t(userLanguage, 'names:1007')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1008')} />
+        <dd set:html={t(userLanguage, 'names:1009')} />
+        <dt id="licchavi" set:html={t(userLanguage, 'names:1010')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1011')} />
+        <dd set:html={t(userLanguage, 'names:1012')} />
+        <dt set:html={t(userLanguage, 'names:1013')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1014')} />
+        <dd set:html={t(userLanguage, 'names:1015')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1016')} />
+        <dt set:html={t(userLanguage, 'names:1017')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1018')} />
+        <dd set:html={t(userLanguage, 'names:1019')} />
+        <dt set:html={t(userLanguage, 'names:1020')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1021')} />
+        <dd set:html={t(userLanguage, 'names:1022')} />
+      </dl>
+      <h2 id="m" set:html={t(userLanguage, 'names:1023')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:1024')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1025')} />
+        <dd set:html={t(userLanguage, 'names:1026')} />
+        <dt set:html={t(userLanguage, 'names:1027')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1028')} />
+        <dd set:html={t(userLanguage, 'names:1029')} />
+        <dt set:html={t(userLanguage, 'names:1030')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1031')} />
+        <dd set:html={t(userLanguage, 'names:1032')} />
+        <dt id="magadha" set:html={t(userLanguage, 'names:1033')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1034')} />
+        <dd set:html={t(userLanguage, 'names:1035')} />
+        <dt set:html={t(userLanguage, 'names:1036')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1037')} />
+        <dd set:html={t(userLanguage, 'names:1038')} />
+        <dt set:html={t(userLanguage, 'names:1039')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1040')} />
+        <dd set:html={t(userLanguage, 'names:1041')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1042')} />
+        <dt set:html={t(userLanguage, 'names:1043')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1044')} />
+        <dd set:html={t(userLanguage, 'names:1045')} />
+        <dt set:html={t(userLanguage, 'names:1046')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1047')} />
+        <dd set:html={t(userLanguage, 'names:1048')} />
+        <dt set:html={t(userLanguage, 'names:1049')} />
+        <dd set:html={t(userLanguage, 'names:1050')} />
+        <dt set:html={t(userLanguage, 'names:1051')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1052')} />
+        <dd set:html={t(userLanguage, 'names:1053')} />
+        <dt set:html={t(userLanguage, 'names:1054')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1055')} />
+        <dd set:html={t(userLanguage, 'names:1056')} />
+        <dt set:html={t(userLanguage, 'names:1057')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1058')} />
+        <dd set:html={t(userLanguage, 'names:1059')} />
+        <dt set:html={t(userLanguage, 'names:1060')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1061')} />
+        <dd set:html={t(userLanguage, 'names:1062')} />
+        <dt set:html={t(userLanguage, 'names:1063')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1064')} />
+        <dd set:html={t(userLanguage, 'names:1065')} />
+        <dt set:html={t(userLanguage, 'names:1066')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1067')} />
+        <dd set:html={t(userLanguage, 'names:1068')} />
+        <dt set:html={t(userLanguage, 'names:1069')} />
+        <dd set:html={t(userLanguage, 'names:1070')} />
+        <dt set:html={t(userLanguage, 'names:1071')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1072')} />
+        <dd set:html={t(userLanguage, 'names:1073')} />
+        <dt set:html={t(userLanguage, 'names:1074')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1075')} />
+        <dd set:html={t(userLanguage, 'names:1076')} />
+        <dt set:html={t(userLanguage, 'names:1077')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1078')} />
+        <dd set:html={t(userLanguage, 'names:1079')} />
+        <dt set:html={t(userLanguage, 'names:1080')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1081')} />
+        <dd set:html={t(userLanguage, 'names:1082')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1083')} />
+        <dt set:html={t(userLanguage, 'names:1084')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1085')} />
+        <dd set:html={t(userLanguage, 'names:1086')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1087')} />
+        <dt set:html={t(userLanguage, 'names:1088')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1089')} />
+        <dd set:html={t(userLanguage, 'names:1090')} />
+        <dt set:html={t(userLanguage, 'names:1091')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1092')} />
+        <dd set:html={t(userLanguage, 'names:1093')} />
+        <dt set:html={t(userLanguage, 'names:1094')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1095')} />
+        <dd set:html={t(userLanguage, 'names:1096')} />
+        <dt set:html={t(userLanguage, 'names:1097')} />
+        <dd set:html={t(userLanguage, 'names:1098')} />
+        <dt set:html={t(userLanguage, 'names:1099')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1100')} />
+        <dd set:html={t(userLanguage, 'names:1101')} />
+        <dt set:html={t(userLanguage, 'names:1102')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1103')} />
+        <dd set:html={t(userLanguage, 'names:1104')} />
+        <dt set:html={t(userLanguage, 'names:1105')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1106')} />
+        <dd set:html={t(userLanguage, 'names:1107')} />
+        <dt id="mara" set:html={t(userLanguage, 'names:1108')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1109')} />
+        <dd set:html={t(userLanguage, 'names:1110')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1111')} />
+        <dt set:html={t(userLanguage, 'names:1112')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1113')} />
+        <dd set:html={t(userLanguage, 'names:1114')} />
+        <dt set:html={t(userLanguage, 'names:1115')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1116')} />
+        <dd set:html={t(userLanguage, 'names:1117')} />
+        <dt set:html={t(userLanguage, 'names:1118')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1119')} />
+        <dd set:html={t(userLanguage, 'names:1120')} />
+        <dt set:html={t(userLanguage, 'names:1121')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1122')} />
+        <dd set:html={t(userLanguage, 'names:1123')} />
+        <dt set:html={t(userLanguage, 'names:1124')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1125')} />
+        <dd set:html={t(userLanguage, 'names:1126')} />
+        <dt id="medakathalika" set:html={t(userLanguage, 'names:1127')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1128')} />
+        <dd set:html={t(userLanguage, 'names:1129')} />
+        <dt set:html={t(userLanguage, 'names:1130')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1131')} />
+        <dd set:html={t(userLanguage, 'names:1132')} />
+        <dt set:html={t(userLanguage, 'names:1133')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1134')} />
+        <dd set:html={t(userLanguage, 'names:1135')} />
+        <dt set:html={t(userLanguage, 'names:1136')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1137')} />
+        <dd set:html={t(userLanguage, 'names:1138')} />
+        <dt set:html={t(userLanguage, 'names:1139')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1140')} />
+        <dd set:html={t(userLanguage, 'names:1141')} />
+        <dt set:html={t(userLanguage, 'names:1142')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1143')} />
+        <dd set:html={t(userLanguage, 'names:1144')} />
+        <dt set:html={t(userLanguage, 'names:1145')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1146')} />
+        <dd set:html={t(userLanguage, 'names:1147')} />
+        <dt set:html={t(userLanguage, 'names:1148')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1149')} />
+        <dd set:html={t(userLanguage, 'names:1150')} />
+        <dt id="migara" set:html={t(userLanguage, 'names:1151')} />
+        <dd set:html={t(userLanguage, 'names:1152')} />
+        <dt id="migaramom" set:html={t(userLanguage, 'names:1153')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1154')} />
+        <dd set:html={t(userLanguage, 'names:1155')} />
+        <dt set:html={t(userLanguage, 'names:1156')} />
+        <dd set:html={t(userLanguage, 'names:1157')} />
+        <dt set:html={t(userLanguage, 'names:1158')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1159')} />
+        <dd set:html={t(userLanguage, 'names:1160')} />
+        <dt set:html={t(userLanguage, 'names:1161')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1162')} />
+        <dd set:html={t(userLanguage, 'names:1163')} />
+        <dt id="moggallana" set:html={t(userLanguage, 'names:1164')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1165')} />
+        <dd set:html={t(userLanguage, 'names:1166')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1167')} />
+        <dt set:html={t(userLanguage, 'names:1168')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1169')} />
+        <dd set:html={t(userLanguage, 'names:1170')} />
+        <dt set:html={t(userLanguage, 'names:1171')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1172')} />
+        <dd set:html={t(userLanguage, 'names:1173')} />
+        <dt set:html={t(userLanguage, 'names:1174')} />
+        <dd set:html={t(userLanguage, 'names:1175')} />
+        <dt set:html={t(userLanguage, 'names:1176')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1177')} />
+        <dd set:html={t(userLanguage, 'names:1178')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1179')} />
+        <dt set:html={t(userLanguage, 'names:1180')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1181')} />
+        <dd set:html={t(userLanguage, 'names:1182')} />
+        <dt set:html={t(userLanguage, 'names:1183')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1184')} />
+        <dd set:html={t(userLanguage, 'names:1185')} />
+        <dt set:html={t(userLanguage, 'names:1186')} />
+        <dd set:html={t(userLanguage, 'names:1187')} />
+        <dt set:html={t(userLanguage, 'names:1188')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1189')} />
+        <dd set:html={t(userLanguage, 'names:1190')} />
+        <dt set:html={t(userLanguage, 'names:1191')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1192')} />
+        <dd set:html={t(userLanguage, 'names:1193')} />
+      </dl>
+      <h2 id="n" set:html={t(userLanguage, 'names:1194')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:1195')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1196')} />
+        <dd set:html={t(userLanguage, 'names:1197')} />
+        <dt set:html={t(userLanguage, 'names:1198')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1199')} />
+        <dd set:html={t(userLanguage, 'names:1200')} />
+        <dt set:html={t(userLanguage, 'names:1201')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1202')} />
+        <dd set:html={t(userLanguage, 'names:1203')} />
+        <dt set:html={t(userLanguage, 'names:1204')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1205')} />
+        <dd set:html={t(userLanguage, 'names:1206')} />
+        <dt set:html={t(userLanguage, 'names:1207')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1208')} />
+        <dd set:html={t(userLanguage, 'names:1209')} />
+        <dt set:html={t(userLanguage, 'names:1210')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1211')} />
+        <dd set:html={t(userLanguage, 'names:1212')} />
+        <dt set:html={t(userLanguage, 'names:1213')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1214')} />
+        <dd set:html={t(userLanguage, 'names:1215')} />
+        <dt set:html={t(userLanguage, 'names:1216')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1217')} />
+        <dd set:html={t(userLanguage, 'names:1218')} />
+        <dt set:html={t(userLanguage, 'names:1219')} />
+        <dd set:html={t(userLanguage, 'names:1220')} />
+        <dt set:html={t(userLanguage, 'names:1221')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1222')} />
+        <dd set:html={t(userLanguage, 'names:1223')} />
+        <dt set:html={t(userLanguage, 'names:1224')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1225')} />
+        <dd set:html={t(userLanguage, 'names:1226')} />
+        <dt set:html={t(userLanguage, 'names:1227')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1228')} />
+        <dd set:html={t(userLanguage, 'names:1229')} />
+        <dt id="namuci" set:html={t(userLanguage, 'names:1230')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1231')} />
+        <dd set:html={t(userLanguage, 'names:1232')} />
+        <dt set:html={t(userLanguage, 'names:1233')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1234')} />
+        <dd set:html={t(userLanguage, 'names:1235')} />
+        <dt set:html={t(userLanguage, 'names:1236')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1237')} />
+        <dd set:html={t(userLanguage, 'names:1238')} />
+        <dt set:html={t(userLanguage, 'names:1239')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1240')} />
+        <dd set:html={t(userLanguage, 'names:1241')} />
+        <dt set:html={t(userLanguage, 'names:1242')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1243')} />
+        <dd set:html={t(userLanguage, 'names:1244')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1245')} />
+        <dt set:html={t(userLanguage, 'names:1246')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1247')} />
+        <dd set:html={t(userLanguage, 'names:1248')} />
+        <dt set:html={t(userLanguage, 'names:1249')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1250')} />
+        <dd set:html={t(userLanguage, 'names:1251')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1252')} />
+        <dt set:html={t(userLanguage, 'names:1253')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1254')} />
+        <dd set:html={t(userLanguage, 'names:1255')} />
+        <dt set:html={t(userLanguage, 'names:1256')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1257')} />
+        <dd set:html={t(userLanguage, 'names:1258')} />
+        <dt set:html={t(userLanguage, 'names:1259')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1260')} />
+        <dd set:html={t(userLanguage, 'names:1261')} />
+        <dt set:html={t(userLanguage, 'names:1262')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1263')} />
+        <dd set:html={t(userLanguage, 'names:1264')} />
+        <dt set:html={t(userLanguage, 'names:1265')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1266')} />
+        <dd set:html={t(userLanguage, 'names:1267')} />
+        <dt set:html={t(userLanguage, 'names:1268')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1269')} />
+        <dd set:html={t(userLanguage, 'names:1270')} />
+        <dt set:html={t(userLanguage, 'names:1271')} />
+        <dd set:html={t(userLanguage, 'names:1272')} />
+        <dt set:html={t(userLanguage, 'names:1273')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1274')} />
+        <dd set:html={t(userLanguage, 'names:1275')} />
+        <dt id="navak" set:html={t(userLanguage, 'names:1276')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1277')} />
+        <dd set:html={t(userLanguage, 'names:1278')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1279')} />
+        <dt set:html={t(userLanguage, 'names:1280')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1281')} />
+        <dd set:html={t(userLanguage, 'names:1282')} />
+        <dt set:html={t(userLanguage, 'names:1283')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1284')} />
+        <dd set:html={t(userLanguage, 'names:1285')} />
+        <dt set:html={t(userLanguage, 'names:1286')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1287')} />
+        <dd set:html={t(userLanguage, 'names:1288')} />
+        <dt set:html={t(userLanguage, 'names:1289')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1290')} />
+        <dd set:html={t(userLanguage, 'names:1291')} />
+        <dt set:html={t(userLanguage, 'names:1292')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1293')} />
+        <dd set:html={t(userLanguage, 'names:1294')} />
+        <dt set:html={t(userLanguage, 'names:1295')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1296')} />
+        <dd set:html={t(userLanguage, 'names:1297')} />
+        <dt set:html={t(userLanguage, 'names:1298')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1299')} />
+        <dd set:html={t(userLanguage, 'names:1300')} />
+        <dt id="nataputta" set:html={t(userLanguage, 'names:1301')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1302')} />
+        <dd set:html={t(userLanguage, 'names:1303')} />
+        <dt id="nigantha" set:html={t(userLanguage, 'names:1304')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1305')} />
+        <dd set:html={t(userLanguage, 'names:1306')} />
+        <dt set:html={t(userLanguage, 'names:1307')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1308')} />
+        <dd set:html={t(userLanguage, 'names:1309')} />
+        <dt set:html={t(userLanguage, 'names:1310')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1311')} />
+        <dd set:html={t(userLanguage, 'names:1312')} />
+        <dt set:html={t(userLanguage, 'names:1313')} />
+        <dd set:html={t(userLanguage, 'names:1314')} />
+        <dt set:html={t(userLanguage, 'names:1315')} />
+        <dd set:html={t(userLanguage, 'names:1316')} />
+        <dt set:html={t(userLanguage, 'names:1317')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1318')} />
+        <dd set:html={t(userLanguage, 'names:1319')} />
+        <dt set:html={t(userLanguage, 'names:1320')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1321')} />
+        <dd set:html={t(userLanguage, 'names:1322')} />
+        <dt set:html={t(userLanguage, 'names:1323')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1324')} />
+        <dd set:html={t(userLanguage, 'names:1325')} />
+        <dt set:html={t(userLanguage, 'names:1326')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1327')} />
+        <dd set:html={t(userLanguage, 'names:1328')} />
+      </dl>
+      <h2 id="o" set:html={t(userLanguage, 'names:1329')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:1330')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1331')} />
+        <dd set:html={t(userLanguage, 'names:1332')} />
+        <dt set:html={t(userLanguage, 'names:1333')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1334')} />
+        <dd set:html={t(userLanguage, 'names:1335')} />
+        <dt set:html={t(userLanguage, 'names:1336')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1337')} />
+        <dd set:html={t(userLanguage, 'names:1338')} />
+      </dl>
+      <h2 id="pq" set:html={t(userLanguage, 'names:1339')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:1340')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1341')} />
+        <dd set:html={t(userLanguage, 'names:1342')} />
+        <dt set:html={t(userLanguage, 'names:1343')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1344')} />
+        <dd set:html={t(userLanguage, 'names:1345')} />
+        <dt set:html={t(userLanguage, 'names:1346')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1347')} />
+        <dd set:html={t(userLanguage, 'names:1348')} />
+        <dt set:html={t(userLanguage, 'names:1349')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1350')} />
+        <dd set:html={t(userLanguage, 'names:1351')} />
+        <dt set:html={t(userLanguage, 'names:1352')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1353')} />
+        <dd set:html={t(userLanguage, 'names:1354')} />
+        <dt set:html={t(userLanguage, 'names:1355')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1356')} />
+        <dd set:html={t(userLanguage, 'names:1357')} />
+        <dt set:html={t(userLanguage, 'names:1358')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1359')} />
+        <dd set:html={t(userLanguage, 'names:1360')} />
+        <dt set:html={t(userLanguage, 'names:1361')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1362')} />
+        <dd set:html={t(userLanguage, 'names:1363')} />
+        <dt set:html={t(userLanguage, 'names:1364')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1365')} />
+        <dd set:html={t(userLanguage, 'names:1366')} />
+        <dt set:html={t(userLanguage, 'names:1367')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1368')} />
+        <dd set:html={t(userLanguage, 'names:1369')} />
+        <dt set:html={t(userLanguage, 'names:1370')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1371')} />
+        <dd set:html={t(userLanguage, 'names:1372')} />
+        <dt set:html={t(userLanguage, 'names:1373')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1374')} />
+        <dd set:html={t(userLanguage, 'names:1375')} />
+        <dt set:html={t(userLanguage, 'names:1376')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1377')} />
+        <dd set:html={t(userLanguage, 'names:1378')} />
+        <dt set:html={t(userLanguage, 'names:1379')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1380')} />
+        <dd set:html={t(userLanguage, 'names:1381')} />
+        <dt set:html={t(userLanguage, 'names:1382')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1383')} />
+        <dd set:html={t(userLanguage, 'names:1384')} />
+        <dt set:html={t(userLanguage, 'names:1385')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1386')} />
+        <dd set:html={t(userLanguage, 'names:1387')} />
+        <dt set:html={t(userLanguage, 'names:1388')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1389')} />
+        <dd set:html={t(userLanguage, 'names:1390')} />
+        <dt set:html={t(userLanguage, 'names:1391')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1392')} />
+        <dd set:html={t(userLanguage, 'names:1393')} />
+        <dt set:html={t(userLanguage, 'names:1394')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1395')} />
+        <dd set:html={t(userLanguage, 'names:1396')} />
+        <dt set:html={t(userLanguage, 'names:1397')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1398')} />
+        <dd set:html={t(userLanguage, 'names:1399')} />
+        <dt set:html={t(userLanguage, 'names:1400')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1401')} />
+        <dd set:html={t(userLanguage, 'names:1402')} />
+        <dt set:html={t(userLanguage, 'names:1403')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1404')} />
+        <dd set:html={t(userLanguage, 'names:1405')} />
+        <dt id="parasiri" set:html={t(userLanguage, 'names:1406')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1407')} />
+        <dd set:html={t(userLanguage, 'names:1408')} />
+        <dt id="pari" set:html={t(userLanguage, 'names:1409')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1410')} />
+        <dd set:html={t(userLanguage, 'names:1411')} />
+        <dt id="pasenadi" set:html={t(userLanguage, 'names:1412')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1413')} />
+        <dd set:html={t(userLanguage, 'names:1414')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1415')} />
+        <dt set:html={t(userLanguage, 'names:1416')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1417')} />
+        <dd set:html={t(userLanguage, 'names:1418')} />
+        <dt set:html={t(userLanguage, 'names:1419')} />
+        <dd set:html={t(userLanguage, 'names:1420')} />
+        <dt set:html={t(userLanguage, 'names:1421')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1422')} />
+        <dd set:html={t(userLanguage, 'names:1423')} />
+        <dt set:html={t(userLanguage, 'names:1424')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1425')} />
+        <dd set:html={t(userLanguage, 'names:1426')} />
+        <dt set:html={t(userLanguage, 'names:1427')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1428')} />
+        <dd set:html={t(userLanguage, 'names:1429')} />
+        <dt set:html={t(userLanguage, 'names:1430')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1431')} />
+        <dd set:html={t(userLanguage, 'names:1432')} />
+        <dt set:html={t(userLanguage, 'names:1433')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1434')} />
+        <dd set:html={t(userLanguage, 'names:1435')} />
+        <dt set:html={t(userLanguage, 'names:1436')} />
+        <dd set:html={t(userLanguage, 'names:1437')} />
+        <dt set:html={t(userLanguage, 'names:1438')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1439')} />
+        <dd set:html={t(userLanguage, 'names:1440')} />
+        <dt set:html={t(userLanguage, 'names:1441')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1442')} />
+        <dd set:html={t(userLanguage, 'names:1443')} />
+        <dt set:html={t(userLanguage, 'names:1444')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1445')} />
+        <dd set:html={t(userLanguage, 'names:1446')} />
+        <dt set:html={t(userLanguage, 'names:1447')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1448')} />
+        <dd set:html={t(userLanguage, 'names:1449')} />
+        <dd set:html={t(userLanguage, 'names:1450')} />
+        <dd set:html={t(userLanguage, 'names:1451')} />
+        <dt set:html={t(userLanguage, 'names:1452')} />
+        <dd set:html={t(userLanguage, 'names:1453')} />
+        <dt set:html={t(userLanguage, 'names:1454')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1455')} />
+        <dd set:html={t(userLanguage, 'names:1456')} />
+        <dt set:html={t(userLanguage, 'names:1457')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1458')} />
+        <dd set:html={t(userLanguage, 'names:1459')} />
+        <dt id="pindola" set:html={t(userLanguage, 'names:1460')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1461')} />
+        <dd set:html={t(userLanguage, 'names:1462')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1463')} />
+        <dt set:html={t(userLanguage, 'names:1464')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1465')} />
+        <dd set:html={t(userLanguage, 'names:1466')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1467')} />
+        <dt set:html={t(userLanguage, 'names:1468')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1469')} />
+        <dd set:html={t(userLanguage, 'names:1470')} />
+        <dt set:html={t(userLanguage, 'names:1471')} />
+        <dd set:html={t(userLanguage, 'names:1472')} />
+        <dt set:html={t(userLanguage, 'names:1473')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1474')} />
+        <dd set:html={t(userLanguage, 'names:1475')} />
+        <dt set:html={t(userLanguage, 'names:1476')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1477')} />
+        <dd set:html={t(userLanguage, 'names:1478')} />
+        <dt set:html={t(userLanguage, 'names:1479')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1480')} />
+        <dd set:html={t(userLanguage, 'names:1481')} />
+        <dt set:html={t(userLanguage, 'names:1482')} />
+        <dd set:html={t(userLanguage, 'names:1483')} />
+        <dt set:html={t(userLanguage, 'names:1484')} />
+        <dd set:html={t(userLanguage, 'names:1485')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1486')} />
+        <dt set:html={t(userLanguage, 'names:1487')} />
+        <dd set:html={t(userLanguage, 'names:1488')} />
+        <dt set:html={t(userLanguage, 'names:1489')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1490')} />
+        <dd set:html={t(userLanguage, 'names:1491')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1492')} />
+        <dt set:html={t(userLanguage, 'names:1493')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1494')} />
+        <dd set:html={t(userLanguage, 'names:1495')} />
+        <dt set:html={t(userLanguage, 'names:1496')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1497')} />
+        <dd set:html={t(userLanguage, 'names:1498')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1499')} />
+        <dt set:html={t(userLanguage, 'names:1500')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1501')} />
+        <dd set:html={t(userLanguage, 'names:1502')} />
+        <dt set:html={t(userLanguage, 'names:1503')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1504')} />
+        <dd set:html={t(userLanguage, 'names:1505')} />
+        <dt set:html={t(userLanguage, 'names:1506')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1507')} />
+        <dd set:html={t(userLanguage, 'names:1508')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1509')} />
+        <dt set:html={t(userLanguage, 'names:1510')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1511')} />
+        <dd set:html={t(userLanguage, 'names:1512')} />
+        <dt set:html={t(userLanguage, 'names:1513')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1514')} />
+        <dd set:html={t(userLanguage, 'names:1515')} />
+        <dt set:html={t(userLanguage, 'names:1516')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1517')} />
+        <dd set:html={t(userLanguage, 'names:1518')} />
+        <dt set:html={t(userLanguage, 'names:1519')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1520')} />
+        <dd set:html={t(userLanguage, 'names:1521')} />
+        <dt set:html={t(userLanguage, 'names:1522')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1523')} />
+        <dd set:html={t(userLanguage, 'names:1524')} />
+      </dl>
+      <h2 id="r" set:html={t(userLanguage, 'names:1525')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:1526')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1527')} />
+        <dd set:html={t(userLanguage, 'names:1528')} />
+        <dt set:html={t(userLanguage, 'names:1529')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1530')} />
+        <dd set:html={t(userLanguage, 'names:1531')} />
+        <dt set:html={t(userLanguage, 'names:1532')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1533')} />
+        <dd set:html={t(userLanguage, 'names:1534')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1535')} />
+        <dt set:html={t(userLanguage, 'names:1536')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1537')} />
+        <dd set:html={t(userLanguage, 'names:1538')} />
+        <dt set:html={t(userLanguage, 'names:1539')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1540')} />
+        <dd set:html={t(userLanguage, 'names:1541')} />
+        <dt set:html={t(userLanguage, 'names:1542')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1543')} />
+        <dd set:html={t(userLanguage, 'names:1544')} />
+        <dt set:html={t(userLanguage, 'names:1545')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1546')} />
+        <dd set:html={t(userLanguage, 'names:1547')} />
+        <dt set:html={t(userLanguage, 'names:1548')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1549')} />
+        <dd set:html={t(userLanguage, 'names:1550')} />
+        <dt set:html={t(userLanguage, 'names:1551')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1552')} />
+        <dd set:html={t(userLanguage, 'names:1553')} />
+        <dt set:html={t(userLanguage, 'names:1554')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1555')} />
+        <dd set:html={t(userLanguage, 'names:1556')} />
+        <dt set:html={t(userLanguage, 'names:1557')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1558')} />
+        <dd set:html={t(userLanguage, 'names:1559')} />
+        <dt set:html={t(userLanguage, 'names:1560')} />
+        <dd set:html={t(userLanguage, 'names:1561')} />
+        <dt set:html={t(userLanguage, 'names:1562')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1563')} />
+        <dd></dd>
+        <dd set:html={t(userLanguage, 'names:1564')} />
+        <dt set:html={t(userLanguage, 'names:1565')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1566')} />
+        <dd set:html={t(userLanguage, 'names:1567')} />
+        <dt set:html={t(userLanguage, 'names:1568')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1569')} />
+        <dd set:html={t(userLanguage, 'names:1570')} />
+        <dt set:html={t(userLanguage, 'names:1571')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1572')} />
+        <dd set:html={t(userLanguage, 'names:1573')} />
+        <dt set:html={t(userLanguage, 'names:1574')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1575')} />
+        <dd set:html={t(userLanguage, 'names:1576')} />
+        <dt set:html={t(userLanguage, 'names:1577')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1578')} />
+        <dd set:html={t(userLanguage, 'names:1579')} />
+        <dt set:html={t(userLanguage, 'names:1580')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1581')} />
+        <dd set:html={t(userLanguage, 'names:1582')} />
+        <dt set:html={t(userLanguage, 'names:1583')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1584')} />
+        <dd set:html={t(userLanguage, 'names:1585')} />
+      </dl>
+      <h2 id="s" set:html={t(userLanguage, 'names:1586')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:1587')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1588')} />
+        <dd set:html={t(userLanguage, 'names:1589')} />
+        <dt set:html={t(userLanguage, 'names:1590')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1591')} />
+        <dd set:html={t(userLanguage, 'names:1592')} />
+        <dt set:html={t(userLanguage, 'names:1593')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1594')} />
+        <dd set:html={t(userLanguage, 'names:1595')} />
+        <dt set:html={t(userLanguage, 'names:1596')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1597')} />
+        <dd set:html={t(userLanguage, 'names:1598')} />
+        <dt set:html={t(userLanguage, 'names:1599')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1600')} />
+        <dd set:html={t(userLanguage, 'names:1601')} />
+        <dt set:html={t(userLanguage, 'names:1602')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1603')} />
+        <dd set:html={t(userLanguage, 'names:1604')} />
+        <dt set:html={t(userLanguage, 'names:1605')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1606')} />
+        <dd set:html={t(userLanguage, 'names:1607')} />
+        <dt set:html={t(userLanguage, 'names:1608')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1609')} />
+        <dd set:html={t(userLanguage, 'names:1610')} />
+        <dt set:html={t(userLanguage, 'names:1611')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1612')} />
+        <dd set:html={t(userLanguage, 'names:1613')} />
+        <dt set:html={t(userLanguage, 'names:1614')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1615')} />
+        <dd set:html={t(userLanguage, 'names:1616')} />
+        <dt id="sakka" set:html={t(userLanguage, 'names:1617')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1618')} />
+        <dd set:html={t(userLanguage, 'names:1619')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1620')} />
+        <dt set:html={t(userLanguage, 'names:1621')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1622')} />
+        <dd set:html={t(userLanguage, 'names:1623')} />
+        <dt id="sakula" set:html={t(userLanguage, 'names:1624')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1625')} />
+        <dd set:html={t(userLanguage, 'names:1626')} />
+        <dt set:html={t(userLanguage, 'names:1627')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1628')} />
+        <dd set:html={t(userLanguage, 'names:1629')} />
+        <dt set:html={t(userLanguage, 'names:1630')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1631')} />
+        <dd set:html={t(userLanguage, 'names:1632')} />
+        <dt set:html={t(userLanguage, 'names:1633')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1634')} />
+        <dd set:html={t(userLanguage, 'names:1635')} />
+        <dt set:html={t(userLanguage, 'names:1636')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1637')} />
+        <dd set:html={t(userLanguage, 'names:1638')} />
+        <dt set:html={t(userLanguage, 'names:1639')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1640')} />
+        <dd set:html={t(userLanguage, 'names:1641')} />
+        <dt set:html={t(userLanguage, 'names:1642')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1643')} />
+        <dd set:html={t(userLanguage, 'names:1644')} />
+        <dt set:html={t(userLanguage, 'names:1645')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1646')} />
+        <dd set:html={t(userLanguage, 'names:1647')} />
+        <dt id="samavati" set:html={t(userLanguage, 'names:1648')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1649')} />
+        <dd set:html={t(userLanguage, 'names:1650')} />
+        <dt set:html={t(userLanguage, 'names:1651')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1652')} />
+        <dd set:html={t(userLanguage, 'names:1653')} />
+        <dt set:html={t(userLanguage, 'names:1654')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1655')} />
+        <dd set:html={t(userLanguage, 'names:1656')} />
+        <dt set:html={t(userLanguage, 'names:1657')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1658')} />
+        <dd set:html={t(userLanguage, 'names:1659')} />
+        <dt set:html={t(userLanguage, 'names:1660')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1661')} />
+        <dd set:html={t(userLanguage, 'names:1662')} />
+        <dt set:html={t(userLanguage, 'names:1663')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1664')} />
+        <dd set:html={t(userLanguage, 'names:1665')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1666')} />
+        <dt set:html={t(userLanguage, 'names:1667')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1668')} />
+        <dd set:html={t(userLanguage, 'names:1669')} />
+        <dt set:html={t(userLanguage, 'names:1670')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1671')} />
+        <dd set:html={t(userLanguage, 'names:1672')} />
+        <dt set:html={t(userLanguage, 'names:1673')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1674')} />
+        <dd set:html={t(userLanguage, 'names:1675')} />
+        <dt set:html={t(userLanguage, 'names:1676')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1677')} />
+        <dd set:html={t(userLanguage, 'names:1678')} />
+        <dt set:html={t(userLanguage, 'names:1679')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1680')} />
+        <dd set:html={t(userLanguage, 'names:1681')} />
+        <dt set:html={t(userLanguage, 'names:1682')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1683')} />
+        <dd set:html={t(userLanguage, 'names:1684')} />
+        <dt set:html={t(userLanguage, 'names:1685')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1686')} />
+        <dd set:html={t(userLanguage, 'names:1687')} />
+        <dt set:html={t(userLanguage, 'names:1688')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1689')} />
+        <dd set:html={t(userLanguage, 'names:1690')} />
+        <dt set:html={t(userLanguage, 'names:1691')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1692')} />
+        <dd set:html={t(userLanguage, 'names:1693')} />
+        <dt set:html={t(userLanguage, 'names:1694')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1695')} />
+        <dd set:html={t(userLanguage, 'names:1696')} />
+        <dt set:html={t(userLanguage, 'names:1697')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1698')} />
+        <dd set:html={t(userLanguage, 'names:1699')} />
+        <dt set:html={t(userLanguage, 'names:1700')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1701')} />
+        <dd set:html={t(userLanguage, 'names:1702')} />
+        <dt set:html={t(userLanguage, 'names:1703')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1704')} />
+        <dd set:html={t(userLanguage, 'names:1705')} />
+        <dt id="sariputta" set:html={t(userLanguage, 'names:1706')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1707')} />
+        <dd set:html={t(userLanguage, 'names:1708')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1709')} />
+        <dt set:html={t(userLanguage, 'names:1710')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1711')} />
+        <dd set:html={t(userLanguage, 'names:1712')} />
+        <dt set:html={t(userLanguage, 'names:1713')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1714')} />
+        <dd set:html={t(userLanguage, 'names:1715')} />
+        <dt set:html={t(userLanguage, 'names:1716')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1717')} />
+        <dd set:html={t(userLanguage, 'names:1718')} />
+        <dt set:html={t(userLanguage, 'names:1719')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1720')} />
+        <dd set:html={t(userLanguage, 'names:1721')} />
+        <dt set:html={t(userLanguage, 'names:1722')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1723')} />
+        <dd set:html={t(userLanguage, 'names:1724')} />
+        <dt set:html={t(userLanguage, 'names:1725')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1726')} />
+        <dd set:html={t(userLanguage, 'names:1727')} />
+        <dt set:html={t(userLanguage, 'names:1728')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1729')} />
+        <dd set:html={t(userLanguage, 'names:1730')} />
+        <dt id="savatthi" set:html={t(userLanguage, 'names:1731')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1732')} />
+        <dd set:html={t(userLanguage, 'names:1733')} />
+        <dt set:html={t(userLanguage, 'names:1734')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1735')} />
+        <dd set:html={t(userLanguage, 'names:1736')} />
+        <dt set:html={t(userLanguage, 'names:1737')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1738')} />
+        <dd set:html={t(userLanguage, 'names:1739')} />
+        <dt set:html={t(userLanguage, 'names:1740')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1741')} />
+        <dd set:html={t(userLanguage, 'names:1742')} />
+        <dt set:html={t(userLanguage, 'names:1743')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1744')} />
+        <dd set:html={t(userLanguage, 'names:1745')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1746')} />
+        <dt set:html={t(userLanguage, 'names:1747')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1748')} />
+        <dd set:html={t(userLanguage, 'names:1749')} />
+        <dt set:html={t(userLanguage, 'names:1750')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1751')} />
+        <dd set:html={t(userLanguage, 'names:1752')} />
+        <dt set:html={t(userLanguage, 'names:1753')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1754')} />
+        <dd set:html={t(userLanguage, 'names:1755')} />
+        <dt set:html={t(userLanguage, 'names:1756')} />
+        <dd set:html={t(userLanguage, 'names:1757')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1758')} />
+        <dt set:html={t(userLanguage, 'names:1759')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1760')} />
+        <dd set:html={t(userLanguage, 'names:1761')} />
+        <dt set:html={t(userLanguage, 'names:1762')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1763')} />
+        <dd set:html={t(userLanguage, 'names:1764')} />
+        <dt set:html={t(userLanguage, 'names:1765')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1766')} />
+        <dd set:html={t(userLanguage, 'names:1767')} />
+        <dt set:html={t(userLanguage, 'names:1768')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1769')} />
+        <dd set:html={t(userLanguage, 'names:1770')} />
+        <dt set:html={t(userLanguage, 'names:1771')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1772')} />
+        <dd set:html={t(userLanguage, 'names:1773')} />
+        <dt set:html={t(userLanguage, 'names:1774')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1775')} />
+        <dd set:html={t(userLanguage, 'names:1776')} />
+        <dt set:html={t(userLanguage, 'names:1777')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1778')} />
+        <dd set:html={t(userLanguage, 'names:1779')} />
+        <dt set:html={t(userLanguage, 'names:1780')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1781')} />
+        <dd set:html={t(userLanguage, 'names:1782')} />
+        <dt set:html={t(userLanguage, 'names:1783')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1784')} />
+        <dd set:html={t(userLanguage, 'names:1785')} />
+        <dt set:html={t(userLanguage, 'names:1786')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1787')} />
+        <dd set:html={t(userLanguage, 'names:1788')} />
+        <dt set:html={t(userLanguage, 'names:1789')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1790')} />
+        <dd set:html={t(userLanguage, 'names:1791')} />
+        <dt set:html={t(userLanguage, 'names:1792')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1793')} />
+        <dd set:html={t(userLanguage, 'names:1794')} />
+        <dt set:html={t(userLanguage, 'names:1795')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1796')} />
+        <dd set:html={t(userLanguage, 'names:1797')} />
+        <dt id="soma" set:html={t(userLanguage, 'names:1798')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1799')} />
+        <dd set:html={t(userLanguage, 'names:1800')} />
+        <dt set:html={t(userLanguage, 'names:1801')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1802')} />
+        <dd set:html={t(userLanguage, 'names:1803')} />
+        <dt set:html={t(userLanguage, 'names:1804')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1805')} />
+        <dd set:html={t(userLanguage, 'names:1806')} />
+        <dt set:html={t(userLanguage, 'names:1807')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1808')} />
+        <dd set:html={t(userLanguage, 'names:1809')} />
+        <dt set:html={t(userLanguage, 'names:1810')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1811')} />
+        <dd set:html={t(userLanguage, 'names:1812')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1813')} />
+        <dt set:html={t(userLanguage, 'names:1814')} />
+        <dd set:html={t(userLanguage, 'names:1815')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1816')} />
+        <dt set:html={t(userLanguage, 'names:1817')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1818')} />
+        <dd set:html={t(userLanguage, 'names:1819')} />
+        <dt set:html={t(userLanguage, 'names:1820')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1821')} />
+        <dd set:html={t(userLanguage, 'names:1822')} />
+        <dt set:html={t(userLanguage, 'names:1823')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1824')} />
+        <dd set:html={t(userLanguage, 'names:1825')} />
+        <dt set:html={t(userLanguage, 'names:1826')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1827')} />
+        <dd set:html={t(userLanguage, 'names:1828')} />
+        <dt set:html={t(userLanguage, 'names:1829')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1830')} />
+        <dd set:html={t(userLanguage, 'names:1831')} />
+        <dt set:html={t(userLanguage, 'names:1832')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1833')} />
+        <dd set:html={t(userLanguage, 'names:1834')} />
+        <dt set:html={t(userLanguage, 'names:1835')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1836')} />
+        <dd set:html={t(userLanguage, 'names:1837')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1838')} />
+        <dt set:html={t(userLanguage, 'names:1839')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1840')} />
+        <dd set:html={t(userLanguage, 'names:1841')} />
+        <dt set:html={t(userLanguage, 'names:1842')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1843')} />
+        <dd set:html={t(userLanguage, 'names:1844')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1845')} />
+        <dt set:html={t(userLanguage, 'names:1846')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1847')} />
+        <dd set:html={t(userLanguage, 'names:1848')} />
+        <dt set:html={t(userLanguage, 'names:1849')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1850')} />
+        <dd set:html={t(userLanguage, 'names:1851')} />
+        <dt set:html={t(userLanguage, 'names:1852')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1853')} />
+        <dd set:html={t(userLanguage, 'names:1854')} />
+        <dt set:html={t(userLanguage, 'names:1855')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1856')} />
+        <dd set:html={t(userLanguage, 'names:1857')} />
+        <dt set:html={t(userLanguage, 'names:1858')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1859')} />
+        <dd set:html={t(userLanguage, 'names:1860')} />
+        <dt set:html={t(userLanguage, 'names:1861')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1862')} />
+        <dd set:html={t(userLanguage, 'names:1863')} />
+        <dt set:html={t(userLanguage, 'names:1864')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1865')} />
+        <dd set:html={t(userLanguage, 'names:1866')} />
+        <dt set:html={t(userLanguage, 'names:1867')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1868')} />
+        <dd set:html={t(userLanguage, 'names:1869')} />
+        <dt set:html={t(userLanguage, 'names:1870')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1871')} />
+        <dd set:html={t(userLanguage, 'names:1872')} />
+        <dt set:html={t(userLanguage, 'names:1873')} />
+        <dd set:html={t(userLanguage, 'names:1874')} />
+        <dt set:html={t(userLanguage, 'names:1875')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1876')} />
+        <dd set:html={t(userLanguage, 'names:1877')} />
+        <dt set:html={t(userLanguage, 'names:1878')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1879')} />
+        <dd set:html={t(userLanguage, 'names:1880')} />
+        <dt set:html={t(userLanguage, 'names:1881')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1882')} />
+        <dd set:html={t(userLanguage, 'names:1883')} />
+        <dt set:html={t(userLanguage, 'names:1884')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1885')} />
+        <dd set:html={t(userLanguage, 'names:1886')} />
+        <dt set:html={t(userLanguage, 'names:1887')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1888')} />
+        <dd set:html={t(userLanguage, 'names:1889')} />
+        <dt set:html={t(userLanguage, 'names:1890')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1891')} />
+        <dd set:html={t(userLanguage, 'names:1892')} />
+        <dt set:html={t(userLanguage, 'names:1893')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1894')} />
+        <dd set:html={t(userLanguage, 'names:1895')} />
+        <dt set:html={t(userLanguage, 'names:1896')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1897')} />
+        <dd set:html={t(userLanguage, 'names:1898')} />
+        <dt set:html={t(userLanguage, 'names:1899')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1900')} />
+        <dd set:html={t(userLanguage, 'names:1901')} />
+        <dt set:html={t(userLanguage, 'names:1902')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1903')} />
+        <dd set:html={t(userLanguage, 'names:1904')} />
+        <dt set:html={t(userLanguage, 'names:1905')} />
+        <dd set:html={t(userLanguage, 'names:1906')} />
+        <dt set:html={t(userLanguage, 'names:1907')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1908')} />
+        <dd set:html={t(userLanguage, 'names:1909')} />
+        <dt set:html={t(userLanguage, 'names:1910')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1911')} />
+        <dd set:html={t(userLanguage, 'names:1912')} />
+        <dt set:html={t(userLanguage, 'names:1913')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1914')} />
+        <dd set:html={t(userLanguage, 'names:1915')} />
+        <dt set:html={t(userLanguage, 'names:1916')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1917')} />
+        <dd set:html={t(userLanguage, 'names:1918')} />
+        <dt set:html={t(userLanguage, 'names:1919')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1920')} />
+        <dd set:html={t(userLanguage, 'names:1921')} />
+        <dt set:html={t(userLanguage, 'names:1922')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1923')} />
+        <dd set:html={t(userLanguage, 'names:1924')} />
+        <dt set:html={t(userLanguage, 'names:1925')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1926')} />
+        <dd set:html={t(userLanguage, 'names:1927')} />
+        <dt set:html={t(userLanguage, 'names:1928')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1929')} />
+        <dd set:html={t(userLanguage, 'names:1930')} />
+        <dt set:html={t(userLanguage, 'names:1931')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1932')} />
+        <dd set:html={t(userLanguage, 'names:1933')} />
+        <dt id="sundarika" set:html={t(userLanguage, 'names:1934')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1935')} />
+        <dd set:html={t(userLanguage, 'names:1936')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1937')} />
+        <dt set:html={t(userLanguage, 'names:1938')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1939')} />
+        <dd set:html={t(userLanguage, 'names:1940')} />
+        <dt set:html={t(userLanguage, 'names:1941')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1942')} />
+        <dd set:html={t(userLanguage, 'names:1943')} />
+        <dt set:html={t(userLanguage, 'names:1944')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1945')} />
+        <dd set:html={t(userLanguage, 'names:1946')} />
+        <dt set:html={t(userLanguage, 'names:1947')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1948')} />
+        <dd set:html={t(userLanguage, 'names:1949')} />
+        <dt set:html={t(userLanguage, 'names:1950')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1951')} />
+        <dd set:html={t(userLanguage, 'names:1952')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1953')} />
+        <dt set:html={t(userLanguage, 'names:1954')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1955')} />
+        <dd set:html={t(userLanguage, 'names:1956')} />
+        <dt set:html={t(userLanguage, 'names:1957')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1958')} />
+        <dd set:html={t(userLanguage, 'names:1959')} />
+        <dt set:html={t(userLanguage, 'names:1960')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1961')} />
+        <dd set:html={t(userLanguage, 'names:1962')} />
+        <dt set:html={t(userLanguage, 'names:1963')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1964')} />
+        <dd set:html={t(userLanguage, 'names:1965')} />
+        <dt set:html={t(userLanguage, 'names:1966')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1967')} />
+        <dd set:html={t(userLanguage, 'names:1968')} />
+        <dt set:html={t(userLanguage, 'names:1969')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1970')} />
+        <dd set:html={t(userLanguage, 'names:1971')} />
+        <dt set:html={t(userLanguage, 'names:1972')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1973')} />
+        <dd set:html={t(userLanguage, 'names:1974')} />
+        <dt set:html={t(userLanguage, 'names:1975')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1976')} />
+        <dd set:html={t(userLanguage, 'names:1977')} />
+        <dt set:html={t(userLanguage, 'names:1978')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1979')} />
+        <dd set:html={t(userLanguage, 'names:1980')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:1981')} />
+        <dt set:html={t(userLanguage, 'names:1982')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1983')} />
+        <dd set:html={t(userLanguage, 'names:1984')} />
+        <dt set:html={t(userLanguage, 'names:1985')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1986')} />
+        <dd set:html={t(userLanguage, 'names:1987')} />
+        <dt set:html={t(userLanguage, 'names:1988')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1989')} />
+        <dd set:html={t(userLanguage, 'names:1990')} />
+      </dl>
+      <h2 id="t" set:html={t(userLanguage, 'names:1991')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:1992')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1993')} />
+        <dd set:html={t(userLanguage, 'names:1994')} />
+        <dt set:html={t(userLanguage, 'names:1995')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1996')} />
+        <dd set:html={t(userLanguage, 'names:1997')} />
+        <dt set:html={t(userLanguage, 'names:1998')} />
+        <dd class="type" set:html={t(userLanguage, 'names:1999')} />
+        <dd set:html={t(userLanguage, 'names:2000')} />
+        <dt set:html={t(userLanguage, 'names:2001')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2002')} />
+        <dd set:html={t(userLanguage, 'names:2003')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:2004')} />
+        <dt set:html={t(userLanguage, 'names:2005')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2006')} />
+        <dd set:html={t(userLanguage, 'names:2007')} />
+        <dt set:html={t(userLanguage, 'names:2008')} />
+        <dd set:html={t(userLanguage, 'names:2009')} />
+        <dt set:html={t(userLanguage, 'names:2010')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2011')} />
+        <dd set:html={t(userLanguage, 'names:2012')} />
+        <dt set:html={t(userLanguage, 'names:2013')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2014')} />
+        <dd set:html={t(userLanguage, 'names:2015')} />
+        <dt set:html={t(userLanguage, 'names:2016')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2017')} />
+        <dd set:html={t(userLanguage, 'names:2018')} />
+        <dt set:html={t(userLanguage, 'names:2019')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2020')} />
+        <dd set:html={t(userLanguage, 'names:2021')} />
+        <dt set:html={t(userLanguage, 'names:2022')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2023')} />
+        <dd set:html={t(userLanguage, 'names:2024')} />
+        <dt set:html={t(userLanguage, 'names:2025')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2026')} />
+        <dd set:html={t(userLanguage, 'names:2027')} />
+        <dt set:html={t(userLanguage, 'names:2028')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2029')} />
+        <dd set:html={t(userLanguage, 'names:2030')} />
+        <dt set:html={t(userLanguage, 'names:2031')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2032')} />
+        <dd set:html={t(userLanguage, 'names:2033')} />
+        <dt set:html={t(userLanguage, 'names:2034')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2035')} />
+        <dd set:html={t(userLanguage, 'names:2036')} />
+        <dt set:html={t(userLanguage, 'names:2037')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2038')} />
+        <dd set:html={t(userLanguage, 'names:2039')} />
+        <dt set:html={t(userLanguage, 'names:2040')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2041')} />
+        <dd set:html={t(userLanguage, 'names:2042')} />
+        <dt set:html={t(userLanguage, 'names:2043')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2044')} />
+        <dd set:html={t(userLanguage, 'names:2045')} />
+        <dt set:html={t(userLanguage, 'names:2046')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2047')} />
+        <dd set:html={t(userLanguage, 'names:2048')} />
+        <dt id="todeyya" set:html={t(userLanguage, 'names:2049')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2050')} />
+        <dd set:html={t(userLanguage, 'names:2051')} />
+        <dt set:html={t(userLanguage, 'names:2052')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2053')} />
+        <dd set:html={t(userLanguage, 'names:2054')} />
+        <dt set:html={t(userLanguage, 'names:2055')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2056')} />
+        <dd set:html={t(userLanguage, 'names:2057')} />
+        <dt set:html={t(userLanguage, 'names:2058')} />
+        <dd set:html={t(userLanguage, 'names:2059')} />
+      </dl>
+      <h2 id="u" set:html={t(userLanguage, 'names:2060')} />
+      <dl>
+        <dt id="ubbiri" set:html={t(userLanguage, 'names:2061')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2062')} />
+        <dd set:html={t(userLanguage, 'names:2063')} />
+        <dt set:html={t(userLanguage, 'names:2064')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2065')} />
+        <dd set:html={t(userLanguage, 'names:2066')} />
+        <dt set:html={t(userLanguage, 'names:2067')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2068')} />
+        <dd set:html={t(userLanguage, 'names:2069')} />
+        <dt set:html={t(userLanguage, 'names:2070')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2071')} />
+        <dd set:html={t(userLanguage, 'names:2072')} />
+        <dt set:html={t(userLanguage, 'names:2073')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2074')} />
+        <dd set:html={t(userLanguage, 'names:2075')} />
+        <dt id="udayibhadda" set:html={t(userLanguage, 'names:2076')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2077')} />
+        <dd set:html={t(userLanguage, 'names:2078')} />
+        <dt set:html={t(userLanguage, 'names:2079')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2080')} />
+        <dd set:html={t(userLanguage, 'names:2081')} />
+        <dt set:html={t(userLanguage, 'names:2082')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2083')} />
+        <dd set:html={t(userLanguage, 'names:2084')} />
+        <dt id="udena" set:html={t(userLanguage, 'names:2085')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2086')} />
+        <dd set:html={t(userLanguage, 'names:2087')} />
+        <dt set:html={t(userLanguage, 'names:2088')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2089')} />
+        <dd set:html={t(userLanguage, 'names:2090')} />
+        <dt set:html={t(userLanguage, 'names:2091')} />
+        <dd set:html={t(userLanguage, 'names:2092')} />
+        <dt set:html={t(userLanguage, 'names:2093')} />
+        <dd set:html={t(userLanguage, 'names:2094')} />
+        <dt set:html={t(userLanguage, 'names:2095')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2096')} />
+        <dd set:html={t(userLanguage, 'names:2097')} />
+        <dt set:html={t(userLanguage, 'names:2098')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2099')} />
+        <dd set:html={t(userLanguage, 'names:2100')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:2101')} />
+        <dt set:html={t(userLanguage, 'names:2102')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2103')} />
+        <dd set:html={t(userLanguage, 'names:2104')} />
+        <dt set:html={t(userLanguage, 'names:2105')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2106')} />
+        <dd set:html={t(userLanguage, 'names:2107')} />
+        <dt set:html={t(userLanguage, 'names:2108')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2109')} />
+        <dd set:html={t(userLanguage, 'names:2110')} />
+        <dt set:html={t(userLanguage, 'names:2111')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2112')} />
+        <dd set:html={t(userLanguage, 'names:2113')} />
+        <dt set:html={t(userLanguage, 'names:2114')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2115')} />
+        <dd set:html={t(userLanguage, 'names:2116')} />
+        <dt set:html={t(userLanguage, 'names:2117')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2118')} />
+        <dd set:html={t(userLanguage, 'names:2119')} />
+        <dt set:html={t(userLanguage, 'names:2120')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2121')} />
+        <dd set:html={t(userLanguage, 'names:2122')} />
+        <dt set:html={t(userLanguage, 'names:2123')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2124')} />
+        <dd set:html={t(userLanguage, 'names:2125')} />
+        <dt set:html={t(userLanguage, 'names:2126')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2127')} />
+        <dd set:html={t(userLanguage, 'names:2128')} />
+        <dt set:html={t(userLanguage, 'names:2129')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2130')} />
+        <dd set:html={t(userLanguage, 'names:2131')} />
+        <dt set:html={t(userLanguage, 'names:2132')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2133')} />
+        <dd set:html={t(userLanguage, 'names:2134')} />
+        <dt set:html={t(userLanguage, 'names:2135')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2136')} />
+        <dd set:html={t(userLanguage, 'names:2137')} />
+        <dt set:html={t(userLanguage, 'names:2138')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2139')} />
+        <dd set:html={t(userLanguage, 'names:2140')} />
+        <dt set:html={t(userLanguage, 'names:2141')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2142')} />
+        <dd set:html={t(userLanguage, 'names:2143')} />
+        <dt set:html={t(userLanguage, 'names:2144')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2145')} />
+        <dd set:html={t(userLanguage, 'names:2146')} />
+        <dt set:html={t(userLanguage, 'names:2147')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2148')} />
+        <dd set:html={t(userLanguage, 'names:2149')} />
+        <dt set:html={t(userLanguage, 'names:2150')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2151')} />
+        <dd set:html={t(userLanguage, 'names:2152')} />
+        <dt set:html={t(userLanguage, 'names:2153')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2154')} />
+        <dd set:html={t(userLanguage, 'names:2155')} />
+        <dt set:html={t(userLanguage, 'names:2156')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2157')} />
+        <dd set:html={t(userLanguage, 'names:2158')} />
+        <dt set:html={t(userLanguage, 'names:2159')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2160')} />
+        <dd set:html={t(userLanguage, 'names:2161')} />
+        <dt set:html={t(userLanguage, 'names:2162')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2163')} />
+        <dd set:html={t(userLanguage, 'names:2164')} />
+        <dt set:html={t(userLanguage, 'names:2165')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2166')} />
+        <dd set:html={t(userLanguage, 'names:2167')} />
+        <dt set:html={t(userLanguage, 'names:2168')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2169')} />
+        <dd set:html={t(userLanguage, 'names:2170')} />
+        <dt set:html={t(userLanguage, 'names:2171')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2172')} />
+        <dd set:html={t(userLanguage, 'names:2173')} />
+        <dt set:html={t(userLanguage, 'names:2174')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2175')} />
+        <dd set:html={t(userLanguage, 'names:2176')} />
+        <dt set:html={t(userLanguage, 'names:2177')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2178')} />
+        <dd set:html={t(userLanguage, 'names:2179')} />
+        <dt set:html={t(userLanguage, 'names:2180')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2181')} />
+        <dd set:html={t(userLanguage, 'names:2182')} />
+        <dt set:html={t(userLanguage, 'names:2183')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2184')} />
+        <dd set:html={t(userLanguage, 'names:2185')} />
+        <dt set:html={t(userLanguage, 'names:2186')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2187')} />
+        <dd set:html={t(userLanguage, 'names:2188')} />
+        <dt set:html={t(userLanguage, 'names:2189')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2190')} />
+        <dd set:html={t(userLanguage, 'names:2191')} />
+      </dl>
+      <h2 id="v" set:html={t(userLanguage, 'names:2192')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:2193')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2194')} />
+        <dd set:html={t(userLanguage, 'names:2195')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:2196')} />
+        <dt set:html={t(userLanguage, 'names:2197')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2198')} />
+        <dd set:html={t(userLanguage, 'names:2199')} />
+        <dt set:html={t(userLanguage, 'names:2200')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2201')} />
+        <dd set:html={t(userLanguage, 'names:2202')} />
+        <dt set:html={t(userLanguage, 'names:2203')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2204')} />
+        <dd set:html={t(userLanguage, 'names:2205')} />
+        <dt set:html={t(userLanguage, 'names:2206')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2207')} />
+        <dd></dd>
+        <dd set:html={t(userLanguage, 'names:2208')} />
+        <dt set:html={t(userLanguage, 'names:2209')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2210')} />
+        <dd set:html={t(userLanguage, 'names:2211')} />
+        <dt set:html={t(userLanguage, 'names:2212')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2213')} />
+        <dd set:html={t(userLanguage, 'names:2214')} />
+        <dt set:html={t(userLanguage, 'names:2215')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2216')} />
+        <dd set:html={t(userLanguage, 'names:2217')} />
+        <dt set:html={t(userLanguage, 'names:2218')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2219')} />
+        <dd set:html={t(userLanguage, 'names:2220')} />
+        <dt set:html={t(userLanguage, 'names:2221')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2222')} />
+        <dd set:html={t(userLanguage, 'names:2223')} />
+        <dt set:html={t(userLanguage, 'names:2224')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2225')} />
+        <dd set:html={t(userLanguage, 'names:2226')} />
+        <dt set:html={t(userLanguage, 'names:2227')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2228')} />
+        <dd set:html={t(userLanguage, 'names:2229')} />
+        <dt set:html={t(userLanguage, 'names:2230')} />
+        <dd set:html={t(userLanguage, 'names:2231')} />
+        <dt set:html={t(userLanguage, 'names:2232')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2233')} />
+        <dd set:html={t(userLanguage, 'names:2234')} />
+        <dt set:html={t(userLanguage, 'names:2235')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2236')} />
+        <dd set:html={t(userLanguage, 'names:2237')} />
+        <dt id="varanasi" set:html={t(userLanguage, 'names:2238')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2239')} />
+        <dd set:html={t(userLanguage, 'names:2240')} />
+        <dt set:html={t(userLanguage, 'names:2241')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2242')} />
+        <dd set:html={t(userLanguage, 'names:2243')} />
+        <dt set:html={t(userLanguage, 'names:2244')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2245')} />
+        <dd set:html={t(userLanguage, 'names:2246')} />
+        <dt set:html={t(userLanguage, 'names:2247')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2248')} />
+        <dd set:html={t(userLanguage, 'names:2249')} />
+        <dt set:html={t(userLanguage, 'names:2250')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2251')} />
+        <dd set:html={t(userLanguage, 'names:2252')} />
+        <dt set:html={t(userLanguage, 'names:2253')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2254')} />
+        <dd set:html={t(userLanguage, 'names:2255')} />
+        <dt set:html={t(userLanguage, 'names:2256')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2257')} />
+        <dd set:html={t(userLanguage, 'names:2258')} />
+        <dt set:html={t(userLanguage, 'names:2259')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2260')} />
+        <dd set:html={t(userLanguage, 'names:2261')} />
+        <dt set:html={t(userLanguage, 'names:2262')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2263')} />
+        <dd set:html={t(userLanguage, 'names:2264')} />
+        <dt set:html={t(userLanguage, 'names:2265')} />
+        <dd set:html={t(userLanguage, 'names:2266')} />
+        <dt set:html={t(userLanguage, 'names:2267')} />
+        <dd set:html={t(userLanguage, 'names:2268')} />
+        <dt set:html={t(userLanguage, 'names:2269')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2270')} />
+        <dd set:html={t(userLanguage, 'names:2271')} />
+        <dt set:html={t(userLanguage, 'names:2272')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2273')} />
+        <dd set:html={t(userLanguage, 'names:2274')} />
+        <dt set:html={t(userLanguage, 'names:2275')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2276')} />
+        <dd set:html={t(userLanguage, 'names:2277')} />
+        <dt set:html={t(userLanguage, 'names:2278')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2279')} />
+        <dd set:html={t(userLanguage, 'names:2280')} />
+        <dt set:html={t(userLanguage, 'names:2281')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2282')} />
+        <dd set:html={t(userLanguage, 'names:2283')} />
+        <dt set:html={t(userLanguage, 'names:2284')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2285')} />
+        <dd set:html={t(userLanguage, 'names:2286')} />
+        <dt set:html={t(userLanguage, 'names:2287')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2288')} />
+        <dd set:html={t(userLanguage, 'names:2289')} />
+        <dt set:html={t(userLanguage, 'names:2290')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2291')} />
+        <dd set:html={t(userLanguage, 'names:2292')} />
+        <dt set:html={t(userLanguage, 'names:2293')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2294')} />
+        <dd set:html={t(userLanguage, 'names:2295')} />
+        <dt set:html={t(userLanguage, 'names:2296')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2297')} />
+        <dd set:html={t(userLanguage, 'names:2298')} />
+        <dt set:html={t(userLanguage, 'names:2299')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2300')} />
+        <dd set:html={t(userLanguage, 'names:2301')} />
+        <dt set:html={t(userLanguage, 'names:2302')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2303')} />
+        <dd set:html={t(userLanguage, 'names:2304')} />
+        <dt set:html={t(userLanguage, 'names:2305')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2306')} />
+        <dd set:html={t(userLanguage, 'names:2307')} />
+        <dt set:html={t(userLanguage, 'names:2308')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2309')} />
+        <dd set:html={t(userLanguage, 'names:2310')} />
+        <dt set:html={t(userLanguage, 'names:2311')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2312')} />
+        <dd set:html={t(userLanguage, 'names:2313')} />
+        <dt set:html={t(userLanguage, 'names:2314')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2315')} />
+        <dd set:html={t(userLanguage, 'names:2316')} />
+        <dt set:html={t(userLanguage, 'names:2317')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2318')} />
+        <dd set:html={t(userLanguage, 'names:2319')} />
+        <dt set:html={t(userLanguage, 'names:2320')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2321')} />
+        <dd set:html={t(userLanguage, 'names:2322')} />
+        <dt set:html={t(userLanguage, 'names:2323')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2324')} />
+        <dd set:html={t(userLanguage, 'names:2325')} />
+        <dt set:html={t(userLanguage, 'names:2326')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2327')} />
+        <dd set:html={t(userLanguage, 'names:2328')} />
+        <dt id="videha" set:html={t(userLanguage, 'names:2329')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2330')} />
+        <dd set:html={t(userLanguage, 'names:2331')} />
+        <dt set:html={t(userLanguage, 'names:2332')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2333')} />
+        <dd set:html={t(userLanguage, 'names:2334')} />
+        <dt set:html={t(userLanguage, 'names:2335')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2336')} />
+        <dd set:html={t(userLanguage, 'names:2337')} />
+        <dt set:html={t(userLanguage, 'names:2338')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2339')} />
+        <dd set:html={t(userLanguage, 'names:2340')} />
+        <dt set:html={t(userLanguage, 'names:2341')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2342')} />
+        <dd set:html={t(userLanguage, 'names:2343')} />
+        <dt set:html={t(userLanguage, 'names:2344')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2345')} />
+        <dd set:html={t(userLanguage, 'names:2346')} />
+        <dt set:html={t(userLanguage, 'names:2347')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2348')} />
+        <dd set:html={t(userLanguage, 'names:2349')} />
+        <dt set:html={t(userLanguage, 'names:2350')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2351')} />
+        <dd set:html={t(userLanguage, 'names:2352')} />
+        <dt set:html={t(userLanguage, 'names:2353')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2354')} />
+        <dd set:html={t(userLanguage, 'names:2355')} />
+        <dt set:html={t(userLanguage, 'names:2356')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2357')} />
+        <dd set:html={t(userLanguage, 'names:2358')} />
+        <dt set:html={t(userLanguage, 'names:2359')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2360')} />
+        <dd set:html={t(userLanguage, 'names:2361')} />
+        <dt id="visakha1" set:html={t(userLanguage, 'names:2362')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2363')} />
+        <dd set:html={t(userLanguage, 'names:2364')} />
+        <dt set:html={t(userLanguage, 'names:2365')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2366')} />
+        <dd set:html={t(userLanguage, 'names:2367')} />
+        <dt set:html={t(userLanguage, 'names:2368')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2369')} />
+        <dd set:html={t(userLanguage, 'names:2370')} />
+        <dt set:html={t(userLanguage, 'names:2371')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2372')} />
+        <dd set:html={t(userLanguage, 'names:2373')} />
+        <dt set:html={t(userLanguage, 'names:2374')} />
+        <dd set:html={t(userLanguage, 'names:2375')} />
+        <dt set:html={t(userLanguage, 'names:2376')} />
+        <dd set:html={t(userLanguage, 'names:2377')} />
+      </dl>
+      <h2 id="wxyz" set:html={t(userLanguage, 'names:2378')} />
+      <dl>
+        <dt set:html={t(userLanguage, 'names:2379')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2380')} />
+        <dd set:html={t(userLanguage, 'names:2381')} />
+        <dt set:html={t(userLanguage, 'names:2382')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2383')} />
+        <dd set:html={t(userLanguage, 'names:2384')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:2385')} />
+        <dt set:html={t(userLanguage, 'names:2386')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2387')} />
+        <dd set:html={t(userLanguage, 'names:2388')} />
+        <dt set:html={t(userLanguage, 'names:2389')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2390')} />
+        <dd set:html={t(userLanguage, 'names:2391')} />
+        <dt set:html={t(userLanguage, 'names:2392')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2393')} />
+        <dd set:html={t(userLanguage, 'names:2394')} />
+        <dt set:html={t(userLanguage, 'names:2395')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2396')} />
+        <dd set:html={t(userLanguage, 'names:2397')} />
+        <dt set:html={t(userLanguage, 'names:2398')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2399')} />
+        <dd set:html={t(userLanguage, 'names:2400')} />
+        <dt set:html={t(userLanguage, 'names:2401')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2402')} />
+        <dd set:html={t(userLanguage, 'names:2403')} />
+        <dt set:html={t(userLanguage, 'names:2404')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2405')} />
+        <dd set:html={t(userLanguage, 'names:2406')} />
+        <dd class="life-events" set:html={t(userLanguage, 'names:2407')} />
+        <dt set:html={t(userLanguage, 'names:2408')} />
+        <dd class="type" set:html={t(userLanguage, 'names:2409')} />
+        <dd set:html={t(userLanguage, 'names:2410')} />
+      </dl>
+      <aside class="about-index">
+        <p set:html={t(userLanguage, 'names:2411')} />
+        <ul>
+          <li set:html={t(userLanguage, 'names:2412')} />
+          <li set:html={t(userLanguage, 'names:2413')} />
+          <li set:html={t(userLanguage, 'names:2414')} />
+          <li set:html={t(userLanguage, 'names:2415')} />
+          <li set:html={t(userLanguage, 'names:2416')} />
+          <li set:html={t(userLanguage, 'names:2417')} />
+        </ul>
+        <p set:html={t(userLanguage, 'names:2418')} />
+        <ul>
+          <li set:html={t(userLanguage, 'names:2419')} />
+          <li set:html={t(userLanguage, 'names:2420')} />
+          <li set:html={t(userLanguage, 'names:2421')} />
+          <li set:html={t(userLanguage, 'names:2422')} />
+        </ul>
+      </aside>
+      <aside class="static-copyright">
+        <p set:html={t(userLanguage, 'names:2423')} />
+        <blockquote set:html={t(userLanguage, 'names:2424')} />
+        <p set:html={t(userLanguage, 'names:2425')} />
+      </aside>
+    </article>
+  </main>
+</Layout>

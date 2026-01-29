@@ -1,0 +1,74 @@
+---
+import '~/assets/abbreviations.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const [textsRes, editionsRes, schoolsRes] = await Promise.all([
+  fetch('https://suttacentral.net/api/abbreviation_texts'),
+  fetch('https://suttacentral.net/api/abbreviation_editions'),
+  fetch('https://suttacentral.net/api/abbreviation_schools'),
+])
+
+const textsData = await textsRes.json()
+const editionsData = await editionsRes.json()
+const schoolsData = await schoolsRes.json()
+
+const title = t(userLanguage, 'abbreviations:1')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'abbreviations:1')} />
+      <p set:html={t(userLanguage, 'abbreviations:2')} />
+      <ul>
+        <li set:html={t(userLanguage, 'abbreviations:3')} />
+        <li set:html={t(userLanguage, 'abbreviations:4')} />
+        <li set:html={t(userLanguage, 'abbreviations:5')} />
+        <li set:html={t(userLanguage, 'abbreviations:6')} />
+        <li set:html={t(userLanguage, 'abbreviations:7')} />
+      </ul>
+      <p set:html={t(userLanguage, 'abbreviations:8')} />
+      <table class="abbrTable">
+        <caption>{t(userLanguage, 'abbreviations:9')}</caption>
+        {
+          textsData.map(abbr => (
+            <tr>
+              <td set:html={abbr.acronym} />
+              <td set:html={abbr.name} />
+            </tr>
+          ))
+        }
+      </table>
+
+      <table class="abbrTable">
+        <caption>Edition Abbreviations</caption>
+        {
+          editionsData.map(abbr => (
+            <tr>
+              <td set:html={abbr.acronym} />
+              <td set:html={abbr.name} />
+            </tr>
+          ))
+        }
+      </table>
+
+      <table class="abbrTable">
+        <caption>School Abbreviations</caption>
+        {
+          schoolsData.map(abbr => (
+            <tr>
+              <td set:html={abbr.acronym} />
+              <td set:html={abbr.name} />
+            </tr>
+          ))
+        }
+      </table>
+    </article>
+  </main>
+</Layout>

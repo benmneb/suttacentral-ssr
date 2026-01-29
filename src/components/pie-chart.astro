@@ -1,0 +1,41 @@
+---
+interface Props {
+  percent: number
+}
+
+const { percent } = Astro.props
+const safePercent = Math.max(0, Math.min(100, percent))
+const radius = 80
+const len = 2 * Math.PI * radius
+const progress = ((100 - safePercent) / 100) * len
+---
+
+<svg viewBox="0 0 220 220">
+  <circle
+    r={radius}
+    cx="110"
+    cy="110"
+    fill="none"
+    stroke-width="60"
+    stroke="var(--background-color-secondary)"
+    stroke-dasharray={len}></circle>
+  <circle
+    r={radius}
+    cx="110"
+    cy="110"
+    fill="none"
+    stroke-width="60"
+    transform="rotate(-90 110 110)"
+    stroke="var(--primary-color-alt)"
+    stroke-dasharray={len}
+    stroke-dashoffset={progress}></circle>
+  <text
+    x="110"
+    y="110"
+    alignment-baseline="middle"
+    text-anchor="middle"
+    fill="var(--primary-color)"
+  >
+    {safePercent.toFixed(1)}%
+  </text>
+</svg>

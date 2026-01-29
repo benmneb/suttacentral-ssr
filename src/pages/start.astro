@@ -1,0 +1,57 @@
+---
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'start:1')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'start:1')} />
+      <p set:html={t(userLanguage, 'start:2')} />
+      <blockquote class="gatha">
+        <p set:html={t(userLanguage, 'start:3')} />
+      </blockquote>
+      <p set:html={t(userLanguage, 'start:4')} />
+      <h2 set:html={t(userLanguage, 'start:5')} />
+      <p set:html={t(userLanguage, 'start:6')} />
+      <ul>
+        <li set:html={t(userLanguage, 'start:7')} />
+        <li set:html={t(userLanguage, 'start:8')} />
+        <li set:html={t(userLanguage, 'start:9')} />
+        <li set:html={t(userLanguage, 'start:10')} />
+      </ul>
+      <h2 set:html={t(userLanguage, 'start:11')} />
+      <p set:html={t(userLanguage, 'start:12')} />
+      <ul>
+        <li set:html={t(userLanguage, 'start:13')} />
+        <li set:html={t(userLanguage, 'start:14')} />
+        <li set:html={t(userLanguage, 'start:15')} />
+        <li set:html={t(userLanguage, 'start:16')} />
+      </ul>
+      <h2 set:html={t(userLanguage, 'start:17')} />
+      <p set:html={t(userLanguage, 'start:18')} />
+      <ul>
+        <li set:html={t(userLanguage, 'start:19')} />
+        <li set:html={t(userLanguage, 'start:20')} />
+        <li set:html={t(userLanguage, 'start:21')} />
+      </ul>
+      <h2 set:html={t(userLanguage, 'start:22')} />
+      <p set:html={t(userLanguage, 'start:23')} />
+      <p set:html={t(userLanguage, 'start:24')} />
+      <h2 set:html={t(userLanguage, 'start:25')} />
+      <p set:html={t(userLanguage, 'start:26')} />
+      <h2 set:html={t(userLanguage, 'start:27')} />
+      <p set:html={t(userLanguage, 'start:28')} />
+      <p set:html={t(userLanguage, 'start:29')} />
+      <h2 set:html={t(userLanguage, 'start:30')} />
+      <p set:html={t(userLanguage, 'start:31')} />
+    </article>
+  </main>
+</Layout>

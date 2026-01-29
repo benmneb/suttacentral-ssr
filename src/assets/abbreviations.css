@@ -1,0 +1,13 @@
+table {
+  margin: 2em auto 1em;
+  border-collapse: collapse;
+
+  tr {
+    vertical-align: middle;
+  }
+
+  caption {
+    font-weight: 600;
+    padding: 1em;
+  }
+}

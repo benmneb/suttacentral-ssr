@@ -1,0 +1,128 @@
+---
+import '~/assets/guides.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'interface:discourses')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'discourses:1')} />
+      <p class="byline" set:html={t(userLanguage, 'discourses:2')} />
+      <nav class="contents">
+        <ol>
+          <li set:html={t(userLanguage, 'discourses:3')} />
+          <li set:html={t(userLanguage, 'discourses:4')} />
+          <li set:html={t(userLanguage, 'discourses:5')} />
+          <li set:html={t(userLanguage, 'discourses:6')} />
+          <li set:html={t(userLanguage, 'discourses:7')} />
+          <li set:html={t(userLanguage, 'discourses:8')} />
+          <li set:html={t(userLanguage, 'discourses:9')} />
+          <li set:html={t(userLanguage, 'discourses:10')} />
+        </ol>
+      </nav>
+      <p set:html={t(userLanguage, 'discourses:11')} />
+      <p set:html={t(userLanguage, 'discourses:12')} />
+      <p set:html={t(userLanguage, 'discourses:13')} />
+      <p set:html={t(userLanguage, 'discourses:14')} />
+      <h2 id="item1" set:html={t(userLanguage, 'discourses:15')} />
+      <p set:html={t(userLanguage, 'discourses:16')} />
+      <p set:html={t(userLanguage, 'discourses:17')} />
+      <p set:html={t(userLanguage, 'discourses:18')} />
+      <h2 id="item2" set:html={t(userLanguage, 'discourses:19')} />
+      <p set:html={t(userLanguage, 'discourses:20')} />
+      <p set:html={t(userLanguage, 'discourses:21')} />
+      <p set:html={t(userLanguage, 'discourses:22')} />
+      <p set:html={t(userLanguage, 'discourses:23')} />
+      <p set:html={t(userLanguage, 'discourses:24')} />
+      <p set:html={t(userLanguage, 'discourses:25')} />
+      <p set:html={t(userLanguage, 'discourses:26')} />
+      <h2 id="item3" set:html={t(userLanguage, 'discourses:27')} />
+      <p set:html={t(userLanguage, 'discourses:28')} />
+      <p set:html={t(userLanguage, 'discourses:29')} />
+      <p set:html={t(userLanguage, 'discourses:30')} />
+      <p set:html={t(userLanguage, 'discourses:31')} />
+      <p set:html={t(userLanguage, 'discourses:32')} />
+      <ul>
+        <li set:html={t(userLanguage, 'discourses:33')} />
+        <li set:html={t(userLanguage, 'discourses:34')} />
+        <li set:html={t(userLanguage, 'discourses:35')} />
+        <li set:html={t(userLanguage, 'discourses:36')} />
+      </ul>
+      <p set:html={t(userLanguage, 'discourses:37')} />
+      <p set:html={t(userLanguage, 'discourses:38')} />
+      <p set:html={t(userLanguage, 'discourses:39')} />
+      <h2 id="item4" set:html={t(userLanguage, 'discourses:40')} />
+      <p set:html={t(userLanguage, 'discourses:41')} />
+      <p set:html={t(userLanguage, 'discourses:42')} />
+      <p set:html={t(userLanguage, 'discourses:43')} />
+      <p set:html={t(userLanguage, 'discourses:44')} />
+      <ul>
+        <li set:html={t(userLanguage, 'discourses:45')} />
+        <li set:html={t(userLanguage, 'discourses:46')} />
+        <li set:html={t(userLanguage, 'discourses:47')} />
+        <li set:html={t(userLanguage, 'discourses:48')} />
+      </ul>
+      <p set:html={t(userLanguage, 'discourses:49')} />
+      <p set:html={t(userLanguage, 'discourses:50')} />
+      <ul>
+        <li set:html={t(userLanguage, 'discourses:51')} />
+        <li set:html={t(userLanguage, 'discourses:52')} />
+        <li set:html={t(userLanguage, 'discourses:53')} />
+        <li set:html={t(userLanguage, 'discourses:54')} />
+        <li set:html={t(userLanguage, 'discourses:55')} />
+        <li set:html={t(userLanguage, 'discourses:56')} />
+      </ul>
+      <p set:html={t(userLanguage, 'discourses:57')} />
+      <p set:html={t(userLanguage, 'discourses:58')} />
+      <p set:html={t(userLanguage, 'discourses:59')} />
+      <p set:html={t(userLanguage, 'discourses:60')} />
+      <h2 id="item5" set:html={t(userLanguage, 'discourses:61')} />
+      <p set:html={t(userLanguage, 'discourses:62')} />
+      <p set:html={t(userLanguage, 'discourses:63')} />
+      <p set:html={t(userLanguage, 'discourses:64')} />
+      <h2 id="item6" set:html={t(userLanguage, 'discourses:65')} />
+      <p set:html={t(userLanguage, 'discourses:66')} />
+      <p set:html={t(userLanguage, 'discourses:67')} />
+      <p set:html={t(userLanguage, 'discourses:68')} />
+      <p set:html={t(userLanguage, 'discourses:69')} />
+      <p set:html={t(userLanguage, 'discourses:70')} />
+      <p set:html={t(userLanguage, 'discourses:71')} />
+      <h2 id="item7" set:html={t(userLanguage, 'discourses:72')} />
+      <p set:html={t(userLanguage, 'discourses:73')} />
+      <p set:html={t(userLanguage, 'discourses:74')} />
+      <ul>
+        <li set:html={t(userLanguage, 'discourses:75')} />
+        <li set:html={t(userLanguage, 'discourses:76')} />
+        <li set:html={t(userLanguage, 'discourses:77')} />
+        <li set:html={t(userLanguage, 'discourses:78')} />
+        <li set:html={t(userLanguage, 'discourses:79')} />
+        <li set:html={t(userLanguage, 'discourses:80')} />
+      </ul>
+      <p set:html={t(userLanguage, 'discourses:81')} />
+      <ul>
+        <li set:html={t(userLanguage, 'discourses:82')} />
+        <li set:html={t(userLanguage, 'discourses:83')} />
+        <li set:html={t(userLanguage, 'discourses:84')} />
+        <li set:html={t(userLanguage, 'discourses:85')} />
+        <li set:html={t(userLanguage, 'discourses:86')} />
+        <li set:html={t(userLanguage, 'discourses:87')} />
+      </ul>
+      <p set:html={t(userLanguage, 'discourses:88')} />
+      <p set:html={t(userLanguage, 'discourses:89')} />
+      <h2 id="item8" set:html={t(userLanguage, 'discourses:90')} />
+      <p set:html={t(userLanguage, 'discourses:91')} />
+      <p set:html={t(userLanguage, 'discourses:92')} />
+      <p set:html={t(userLanguage, 'discourses:93')} />
+      <p set:html={t(userLanguage, 'discourses:94')} />
+      <p set:html={t(userLanguage, 'discourses:95')} />
+    </article>
+  </main>
+</Layout>
