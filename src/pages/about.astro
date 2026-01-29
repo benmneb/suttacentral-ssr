@@ -1,0 +1,26 @@
+---
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'interface:aboutTitle')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'about:1')} />
+      <p set:html={t(userLanguage, 'about:2')} />
+      <p set:html={t(userLanguage, 'about:3')} />
+      <p set:html={t(userLanguage, 'about:4')} />
+      <p set:html={t(userLanguage, 'about:5')} />
+      <p set:html={t(userLanguage, 'about:6')} />
+      <h2 set:html={t(userLanguage, 'about:7')} />
+      <p set:html={t(userLanguage, 'about:8')} />
+    </article>
+  </main>
+</Layout>

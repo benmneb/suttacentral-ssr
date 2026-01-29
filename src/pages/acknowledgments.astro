@@ -1,0 +1,708 @@
+---
+import '~/assets/table.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'interface:acknowledgmentsTitle')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'acknowledgments:1')} />
+      <p set:html={t(userLanguage, 'acknowledgments:2')} />
+      <h2 set:html={t(userLanguage, 'acknowledgments:3')} />
+      <p set:html={t(userLanguage, 'acknowledgments:4')} />
+      <table>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:5')} />
+          <td set:html={t(userLanguage, 'acknowledgments:6')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:7')} />
+          <td set:html={t(userLanguage, 'acknowledgments:8')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:9')} />
+          <td set:html={t(userLanguage, 'acknowledgments:10')} />
+        </tr>
+      </table>
+      <h2 set:html={t(userLanguage, 'acknowledgments:11')} />
+      <p set:html={t(userLanguage, 'acknowledgments:12')} />
+      <table>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:13')} />
+          <td set:html={t(userLanguage, 'acknowledgments:14')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:15')} />
+          <td set:html={t(userLanguage, 'acknowledgments:16')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:17')} />
+          <td set:html={t(userLanguage, 'acknowledgments:18')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:19')} />
+          <td set:html={t(userLanguage, 'acknowledgments:20')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:21')} />
+          <td set:html={t(userLanguage, 'acknowledgments:22')} />
+        </tr>
+      </table>
+      <h2 set:html={t(userLanguage, 'acknowledgments:23')} />
+      <p set:html={t(userLanguage, 'acknowledgments:24')} />
+      <table>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:25')} />
+          <td set:html={t(userLanguage, 'acknowledgments:26')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:27')} />
+          <td set:html={t(userLanguage, 'acknowledgments:28')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:29')} />
+          <td set:html={t(userLanguage, 'acknowledgments:30')} />
+        </tr>
+      </table>
+      <p set:html={t(userLanguage, 'acknowledgments:31')} />
+      <h2 set:html={t(userLanguage, 'acknowledgments:32')} />
+      <p set:html={t(userLanguage, 'acknowledgments:33')} />
+      <h2 set:html={t(userLanguage, 'acknowledgments:34')} />
+      <p set:html={t(userLanguage, 'acknowledgments:35')} />
+      <table>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:36')} />
+          <td set:html={t(userLanguage, 'acknowledgments:37')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:38')} />
+          <td set:html={t(userLanguage, 'acknowledgments:39')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:40')} />
+          <td set:html={t(userLanguage, 'acknowledgments:41')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:42')} />
+          <td set:html={t(userLanguage, 'acknowledgments:43')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:44')} />
+          <td set:html={t(userLanguage, 'acknowledgments:45')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:46')} />
+          <td set:html={t(userLanguage, 'acknowledgments:47')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:48')} />
+          <td set:html={t(userLanguage, 'acknowledgments:49')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:50')} />
+          <td set:html={t(userLanguage, 'acknowledgments:51')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:52')} />
+          <td set:html={t(userLanguage, 'acknowledgments:53')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:54')} />
+          <td set:html={t(userLanguage, 'acknowledgments:55')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:56')} />
+          <td set:html={t(userLanguage, 'acknowledgments:57')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:58')} />
+          <td set:html={t(userLanguage, 'acknowledgments:59')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:60')} />
+          <td set:html={t(userLanguage, 'acknowledgments:61')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:62')} />
+          <td set:html={t(userLanguage, 'acknowledgments:63')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:64')} />
+          <td set:html={t(userLanguage, 'acknowledgments:65')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:66')} />
+          <td set:html={t(userLanguage, 'acknowledgments:67')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:68')} />
+          <td set:html={t(userLanguage, 'acknowledgments:69')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:70')} />
+          <td set:html={t(userLanguage, 'acknowledgments:71')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:72')} />
+          <td set:html={t(userLanguage, 'acknowledgments:73')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:74')} />
+          <td set:html={t(userLanguage, 'acknowledgments:75')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:76')} />
+          <td set:html={t(userLanguage, 'acknowledgments:77')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:78')} />
+          <td set:html={t(userLanguage, 'acknowledgments:79')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:80')} />
+          <td set:html={t(userLanguage, 'acknowledgments:81')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:82')} />
+          <td set:html={t(userLanguage, 'acknowledgments:83')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:84')} />
+          <td set:html={t(userLanguage, 'acknowledgments:85')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:86')} />
+          <td set:html={t(userLanguage, 'acknowledgments:87')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:88')} />
+          <td set:html={t(userLanguage, 'acknowledgments:89')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:90')} />
+          <td set:html={t(userLanguage, 'acknowledgments:91')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:92')} />
+          <td set:html={t(userLanguage, 'acknowledgments:93')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:94')} />
+          <td set:html={t(userLanguage, 'acknowledgments:95')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:96')} />
+          <td set:html={t(userLanguage, 'acknowledgments:97')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:98')} />
+          <td set:html={t(userLanguage, 'acknowledgments:99')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:100')} />
+          <td set:html={t(userLanguage, 'acknowledgments:101')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:102')} />
+          <td set:html={t(userLanguage, 'acknowledgments:103')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:104')} />
+          <td set:html={t(userLanguage, 'acknowledgments:105')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:106')} />
+          <td set:html={t(userLanguage, 'acknowledgments:107')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:108')} />
+          <td set:html={t(userLanguage, 'acknowledgments:109')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:110')} />
+          <td set:html={t(userLanguage, 'acknowledgments:111')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:112')} />
+          <td set:html={t(userLanguage, 'acknowledgments:113')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:114')} />
+          <td set:html={t(userLanguage, 'acknowledgments:115')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:116')} />
+          <td set:html={t(userLanguage, 'acknowledgments:117')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:118')} />
+          <td set:html={t(userLanguage, 'acknowledgments:119')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:120')} />
+          <td set:html={t(userLanguage, 'acknowledgments:121')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:122')} />
+          <td set:html={t(userLanguage, 'acknowledgments:123')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:124')} />
+          <td set:html={t(userLanguage, 'acknowledgments:125')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:126')} />
+          <td set:html={t(userLanguage, 'acknowledgments:127')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:128')} />
+          <td set:html={t(userLanguage, 'acknowledgments:129')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:130')} />
+          <td set:html={t(userLanguage, 'acknowledgments:131')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:132')} />
+          <td set:html={t(userLanguage, 'acknowledgments:133')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:134')} />
+          <td set:html={t(userLanguage, 'acknowledgments:135')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:136')} />
+          <td set:html={t(userLanguage, 'acknowledgments:137')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:138')} />
+          <td set:html={t(userLanguage, 'acknowledgments:139')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:140')} />
+          <td set:html={t(userLanguage, 'acknowledgments:141')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:142')} />
+          <td set:html={t(userLanguage, 'acknowledgments:143')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:144')} />
+          <td set:html={t(userLanguage, 'acknowledgments:145')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:146')} />
+          <td set:html={t(userLanguage, 'acknowledgments:147')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:148')} />
+          <td set:html={t(userLanguage, 'acknowledgments:149')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:150')} />
+          <td set:html={t(userLanguage, 'acknowledgments:151')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:152')} />
+          <td set:html={t(userLanguage, 'acknowledgments:153')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:154')} />
+          <td set:html={t(userLanguage, 'acknowledgments:155')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:156')} />
+          <td set:html={t(userLanguage, 'acknowledgments:157')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:158')} />
+          <td set:html={t(userLanguage, 'acknowledgments:159')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:160')} />
+          <td set:html={t(userLanguage, 'acknowledgments:161')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:162')} />
+          <td set:html={t(userLanguage, 'acknowledgments:163')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:164')} />
+          <td set:html={t(userLanguage, 'acknowledgments:165')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:166')} />
+          <td set:html={t(userLanguage, 'acknowledgments:167')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:168')} />
+          <td set:html={t(userLanguage, 'acknowledgments:169')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:170')} />
+          <td set:html={t(userLanguage, 'acknowledgments:171')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:172')} />
+          <td set:html={t(userLanguage, 'acknowledgments:173')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:174')} />
+          <td set:html={t(userLanguage, 'acknowledgments:175')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:176')} />
+          <td set:html={t(userLanguage, 'acknowledgments:177')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:178')} />
+          <td set:html={t(userLanguage, 'acknowledgments:179')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:180')} />
+          <td set:html={t(userLanguage, 'acknowledgments:181')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:182')} />
+          <td set:html={t(userLanguage, 'acknowledgments:183')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:184')} />
+          <td set:html={t(userLanguage, 'acknowledgments:185')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:186')} />
+          <td set:html={t(userLanguage, 'acknowledgments:187')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:188')} />
+          <td set:html={t(userLanguage, 'acknowledgments:189')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:190')} />
+          <td set:html={t(userLanguage, 'acknowledgments:191')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:192')} />
+          <td set:html={t(userLanguage, 'acknowledgments:193')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:194')} />
+          <td set:html={t(userLanguage, 'acknowledgments:195')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:196')} />
+          <td set:html={t(userLanguage, 'acknowledgments:197')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:198')} />
+          <td set:html={t(userLanguage, 'acknowledgments:199')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:200')} />
+          <td set:html={t(userLanguage, 'acknowledgments:201')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:202')} />
+          <td set:html={t(userLanguage, 'acknowledgments:203')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:204')} />
+          <td set:html={t(userLanguage, 'acknowledgments:205')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:206')} />
+          <td set:html={t(userLanguage, 'acknowledgments:207')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:208')} />
+          <td set:html={t(userLanguage, 'acknowledgments:209')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:210')} />
+          <td set:html={t(userLanguage, 'acknowledgments:211')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:212')} />
+          <td set:html={t(userLanguage, 'acknowledgments:213')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:214')} />
+          <td set:html={t(userLanguage, 'acknowledgments:215')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:216')} />
+          <td set:html={t(userLanguage, 'acknowledgments:217')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:218')} />
+          <td set:html={t(userLanguage, 'acknowledgments:219')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:220')} />
+          <td set:html={t(userLanguage, 'acknowledgments:221')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:222')} />
+          <td set:html={t(userLanguage, 'acknowledgments:223')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:224')} />
+          <td set:html={t(userLanguage, 'acknowledgments:225')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:226')} />
+          <td set:html={t(userLanguage, 'acknowledgments:227')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:228')} />
+          <td set:html={t(userLanguage, 'acknowledgments:229')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:230')} />
+          <td set:html={t(userLanguage, 'acknowledgments:231')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:232')} />
+          <td set:html={t(userLanguage, 'acknowledgments:233')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:234')} />
+          <td set:html={t(userLanguage, 'acknowledgments:235')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:236')} />
+          <td set:html={t(userLanguage, 'acknowledgments:237')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:238')} />
+          <td set:html={t(userLanguage, 'acknowledgments:239')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:240')} />
+          <td set:html={t(userLanguage, 'acknowledgments:241')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:242')} />
+          <td set:html={t(userLanguage, 'acknowledgments:243')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:244')} />
+          <td set:html={t(userLanguage, 'acknowledgments:245')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:246')} />
+          <td set:html={t(userLanguage, 'acknowledgments:247')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:248')} />
+          <td set:html={t(userLanguage, 'acknowledgments:249')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:250')} />
+          <td set:html={t(userLanguage, 'acknowledgments:251')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:252')} />
+          <td set:html={t(userLanguage, 'acknowledgments:253')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:254')} />
+          <td set:html={t(userLanguage, 'acknowledgments:255')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:256')} />
+          <td set:html={t(userLanguage, 'acknowledgments:257')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:258')} />
+          <td set:html={t(userLanguage, 'acknowledgments:259')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:260')} />
+          <td set:html={t(userLanguage, 'acknowledgments:261')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:262')} />
+          <td set:html={t(userLanguage, 'acknowledgments:263')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:264')} />
+          <td set:html={t(userLanguage, 'acknowledgments:265')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:266')} />
+          <td set:html={t(userLanguage, 'acknowledgments:267')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:268')} />
+          <td set:html={t(userLanguage, 'acknowledgments:269')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:270')} />
+          <td set:html={t(userLanguage, 'acknowledgments:271')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:272')} />
+          <td set:html={t(userLanguage, 'acknowledgments:273')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:274')} />
+          <td set:html={t(userLanguage, 'acknowledgments:275')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:276')} />
+          <td set:html={t(userLanguage, 'acknowledgments:277')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:278')} />
+          <td set:html={t(userLanguage, 'acknowledgments:279')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:280')} />
+          <td set:html={t(userLanguage, 'acknowledgments:281')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:282')} />
+          <td set:html={t(userLanguage, 'acknowledgments:283')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:284')} />
+          <td set:html={t(userLanguage, 'acknowledgments:285')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:286')} />
+          <td set:html={t(userLanguage, 'acknowledgments:287')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:288')} />
+          <td set:html={t(userLanguage, 'acknowledgments:289')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:290')} />
+          <td set:html={t(userLanguage, 'acknowledgments:291')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:292')} />
+          <td set:html={t(userLanguage, 'acknowledgments:293')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:294')} />
+          <td set:html={t(userLanguage, 'acknowledgments:295')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:296')} />
+          <td set:html={t(userLanguage, 'acknowledgments:297')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:298')} />
+          <td set:html={t(userLanguage, 'acknowledgments:299')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:300')} />
+          <td set:html={t(userLanguage, 'acknowledgments:301')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:302')} />
+          <td set:html={t(userLanguage, 'acknowledgments:303')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:304')} />
+          <td set:html={t(userLanguage, 'acknowledgments:305')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:306')} />
+          <td set:html={t(userLanguage, 'acknowledgments:307')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:308')} />
+          <td set:html={t(userLanguage, 'acknowledgments:309')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:310')} />
+          <td set:html={t(userLanguage, 'acknowledgments:311')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:312')} />
+          <td set:html={t(userLanguage, 'acknowledgments:313')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:314')} />
+          <td set:html={t(userLanguage, 'acknowledgments:315')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:316')} />
+          <td set:html={t(userLanguage, 'acknowledgments:317')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:318')} />
+          <td set:html={t(userLanguage, 'acknowledgments:319')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:320')} />
+          <td set:html={t(userLanguage, 'acknowledgments:321')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:322')} />
+          <td set:html={t(userLanguage, 'acknowledgments:323')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:324')} />
+          <td set:html={t(userLanguage, 'acknowledgments:325')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:326')} />
+          <td set:html={t(userLanguage, 'acknowledgments:327')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:328')} />
+          <td set:html={t(userLanguage, 'acknowledgments:329')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:330')} />
+          <td set:html={t(userLanguage, 'acknowledgments:331')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:332')} />
+          <td set:html={t(userLanguage, 'acknowledgments:333')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:334')} />
+          <td set:html={t(userLanguage, 'acknowledgments:335')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:336')} />
+          <td set:html={t(userLanguage, 'acknowledgments:337')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:338')} />
+          <td set:html={t(userLanguage, 'acknowledgments:339')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:340')} />
+          <td set:html={t(userLanguage, 'acknowledgments:341')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:342')} />
+          <td set:html={t(userLanguage, 'acknowledgments:343')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:344')} />
+          <td set:html={t(userLanguage, 'acknowledgments:345')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'acknowledgments:346')} />
+          <td set:html={t(userLanguage, 'acknowledgments:347')} />
+        </tr>
+      </table>
+    </article>
+  </main>
+</Layout>

@@ -4,6 +4,15 @@ table {
 
   tr {
     vertical-align: middle;
+
+    td {
+      padding: 0.6667em;
+      vertical-align: text-top;
+
+      &:first-child {
+        font-weight: bold;
+      }
+    }
   }
 
   caption {

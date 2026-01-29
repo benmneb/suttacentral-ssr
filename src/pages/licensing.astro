@@ -1,0 +1,57 @@
+---
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'interface:licensingTitle')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'licensing:1')} />
+      <p set:html={t(userLanguage, 'licensing:2')} />
+      <p set:html={t(userLanguage, 'licensing:3')} />
+      <p set:html={t(userLanguage, 'licensing:4')} />
+      <h3 set:html={t(userLanguage, 'licensing:5')} />
+      <p set:html={t(userLanguage, 'licensing:6')} />
+      <p set:html={t(userLanguage, 'licensing:7')} />
+      <p set:html={t(userLanguage, 'licensing:8')} />
+      <p set:html={t(userLanguage, 'licensing:9')} />
+      <ul>
+        <li set:html={t(userLanguage, 'licensing:10')} />
+        <li set:html={t(userLanguage, 'licensing:11')} />
+      </ul>
+      <p set:html={t(userLanguage, 'licensing:12')} />
+      <h3 set:html={t(userLanguage, 'licensing:13')} />
+      <p set:html={t(userLanguage, 'licensing:14')} />
+      <p set:html={t(userLanguage, 'licensing:15')} />
+      <ul>
+        <li>
+          <span set:html={t(userLanguage, 'licensing:16')} />
+          <a
+            href="https://creativecommons.org/licenses/by/3.0/us/"
+            rel="noopener noreferrer"
+          >
+            Creative Commons Attribution (CC BY 3.0 US)
+          </a>
+          <span set:html={t(userLanguage, 'licensing:18')} />
+          <ul>
+            <li set:html={t(userLanguage, 'licensing:19')} />
+            <li set:html={t(userLanguage, 'licensing:20')} />
+            <li set:html={t(userLanguage, 'licensing:21')} />
+          </ul>
+        </li>
+      </ul>
+      <h3 set:html={t(userLanguage, 'licensing:23')} />
+      <p set:html={t(userLanguage, 'licensing:24')} />
+      <p set:html={t(userLanguage, 'licensing:25')} />
+      <h3 set:html={t(userLanguage, 'licensing:26')} />
+      <p set:html={t(userLanguage, 'licensing:27')} />
+    </article>
+  </main>
+</Layout>
