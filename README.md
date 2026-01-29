@@ -58,4 +58,4 @@ All benchmarks measured via <https://pagespeed.web.dev> for desktop on 22/01/202
 
 Donated to the public domain via [CC0](https://creativecommons.org/publicdomain/zero/1.0/)
 
-Logo/favicon designed by [thesunshade](https://github.com/thesunshade/citation-helper)
+Favicon designed by [thesunshade](https://github.com/thesunshade/citation-helper)
