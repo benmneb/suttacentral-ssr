@@ -1,3 +1,4 @@
 {
-  "interface:articlePagination": "ලිපි පිටු අංකනය"
+  "interface:articlePagination": "ලිපි පිටු අංකනය",
+  "interface:noScript": "මෙම විශේෂාංගය භාවිතා කිරීමට කරුණාකර JavaScript සක්‍රීය කරන්න."
 }

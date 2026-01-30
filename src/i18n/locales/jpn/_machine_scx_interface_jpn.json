@@ -1,3 +1,4 @@
 {
-  "interface:articlePagination": "記事ページネーション"
+  "interface:articlePagination": "記事ページネーション",
+  "interface:noScript": "この機能を使用するにはJavaScriptを有効にしてください。"
 }

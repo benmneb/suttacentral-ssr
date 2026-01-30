@@ -1,0 +1,81 @@
+---
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'interface:donationsTitle')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'donations:1')} />
+      <p set:html={t(userLanguage, 'donations:2')} />
+      <a class="donate-now-btn" href="/donate-now">
+        {t(userLanguage, 'donations:donateNow')}
+      </a>
+      <h2 set:html={t(userLanguage, 'donations:4')} />
+      <ul>
+        <li set:html={t(userLanguage, 'donations:5')} />
+        <li set:html={t(userLanguage, 'donations:6')} />
+        <li set:html={t(userLanguage, 'donations:7')} />
+        <li set:html={t(userLanguage, 'donations:8')} />
+      </ul>
+      <h2 id="direct-deposit" set:html={t(userLanguage, 'donations:9')} />
+      <p set:html={t(userLanguage, 'donations:10')} />
+      <table class="account-data">
+        <tr>
+          <td set:html={t(userLanguage, 'donations:11')} />
+          <td set:html={t(userLanguage, 'donations:12')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'donations:13')} />
+          <td set:html={t(userLanguage, 'donations:14')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'donations:15')} />
+          <td set:html={t(userLanguage, 'donations:16')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'donations:17')} />
+          <td set:html={t(userLanguage, 'donations:18')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'donations:19')} />
+          <td set:html={t(userLanguage, 'donations:20')} />
+        </tr>
+        <tr>
+          <td set:html={t(userLanguage, 'donations:21')} />
+          <td set:html={t(userLanguage, 'donations:22')} />
+        </tr>
+      </table>
+      <p set:html={t(userLanguage, 'donations:23')} />
+      <h2 set:html={t(userLanguage, 'donations:24')} />
+      <p set:html={t(userLanguage, 'donations:25')} />
+      <p set:html={t(userLanguage, 'donations:26')} />
+      <p set:html={t(userLanguage, 'donations:27')} />
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .donate-now-btn {
+    text-decoration: none;
+    border-radius: var(--rounding);
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--background-color);
+    padding: 0.3rem 2rem;
+    align-self: start;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: var(--primary-color-alt);
+    }
+  }
+</style>

@@ -1,3 +1,4 @@
 {
-  "interface:articlePagination": "ဆောင်းပါး စာမျက်နှာခွဲခြားခြင်း"
+  "interface:articlePagination": "ဆောင်းပါး စာမျက်နှာခွဲခြားခြင်း",
+  "interface:noScript": "ဤအင်္ဂါရပ်ကို အသုံးပြုရန် JavaScript ကို ဖွင့်ပေးပါ။"
 }

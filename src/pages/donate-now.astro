@@ -1,0 +1,122 @@
+---
+import '~/assets/donate-now.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'donations:donateNow')
+const crumbsData = [{ title }]
+
+let sessionId: string | null = null
+let stripePublicKey: string | null = null
+let error = false
+
+if (Astro.request.method === 'POST') {
+  try {
+    const formData = await Astro.request.formData()
+    const currency = formData.get('currency') as string
+    const amount = Math.round(
+      parseFloat(formData.get('amount') as string) * 100
+    )
+    const frequency = formData.get('frequency') as string
+
+    const keyResponse = await fetch(
+      'https://suttacentral.net/api/stripe_public_key'
+    )
+    const keyData = await keyResponse.json()
+    stripePublicKey = keyData.public_key
+
+    const sessionRes = await fetch('https://suttacentral.net/api/donate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currency, amount, frequency }),
+    })
+    const session = await sessionRes.json()
+    sessionId = session.id
+  } catch (e) {
+    error = true
+  }
+}
+
+let currencies: { symbol: string }[] = [{ symbol: 'USD' }]
+let defaultCurrencyIndex = 0
+
+try {
+  const res = await fetch(
+    `https://suttacentral.net/api/currencies?language=${userLanguage}`
+  )
+  const data = await res.json()
+  currencies = data.currencies || currencies
+  defaultCurrencyIndex = data.default_currency_index || 0
+} catch (e) {
+  // Use fallback USD
+  console.error(e)
+}
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1>{title}</h1>
+      <noscript>
+        <p>{t(userLanguage, 'interface:noScript')}</p>
+        <p set:html={t(userLanguage, 'donations:noScriptAlt')} />
+      </noscript>
+      {error && <p set:html={t(userLanguage, 'donations:errorMessage')} />}
+      <form method="POST">
+        <fieldset disabled={!!sessionId}>
+          <select name="currency" required>
+            {
+              currencies.map(({ symbol }, i) => (
+                <option value={symbol} selected={i === defaultCurrencyIndex}>
+                  {symbol}
+                </option>
+              ))
+            }
+          </select>
+          <input
+            type="number"
+            name="amount"
+            step="0.01"
+            min="1"
+            maxlength="20"
+            required
+            placeholder={t(userLanguage, 'donations:amount')}
+          />
+        </fieldset>
+        <fieldset disabled={!!sessionId}>
+          <legend>{t(userLanguage, 'donations:chooseFrequency')}</legend>
+          <label>
+            <input type="radio" name="frequency" value="oneTime" checked />
+            {t(userLanguage, 'donations:oneTime')}
+          </label>
+          <label>
+            <input type="radio" name="frequency" value="monthly" />
+            {t(userLanguage, 'donations:monthly')}
+          </label>
+        </fieldset>
+        <button type="submit" disabled={!!sessionId}>
+          {t(userLanguage, 'donations:payWithCard')}
+        </button>
+      </form>
+      <aside>
+        <p set:html={`ℹ️ ${t(userLanguage, 'donations:storageDisclaimer')}`} />
+        <p>ℹ️ {t(userLanguage, 'donations:feeDisclaimer')}</p>
+      </aside>
+    </article>
+  </main>
+</Layout>
+
+{
+  sessionId && stripePublicKey && (
+    <Fragment>
+      <script is:inline src="https://js.stripe.com/v3/" />
+      <script is:inline define:vars={{ sessionId, stripePublicKey }}>
+        Stripe(stripePublicKey).redirectToCheckout({sessionId});
+      </script>
+    </Fragment>
+  )
+}

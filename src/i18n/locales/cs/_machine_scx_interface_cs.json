@@ -1,3 +1,4 @@
 {
-  "interface:articlePagination": "Stránkování článků"
+  "interface:articlePagination": "Stránkování článků",
+  "interface:noScript": "Pro použití této funkce prosím povolte JavaScript."
 }

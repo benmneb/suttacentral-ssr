@@ -1,3 +1,4 @@
 {
-  "interface:articlePagination": "Artikkelisivutus"
+  "interface:articlePagination": "Artikkelisivutus",
+  "interface:noScript": "Ota JavaScript käyttöön käyttääksesi tätä ominaisuutta."
 }

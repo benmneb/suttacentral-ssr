@@ -1,3 +1,4 @@
 {
-  "interface:articlePagination": "लेख पृष्ठांकन"
+  "interface:articlePagination": "लेख पृष्ठांकन",
+  "interface:noScript": "हे वैशिष्ट्य वापरण्यासाठी कृपया JavaScript सक्षम करा."
 }

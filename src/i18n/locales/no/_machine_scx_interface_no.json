@@ -1,3 +1,4 @@
 {
-  "interface:articlePagination": "Artikkelpaginering"
+  "interface:articlePagination": "Artikkelpaginering",
+  "interface:noScript": "Vennligst aktiver JavaScript for å bruke denne funksjonen."
 }

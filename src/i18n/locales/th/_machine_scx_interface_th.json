@@ -1,3 +1,4 @@
 {
-  "interface:articlePagination": "การแบ่งหน้าบทความ"
+  "interface:articlePagination": "การแบ่งหน้าบทความ",
+  "interface:noScript": "กรุณาเปิดใช้งาน JavaScript เพื่อใช้คุณสมบัตินี้"
 }

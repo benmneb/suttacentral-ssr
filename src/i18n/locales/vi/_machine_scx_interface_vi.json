@@ -1,3 +1,4 @@
 {
-  "interface:articlePagination": "Phân trang bài viết"
+  "interface:articlePagination": "Phân trang bài viết",
+  "interface:noScript": "Vui lòng bật JavaScript để sử dụng tính năng này."
 }

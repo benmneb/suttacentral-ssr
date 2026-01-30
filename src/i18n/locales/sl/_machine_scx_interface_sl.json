@@ -1,3 +1,4 @@
 {
-  "interface:articlePagination": "Številčenje strani člankov"
+  "interface:articlePagination": "Številčenje strani člankov",
+  "interface:noScript": "Za uporabo te funkcije omogočite JavaScript."
 }

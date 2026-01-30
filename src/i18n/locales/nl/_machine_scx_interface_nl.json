@@ -1,3 +1,4 @@
 {
-  "interface:articlePagination": "Artikelpaginering"
+  "interface:articlePagination": "Artikelpaginering",
+  "interface:noScript": "Schakel JavaScript in om deze functie te gebruiken."
 }

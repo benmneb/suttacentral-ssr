@@ -1,0 +1,38 @@
+form {
+  gap: 1rem;
+  margin: 2rem auto;
+  display: inline-flex;
+  flex-direction: column;
+
+  select,
+  input[type='number'],
+  button[type='submit'] {
+    font-size: large;
+  }
+
+  fieldset {
+    border: none;
+    margin: 0;
+    padding: 0.5rem 0;
+  }
+
+  button[type='submit'] {
+    border-radius: var(--rounding);
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--background-color);
+    padding: 0.3rem 2rem;
+    align-self: start;
+    cursor: pointer;
+
+    &:hover,
+    &:active,
+    &:focus,
+    &:disabled {
+      background-color: var(--primary-color-alt);
+    }
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+}

@@ -1,3 +1,4 @@
 {
-  "interface:articlePagination": "ಲೇಖನ ಪುಟಾಂಕಣ"
+  "interface:articlePagination": "ಲೇಖನ ಪುಟಾಂಕಣ",
+  "interface:noScript": "ಈ ವೈಶಿಷ್ಟ್ಯವನ್ನು ಬಳಸಲು ದಯವಿಟ್ಟು JavaScript ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ."
 }

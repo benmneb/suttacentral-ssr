@@ -1,3 +1,4 @@
 {
-  "interface:articlePagination": "Article pagination"
+  "interface:articlePagination": "Article pagination",
+  "interface:noScript": "Please enable Javascript to use this feature."
 }

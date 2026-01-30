@@ -1,0 +1,47 @@
+---
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'interface:donationSuccessTitle')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'donations:success1')} />
+      <p set:html={t(userLanguage, 'donations:success2')} />
+      <picture>
+        <source
+          srcset="https://suttacentral.net/img/static-pages/novice_reading.avif"
+          type="image/avif"
+        />
+        <img
+          alt={t(userLanguage, 'donations:successAltText')}
+          class="image-home-full"
+          src="https://suttacentral.net/img/static-pages/novice_reading.jpg"
+          width="100%"
+          height="auto"
+        />
+      </picture>
+      <p set:html={t(userLanguage, 'donations:success3')} />
+      <p set:html={t(userLanguage, 'donations:success4')} />
+      <blockquote>
+        <p>
+          <span set:html={t(userLanguage, 'donations:success5')} />
+          <br />
+          <span set:html={t(userLanguage, 'donations:success6')} />
+          <br />
+          <span set:html={t(userLanguage, 'donations:success7')} />
+          <br />
+          <span set:html={t(userLanguage, 'donations:success8')} />
+        </p>
+      </blockquote>
+      <p set:html={t(userLanguage, 'donations:success9')} />
+    </article>
+  </main>
+</Layout>
