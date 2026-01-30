@@ -2,3 +2,7 @@ dd .eti {
   color: var(--text-color-secondary);
   font-size: small;
 }
+
+dd .info {
+  display: none;
+}
