@@ -120,3 +120,10 @@ try {
     </Fragment>
   )
 }
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('article > form')
+  if (form) form.style.display = 'inline-flex'
+  const aside = document.querySelector<HTMLElement>('article > aside')
+  if (aside) aside.style.display = 'initial'
+</script>

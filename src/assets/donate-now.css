@@ -1,7 +1,11 @@
+article > form,
+article > aside {
+  display: none;
+}
+
 form {
   gap: 1rem;
   margin: 2rem auto;
-  display: inline-flex;
   flex-direction: column;
 
   select,
