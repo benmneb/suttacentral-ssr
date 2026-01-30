@@ -1,0 +1,330 @@
+---
+import '~/assets/map.css'
+import '~/assets/figure.css'
+import '~/assets/details.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'map:1')
+const crumbsData = [{ title }]
+
+let features: any[] = []
+let layerNames: string[] = []
+
+try {
+  const res = await fetch('https://suttacentral.net/api/map_data')
+  const data = await res.json()
+  const geoJSON = data[0]
+  features = geoJSON.features || []
+
+  // Extract unique layer names preserving order
+  const seenLayers = new Set<string>()
+  for (const f of features) {
+    if (f.properties?.layer && !seenLayers.has(f.properties.layer)) {
+      seenLayers.add(f.properties.layer)
+      layerNames.push(f.properties.layer)
+    }
+  }
+} catch (e) {
+  console.error('Failed to fetch map data:', e)
+}
+
+const layerTranslations: Record<string, string> = {
+  'Capital cities': 'map:5',
+  'Towns & villages': 'map:6',
+  'Temples & features': 'map:7',
+  Regions: 'map:8',
+  Mahajanapadas: 'map:9',
+  'Republics / countries': 'map:10',
+  'Mahāparinibbāna journey': 'map:11',
+  'Pārāyanavagga journey': 'map:12',
+  'Extraterrestrial Places': 'map:13',
+}
+
+function getLayerLabel(layerName: string): string {
+  const key = layerTranslations[layerName]
+  return key ? t(userLanguage, key) : layerName
+}
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1 set:html={t(userLanguage, 'map:1')} />
+
+      <section aria-labelledby="static-map-heading">
+        <h2 id="static-map-heading" set:html={t(userLanguage, 'map:2')} />
+        <figure>
+          <picture>
+            <source
+              srcset="https://suttacentral.net/img/static-pages/jambudipa_map.avif"
+              type="image/avif"
+            />
+            <img
+              alt="Hand-drawn map of Jambudipa"
+              class="image-home"
+              src="https://suttacentral.net/img/static-pages/jambudipa_map.jpg"
+              width="1476"
+            />
+          </picture>
+          <figcaption set:html={t(userLanguage, 'map:3')} />
+        </figure>
+      </section>
+
+      <section aria-labelledby="interactive-map-heading">
+        <h2 id="interactive-map-heading" set:html={t(userLanguage, 'map:4')} />
+        <noscript>
+          <p>{t(userLanguage, 'interface:noScript')}</p>
+        </noscript>
+        <div id="leaflet-map"></div>
+      </section>
+
+      <section aria-labelledby="places-index-heading">
+        <h2 id="places-index-heading">
+          {t(userLanguage, 'map:indexOfPlaces')}
+        </h2>
+        {
+          layerNames.map(layerName => {
+            const layerFeatures = features
+              .filter(f => f.properties?.layer === layerName)
+              .sort((a, b) =>
+                (a.properties?.name || '').localeCompare(
+                  b.properties?.name || ''
+                )
+              )
+
+            return (
+              <details>
+                <summary>{getLayerLabel(layerName)}</summary>
+                <ul>
+                  {layerFeatures.map(f => (
+                    <li>
+                      {f.properties?.define ? (
+                        <a href={`/define/${f.properties.define}`}>
+                          {f.properties.name}
+                        </a>
+                      ) : (
+                        f.properties?.name
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            )
+          })
+        }
+      </section>
+    </article>
+  </main>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-fullscreen@1.0.2/dist/leaflet.fullscreen.css"
+  />
+
+  <script>
+    const mapEl = document.getElementById('leaflet-map')
+    if (mapEl) mapEl.style.display = 'block'
+  </script>
+
+  <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  ></script>
+  <script
+    is:inline
+    src="https://unpkg.com/leaflet-fullscreen@1.0.2/dist/Leaflet.fullscreen.min.js"
+  ></script>
+
+  <script is:inline>
+    'use strict'
+
+    const MARKER_SCALE = 3
+    const DEFAULT_ZOOM = 13
+    const idToLayer = {}
+
+    // Initialize the map
+    const map = L.map('leaflet-map', {
+      scrollWheelZoom: false,
+    })
+
+    // Add tile layer
+    map.addLayer(
+      L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      })
+    )
+
+    // Add fullscreen control
+    map.addControl(
+      new L.Control.Fullscreen({
+        pseudoFullscreen: true,
+      })
+    )
+
+    // Ctrl+scroll zoom
+    const mapContainer = document.getElementById('leaflet-map')
+    mapContainer.addEventListener(
+      'wheel',
+      e => {
+        if (e.ctrlKey || e.metaKey) {
+          e.preventDefault()
+          const zoomDelta = e.deltaY > 0 ? -1 : 1
+          const currentZoom = map.getZoom()
+          const newZoom = Math.max(
+            map.getMinZoom(),
+            Math.min(map.getMaxZoom(), currentZoom + zoomDelta)
+          )
+          const rect = mapContainer.getBoundingClientRect()
+          const point = L.point(e.clientX - rect.left, e.clientY - rect.top)
+          map.setZoomAround(map.containerPointToLatLng(point), newZoom)
+        }
+      },
+      { passive: false }
+    )
+
+    // Escape to exit fullscreen
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Escape' && map.isFullscreen()) {
+        map.toggleFullscreen({ pseudoFullscreen: true })
+      }
+    })
+
+    // Get icon size based on zoom
+    function getIconZoom(zoom) {
+      const newIconSize = zoom * MARKER_SCALE
+      return {
+        iconSize: [newIconSize, newIconSize],
+        iconAnchor: [newIconSize / 2, newIconSize / 2],
+      }
+    }
+
+    // Layer colors for visual distinction
+    const layerColors = {
+      'Capital cities': '#b30309',
+      'Towns & villages': '#2c7bb6',
+      'Temples & features': '#d95f02',
+      Regions: '#7570b3',
+      Mahajanapadas: '#1b9e77',
+      'Republics / countries': '#e7298a',
+      'Mahāparinibbāna journey': '#66a61e',
+      'Pārāyanavagga journey': '#e6ab02',
+      'Extraterrestrial Places': '#a6761d',
+    }
+
+    // Build a layer for a specific layer name
+    function buildLayer(geoJSON, layerName) {
+      return L.geoJSON(geoJSON, {
+        filter: feature => feature.properties.layer === layerName,
+        style: feature => {
+          const baseStyle = feature.properties.style || {}
+          return Object.assign({}, baseStyle, {
+            color: layerColors[layerName] || '#666',
+          })
+        },
+        onEachFeature: (feature, layer) => {
+          idToLayer[feature.properties.id] = layer
+          layer
+            .on('mouseover mousemove', event => {
+              map.openPopup(
+                L.popup({
+                  autoPan: false,
+                  closeButton: false,
+                  closeOnEscapeKey: false,
+                  closeOnClick: false,
+                  className: 'moving-leaflet-popup',
+                })
+                  .setLatLng(event.latlng)
+                  .setContent(feature.properties.name)
+              )
+            })
+            .on('mouseout', () => {
+              map.closePopup()
+            })
+            .on('click', () => {
+              if (feature.properties.define) {
+                window.location.href = `/define/${feature.properties.define}`
+              }
+            })
+        },
+        pointToLayer: (feature, latlng) => {
+          const color = layerColors[layerName] || '#666'
+          return L.circleMarker(latlng, {
+            radius: 6,
+            fillColor: color,
+            color: '#fff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8,
+            alt: feature.properties.name,
+          })
+        },
+      })
+    }
+
+    // Make marker icons scale with zoom
+    function makeIconsZoom() {
+      map.on('zoomend', () => {
+        Object.values(idToLayer).forEach(layer => {
+          if (layer._icon) {
+            const icon = layer.options.icon
+            icon.options = Object.assign(
+              icon.options,
+              getIconZoom(map.getZoom())
+            )
+            layer.setIcon(icon)
+          }
+        })
+      })
+      map.fire('zoomend')
+    }
+
+    // Set the initial view to fit all features
+    function setView() {
+      const layers = Object.values(idToLayer)
+      if (layers.length > 0) {
+        map.fitBounds(L.featureGroup(layers).getBounds())
+      }
+    }
+
+    // Fetch map data and initialize layers
+    fetch('https://suttacentral.net/api/map_data')
+      .then(res => res.json())
+      .then(data => {
+        const geoJSON = data[0]
+        const features = geoJSON.features || []
+
+        // Extract unique layer names
+        const layerNames = []
+        const seenLayers = new Set()
+        for (const f of features) {
+          if (f.properties?.layer && !seenLayers.has(f.properties.layer)) {
+            seenLayers.add(f.properties.layer)
+            layerNames.push(f.properties.layer)
+          }
+        }
+
+        // Build layers and add to map with layer control
+        const overlays = {}
+        layerNames.forEach(layerName => {
+          const layer = buildLayer(geoJSON, layerName).addTo(map)
+          overlays[layerName] = layer
+        })
+
+        map.addControl(L.control.layers([], overlays))
+
+        setView()
+        makeIconsZoom()
+      })
+      .catch(err => {
+        console.error('Failed to load map data:', err)
+      })
+  </script>
+</Layout>

@@ -1,0 +1,28 @@
+/* Map page styles */
+
+article {
+  max-width: 100%;
+}
+
+/* Leaflet map container */
+#leaflet-map {
+  display: none;
+  height: 480px;
+  z-index: 0;
+  margin: 0;
+}
+
+.leaflet-pseudo-fullscreen {
+  z-index: 1000 !important;
+}
+
+/* Moving popup that follows cursor */
+.moving-leaflet-popup {
+  transition: none !important;
+  pointer-events: none;
+  font-family: var(--serif-font);
+}
+
+.moving-leaflet-popup .leaflet-popup-tip {
+  pointer-events: none;
+}
