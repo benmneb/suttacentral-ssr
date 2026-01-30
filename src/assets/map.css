@@ -1,15 +1,9 @@
-/* Map page styles */
-
 article {
   max-width: 100%;
 }
 
-/* Leaflet map container */
-#leaflet-map {
-  display: none;
-  height: 480px;
-  z-index: 0;
-  margin: 0;
+sc-map {
+  display: block;
 }
 
 .leaflet-pseudo-fullscreen {
@@ -21,8 +15,29 @@ article {
   transition: none !important;
   pointer-events: none;
   font-family: var(--serif-font);
+  font-size: larger;
 }
 
 .moving-leaflet-popup .leaflet-popup-tip {
   pointer-events: none;
+}
+
+/* Remove default divIcon styling */
+.leaflet-div-icon {
+  background: transparent;
+  border: none;
+}
+
+/* Active marker highlight */
+.marker-active svg path {
+  stroke: #b30309;
+  stroke-width: 6px;
+  paint-order: stroke;
+}
+
+section ul svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  margin-right: 0.2em;
 }
