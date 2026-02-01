@@ -1,0 +1,132 @@
+---
+import '~/assets/editions.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const editionsResponse = await fetch(
+  'https://suttacentral.net/api/publication/editions'
+)
+const editionsData = await editionsResponse.json()
+
+const webEditionIds = editionsData
+  .filter((e: { edition_id: string }) => e.edition_id.includes('-web_'))
+  .map((e: { edition_id: string }) => e.edition_id)
+
+const [webEditionInfoList, blurbs] = await Promise.all([
+  Promise.all(
+    webEditionIds.map((id: string) =>
+      fetch(`https://suttacentral.net/api/publication/edition/${id}`).then(r =>
+        r.json()
+      )
+    )
+  ),
+  fetch(
+    `https://suttacentral.net/api/publication/edition/blurbs/${userLanguage}`
+  ).then(r => r.json()),
+])
+
+// Sort by predefined order
+const order = [
+  'dn',
+  'mn',
+  'sn',
+  'an',
+  'dhp',
+  'ud',
+  'iti',
+  'snp',
+  'thag',
+  'thig',
+  'pli-tv-vi',
+]
+const editions = webEditionInfoList.sort(
+  (a: any, b: any) =>
+    order.indexOf(a.edition.text_uid) - order.indexOf(b.edition.text_uid)
+)
+
+const title = t(userLanguage, 'publication:editionsToolbarTitle')
+const crumbsData = [{ title }]
+
+function getBlurb(textUid: string): string | undefined {
+  return blurbs.find((x: { uid: string; blurb: string }) => x.uid === textUid)
+    ?.blurb
+}
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <hgroup>
+        <h1>{t(userLanguage, 'publication:suttaCentralEditions')}</h1>
+        <p>
+          {t(userLanguage, 'publication:editionsSubtitle')}
+        </p>
+      </hgroup>
+
+      <header>
+        <section>
+          <p>{t(userLanguage, 'publication:editions1')}</p>
+          <p>{t(userLanguage, 'publication:editions2')}</p>
+          <ul>
+            <li>{t(userLanguage, 'publication:orderPrint')}</li>
+            <li>
+              <a
+                href="https://github.com/suttacentral/editions/archive/refs/heads/main.zip"
+              >
+                {t(userLanguage, 'publication:download')}
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/suttacentral/editions">
+                {t(userLanguage, 'publication:githubSource')}
+              </a>
+            </li>
+          </ul>
+          <aside>
+            <strong>{t(userLanguage, 'publication:aboutTitle')}</strong>
+            <p>{t(userLanguage, 'publication:about1')}</p>
+            <p>{t(userLanguage, 'publication:about2')}</p>
+            <p>{t(userLanguage, 'publication:about3')}</p>
+            <p>{t(userLanguage, 'publication:about4')}</p>
+          </aside>
+        </section>
+        <img
+          src="https://suttacentral.net/img/publication-pages/editions-kn-wet.jpg"
+          alt="Stack of SuttaCentral edition books"
+        />
+      </header>
+
+      <section>
+        {
+          editions.map((edition: any) => (
+            <article>
+              <header>
+                <hgroup>
+                  <h2>{edition.publication.translation_title}</h2>
+                  <p>{edition.publication.translation_subtitle}</p>
+                </hgroup>
+                <p>{edition.publication.creator_name}</p>
+                <a
+                  href={`/edition/${edition.publication.text_uid}/${edition.publication.translation_lang_iso}/${edition.publication.creator_uid}`}
+                >
+                  Get this book
+                </a>
+              </header>
+              <figure>
+                <img
+                  src={`https://suttacentral.net/img/publication-pages/${edition.publication.text_uid}-book.jpg`}
+                  alt={`Cover art for ${edition.publication.translation_title}`}
+                />
+                <figcaption set:html={getBlurb(edition.publication.text_uid)} />
+              </figure>
+            </article>
+          ))
+        }
+      </section>
+    </article>
+  </main>
+</Layout>
