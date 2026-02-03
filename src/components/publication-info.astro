@@ -28,7 +28,7 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
         <h3 id="basic-translation-info" class="sr-only">
           {t(userLanguage, 'publication:basicTranslationDetails')}
         </h3>
-        <>
+        <dl>
           <dt>{t(userLanguage, 'publication:translationTitle')}</dt>
           <dd
             property="dc:title"
@@ -69,14 +69,14 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
               </>
             )
           }
-        </>
+        </dl>
       </section>
 
       <section aria-labelledby="language-info">
         <h3 id="language-info" class="sr-only">
           {t(userLanguage, 'publication:languageInformation')}
         </h3>
-        <>
+        <dl>
           <dt>{t(userLanguage, 'publication:rootTitle')}</dt>
           <dd
             property="dc:title"
@@ -104,7 +104,7 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
           <dd aria-label={t(userLanguage, 'publication:rootLanguage')}>
             {data.root_lang_name}
           </dd>
-        </>
+        </dl>
       </section>
 
       <section aria-labelledby="description-info">
