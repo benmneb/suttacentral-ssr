@@ -75,7 +75,7 @@ const jsonLd =
             </summary>
             <ol>
               {suttaplexData.slice(1).map(entry => (
-                <li>
+                <li class={entry.type === 'leaf' ? 'leaf-node' : ''}>
                   <TextMetaContent data={entry} userLanguage={userLanguage} />
                 </li>
               ))}
