@@ -8,10 +8,6 @@
   border-radius: var(--rounding);
 }
 
-ol li::marker {
-  color: var(--text-color-secondary);
-}
-
 table {
   margin: 2em auto 1em;
   border-collapse: collapse;

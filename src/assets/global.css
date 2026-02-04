@@ -115,3 +115,8 @@ body {
 [popover]#search-modal::backdrop {
   backdrop-filter: blur(3px);
 }
+
+ul li::marker,
+ol li::marker {
+  color: var(--text-color-secondary);
+}

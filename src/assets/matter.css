@@ -15,10 +15,6 @@ main {
     }
   }
 
-  ol li::marker {
-    color: var(--text-color-secondary);
-  }
-
   a[epub\:type='backlink'] {
     text-decoration: none;
   }
