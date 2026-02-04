@@ -1,0 +1,433 @@
+---
+import '~/assets/edition.css'
+import '~/assets/matter.css'
+import { collectionURL } from '~/constants/edition'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+import { toSentenceCase } from '~/utils/strings'
+
+const [uid, lang, author, matter] = Astro.params.book?.split('/') || []
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+if (!uid || !lang || !author) {
+  return Astro.redirect('/editions')
+}
+
+const editionsResponse = await fetch(
+  'https://suttacentral.net/api/publication/editions'
+)
+const allEditions: Array<{ edition_id: string; uid?: string }> =
+  await editionsResponse.json()
+
+const webEdition = allEditions.find(
+  e => e.edition_id.startsWith(`${uid}-`) && e.edition_id.includes('-web_')
+)
+
+if (!webEdition) {
+  Astro.response.status = 404
+  Astro.response.statusText = `Edition not found: ${uid}`
+  return Astro.rewrite('/404')
+}
+
+let title: string
+let crumbsData: Array<{ title: string; url?: string }>
+let translationTitle: string
+let matterContent: string | null = null
+
+if (matter) {
+  // Matter page, ie /edition/dn/en/sujato/foreword
+  const [menuDataRaw, editionData, editionFilesData] = await Promise.all([
+    fetch(`https://suttacentral.net/api/menu/${uid}`).then(r => r.json()),
+    fetch(
+      `https://suttacentral.net/api/publication/edition/${webEdition.edition_id}`
+    ).then(r => r.json()),
+    fetch(
+      `https://suttacentral.net/api/publication/edition/${webEdition.edition_id}/files`
+    ).then(r => r.json()),
+  ])
+
+  const menuData = menuDataRaw?.[0]
+  const publication = editionData?.publication
+
+  if (!publication) {
+    Astro.response.status = 404
+    Astro.response.statusText = `Publication data not found: ${uid}`
+    return Astro.rewrite('/404')
+  }
+
+  // Find matter content by matching matter param
+  let matterKey: string | null = null
+  for (const key in editionFilesData) {
+    const filename = key.split('/').pop()?.replace('.html', '') || ''
+    if (filename.toLowerCase() === matter.toLowerCase()) {
+      matterContent = editionFilesData[key]
+      matterKey = filename
+      break
+    }
+    if (filename.toLowerCase().replace(/_/g, '-') === matter.toLowerCase()) {
+      matterContent = editionFilesData[key]
+      matterKey = filename
+      break
+    }
+  }
+
+  if (!matterContent) {
+    Astro.response.status = 404
+    Astro.response.statusText = `Chapter not found: ${matter}`
+    return Astro.rewrite('/404')
+  }
+
+  translationTitle =
+    publication.translation_title ||
+    menuData?.translated_name?.replace('Collection', '').trim()
+
+  const chapterTitle = (matterKey || matter)
+    .replace(/_/g, ' ')
+    .replace(/^\w/, (c: string) => c.toUpperCase())
+
+  title = `${chapterTitle} — ${translationTitle}`
+  crumbsData = [
+    {
+      title: t(userLanguage, 'publication:editionsToolbarTitle'),
+      url: '/editions',
+    },
+    { title: translationTitle, url: `/edition/${uid}/${lang}/${author}` },
+    { title: chapterTitle },
+  ]
+
+  // Replace SC URLs with relative
+  matterContent = matterContent.replaceAll(
+    'href="https://suttacentral.net',
+    'href="'
+  )
+} else {
+  // === EDITION PAGE ===
+  var paperbackEdition = allEditions.find(
+    e =>
+      e.edition_id.startsWith(`${uid}-`) && e.edition_id.includes('-paperback_')
+  )
+
+  var [menuDataRaw, webEditionData, paperbackEditionData, creatorBioData] =
+    await Promise.all([
+      fetch(`https://suttacentral.net/api/menu/${uid}`).then(r => r.json()),
+      fetch(
+        `https://suttacentral.net/api/publication/edition/${webEdition.edition_id}`
+      ).then(r => r.json()),
+      paperbackEdition
+        ? fetch(
+            `https://suttacentral.net/api/publication/edition/${paperbackEdition.edition_id}`
+          ).then(r => r.json())
+        : Promise.resolve(null),
+      fetch('https://suttacentral.net/api/creator_bio').then(r => r.json()),
+    ])
+
+  var menuData = menuDataRaw?.[0]
+  if (!menuData) {
+    Astro.response.status = 404
+    Astro.response.statusText = `Collection menu not found: ${uid}`
+    return Astro.rewrite('/404')
+  }
+
+  var publication = webEditionData?.publication
+  var edition = webEditionData?.edition
+
+  if (!publication) {
+    Astro.response.status = 404
+    Astro.response.statusText = `Publication data not found: ${uid}`
+    return Astro.rewrite('/404')
+  }
+
+  type CreatorBio = { creator_uid: string; creator_biography: string }
+  var creator = creatorBioData?.find(
+    (c: CreatorBio) => c.creator_uid === publication.creator_uid
+  )
+
+  translationTitle =
+    publication.translation_title ||
+    menuData.translated_name?.replace('Collection', '').trim()
+  title = `${translationTitle} — ${publication.creator_name}`
+
+  crumbsData = [
+    {
+      title: t(userLanguage, 'publication:editionsToolbarTitle'),
+      url: '/editions',
+    },
+    { title: translationTitle },
+  ]
+
+  // Matter pages (frontmatter like foreword, introduction, etc.)
+  var matterPages =
+    edition?.frontmatter?.map((path: string) => {
+      const filename = path.split('/').pop()?.replace('.html', '') || ''
+      const label = filename
+        .replace(/_/g, ' ')
+        .replace(/^\w/, c => c.toUpperCase())
+      return { filename, label }
+    }) || []
+
+  var volumes = paperbackEditionData?.edition?.volumes || []
+
+  // Fetch GitHub directory contents for download URLs via SuttaCentral proxy
+  type GitHubFile = { name: string; download_url: string }
+  type GitHubDirResponse = { contents?: GitHubFile[] }
+  const repoUrl = encodeURIComponent('https://github.com/suttacentral/editions')
+
+  const fetchGitHubDir = (path: string) =>
+    fetch(
+      `https://suttacentral.net/api/github-directory?repo_url=${repoUrl}&path=${encodeURIComponent(path)}&branch=main`
+    )
+      .then(r => (r.ok ? r.json() : { contents: [] }))
+      .then((data: GitHubDirResponse) => data.contents || [])
+      .catch(() => []) as Promise<GitHubFile[]>
+
+  var [epubFiles, htmlFiles, paperbackFiles] = await Promise.all([
+    fetchGitHubDir(`${lang}/${author}/${uid}/epub`),
+    fetchGitHubDir(`${lang}/${author}/${uid}/html`),
+    fetchGitHubDir(`${lang}/${author}/${uid}/paperback`),
+  ])
+
+  // Find specific download files
+  var epubFile = epubFiles.find((f: GitHubFile) => f.name.endsWith('.epub'))
+  var htmlFile = htmlFiles.find((f: GitHubFile) => f.name.endsWith('.html'))
+  var pdfFile = paperbackFiles.find(
+    (f: GitHubFile) =>
+      f.name.endsWith('.zip') &&
+      !f.name.includes('-cover') &&
+      !f.name.includes('-tex')
+  )
+  var texFile = paperbackFiles.find((f: GitHubFile) =>
+    f.name.includes('-tex.zip')
+  )
+
+  // Extract most recent date from file names
+  const extractDate = (filename: string) => {
+    const match = filename.match(/(\d{4}-\d{2}-\d{2})/)
+    return match ? match[1] : null
+  }
+
+  const fileDates = [epubFile, htmlFile, pdfFile, texFile]
+    .filter((f): f is GitHubFile => f !== undefined)
+    .map(f => extractDate(f.name))
+    .filter((d): d is string => d !== null)
+    .sort()
+    .reverse()
+
+  var lastGeneratedDate = fileDates[0] || null
+}
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  {
+    matter ? (
+      <main>
+        <Fragment set:html={matterContent} />
+      </main>
+    ) : (
+      <main>
+        <article>
+          <hgroup>
+            <h1>{translationTitle}</h1>
+            {publication.translation_subtitle && (
+              <p>{publication.translation_subtitle}</p>
+            )}
+            <p>{publication.creator_name}</p>
+          </hgroup>
+
+          <section>
+            <header>
+              <h2>This translation</h2>
+              <p>{publication.text_description}</p>
+              {matterPages.length > 0 && (
+                <nav aria-label="Book sections">
+                  <p>Preview:</p>
+                  <ul>
+                    {matterPages.map(
+                      (m: { filename: string; label: string }) => (
+                        <li>
+                          <a
+                            href={`/edition/${uid}/${lang}/${author}/${m.filename}`}
+                          >
+                            {m.label}
+                          </a>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </nav>
+              )}
+            </header>
+            <figure>
+              <img
+                src={`https://suttacentral.net/img/publication-pages/${uid}-book.jpg`}
+                alt={`Cover art for ${translationTitle}`}
+              />
+              <figcaption>Paperback edition of {translationTitle}</figcaption>
+            </figure>
+          </section>
+
+          <section>
+            <table>
+              <caption>Get this book</caption>
+              <tbody>
+                {volumes.length > 0 &&
+                  volumes.map(
+                    (
+                      vol: {
+                        volume_number?: string
+                        volume_lulu_url: string
+                      },
+                      idx: number,
+                      arr: unknown[]
+                    ) => (
+                      <tr>
+                        {idx === 0 && (
+                          <td rowspan={arr.length}>
+                            <span>
+                              <span>Paperback</span>
+                            </span>
+                          </td>
+                        )}
+                        <td>
+                          <a href={vol.volume_lulu_url} rel="external">
+                            {vol.volume_number
+                              ? `Buy Volume ${vol.volume_number.slice(3)}`
+                              : 'Buy on Lulu'}
+                          </a>
+                        </td>
+                      </tr>
+                    )
+                  )}
+                {epubFile && (
+                  <tr>
+                    <td>EPUB</td>
+                    <td>
+                      <a href={epubFile.download_url} download>
+                        Download
+                      </a>
+                    </td>
+                  </tr>
+                )}
+                {pdfFile && (
+                  <tr>
+                    <td>PDF</td>
+                    <td>
+                      <a href={pdfFile.download_url} download>
+                        Download
+                      </a>
+                    </td>
+                  </tr>
+                )}
+                {htmlFile && (
+                  <tr>
+                    <td>
+                      <span>
+                        <span>HTML</span>
+                        <small>(right click → save)</small>
+                      </span>
+                    </td>
+                    <td>
+                      <a href={htmlFile.download_url} download>
+                        Download
+                      </a>
+                    </td>
+                  </tr>
+                )}
+                {texFile && (
+                  <tr>
+                    <td>LaTeX</td>
+                    <td>
+                      <a href={texFile.download_url} download>
+                        Download
+                      </a>
+                    </td>
+                  </tr>
+                )}
+                <tr>
+                  <td>Web</td>
+                  <td>
+                    <a href={collectionURL.get(uid) || `/${uid}`}>
+                      Read on SuttaCentral
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  {lastGeneratedDate && (
+                    <td colspan="2">Updated {lastGeneratedDate}</td>
+                  )}
+                </tr>
+              </tfoot>
+            </table>
+          </section>
+
+          <section>
+            <h2>The {menuData.root_name}</h2>
+            {menuData.blurb && <p set:html={menuData.blurb} />}
+          </section>
+
+          {creator && (
+            <section>
+              <h2>The Author</h2>
+              <figure>
+                <img
+                  src={`https://suttacentral.net/img/publication-pages/${creator.creator_uid}.jpg`}
+                  alt={`Photo of ${publication.creator_name}`}
+                />
+                <figcaption>
+                  Bhante {toSentenceCase(creator.creator_uid)}
+                </figcaption>
+              </figure>
+              <Fragment set:html={creator.creator_biography} />
+            </section>
+          )}
+
+          <section>
+            <h2>Publication details</h2>
+            <dl>
+              <dt>SuttaCentral publication number</dt>
+              <dd>{publication.publication_number}</dd>
+
+              <dt>Source</dt>
+              <dd>
+                <a href={publication.source_url}>{publication.source_url}</a>
+              </dd>
+
+              <dt>Text ID</dt>
+              <dd>{publication.text_uid?.toUpperCase()}</dd>
+
+              <dt>Publication status</dt>
+              <dd>{publication.publication_status}</dd>
+
+              <dt>License</dt>
+              <dd>
+                <p>{publication.license_statement}</p>
+                <a rel="license" href={publication.license_url}>
+                  <img
+                    src="https://suttacentral.net/img/publication-pages/cc-zero.svg"
+                    alt="CC0"
+                  />
+                  <span>
+                    <strong>
+                      {publication.license_type} (
+                      {publication.license_abbreviation})
+                    </strong>
+                    <br />
+                    To the extent possible under law, {
+                      publication.creator_name
+                    }{' '}
+                    has waived all copyright and related or neighboring rights
+                    to {translationTitle}. This work is published from
+                    Australia.
+                  </span>
+                </a>
+              </dd>
+            </dl>
+          </section>
+        </article>
+      </main>
+    )
+  }
+</Layout>

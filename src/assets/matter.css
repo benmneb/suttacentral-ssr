@@ -1,0 +1,35 @@
+main {
+  max-width: var(--content-max-width);
+
+  .byline {
+    font-style: italic;
+  }
+
+  dl {
+    dt {
+      color: var(--text-color-secondary);
+    }
+
+    dd {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  ol li::marker {
+    color: var(--text-color-secondary);
+  }
+
+  a[epub\:type='backlink'] {
+    text-decoration: none;
+  }
+
+  a[epub\:type='noteref'] {
+    vertical-align: super;
+    font-size: small;
+    text-decoration: none;
+  }
+
+  sup {
+    line-height: 0;
+  }
+}

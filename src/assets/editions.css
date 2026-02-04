@@ -118,6 +118,15 @@ body main:has(article) {
             &:hover {
               background-color: var(--primary-color-alt);
             }
+
+            &:visited {
+              background-color: var(--primary-color);
+              color: var(--background-color);
+
+              &:hover {
+                background-color: var(--primary-color-alt);
+              }
+            }
           }
         }
 
