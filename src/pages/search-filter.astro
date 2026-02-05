@@ -1,0 +1,22 @@
+---
+import SearchFilterContent from '~/components/search-filter-content.astro'
+import SearchForm from '~/components/search-form.astro'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'interface:searchFilter')
+const crumbsData = [{ title }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <SearchForm />
+      <SearchFilterContent />
+    </article>
+  </main>
+</Layout>

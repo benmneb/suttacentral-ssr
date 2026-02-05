@@ -1,6 +1,9 @@
 ---
+import SearchFilterContent from '~/components/search-filter-content.astro'
 import { t } from '~/i18n'
 import { getPreferredLanguage } from '~/utils/language'
+
+const pathname = Astro.url.pathname
 
 interface Props {
   matchPartial?: boolean
@@ -35,16 +38,47 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
       >🔎</button
     >
   </fieldset>
-  <label>
-    {t(userLanguage, 'search:matchPartial')}
-    <input
-      type="checkbox"
-      name="matchpartial"
-      value="true"
-      checked={matchPartial}
-    />
-  </label>
+  <fieldset>
+    <legend class="sr-only">{t(userLanguage, 'search:searchOptions')}</legend>
+    <label>
+      {t(userLanguage, 'search:matchPartial')}
+      <input
+        type="checkbox"
+        name="matchpartial"
+        value="true"
+        checked={matchPartial}
+      />
+    </label>
+    {
+      pathname !== '/search-filter' && (
+        <label>
+          <span class="sr-only">Filter</span>
+          <button
+            type="button"
+            popovertarget="search-filters-modal"
+            aria-label={t(userLanguage, 'interface:searchFilter')}
+          >
+            ⚙️
+          </button>
+        </label>
+      )
+    }
+    <!-- <label>
+      <span class="sr-only">Languages</span>
+      <button type="button" aria-label={t(userLanguage, 'languages TODO')}
+        >🌐
+      </button>
+    </label> -->
+  </fieldset>
 </form>
+
+{
+  pathname !== '/search-filter' && (
+    <section id="search-filters-modal" popover>
+      <SearchFilterContent />
+    </section>
+  )
+}
 
 <style>
   form {
@@ -53,7 +87,7 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
     flex-wrap: wrap;
     gap: 0.5rem;
 
-    fieldset {
+    fieldset:first-of-type {
       display: flex;
       flex: 1;
       margin: 0;
@@ -93,6 +127,25 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
       gap: 0.25rem;
       white-space: nowrap;
       cursor: pointer;
+    }
+
+    fieldset:nth-of-type(2) {
+      border: none;
+      padding: 0;
+      display: flex;
+      justify-content: end;
+      gap: 0.5rem;
+
+      button {
+        border: none;
+        background: none;
+        cursor: pointer;
+        border-radius: var(--rounding);
+
+        &:hover {
+          background-color: var(--primary-color);
+        }
+      }
     }
   }
 </style>

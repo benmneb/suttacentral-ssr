@@ -85,9 +85,9 @@ if (query) {
                     ))}
                     {hit.all_reference
                       ?.split(',')
+                      .filter(r => r.includes('pts-'))
                       .map((ref: string, idx: number, arr: string[]) => (
                         <span>
-                          {/* TODO: wtf is going on here */}
                           <a href={`${hit.url}/en/sujato#${ref.trim()}`}>
                             {ref}
                           </a>

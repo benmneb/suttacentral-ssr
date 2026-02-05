@@ -94,7 +94,8 @@ body {
     width: var(--width-minus-padding);
   }
 
-  &:has([popover]#search-modal:popover-open) {
+  &:has([popover]#search-modal:popover-open),
+  &:has([popover]#search-filters-modal:popover-open) {
     overflow: hidden;
   }
 }
@@ -112,11 +113,21 @@ body {
   overflow-y: scroll;
 }
 
-[popover]#search-modal::backdrop {
+[popover]#search-modal,
+[popover]#search-filters-modal {
+  max-width: calc(min(600px, 100vw) - 2rem);
+}
+
+[popover]#search-modal::backdrop,
+[popover]#search-filters-modal::backdrop {
   backdrop-filter: blur(3px);
 }
 
 ul li::marker,
 ol li::marker {
   color: var(--text-color-secondary);
+}
+
+input[type='checkbox'] {
+  accent-color: var(--primary-color);
 }

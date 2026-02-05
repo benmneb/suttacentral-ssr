@@ -1,0 +1,229 @@
+<fieldset>
+  <legend>Refine your search with filters</legend>
+  <table>
+    <tr>
+      <th colspan="2">PTS volumes/pages</th>
+    </tr>
+    <tr>
+      <td>Find texts using legacy PTS volume/page references.</td>
+      <td>
+        volpage:SN ii 4<br />
+        volpage:M II 246<br />
+        volpage:S.II,236
+      </td>
+    </tr>
+    <tr>
+      <th colspan="2">PTS volumes</th>
+    </tr>
+    <tr>
+      <td>Find texts using just the PTS volume.</td>
+      <td>
+        volpage:SN ii<br />
+        volpage:M II
+      </td>
+    </tr>
+    <tr>
+      <th colspan="2">References</th>
+    </tr>
+    <tr>
+      <td>Find texts using the reference number.</td>
+      <td>
+        ref:PTS 1.1<br />
+        ref:sya13.544<br />
+        ref:vri13.346
+      </td>
+    </tr>
+    <tr>
+      <th colspan="2">Authors</th>
+    </tr>
+    <tr>
+      <td>Filter results by <code>author</code>.</td>
+      <td
+        >by:sujato cat<br />
+        by:sujato Katze<br />
+        by:sujato Buddha OR Sāvatthī<br />
+        by:sujato Buddha AND Sāvatthī
+      </td>
+    </tr>
+
+    <tr>
+      <td>List all <code>authors</code>.</td>
+      <td>list authors</td>
+    </tr>
+
+    <tr>
+      <th colspan="2">Titles</th>
+    </tr>
+
+    <tr>
+      <td>List all related suttas by <code>title</code>.</td>
+      <td>title:intention</td>
+    </tr>
+
+    <tr>
+      <th colspan="2">Collections</th>
+    </tr>
+    <tr>
+      <td
+        >Search <code>in</code> a specific collection with SuttaCentral IDs.</td
+      >
+      <td
+        >in:dn cat<br />
+        in:an dog<br />
+        in:an Buddha OR Sāvatthī<br />
+        in:an Buddha AND Sāvatthī
+      </td>
+    </tr>
+
+    <tr>
+      <th colspan="2">Early Buddhist Texts</th>
+    </tr>
+    <tr>
+      <td
+        >Narrow search to “Early Buddhist Texts” (<code>ebt</code>). This is a
+        shortcut and not a definitive list of what is early. Equivalent to the
+        following.<br />
+        <code
+          >in:dn, da, mn, ma, sn, sa, sa-2, sa-3, an, ea, ea-2, kp, iti, ud,
+          snp, dhp, thig, thag, pli-tv, lzh-mg, lzh-mi, lzh-dg, lzh-sarv,
+          lzh-mu, lzh-ka, lzh-upp, san-mg, san-lo, up, ea-ot, d, sf</code
+        >
+      </td>
+      <td>in:ebt free</td>
+    </tr>
+
+    <tr>
+      <th colspan="2">Early Buddhist Suttas</th>
+    </tr>
+    <tr>
+      <td
+        >Narrow search to “Early Buddhist Suttas” (<code>ebs</code>). This is a
+        shortcut and not a definitive list of what is early. Equivalent to the
+        following.<br />
+        <code
+          >in:dn, da, mn, ma, sn, sa, sa-2, sa-3, an, ea, ea-2, kp, iti, ud,
+          snp, dhp, thig, thag, sf</code
+        >
+      </td>
+      <td>in:ebs free</td>
+    </tr>
+
+    <tr>
+      <th colspan="2">Early Buddhist Chinese Texts</th>
+    </tr>
+    <tr>
+      <td
+        >Narrow search to “Early Buddhist Chinese Texts” (<code>ebct</code>).
+        This is a shortcut and not a definitive list of what is early.
+        Equivalent to the following.<br />
+        <code
+          >in:da, ma, sa, sa-2, sa-3, ea, ea-2, lzh-mg, lzh-mi, lzh-dg,
+          lzh-sarv, lzh-mu, lzh-ka, lzh-upp, ea-ot, d</code
+        >
+      </td>
+      <td>in:ebct 四念处</td>
+    </tr>
+
+    <tr>
+      <th colspan="2">Operators</th>
+    </tr>
+
+    <tr>
+      <td>Return one <code>OR</code> the other.</td>
+      <td>greed OR desire</td>
+    </tr>
+
+    <tr>
+      <td>Return one <code>OR</code> the other, exclude anicca</td>
+      <td>greed OR desire NOT anicca</td>
+    </tr>
+
+    <tr>
+      <td>Return one <code>AND</code> the other.</td>
+      <td>greed AND desire</td>
+    </tr>
+
+    <tr>
+      <td>Return one <code>AND</code> the other, exclude anicca </td>
+      <td>greed AND desire NOT anicca</td>
+    </tr>
+
+    <tr>
+      <th colspan="2">Combine filters</th>
+    </tr>
+
+    <tr>
+      <td>Use multiple filters.</td>
+      <td colspan="2">
+        in:mn by:sujato Buddha OR Monastery<br />
+        in:mn by:sujato Buddha AND Monastery
+      </td>
+    </tr>
+
+    <tr>
+      <th colspan="2">Chinese</th>
+    </tr>
+
+    <tr>
+      <td>Use space-separated keywords.</td>
+      <td>
+        八正道 涅槃<br />
+        四神足 三摩地<br />
+        八正道 AND 涅槃
+      </td>
+    </tr>
+
+    <tr>
+      <td>Convert simplified/traditional Chinese characters.</td>
+      <td
+        >发勤 ，观心生灭<br />
+        發勤 ，觀心生滅</td
+      >
+    </tr>
+  </table>
+</fieldset>
+
+<style>
+  fieldset {
+    margin: 0;
+    padding: 0;
+    border-color: var(--background-color-secondary);
+    border-width: 1px;
+    border: none;
+  }
+
+  legend {
+    margin: auto;
+    color: var(--headings-color);
+  }
+
+  table {
+    width: 100%;
+    margin: 1rem 0 0 0;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: none;
+  }
+
+  th {
+    width: 100%;
+    padding: 1rem;
+    text-align: left;
+    color: var(--headings-color);
+    background-color: var(--background-color-secondary);
+  }
+
+  td {
+    padding: 1rem;
+    text-align: left;
+  }
+
+  td:first-child {
+    font-weight: 400;
+    color: var(--text-color-secondary);
+  }
+
+  td:nth-of-type(2) {
+    font-family: monospace;
+  }
+</style>

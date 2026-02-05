@@ -331,8 +331,7 @@
   }
 }
 
-input[type='range'],
-input[type='checkbox'] {
+input[type='range'] {
   accent-color: var(--primary-color);
 }
 
@@ -501,7 +500,7 @@ article {
     overflow-wrap: anywhere;
   }
 
-  button[popovertarget] {
+  button[popovertarget]:not(form button) {
     display: none;
     user-select: none;
     cursor: zoom-in;
