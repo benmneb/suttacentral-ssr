@@ -1,0 +1,47 @@
+---
+import '~/assets/numbering.css'
+import { t } from '~/i18n'
+import Layout from '~/layouts/Layout.astro'
+import { getPreferredLanguage } from '~/utils/language'
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const title = t(userLanguage, 'interface:offlineTitle')
+const crumbsData = [{ title: t(userLanguage, 'interface:offline') }]
+---
+
+<Layout title={title} breadcrumbs={crumbsData}>
+  <main>
+    <article>
+      <h1>{title}</h1>
+      <ul>
+        <li>
+          SuttaCentral
+          <ul>
+            <li>
+              <a href="https://suttacentral.net/offline">PWA </a>
+            </li>
+            <li>
+              <a href="/editions">
+                Editions (books, ePubs, PDFs, HTML files etc)
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          SuttaCentral Express
+          <ul>
+            <li>
+              <a
+                href="https://codeberg.org/benmneb/suttacentral-static/releases/latest"
+              >
+                Archives and native desktop apps
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </article>
+  </main>
+</Layout>
