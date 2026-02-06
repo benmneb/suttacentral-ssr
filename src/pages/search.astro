@@ -5,7 +5,7 @@ import TextMetaContent from '~/components/text-meta-content.astro'
 import { dictionaryTitles } from '~/constants/define'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
-import { getPreferredLanguage } from '~/utils/language'
+import { getLanguageName, getPreferredLanguage } from '~/utils/language'
 
 const { searchParams } = Astro.url
 const acceptLanguage = Astro.request.headers.get('accept-language')
@@ -62,134 +62,171 @@ if (query) {
       query && (
         <>
           <section>
-            {!!hits.length && (
+            {query === 'list authors' ? (
               <ol>
                 {hits.map(hit => (
                   <li>
                     <hgroup>
                       <h2>
-                        <a href={hit.url}>
-                          {hit.root_name}—{hit.name}
+                        <a
+                          href={`/search?query=${encodeURIComponent(`by:${hit.author_uid}`)}`}
+                        >
+                          {hit.author}
                         </a>
                       </h2>
                       <p>
-                        {[hit.acronym, hit.full_lang, hit.author]
-                          .filter(Boolean)
+                        {hit.param_lang
+                          .map(lang => getLanguageName(lang))
                           .join(' ∙ ')}
                       </p>
                     </hgroup>
-                    {hit.highlight.content.map((excerpt: string) => (
-                      <span
-                        set:html={excerpt.replaceAll('target="_blank"', '')}
-                      />
-                    ))}
-                    {hit.all_reference
-                      ?.split(',')
-                      .filter(r => r.includes('pts-'))
-                      .map((ref: string, idx: number, arr: string[]) => (
-                        <span>
-                          <a href={`${hit.url}/en/sujato#${ref.trim()}`}>
-                            {ref}
-                          </a>
-                          {idx !== arr.length - 1 && '∙ '}
-                        </span>
-                      ))}
                   </li>
                 ))}
               </ol>
-            )}
-            {(!!dictionaryHits.length || !!suttaplexHits.length) && (
-              <ol>
-                {!!dictionaryHits.length &&
-                  dictionaryHits.map(hit => (
-                    <li class="dictionary-hit">
-                      <p>
-                        <small>
-                          {dictionaryTitles?.[hit.highlight.detail[0].dictname]}
-                        </small>
-                      </p>
-                      <dl>
-                        <dt>{hit.highlight.detail[0].word}</dt>
-                        <dd />
-                        {hit.highlight.detail[0].grammar && (
-                          <dd>
-                            <em>{hit.highlight.detail[0].grammar}</em>
-                          </dd>
-                        )}
-                        {hit.highlight.detail[0].text && (
-                          <dd
-                            set:html={hit.highlight.detail[0].text.replaceAll(
-                              'https://suttacentral.net',
-                              ''
-                            )}
+            ) : (
+              <>
+                {!!hits.length && (
+                  <ol>
+                    {hits.map(hit => (
+                      <li>
+                        <hgroup>
+                          <h2>
+                            <a href={hit.url}>
+                              {hit.is_article
+                                ? hit.heading.title
+                                : [
+                                    hit.root_name,
+                                    hit.name || hit.heading?.title,
+                                  ]
+                                    .filter(Boolean)
+                                    .join('—')}
+                            </a>
+                          </h2>
+                          <p>
+                            {[hit.acronym, hit.full_lang, hit.author]
+                              .filter(Boolean)
+                              .join(' ∙ ')}
+                          </p>
+                        </hgroup>
+                        {hit.highlight.content.map((excerpt: string) => (
+                          <span
+                            set:html={excerpt.replaceAll('target="_blank"', '')}
                           />
-                        )}
-                        {hit.highlight.detail[0].definition && (
-                          <dd>
-                            {Array.isArray(
-                              hit.highlight.detail[0].definition
-                            ) ? (
-                              <ol>
-                                {hit.highlight.detail[0].definition.map(d => (
-                                  <li set:html={d} />
-                                ))}
-                              </ol>
-                            ) : (
-                              hit.highlight.detail[0].definition
+                        ))}
+                        {hit.all_reference
+                          ?.split(',')
+                          .filter(r => r.includes('pts-'))
+                          .map((ref: string, idx: number, arr: string[]) =>
+                            // prettier-ignore
+                            <span>
+                            <a href={`${hit.url}/en/sujato#${ref.trim()}`}>{ref}</a>
+                            {idx !== arr.length - 1 && '∙ '}
+                          </span>
+                          )}
+                      </li>
+                    ))}
+                  </ol>
+                )}
+                {(!!dictionaryHits.length || !!suttaplexHits.length) && (
+                  <ol>
+                    {!!dictionaryHits.length &&
+                      dictionaryHits.map(hit => (
+                        <li class="dictionary-hit">
+                          <p>
+                            <small>
+                              {
+                                dictionaryTitles?.[
+                                  hit.highlight.detail[0].dictname
+                                ]
+                              }
+                            </small>
+                          </p>
+                          <dl>
+                            <dt>{hit.highlight.detail[0].word}</dt>
+                            <dd />
+                            {hit.highlight.detail[0].grammar && (
+                              <dd>
+                                <em>{hit.highlight.detail[0].grammar}</em>
+                              </dd>
                             )}
-                          </dd>
-                        )}
-                        {hit.highlight.detail[0].xr && (
-                          <dd>
-                            <ul>
-                              {Array.isArray(hit.highlight.detail[0].xr) ? (
-                                <>
-                                  {hit.highlight.detail[0].xr.map(d => (
+                            {hit.highlight.detail[0].text && (
+                              <dd
+                                set:html={hit.highlight.detail[0].text.replaceAll(
+                                  'https://suttacentral.net',
+                                  ''
+                                )}
+                              />
+                            )}
+                            {hit.highlight.detail[0].definition && (
+                              <dd>
+                                {Array.isArray(
+                                  hit.highlight.detail[0].definition
+                                ) ? (
+                                  <ol>
+                                    {hit.highlight.detail[0].definition.map(
+                                      d => (
+                                        <li set:html={d} />
+                                      )
+                                    )}
+                                  </ol>
+                                ) : (
+                                  hit.highlight.detail[0].definition
+                                )}
+                              </dd>
+                            )}
+                            {hit.highlight.detail[0].xr && (
+                              <dd>
+                                <ul>
+                                  {Array.isArray(hit.highlight.detail[0].xr) ? (
+                                    <>
+                                      {hit.highlight.detail[0].xr.map(d => (
+                                        <li>
+                                          <a href={`/define/${d}`}>{d}</a>
+                                        </li>
+                                      ))}
+                                    </>
+                                  ) : (
                                     <li>
-                                      <a href={`/define/${d}`}>{d}</a>
+                                      <a
+                                        href={`/define/${hit.highlight.detail[0].xr}`}
+                                      >
+                                        {hit.highlight.detail[0].xr}
+                                      </a>
                                     </li>
-                                  ))}
-                                </>
-                              ) : (
-                                <li>
-                                  <a
-                                    href={`/define/${hit.highlight.detail[0].xr}`}
-                                  >
-                                    {hit.highlight.detail[0].xr}
-                                  </a>
-                                </li>
-                              )}
-                            </ul>
-                          </dd>
-                        )}
-                        {hit.highlight.detail[0].pronunciation && (
-                          <dd>
-                            <strong>
-                              {t(userLanguage, 'dictionary:pronunciation')}
-                            </strong>{' '}
-                            {hit.highlight.detail[0].pronunciation}
-                          </dd>
-                        )}
-                      </dl>
-                      <p>
-                        <a href={hit.url}>
-                          {t(userLanguage, 'search:all')}{' '}
-                          {t(userLanguage, 'search:dictionaries')} →
-                        </a>
-                      </p>
-                    </li>
-                  ))}
-                {!!suttaplexHits.length &&
-                  suttaplexHits.map(entry => (
-                    <li>
-                      <TextMetaContent
-                        data={entry}
-                        userLanguage={userLanguage}
-                        headingLevel={2}
-                      />
-                    </li>
-                  ))}
-              </ol>
+                                  )}
+                                </ul>
+                              </dd>
+                            )}
+                            {hit.highlight.detail[0].pronunciation && (
+                              <dd>
+                                <strong>
+                                  {t(userLanguage, 'dictionary:pronunciation')}
+                                </strong>{' '}
+                                {hit.highlight.detail[0].pronunciation}
+                              </dd>
+                            )}
+                          </dl>
+                          <p>
+                            <a href={hit.url}>
+                              {t(userLanguage, 'search:all')}{' '}
+                              {t(userLanguage, 'search:dictionaries')} →
+                            </a>
+                          </p>
+                        </li>
+                      ))}
+                    {!!suttaplexHits.length &&
+                      suttaplexHits.map(entry => (
+                        <li>
+                          <TextMetaContent
+                            data={entry}
+                            userLanguage={userLanguage}
+                            headingLevel={2}
+                          />
+                        </li>
+                      ))}
+                  </ol>
+                )}
+              </>
             )}
           </section>
           <nav aria-label={t(userLanguage, 'search:pagination')}>
