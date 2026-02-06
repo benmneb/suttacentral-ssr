@@ -1,0 +1,128 @@
+---
+import { getSearchLanguages } from '~/utils/cookies'
+import { getAllPreferredLanguages } from '~/utils/language'
+
+interface Language {
+  uid: string
+  name: string
+  iso_code: string
+  is_root: boolean
+  localized: boolean
+  localized_percent: number
+}
+
+const languageResponse = await fetch(
+  'https://suttacentral.net/api/languages?all=true'
+)
+const languageData: Language[] = await languageResponse.json()
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguages = getAllPreferredLanguages(acceptLanguage)
+
+const selectedLanguages = getSearchLanguages(Astro.cookies)
+
+const isChecked = (lang: Language) => {
+  if (selectedLanguages) {
+    return selectedLanguages.includes(lang.uid)
+  }
+  return lang.is_root || userLanguages.includes(lang.iso_code)
+}
+---
+
+<fieldset id="search-options">
+  <legend>Language options</legend>
+  <div class="sections-wrapper">
+    <section class="root-section">
+      <b>Root languages</b>
+      {
+        languageData
+          .filter(l => l.is_root)
+          .map(lang => (
+            <label>
+              <input
+                type="checkbox"
+                name="languages"
+                value={lang.uid}
+                checked={isChecked(lang)}
+              />
+              {lang.name}
+            </label>
+          ))
+      }
+    </section>
+    <section class="translation-section">
+      <b>Translation languages</b>
+      <div class="translation-grid">
+        {
+          languageData
+            .filter(l => !l.is_root)
+            .map(lang => (
+              <label>
+                <input
+                  type="checkbox"
+                  name="languages"
+                  value={lang.uid}
+                  checked={isChecked(lang)}
+                />
+                {lang.name}
+              </label>
+            ))
+        }
+      </div>
+    </section>
+  </div>
+</fieldset>
+
+<style>
+  fieldset {
+    border: 1px solid var(--bg-alt-4);
+    border-radius: var(--rounding);
+    padding: 1rem;
+
+    legend {
+      padding: 0 0.5rem;
+    }
+  }
+
+  .sections-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .root-section {
+    flex-shrink: 0;
+
+    b {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .translation-section {
+    flex: 1;
+    min-width: 200px;
+
+    b {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .translation-grid {
+    columns: 10rem auto;
+    column-gap: 1.5rem;
+  }
+
+  label {
+    display: block;
+    break-inside: avoid;
+    padding: 0.15rem 0;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:hover {
+      color: var(--primary-color);
+    }
+  }
+</style>

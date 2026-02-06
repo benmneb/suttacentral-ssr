@@ -1,3 +1,11 @@
+function normalizeLanguageCode(code: string): string {
+  // Handle SC data not matching ISO Accept-Language headers
+  if (code === 'nb' || code === 'nn') return 'no' // generic Norsk codes
+  if (code === 'ja') return 'jpn'
+  if (code === 'kn') return 'kan'
+  return code
+}
+
 export function getPreferredLanguage(
   acceptLanguageHeader: string | null
 ): string {
@@ -7,12 +15,21 @@ export function getPreferredLanguage(
   const primary = languages[0].split(';')[0].trim()
   const code = primary.split('-')[0]
 
-  // Handle SC data not matching ISO Accept-Language headers
-  if (code === 'nb' || code === 'nn') return 'no' // generic Norsk codes
-  if (code === 'ja') return 'jpn'
-  if (code === 'kn') return 'kan'
+  return normalizeLanguageCode(code)
+}
 
-  return code
+export function getAllPreferredLanguages(
+  acceptLanguageHeader: string | null
+): string[] {
+  if (!acceptLanguageHeader) return ['en']
+
+  const codes = acceptLanguageHeader.split(',').map(lang => {
+    const code = lang.split(';')[0].trim().split('-')[0]
+    return normalizeLanguageCode(code)
+  })
+
+  // Remove duplicates while preserving order
+  return [...new Set(codes)]
 }
 
 export function getPreferredLocale(

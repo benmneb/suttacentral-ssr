@@ -5,14 +5,45 @@ import TextMetaContent from '~/components/text-meta-content.astro'
 import { dictionaryTitles } from '~/constants/define'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
-import { getLanguageName, getPreferredLanguage } from '~/utils/language'
+import { getSearchLanguages, setSearchLanguages } from '~/utils/cookies'
+import {
+  getAllPreferredLanguages,
+  getPreferredLanguage,
+} from '~/utils/language'
 
 const { searchParams } = Astro.url
 const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = getPreferredLanguage(acceptLanguage)
 
+const langResponse = await fetch(
+  'https://suttacentral.net/api/languages?all=true'
+)
+const langData = await langResponse.json()
+
+const userLanguages = getAllPreferredLanguages(acceptLanguage)
+
+const defaultLanguages = langData
+  .filter(
+    (l: { is_root: boolean; iso_code: string }) =>
+      l.is_root || userLanguages.includes(l.iso_code)
+  )
+  .map((l: { uid: string }) => l.uid)
+  .sort()
+
 const query = searchParams.get('query')
 const matchPartial = searchParams.get('matchpartial') === 'true'
+const urlLanguages = searchParams.getAll('languages')
+
+// If languages in URL, save to session cookie and redirect to clean URL
+if (urlLanguages.length > 0) {
+  setSearchLanguages(Astro.cookies, urlLanguages)
+  const cleanUrl = new URL(Astro.url)
+  cleanUrl.searchParams.delete('languages')
+  return Astro.redirect(cleanUrl.toString())
+}
+
+const languageArray = getSearchLanguages(Astro.cookies) ?? defaultLanguages
+
 const limit = 50 // SC default (apparently limiting something other than the results count)
 const page = Number(searchParams.get('page')) || 1
 const offset = (page - 1) * limit
@@ -26,7 +57,12 @@ let searchData = { total: 0 }
 
 if (query) {
   const searchResponse = await fetch(
-    `https://suttacentral.net/api/search/instant?limit=${limit}&offset=${offset}&query=${query}&language=${userLanguage}&restrict=all&matchpartial=${matchPartial}`
+    `https://suttacentral.net/api/search/instant?limit=${limit}&offset=${offset}&query=${query}&langauge=${userLanguage}&restrict=all&matchpartial=${matchPartial}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(languageArray),
+    }
   )
   searchData = await searchResponse.json()
 
@@ -57,6 +93,7 @@ if (query) {
       matchPartial={matchPartial}
       query={query}
       autoFocus={!query || !searchData.total}
+      languageArray={languageArray}
     />
     {
       query && (
@@ -74,11 +111,12 @@ if (query) {
                           {hit.author}
                         </a>
                       </h2>
-                      <p>
+                      {/* <p>
                         {hit.param_lang
+                          .sort()
                           .map(lang => getLanguageName(lang))
                           .join(' ∙ ')}
-                      </p>
+                      </p> */}
                     </hgroup>
                   </li>
                 ))}
@@ -273,10 +311,12 @@ if (query) {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1rem;
+      margin-top: 1rem;
 
       ol {
         min-width: 0;
         overflow-wrap: break-word;
+        padding-left: 3ch;
 
         &:nth-of-type(2) {
           list-style-type: disc;

@@ -1,17 +1,23 @@
 ---
 import SearchFilterContent from '~/components/search-filter-content.astro'
+import SearchOptions from '~/components/search-options-content.astro'
 import { t } from '~/i18n'
 import { getPreferredLanguage } from '~/utils/language'
-
-const pathname = Astro.url.pathname
 
 interface Props {
   matchPartial?: boolean
   query?: string | null
   autoFocus?: boolean
+  languageArray?: string[]
 }
 
-const { matchPartial = false, query, autoFocus = true } = Astro.props
+const {
+  matchPartial = false,
+  query,
+  autoFocus = true,
+  languageArray,
+} = Astro.props
+const pathname = Astro.url.pathname
 
 const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = getPreferredLanguage(acceptLanguage)
@@ -39,36 +45,52 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
     >
   </fieldset>
   <fieldset>
-    <legend class="sr-only">{t(userLanguage, 'search:searchOptions')}</legend>
-    <label>
-      {t(userLanguage, 'search:matchPartial')}
-      <input
-        type="checkbox"
-        name="matchpartial"
-        value="true"
-        checked={matchPartial}
-      />
-    </label>
-    {
-      pathname !== '/search-filter' && (
-        <label>
-          <span class="sr-only">Filter</span>
-          <button
-            type="button"
-            popovertarget="search-filters-modal"
-            aria-label={t(userLanguage, 'interface:searchFilter')}
-          >
-            ⚙️
-          </button>
-        </label>
-      )
-    }
-    <!-- <label>
-      <span class="sr-only">Languages</span>
-      <button type="button" aria-label={t(userLanguage, 'languages TODO')}
-        >🌐
-      </button>
-    </label> -->
+    <div>
+      {
+        pathname !== '/search-options' && (
+          <>
+            <input type="checkbox" id="language-toggle" class="sr-only" />
+            <label for="language-toggle" class="language-toggle-label">
+              {!!languageArray?.length && (
+                <span>Searched in {languageArray.length} languages</span>
+              )}{' '}
+              🌐
+              <span class="sr-only">
+                {t(userLanguage, 'interface:languages')}
+              </span>
+            </label>
+          </>
+        )
+      }
+    </div>
+    <div>
+      <legend class="sr-only">{t(userLanguage, 'search:searchOptions')}</legend>
+      <label>
+        {t(userLanguage, 'search:matchPartial')}
+        <input
+          type="checkbox"
+          name="matchpartial"
+          value="true"
+          checked={matchPartial}
+        />
+      </label>
+      {
+        pathname !== '/search-filter' && (
+          <label>
+            <span class="sr-only">Filter</span>
+            <button
+              type="button"
+              popovertarget="search-filters-modal"
+              aria-label={t(userLanguage, 'interface:searchFilter')}
+            >
+              ℹ️
+            </button>
+          </label>
+        )
+      }
+    </div>
+    <SearchOptions />
+    <slot />
   </fieldset>
 </form>
 
@@ -84,7 +106,6 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
   form {
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
     gap: 0.5rem;
 
     fieldset:first-of-type {
@@ -133,18 +154,45 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
       border: none;
       padding: 0;
       display: flex;
-      justify-content: end;
+      flex-wrap: wrap;
+      justify-content: space-between;
       gap: 0.5rem;
+      color: var(--text-color-secondary);
 
       button {
         border: none;
         background: none;
         cursor: pointer;
         border-radius: var(--rounding);
+        font-size: inherit;
+        padding: 0 0.2rem;
 
         &:hover {
           background-color: var(--primary-color);
         }
+      }
+
+      .language-toggle-label {
+        cursor: pointer;
+        /* border-radius: var(--rounding); */
+        /* padding: 0 0.2rem; */
+
+        &:hover {
+          background-color: var(--primary-color);
+          color: var(--background-color);
+        }
+      }
+
+      > :global(fieldset) {
+        width: 100%;
+      }
+
+      &:has(#language-toggle) > :global(fieldset#search-options) {
+        display: none;
+      }
+
+      &:has(#language-toggle:checked) > :global(fieldset#search-options) {
+        display: block;
       }
     }
   }
