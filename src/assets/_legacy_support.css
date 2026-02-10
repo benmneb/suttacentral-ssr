@@ -1,0 +1,22 @@
+/* For all the OG's still using browsers that do not support HTML popovers. */
+/* (...just hide the content) */
+
+button[popovertarget] {
+  display: none;
+}
+
+@supports selector(:popover-open) {
+  button[popovertarget] {
+    display: revert;
+  }
+}
+
+[popover] {
+  display: none;
+}
+
+@supports selector(:popover-open) {
+  [popover] {
+    display: revert;
+  }
+}
