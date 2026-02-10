@@ -46,7 +46,13 @@ function printIconsHTML(translation) {
 <article>
   <hgroup>
     <Heading level={headingLevel}>
-      {[entry.original_title, entry.translated_title].filter(Boolean).join('—')}
+      {
+        entry.original_title &&
+        entry.translated_title &&
+        entry.original_title !== entry.translated_title
+          ? `${entry.original_title}—${entry.translated_title}`
+          : entry.translated_title || entry.original_title
+      }
     </Heading>
     {!!entry.acronym && <p>{entry.acronym}</p>}
   </hgroup>
