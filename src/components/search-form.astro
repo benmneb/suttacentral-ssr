@@ -209,4 +209,17 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
       popover.togglePopover()
     }
   })
+
+  // For the Windows 7 + Chrome 109 clan
+  if (!('popover' in HTMLElement.prototype)) {
+    const searchButton = document.querySelector(
+      'button[popovertarget="search-modal"]'
+    )
+    if (searchButton) {
+      searchButton.addEventListener('click', event => {
+        event.preventDefault()
+        window.location.href = '/search'
+      })
+    }
+  }
 </script>
