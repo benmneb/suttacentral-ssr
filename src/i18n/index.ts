@@ -6,7 +6,7 @@
  *
  * Translation file names are the same as `suttacentral` repo,
  * even when the files have come from `sc-data` repo,
- * I've renamed them for consistency and minimalism.
+ * I've renamed them for consistency and minimalism
  *
  * Translation files specific to this project are prefixed with `_scx_`.
  * Translations not translated by humans are prefixed with `_machine_`.
