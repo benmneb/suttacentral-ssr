@@ -210,3 +210,10 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
     }
   })
 </script>
+
+<script>
+  // For legacy "support"
+  if (!('popover' in HTMLElement.prototype)) {
+    document.getElementById('search-input')?.removeAttribute('autofocus')
+  }
+</script>
