@@ -57,7 +57,7 @@ let searchData = { total: 0 }
 
 if (query) {
   const searchResponse = await fetch(
-    `https://suttacentral.net/api/search/instant?limit=${limit}&offset=${offset}&query=${query}&langauge=${userLanguage}&restrict=all&matchpartial=${matchPartial}`,
+    `https://suttacentral.net/api/search/instant?limit=${limit}&offset=${offset}&query=${query}&language=${userLanguage}&restrict=all&matchpartial=${matchPartial}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
