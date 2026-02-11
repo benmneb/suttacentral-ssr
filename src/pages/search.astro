@@ -132,12 +132,13 @@ if (query) {
                             <a href={hit.url}>
                               {hit.is_article
                                 ? hit.heading.title
-                                : [
-                                    hit.root_name,
-                                    hit.name || hit.heading?.title,
-                                  ]
-                                    .filter(Boolean)
-                                    .join('—')}
+                                : (hit.name || hit.heading?.title) &&
+                                    hit.root_name !==
+                                      (hit.name || hit.heading?.title)
+                                  ? `${hit.root_name}—${hit.name || hit.heading?.title}`
+                                  : hit.name ||
+                                    hit.heading?.title ||
+                                    hit.root_name}
                             </a>
                           </h2>
                           <p>
