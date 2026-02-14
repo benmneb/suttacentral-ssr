@@ -1,0 +1,119 @@
+---
+import { t } from '~/i18n'
+import { getPreferredLanguage } from '~/utils/language'
+
+interface Props {
+  category: 'guides' | 'essays' | 'misc' | 'meta' | 'tech' | 'indexes'
+  currentHref?: string
+}
+
+const { category, currentHref } = Astro.props
+
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const data = {
+  guides: [
+    { href: '/general-guide-sujato', label: 'interface:general' },
+    { href: '/dn-guide-sujato', label: 'interface:long' },
+    { href: '/mn-guide-sujato', label: 'interface:middle' },
+    { href: '/sn-guide-sujato', label: 'interface:linked' },
+    { href: '/an-guide-sujato', label: 'interface:numbered' },
+  ],
+  essays: [
+    { href: '/discourses-guide-sujato', label: 'interface:discourses' },
+    { href: '/vinaya-guide-brahmali', label: 'interface:vinaya' },
+    { href: '/abhidhamma-guide-sujato', label: 'interface:abhidhamma' },
+    { href: '/pali-tipitaka', label: 'interface:overview' },
+  ],
+  misc: [
+    { href: '/introduction', label: 'interface:introduction' },
+    // { href: '/donations', label: 'interface:donations' },
+    { href: '/map', label: 'interface:map' },
+    { href: '/offline', label: 'interface:offline' },
+  ],
+  meta: [
+    { href: '/acknowledgments', label: 'interface:acknowledgments' },
+    { href: '/licensing', label: 'interface:licensing' },
+    { href: '/about', label: 'interface:about' },
+  ],
+  tech: [
+    { href: '/languages', label: 'interface:languages' },
+    { href: '/numbering', label: 'interface:numbering' },
+    { href: '/methodology', label: 'interface:methodology' },
+  ],
+  indexes: [
+    { href: '/subjects', label: 'interface:subjects' },
+    { href: '/similes', label: 'interface:similes' },
+    { href: '/names', label: 'interface:names' },
+    { href: '/terminology', label: 'interface:terminology' },
+  ],
+}
+
+const currentPath = currentHref ?? Astro.url.pathname.replace(/\/$/, '')
+---
+
+<aside>
+  <nav>
+    <ol>
+      {
+        data[category].map(({ href, label }) => (
+          <li>
+            {currentPath === href ? (
+              <span aria-current="page">{t(userLanguage, label)}</span>
+            ) : (
+              <a href={href}>{t(userLanguage, label)}</a>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+  </nav>
+</aside>
+
+<style>
+  /* Keep these styles inline so they're scoped */
+  aside {
+    display: flex;
+    justify-content: start;
+    pointer-events: none;
+    margin-bottom: 2rem;
+
+    nav {
+      padding: 0;
+      border: none;
+      margin: 0;
+      background-color: var(--bg-alt-1);
+      border-top-right-radius: var(--rounding);
+      border-bottom-right-radius: var(--rounding);
+      pointer-events: auto;
+
+      ol {
+        list-style: none;
+        margin: 0;
+        padding: 0 0.5rem;
+        display: flex;
+
+        li {
+          display: flex;
+          position: relative;
+          color: var(--fg-alt-3);
+
+          &:not(li:last-of-type) {
+            margin-right: 0.5rem;
+
+            &::after {
+              content: '∙';
+              margin-left: 0.5rem;
+            }
+          }
+
+          a {
+            text-decoration: none;
+            display: flex;
+          }
+        }
+      }
+    }
+  }
+</style>

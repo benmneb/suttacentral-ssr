@@ -1,5 +1,6 @@
 ---
 import PieChart from '~/components/pie-chart.astro'
+import RelatedPages from '~/components/related-pages.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getPreferredLanguage } from '~/utils/language'
@@ -69,6 +70,7 @@ const crumbsData = [
 ---
 
 <Layout title={title} breadcrumbs={crumbsData}>
+  <RelatedPages category="tech" currentHref="/languages" />
   <main>
     <article>
       <h1>{name}</h1>

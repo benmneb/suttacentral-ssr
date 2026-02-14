@@ -1,4 +1,9 @@
 main {
+  article ul {
+    padding: 0;
+    margin: 0;
+  }
+
   li:has(h1) {
     list-style: none;
   }

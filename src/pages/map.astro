@@ -2,6 +2,7 @@
 import '~/assets/map.css'
 import '~/assets/figure.css'
 import '~/assets/details.css'
+import RelatedPages from '~/components/related-pages.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getPreferredLanguage } from '~/utils/language'
@@ -53,6 +54,7 @@ function getLayerLabel(layerName: string): string {
 ---
 
 <Layout title={title} breadcrumbs={crumbsData}>
+  <RelatedPages category="misc" />
   <main>
     <article>
       <h1 set:html={t(userLanguage, 'map:1')} />

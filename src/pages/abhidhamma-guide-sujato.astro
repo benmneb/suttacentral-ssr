@@ -1,5 +1,6 @@
 ---
 import '~/assets/guides.css'
+import RelatedPages from '~/components/related-pages.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getPreferredLanguage } from '~/utils/language'
@@ -12,6 +13,7 @@ const crumbsData = [{ title }]
 ---
 
 <Layout title={title} breadcrumbs={crumbsData}>
+  <RelatedPages category="essays" />
   <main>
     <article>
       <h1 set:html={t(userLanguage, 'abhidhamma:1')} />
