@@ -3,7 +3,7 @@ import '~/assets/details.css'
 import '~/assets/text-meta-content.css'
 import Heading, { type HeadingProps } from '~/components/heading.astro'
 import { t } from '~/i18n'
-import { toSentenceCase } from '~/utils/strings'
+import { toSentenceCase, uidToAcronym } from '~/utils/strings'
 import ParallelsDetails from './parallels-details.astro'
 
 interface Props {
@@ -13,6 +13,8 @@ interface Props {
   translations?: any
   parallelsOpen?: boolean
   headingLevel?: HeadingProps['level']
+  isIndividualRangeSutta?: boolean
+  inRangeSuttaId?: string
 }
 
 const {
@@ -20,6 +22,8 @@ const {
   userLanguage = 'en',
   parallelsOpen,
   headingLevel,
+  isIndividualRangeSutta = false,
+  inRangeSuttaId,
 } = Astro.props
 
 const translations = entry.translations.filter(t => t.lang === userLanguage)
@@ -30,6 +34,12 @@ const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
 
 const alignedHTML = `<span title="${t(userLanguage, 'suttaplex:aligned')}: ${t(userLanguage, 'suttaplex:alignedDescription')}" role="icon">🔗</span>`
 const annotatedHTML = `<span title="${t(userLanguage, 'suttaplex:annotated')}: ${t(userLanguage, 'suttaplex:annotatedDescription')}" role="icon">📝</span>`
+
+function translationHref(translation) {
+  const uid =
+    isIndividualRangeSutta && translation.segmented ? inRangeSuttaId : entry.uid
+  return `/${uid}/${translation.lang}/${translation.author_uid}`
+}
 
 function printIconsHTML(translation) {
   const icons = [
@@ -47,14 +57,18 @@ function printIconsHTML(translation) {
   <hgroup>
     <Heading level={headingLevel}>
       {
-        entry.original_title &&
-        entry.translated_title &&
-        entry.original_title !== entry.translated_title
-          ? `${entry.original_title}—${entry.translated_title}`
-          : entry.translated_title || entry.original_title
+        isIndividualRangeSutta
+          ? inRangeSuttaId?.startsWith('an')
+            ? uidToAcronym(inRangeSuttaId!)
+            : entry.title || uidToAcronym(inRangeSuttaId!)
+          : entry.original_title &&
+              entry.translated_title &&
+              entry.original_title !== entry.translated_title
+            ? `${entry.original_title}—${entry.translated_title}`
+            : entry.translated_title || entry.original_title
       }
     </Heading>
-    {!!entry.acronym && <p>{entry.acronym}</p>}
+    {!!entry.acronym && !isIndividualRangeSutta && <p>{entry.acronym}</p>}
   </hgroup>
   {!!entry.blurb && <p set:html={entry.blurb} />}
   <section>
@@ -70,7 +84,7 @@ function printIconsHTML(translation) {
             <ul>
               {translations.map(t => (
                 <li
-                  set:html={`${t.lang_name}—<a href="/${entry.uid}/${t.lang}/${t.author_uid}">${(t.author || t.author_uid)?.trim()}</a> ${t.publication_date ? `(${t.publication_date})` : ''}${printIconsHTML(t)}`}
+                  set:html={`${t.lang_name}—<a href="${translationHref(t)}">${(t.author || t.author_uid)?.trim()}</a> ${t.publication_date ? `(${t.publication_date})` : ''}${printIconsHTML(t)}`}
                 />
               ))}
             </ul>
@@ -84,7 +98,7 @@ function printIconsHTML(translation) {
             <ul>
               {rootTexts.map(t => (
                 <li
-                  set:html={`${t.lang_name}—<a href="/${entry.uid}/${t.lang}/${t.author_uid}">${(t.author || t.author_uid)?.trim()}</a> ${t.publication_date ? `(${t.publication_date})` : ''}`}
+                  set:html={`${t.lang_name}—<a href="${translationHref(t)}">${(t.author || t.author_uid)?.trim()}</a> ${t.publication_date ? `(${t.publication_date})` : ''}`}
                 />
               ))}
             </ul>
@@ -101,7 +115,7 @@ function printIconsHTML(translation) {
                 .toSorted((a, b) => a.lang - b.lang)
                 .map(t => (
                   <li
-                    set:html={`${t.lang_name}—<a href="/${entry.uid}/${t.lang}/${t.author_uid}">${t.author}</a> ${t.publication_date ? `(${t.publication_date})` : ''}${printIconsHTML(t)}`}
+                    set:html={`${t.lang_name}—<a href="${translationHref(t)}">${t.author}</a> ${t.publication_date ? `(${t.publication_date})` : ''}${printIconsHTML(t)}`}
                   />
                 ))}
             </ul>
@@ -110,11 +124,13 @@ function printIconsHTML(translation) {
       )
     }
     {
-      entry.type === 'leaf' && (
+      (entry.type === 'leaf' || entry.uid.startsWith('pli-tv-')) && (
         <ParallelsDetails
           data={entry}
-          parallelsOpen={parallelsOpen}
+          parallelsOpen={parallelsOpen || !entry.translations.length}
           userLanguage={userLanguage}
+          isIndividualRangeSutta={isIndividualRangeSutta}
+          inRangeSuttaId={inRangeSuttaId}
         />
       )
     }

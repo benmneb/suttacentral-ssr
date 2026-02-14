@@ -4,6 +4,7 @@ import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { generateChapterJsonLd, generateTextMetaJsonLd } from '~/utils/json-ld'
 import { getPreferredLanguage } from '~/utils/language'
+import { uidToAcronym } from '~/utils/strings'
 
 const { chapter } = Astro.params
 const acceptLanguage = Astro.request.headers.get('accept-language')
@@ -12,22 +13,40 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
 const suttaplexResponse = await fetch(
   `https://suttacentral.net/api/suttaplex/${chapter}?language=${userLanguage}`
 )
-const suttaplexData = await suttaplexResponse.json()
+let suttaplexData = await suttaplexResponse.json()
+let isIndividualRangeSutta = false
 
 if (!suttaplexData?.[0]?.uid) {
-  Astro.response.status = 404
-  Astro.response.statusText = 'Suttaplex UID not found'
-  return Astro.rewrite('/404')
+  const rangeSuttaplexResponse = await fetch(
+    `https://suttacentral.net/api/range_suttaplex/${chapter}?language=${userLanguage}`
+  )
+  const rangeSuttaplexData = await rangeSuttaplexResponse.json()
+  if (rangeSuttaplexData?.[0]?.uid) {
+    suttaplexData = rangeSuttaplexData
+    isIndividualRangeSutta = true
+  } else {
+    Astro.response.status = 404
+    Astro.response.statusText = 'Suttaplex UID not found'
+    return Astro.rewrite('/404')
+  }
 }
 
+const crumbsUid = isIndividualRangeSutta ? suttaplexData[0].uid : chapter
 const crumbsResponse = await fetch(
-  `https://suttacentral.net/api/navigation_data/${chapter}?language=${userLanguage}`
+  `https://suttacentral.net/api/navigation_data/${crumbsUid}?language=${userLanguage}`
 )
 const crumbsData = await crumbsResponse.json()
 const modifiedCrumbsData = [
   ...crumbsData,
   ...(suttaplexData.length === 1
-    ? [{ uid: chapter, title: suttaplexData[0].acronym }]
+    ? [
+        {
+          uid: chapter,
+          title: isIndividualRangeSutta
+            ? uidToAcronym(chapter!)
+            : suttaplexData[0].acronym,
+        },
+      ]
     : []),
 ]
 
@@ -41,11 +60,15 @@ const jsonLd =
 ---
 
 <Layout
-  title={`${
-    suttaplexData[0]?.translated_name ||
-    suttaplexData[0]?.original_title ||
-    chapter
-  }${suttaplexData[0]?.translated_title ? `—${suttaplexData[0].translated_title}` : ''}`}
+  title={isIndividualRangeSutta
+    ? chapter?.startsWith('an')
+      ? uidToAcronym(chapter!)
+      : suttaplexData[0].title
+    : `${
+        suttaplexData[0]?.translated_name ||
+        suttaplexData[0]?.original_title ||
+        chapter
+      }${suttaplexData[0]?.translated_title ? `—${suttaplexData[0].translated_title}` : ''}`}
   description={suttaplexData[0]?.blurb?.replace(/<[^>]*>/g, '')}
   breadcrumbs={modifiedCrumbsData}
   jsonLd={jsonLd}
@@ -62,7 +85,12 @@ const jsonLd =
                   : ''
               }
             >
-              <TextMetaContent data={entry} userLanguage={userLanguage} />
+              <TextMetaContent
+                data={entry}
+                userLanguage={userLanguage}
+                isIndividualRangeSutta={isIndividualRangeSutta}
+                inRangeSuttaId={chapter}
+              />
             </li>
           )
         )
@@ -76,7 +104,12 @@ const jsonLd =
             <ol>
               {suttaplexData.slice(1).map(entry => (
                 <li class={entry.type === 'leaf' ? 'leaf-node' : ''}>
-                  <TextMetaContent data={entry} userLanguage={userLanguage} />
+                  <TextMetaContent
+                    data={entry}
+                    userLanguage={userLanguage}
+                    isIndividualRangeSutta={isIndividualRangeSutta}
+                    inRangeSuttaId={chapter}
+                  />
                 </li>
               ))}
             </ol>

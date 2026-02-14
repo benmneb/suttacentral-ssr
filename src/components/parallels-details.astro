@@ -2,7 +2,13 @@
 import '~/assets/details.css'
 import { t } from '~/i18n'
 import { toSentenceCase } from '~/utils/strings'
-const { data: entry, parallelsOpen, userLanguage } = Astro.props
+const {
+  data: entry,
+  parallelsOpen,
+  userLanguage,
+  isIndividualRangeSutta,
+  inRangeSuttaId,
+} = Astro.props
 
 const parallelsResponse = await fetch(
   `https://suttacentral.net/api/parallels/${entry.uid}`
@@ -34,9 +40,6 @@ function getBasePath(segmentKey: string): string {
   if (segmentKey.includes('#')) {
     basePath = segmentKey.split('#')[0]
   }
-  if (entry._scx_range_sutta && segmentKey.includes('-')) {
-    basePath = entry._scx_range_sutta_uid
-  }
   return basePath
 }
 
@@ -66,21 +69,94 @@ function getParallelTypeTitle(type: string): string {
 const segments = Object.entries(parallelsData).filter(
   ([key]) => !key.startsWith('_scx_')
 )
+
+// Filtered to include only relevant parallels for this individual range entry
+const filterUid = inRangeSuttaId ?? entry.uid
+
+const filteredSegments =
+  !!segments.length &&
+  (isIndividualRangeSutta
+    ? segments.filter(([k]) => {
+        // Direct matches, and start of range
+        if (
+          k === filterUid ||
+          k.startsWith(`${filterUid}-`) ||
+          k.startsWith(`${filterUid}#`)
+        ) {
+          return true
+        }
+
+        // Check if uid is at the END of a range
+        // So if uid is dhp20, will match dhp*-20, and if uid is an1.197, will match an1.*-197, and both with # links
+        const uidPrefix = filterUid.split(/(\d+)/)[0]
+        const uidEndNum = filterUid.match(/\d+$/)?.[0]
+        if (
+          uidEndNum &&
+          new RegExp(`^${uidPrefix}(\\d+)(\\.\\d+)?-${uidEndNum}(#.*)?$`).test(
+            k
+          )
+        ) {
+          return true
+        }
+
+        // Check if uid is WITHIN a range (an1.1 matches an1.1-5, dhp2 matches dhp1-3)
+        const kBase = k.split('#')[0]
+        const rangeMatch = kBase.match(/^(.+?)(\d+)(?:\.(\d+))?-(\d+)$/)
+        if (rangeMatch) {
+          const [
+            ,
+            rangePrefix,
+            rangeNumIfDecimalOrStart,
+            rangeStartIfDecimal,
+            rangeEnd,
+          ] = rangeMatch
+          const uidMatch = filterUid.match(/^(.+?)(\d+)(?:\.(\d+))?$/)
+          if (uidMatch) {
+            const [, currentPrefix, currentNum, currentDecimal] = uidMatch
+            if (rangePrefix === currentPrefix) {
+              if (rangeStartIfDecimal) {
+                if (rangeNumIfDecimalOrStart === currentNum) {
+                  const start = parseInt(rangeStartIfDecimal)
+                  const end = parseInt(rangeEnd)
+                  const current = parseInt(currentDecimal)
+                  if (current >= start && current <= end) return true
+                }
+              } else {
+                const start = parseInt(rangeNumIfDecimalOrStart)
+                const end = parseInt(rangeEnd)
+                const current = parseInt(currentNum)
+                if (current >= start && current <= end) return true
+              }
+            }
+          }
+        }
+
+        return false
+      })
+    : segments)
+
+const parallelCount =
+  isIndividualRangeSutta && filteredSegments
+    ? filteredSegments.reduce(
+        (sum, [, parallels]) => sum + (parallels as any[]).length,
+        0
+      )
+    : entry.parallel_count
 ---
 
-<details open={parallelsOpen}>
+<details open={parallelsOpen && parallelCount}>
   <summary>
     {
       toSentenceCase(
-        `${t(userLanguage, entry.parallel_count.length !== 1 ? 'suttaplex:countParallels' : 'suttaplex:countParallel', { count: null })} ${t(userLanguage, 'suttaplex:inAncientTexts')}`
+        `${t(userLanguage, parallelCount !== 1 ? 'suttaplex:countParallels' : 'suttaplex:countParallel', { count: null })} ${t(userLanguage, 'suttaplex:inAncientTexts')}`
       )
     }
-    ({entry.parallel_count})
+    ({parallelCount})
   </summary>
   <ul>
     {
-      !!segments.length ? (
-        segments.map(([segmentKey, parallels]) => (
+      !!filteredSegments.length ? (
+        filteredSegments.map(([segmentKey, parallels]) => (
           <li>
             {rootTrans ? (
               <a

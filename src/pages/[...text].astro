@@ -6,7 +6,7 @@ import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { generateTextJsonLd } from '~/utils/json-ld'
 import { getPreferredLanguage } from '~/utils/language'
-import { toSentenceCase } from '~/utils/strings'
+import { toSentenceCase, uidToAcronym } from '~/utils/strings'
 
 const { text } = Astro.params
 const acceptLanguage = Astro.request.headers.get('accept-language')
@@ -25,6 +25,8 @@ const suttasResponse = await fetch(
 )
 const suttasData = await suttasResponse.json()
 
+const isRangeSutta = !!suttasData.range_uid
+
 if (!suttasData.root_text && !suttasData.translation) {
   for (const author of suttasData.candidate_authors ?? []) {
     const response = await fetch(
@@ -42,7 +44,7 @@ if (!suttasData.root_text && !suttasData.translation) {
 }
 
 const suttaplexResponse = await fetch(
-  `https://suttacentral.net/api/suttaplex/${acronym}?language=${userLanguage}`
+  `https://suttacentral.net/api/suttaplex/${suttasData.range_uid ?? acronym}?language=${userLanguage}`
 )
 const suttaplexData = await suttaplexResponse.json()
 
@@ -55,7 +57,7 @@ if (!suttaplexData?.[0]?.uid) {
 let bilaraData = {}
 if (suttasData.segmented) {
   const bilaraResponse = await fetch(
-    `https://suttacentral.net/api/bilarasuttas/${acronym}/${authorUid}?lang=${language}`
+    `https://suttacentral.net/api/bilarasuttas/${suttasData.range_uid ?? acronym}/${authorUid}?lang=${language}`
   )
   bilaraData = await bilaraResponse.json()
 
@@ -64,22 +66,62 @@ if (suttasData.segmented) {
     Astro.response.statusText = 'Bilara data not found'
     return Astro.rewrite('/404')
   }
+
+  if (isRangeSutta) {
+    const matchKey = (key: string) =>
+      key.split(':')[0].toLowerCase() === acronym.toLowerCase() ||
+      bilaraData.html_text[key]?.includes("class='range'") ||
+      bilaraData.html_text[key]?.includes("class='range-title'") ||
+      bilaraData.html_text[key]?.includes("class='subdivision'")
+    bilaraData.keys_order = bilaraData.keys_order.filter(matchKey)
+    for (const prop of [
+      'html_text',
+      'root_text',
+      'translation_text',
+      'comment_text',
+      'variant_text',
+    ]) {
+      if (!bilaraData[prop]) continue
+      bilaraData[prop] = Object.fromEntries(
+        Object.entries(bilaraData[prop]).filter(([key]) => matchKey(key))
+      )
+    }
+  }
 }
 
 const publicationResponse = await fetch(
-  `https://suttacentral.net/api/publication_info/${acronym}/${language}/${authorUid}`
+  `https://suttacentral.net/api/publication_info/${suttasData.range_uid ?? acronym}/${language}/${authorUid}`
 )
 const publicationData = await publicationResponse.json()
 
 const crumbsResponse = await fetch(
-  `https://suttacentral.net/api/navigation_data/${acronym}?language=${userLanguage}`
+  `https://suttacentral.net/api/navigation_data/${suttasData.range_uid ?? acronym}?language=${userLanguage}`
 )
 const crumbsData = await crumbsResponse.json()
 const modifiedCrumbsData = [
   ...crumbsData,
-  { uid: acronym, title: suttaplexData[0].acronym, url: `/${acronym}` },
+  {
+    uid: acronym,
+    title: isRangeSutta ? uidToAcronym(acronym) : suttaplexData[0].acronym,
+    url: `/${acronym}`,
+  },
   { uid: authorUid, title: suttasData.translation.author },
 ]
+
+let rangePrev: string | null = null
+let rangeNext: string | null = null
+if (isRangeSutta) {
+  const beginMatch = suttasData.vaggaBegin?.match(/^(.+?)(\d+)-(\d+)$/)
+  const endMatch = suttasData.vaggaEnd?.match(/^(.+?)(\d+)-(\d+)$/)
+  if (beginMatch && endMatch) {
+    const prefix = beginMatch[1]
+    const vaggaStart = parseInt(beginMatch[2], 10)
+    const vaggaEnd = parseInt(endMatch[3], 10)
+    const current = parseInt(acronym.replace(prefix, ''), 10)
+    if (current > vaggaStart) rangePrev = `${prefix}${current - 1}`
+    if (current < vaggaEnd) rangeNext = `${prefix}${current + 1}`
+  }
+}
 
 const isSegmented = !!suttasData.segmented
 const isRootText = language === suttaplexData[0].root_lang
@@ -236,7 +278,9 @@ const jsonLd = generateTextJsonLd(
 ---
 
 <Layout
-  title={`${suttaplexData[0].acronym}: ${suttaplexData[0].original_title}—${suttasData.translation.author || suttasData.root_text.author}`}
+  title={isRangeSutta
+    ? `${uidToAcronym(acronym)}—${suttasData.translation.author || suttasData.root_text.author}`
+    : `${suttaplexData[0].acronym}: ${suttaplexData[0].original_title}—${suttasData.translation.author || suttasData.root_text.author}`}
   description={suttaplexData[0]?.blurb?.replace(/<[^>]*>/g, '')}
   breadcrumbs={modifiedCrumbsData}
   jsonLd={jsonLd}
@@ -475,15 +519,16 @@ const jsonLd = generateTextJsonLd(
       <TextMetaContent
         data={suttaplexData[0]}
         userLanguage={userLanguage}
-        title="Test"
         parallelsOpen
+        isIndividualRangeSutta={isRangeSutta}
+        inRangeSuttaId={acronym}
       />
     </article>
   </main>
   <nav aria-label={t(userLanguage, 'interface:articlePagination')}>
     <div>
       {
-        suttasData.translation?.previous?.uid && (
+        suttasData.translation?.previous?.uid ? (
           <>
             <span>{t(userLanguage, 'interface:previous')}</span>
             <a
@@ -493,12 +538,21 @@ const jsonLd = generateTextJsonLd(
               {suttasData.translation.previous?.name}
             </a>
           </>
+        ) : (
+          rangePrev && (
+            <>
+              <span>{t(userLanguage, 'interface:previous')}</span>
+              <a href={`/${rangePrev}/${language}/${authorUid}`} rel="prev">
+                {uidToAcronym(rangePrev)}
+              </a>
+            </>
+          )
         )
       }
     </div>
     <div>
       {
-        suttasData.translation?.next?.uid && (
+        suttasData.translation?.next?.uid ? (
           <>
             <span>{t(userLanguage, 'interface:next')}</span>
             <a
@@ -508,6 +562,15 @@ const jsonLd = generateTextJsonLd(
               {suttasData.translation.next?.name}
             </a>
           </>
+        ) : (
+          rangeNext && (
+            <>
+              <span>{t(userLanguage, 'interface:next')}</span>
+              <a href={`/${rangeNext}/${language}/${authorUid}`} rel="next">
+                {uidToAcronym(rangeNext)}
+              </a>
+            </>
+          )
         )
       }
     </div>
