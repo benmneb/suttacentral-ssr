@@ -51,10 +51,10 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
           <>
             <input type="checkbox" id="language-toggle" class="sr-only" />
             <label for="language-toggle" class="language-toggle-label">
-              {!!languageArray?.length && (
-                <span>Enabled {languageArray.length} languages</span>
-              )}{' '}
               🌐
+              {!!languageArray?.length && (
+                <span> ({languageArray.length})</span>
+              )}
               <span class="sr-only">
                 {t(userLanguage, 'interface:languages')}
               </span>
