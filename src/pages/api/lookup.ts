@@ -6,22 +6,33 @@ import {
   serializeMatch,
 } from '~/utils/lookup'
 
-const dictFiles = import.meta.glob<{
-  default: Record<string, LookupEntry>
-}>('~/data/lookup-*.json')
+const cache = new Map<string, unknown>()
 
 /**
- * DPD (Digital Pali Dictionary) — maps inflected Pali forms to headwords,
- * enabling lookup regardless of target language (e.g. "naṁ" → "ta" in dhp1/en/sujato)
+ * Load a JSON file from `public/data/` as a static asset.
+ * Dictionary files live outside the worker bundle to stay under
+ * Cloudflare's 25 MB worker size limit. Results are cached in
+ * memory so each file is only fetched/parsed once per worker instance.
  */
-const dpdI2hFiles = import.meta.glob<{
-  default: Record<string, string[]>
-}>('~/data/dpd-i2h.json')
-
-/** DPD Deconstructor — maps compound Pali words to their components (e.g. "akatañca" → "akataṃ + ca") */
-const dpdDeconFiles = import.meta.glob<{
-  default: Record<string, string>
-}>('~/data/dpd-deconstructor.json')
+async function loadAsset<T>(
+  path: string,
+  request: Request,
+  runtime: any
+): Promise<T | null> {
+  if (cache.has(path)) return cache.get(path) as T
+  let data: T
+  if (import.meta.env.DEV) {
+    const { readFile } = await import('node:fs/promises')
+    const raw = await readFile(`${process.cwd()}/public${path}`, 'utf-8')
+    data = JSON.parse(raw) as T
+  } else {
+    const res = await runtime.env.ASSETS.fetch(new URL(path, request.url))
+    if (!res.ok) return null
+    data = (await res.json()) as T
+  }
+  cache.set(path, data)
+  return data
+}
 
 /**
  * Dictionary lookup API endpoint.
@@ -42,13 +53,16 @@ const dpdDeconFiles = import.meta.glob<{
  * @param from - Source language ('pli' or 'lzh')
  * @param to - Target language ('en', 'es', 'zh', 'pt', 'id', 'nl')
  */
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
+  const runtime = (locals as any).runtime
   const { words, from, to } = await request.json()
-  const dictPath = `/src/data/lookup-${from}-${to}.json`
-  const loader = dictFiles[dictPath]
-  if (!loader) return new Response('{}', { status: 404 })
 
-  const dict = (await loader()).default
+  const dict = await loadAsset<Record<string, LookupEntry>>(
+    `/data/lookup-${from}-${to}.json`,
+    request,
+    runtime
+  )
+  if (!dict) return new Response('{}', { status: 404 })
 
   if (from === 'lzh') {
     // Chinese: find all dictionary entries that appear as substrings in the text
@@ -68,15 +82,26 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   // Pali: DPD lookup with compound decomposition fallback
-  const i2hLoader = dpdI2hFiles['/src/data/dpd-i2h.json']
-  const deconLoader = dpdDeconFiles['/src/data/dpd-deconstructor.json']
-  const dpdI2h = i2hLoader ? (await i2hLoader()).default : null
-  const dpdDecon = deconLoader ? (await deconLoader()).default : null
+  const dpdI2h = await loadAsset<Record<string, string[]>>(
+    '/data/dpd-i2h.json',
+    request,
+    runtime
+  )
+  const dpdDecon = await loadAsset<Record<string, string>>(
+    '/data/dpd-deconstructor.json',
+    request,
+    runtime
+  )
 
   // Fall back to English dict for languages with limited coverage (e.g. id, nl)
-  const enLoader =
-    to !== 'en' ? dictFiles['/src/data/lookup-pli-en.json'] : null
-  const enDict = enLoader ? (await enLoader()).default : null
+  const enDict =
+    to !== 'en'
+      ? await loadAsset<Record<string, LookupEntry>>(
+          '/data/lookup-pli-en.json',
+          request,
+          runtime
+        )
+      : null
 
   const result: Record<
     string,

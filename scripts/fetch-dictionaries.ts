@@ -11,7 +11,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { AVAILABLE_LOOKUPS } from '../src/constants/lookup.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const DATA_DIR = join(__dirname, '..', 'src', 'data')
+const DATA_DIR = join(__dirname, '..', 'public', 'data')
 
 const DICTIONARIES = Object.entries(AVAILABLE_LOOKUPS).flatMap(([from, tos]) =>
   tos.map(to => ({ from, to }))
