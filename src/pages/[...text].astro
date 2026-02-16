@@ -5,11 +5,13 @@ import TextMetaContent from '~/components/text-meta-content.astro'
 import { AVAILABLE_LOOKUPS } from '~/constants/lookup'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
+import { getViewPrefs } from '~/utils/cookies'
 import { generateTextJsonLd } from '~/utils/json-ld'
 import { getPreferredLanguage } from '~/utils/language'
 import { toSentenceCase, uidToAcronym } from '~/utils/strings'
 
 const { text } = Astro.params
+const viewPrefs = getViewPrefs(Astro.cookies)
 const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = getPreferredLanguage(acceptLanguage)
 
@@ -374,7 +376,7 @@ const jsonLd = generateTextJsonLd(
                     <input
                       type="checkbox"
                       id="commenter"
-                      checked
+                      checked={viewPrefs.commenter ?? true}
                       aria-controls="commenter-inline"
                     />
                   </li>
@@ -385,6 +387,7 @@ const jsonLd = generateTextJsonLd(
                     <input
                       type="checkbox"
                       id="commenter-inline"
+                      checked={viewPrefs['commenter-inline'] ?? false}
                       aria-controls="commenter-side"
                     />
                   </li>
@@ -392,7 +395,11 @@ const jsonLd = generateTextJsonLd(
                     <label for="commenter-side">
                       ↳ {t(userLanguage, 'viewoption:sideBySide')}
                     </label>
-                    <input type="checkbox" id="commenter-side" />
+                    <input
+                      type="checkbox"
+                      id="commenter-side"
+                      checked={viewPrefs['commenter-side'] ?? false}
+                    />
                   </li>
                 </>
               )
@@ -407,6 +414,7 @@ const jsonLd = generateTextJsonLd(
                     <input
                       type="checkbox"
                       id="rooter"
+                      checked={viewPrefs.rooter ?? false}
                       aria-controls="rooter-first rooter-side"
                     />
                   </li>
@@ -414,19 +422,28 @@ const jsonLd = generateTextJsonLd(
                     <label for="rooter-first">
                       ↳ {t(userLanguage, 'viewoption:rootFirst')}
                     </label>
-                    <input type="checkbox" id="rooter-first" />
+                    <input
+                      type="checkbox"
+                      id="rooter-first"
+                      checked={viewPrefs['rooter-first'] ?? false}
+                    />
                   </li>
                   <li role="menuitem">
                     <label for="rooter-side">
                       ↳ {t(userLanguage, 'viewoption:sideBySide')}
                     </label>
-                    <input type="checkbox" id="rooter-side" />
+                    <input
+                      type="checkbox"
+                      id="rooter-side"
+                      checked={viewPrefs['rooter-side'] ?? false}
+                    />
                   </li>
                   <li role="menuitem">
                     <label for="rooter-look-up">↳ Word lookup</label>
                     <input
                       type="checkbox"
                       id="rooter-look-up"
+                      checked={viewPrefs['rooter-look-up'] ?? false}
                       data-from={rootLang}
                       data-to={lookupTargetLang}
                     />
@@ -441,6 +458,7 @@ const jsonLd = generateTextJsonLd(
                   <input
                     type="checkbox"
                     id="rooter-look-up"
+                    checked={viewPrefs['rooter-look-up'] ?? false}
                     data-from={rootLang}
                     data-to={lookupTargetLang}
                   />
@@ -454,7 +472,11 @@ const jsonLd = generateTextJsonLd(
                   <label for="segmenter">
                     {t(userLanguage, 'viewoption:showSegments')}
                   </label>
-                  <input type="checkbox" id="segmenter" />
+                  <input
+                    type="checkbox"
+                    id="segmenter"
+                    checked={viewPrefs.segmenter ?? false}
+                  />
                 </li>
               )
             }
@@ -462,7 +484,11 @@ const jsonLd = generateTextJsonLd(
               <label for="positioner"
                 >{t(userLanguage, 'viewoption:pinMenu')}</label
               >
-              <input type="checkbox" id="positioner" checked />
+              <input
+                type="checkbox"
+                id="positioner"
+                checked={viewPrefs.positioner ?? true}
+              />
             </li>
           </ul>
         </li>
@@ -529,7 +555,7 @@ const jsonLd = generateTextJsonLd(
                 type="range"
                 min="0.5"
                 max="2"
-                value="1"
+                value={viewPrefs.rate ?? '1'}
                 step="0.1"
                 id="rate"
               />
@@ -541,7 +567,7 @@ const jsonLd = generateTextJsonLd(
                 type="range"
                 min="0"
                 max="2"
-                value="1"
+                value={viewPrefs.pitch ?? '1'}
                 step="0.1"
                 id="pitch"
               />
@@ -551,7 +577,11 @@ const jsonLd = generateTextJsonLd(
               <label for="auto-scroll"
                 >{t(userLanguage, 'viewoption:autoScroll')}</label
               >
-              <input type="checkbox" id="auto-scroll" />
+              <input
+                type="checkbox"
+                id="auto-scroll"
+                checked={viewPrefs['auto-scroll'] ?? false}
+              />
             </li>
           </ul>
         </li>
@@ -639,11 +669,11 @@ const jsonLd = generateTextJsonLd(
   /**
    * User Preferences Handler
    *
-   * Persists UI control states (checkboxes, sliders, selects) for Speech Synthesis
-   * and text view settings (comments, segments, root text) to localStorage.
-   * Automatically saves on user interaction.
+   * Persists all UI preferences to cookies (view and "listen" settings).
+   * Cookies read server-side to prevent layout shift, which also
+   * eliminates localStorage operations for that perf.
    *
-   * @requires localStorage
+   * @requires document.cookie
    */
   'use strict'
 
@@ -663,18 +693,32 @@ const jsonLd = generateTextJsonLd(
     'auto-scroll',
   ]
 
-  const STORAGE_KEY = 'user-prefs'
+  const COOKIE_NAME = 'viewPrefs'
+  const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 2 // 2 years
 
-  /**
-   * Get stored preferences from localStorage
-   * @returns {Object} Parsed preferences object or empty object if none exist
-   */
-  function getStoredPrefs() {
+  function getCookiePrefs() {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')
+      const match = document.cookie.match(
+        new RegExp('(^| )' + COOKIE_NAME + '=([^;]+)')
+      )
+      if (match) {
+        return JSON.parse(decodeURIComponent(match[2]))
+      }
     } catch (e) {
-      console.error('Failed to parse stored prefs:', e)
-      return {}
+      console.error('Failed to parse cookie prefs:', e)
+    }
+    return {}
+  }
+
+  function saveToCookie(prefs) {
+    try {
+      const value = encodeURIComponent(JSON.stringify(prefs))
+      // SameSite=Lax allows server to read cookie on navigation from external links
+      // (e.g., Google, bookmarks) while still preventing CSRF. Strict would block
+      // the cookie on external navigation, breaking this more performant implementation.
+      document.cookie = `${COOKIE_NAME}=${value};path=/;max-age=${COOKIE_MAX_AGE};SameSite=Lax`
+    } catch (e) {
+      console.error('Failed to save cookie prefs:', e)
     }
   }
 
@@ -715,38 +759,16 @@ const jsonLd = generateTextJsonLd(
   }
 
   /**
-   * Load stored preferences (except voice-select) into existing elements.
-   */
-  function load() {
-    const saved = getStoredPrefs()
-
-    IDS.forEach(id => {
-      const el = document.getElementById(id)
-      if (!el || !(id in saved)) return
-
-      if (el instanceof HTMLInputElement && el.type === 'checkbox') {
-        el.checked = !!saved[id]
-        return
-      }
-
-      // inputs with value
-      if ('value' in el) {
-        el.value = saved[id]
-      }
-    })
-  }
-
-  /**
    * Load voice-select preference once options are available
    */
   function loadVoiceSelect() {
     const el = document.getElementById('voice-select')
     if (!el) return
 
-    const saved = getStoredPrefs()
-    if (!('voice-select' in saved)) return
+    const prefs = getCookiePrefs()
+    if (!('voice-select' in prefs)) return
 
-    const wanted = saved['voice-select']
+    const wanted = prefs['voice-select']
     const opt = [...el.options].find(o => o.dataset.name === wanted)
     if (opt) el.value = opt.value
   }
@@ -755,7 +777,7 @@ const jsonLd = generateTextJsonLd(
    * Save current state of elements found on this page.
    */
   function save() {
-    const prefs = getStoredPrefs()
+    const prefs = getCookiePrefs()
 
     IDS.forEach(id => {
       const el = document.getElementById(id)
@@ -768,7 +790,7 @@ const jsonLd = generateTextJsonLd(
 
       if (el instanceof HTMLSelectElement) {
         const opt = el.options[el.selectedIndex]
-        if (opt) prefs[id] = opt.dataset.name
+        if (opt?.dataset.name) prefs[id] = opt.dataset.name
         return
       }
 
@@ -778,11 +800,7 @@ const jsonLd = generateTextJsonLd(
       }
     })
 
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs))
-    } catch (e) {
-      console.error('Failed to save preferences:', e)
-    }
+    saveToCookie(prefs)
   }
 
   /**
@@ -792,14 +810,17 @@ const jsonLd = generateTextJsonLd(
     IDS.forEach(id => {
       const el = document.getElementById(id)
       if (!el) return
-      el.addEventListener(el.type === 'range' ? 'input' : 'change', save)
+      const eventType =
+        el instanceof HTMLInputElement && el.type === 'range'
+          ? 'input'
+          : 'change'
+      el.addEventListener(eventType, save)
     })
   }
 
-  load()
   init()
 
-  // Dispatch change on restored checkboxes so other scripts can react
+  // Dispatch change events on page load so other scripts can initialise correctly (word lookup, TTS)
   IDS.forEach(id => {
     const el = document.getElementById(id)
     if (
