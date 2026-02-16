@@ -92,15 +92,14 @@ if (suttasData.segmented) {
   }
 }
 
-const publicationResponse = await fetch(
-  `https://suttacentral.net/api/publication_info/${suttasData.range_uid ?? acronym}/${language}/${authorUid}`
-)
-const publicationData = await publicationResponse.json()
-
-const crumbsResponse = await fetch(
-  `https://suttacentral.net/api/navigation_data/${suttasData.range_uid ?? acronym}?language=${userLanguage}`
-)
-const crumbsData = await crumbsResponse.json()
+const [publicationData, crumbsData] = await Promise.all([
+  fetch(
+    `https://suttacentral.net/api/publication_info/${suttasData.range_uid ?? acronym}/${language}/${authorUid}`
+  ).then(r => r.json()),
+  fetch(
+    `https://suttacentral.net/api/navigation_data/${suttasData.range_uid ?? acronym}?language=${userLanguage}`
+  ).then(r => r.json()),
+])
 const modifiedCrumbsData = [
   ...crumbsData,
   {

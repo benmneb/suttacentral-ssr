@@ -20,20 +20,17 @@ let similarData = [[]]
 let adjacentData = [[]]
 
 if (term) {
-  const dictionaryResponse = await fetch(
-    `https://suttacentral.net/api/dictionary_full/${term}?language=${userLanguage}`
-  )
-  dictionaryData = await dictionaryResponse.json()
-
-  const similarResponse = await fetch(
-    `https://suttacentral.net/api/dictionary_full/similar/${term}?language=${userLanguage}`
-  )
-  similarData = await similarResponse.json()
-
-  const adjacentResponse = await fetch(
-    `https://suttacentral.net/api/dictionary_full/adjacent/${term}?language=${userLanguage}`
-  )
-  adjacentData = await adjacentResponse.json()
+  ;[dictionaryData, similarData, adjacentData] = await Promise.all([
+    fetch(
+      `https://suttacentral.net/api/dictionary_full/${term}?language=${userLanguage}`
+    ).then(r => r.json()),
+    fetch(
+      `https://suttacentral.net/api/dictionary_full/similar/${term}?language=${userLanguage}`
+    ).then(r => r.json()),
+    fetch(
+      `https://suttacentral.net/api/dictionary_full/adjacent/${term}?language=${userLanguage}`
+    ).then(r => r.json()),
+  ])
 }
 ---
 

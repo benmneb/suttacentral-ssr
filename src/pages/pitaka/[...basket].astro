@@ -43,13 +43,12 @@ const newKids = await Promise.all(
 )
 menuData.children = newKids
 
-const crumbsResponse = await fetch(
-  `https://suttacentral.net/api/navigation_data/${uid}?language=${userLanguage}`
-)
-const crumbsData = await crumbsResponse.json()
-
-const shortcutsResponse = await fetch(`https://suttacentral.net/api/shortcuts`)
-const shortcutsData = await shortcutsResponse.json()
+const [crumbsData, shortcutsData] = await Promise.all([
+  fetch(
+    `https://suttacentral.net/api/navigation_data/${uid}?language=${userLanguage}`
+  ).then(r => r.json()),
+  fetch(`https://suttacentral.net/api/shortcuts`).then(r => r.json()),
+])
 
 const origin = Astro.site?.origin ?? ''
 const jsonLd = generatePitakaJsonLd(menuData, crumbsData, origin)
