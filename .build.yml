@@ -16,6 +16,7 @@ secrets:
 
 environment:
   CLOUDFLARE_ACCOUNT_ID: cc1f9251f98d1dab3451b99675c70166
+  NODE_OPTIONS: --max-old-space-size=4096
 
 triggers:
   - action: email

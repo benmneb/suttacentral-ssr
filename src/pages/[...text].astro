@@ -2,6 +2,7 @@
 import '~/assets/text.css'
 import PublicationInfo from '~/components/publication-info.astro'
 import TextMetaContent from '~/components/text-meta-content.astro'
+import { AVAILABLE_LOOKUPS } from '~/constants/lookup'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { generateTextJsonLd } from '~/utils/json-ld'
@@ -126,6 +127,34 @@ if (isRangeSutta) {
 const isSegmented = !!suttasData.segmented
 const isRootText = language === suttaplexData[0].root_lang
 
+const rootLang = suttasData.suttaplex?.root_lang
+const availableLangs = rootLang ? AVAILABLE_LOOKUPS[rootLang] : null
+const lookupTargetLang = availableLangs?.includes(userLanguage)
+  ? userLanguage
+  : 'en'
+
+function cleanWord(text: string): string {
+  // strip non-letter characters and lowercase
+  return text.toLowerCase().replace(/^[^\p{L}]+|[^\p{L}]+$/gu, '')
+}
+
+function renderLookupWord(text: string): string {
+  const cleaned = cleanWord(text)
+  if (!cleaned) return text // punctuation etc
+  return `<a class="look-up" href="/define/${cleaned}">${text}</a>`
+}
+
+function renderLookupChinese(text: string): string {
+  if (!availableLangs) return text
+  return [...text]
+    .map(ch =>
+      /\p{Script=Han}/u.test(ch)
+        ? `<a class="look-up" href="/define/${encodeURIComponent(ch)}">${ch}</a>`
+        : ch
+    )
+    .join('')
+}
+
 let commentsHtml = ''
 
 function getRootLangHTML() {
@@ -150,7 +179,7 @@ function getRootLangHTML() {
           ? `
       <!-- This is not a translation, its the root text, the class is so it's not \`display: none\` by default. -->
       <span class="translation" lang="${suttasData.root_text.lang}" translate="no">
-        <span class="text">${text}</span>
+        <span class="text">${availableLangs ? (rootLang === 'lzh' ? renderLookupChinese(text) : text.split(' ').map(renderLookupWord).join(' ')) : text}</span>
         ${
           comment
             ? `
@@ -222,7 +251,9 @@ function getSegmentedHTML() {
         rootText
           ? `
       <span class="root" lang="${suttasData.suttaplex.root_lang}" translate="no">
-        <span class="text">${rootText}</span>
+        <span class="text">
+          ${rootLang === 'lzh' ? renderLookupChinese(rootText) : rootText.split(' ').map(renderLookupWord).join(' ')}
+        </span>
       </span>
       `
           : ''
@@ -391,7 +422,29 @@ const jsonLd = generateTextJsonLd(
                     </label>
                     <input type="checkbox" id="rooter-side" />
                   </li>
+                  <li role="menuitem">
+                    <label for="rooter-look-up">↳ Word lookup</label>
+                    <input
+                      type="checkbox"
+                      id="rooter-look-up"
+                      data-from={rootLang}
+                      data-to={lookupTargetLang}
+                    />
+                  </li>
                 </>
+              )
+            }
+            {
+              isSegmented && isRootText && availableLangs && (
+                <li role="menuitem">
+                  <label for="rooter-look-up">Word lookup</label>
+                  <input
+                    type="checkbox"
+                    id="rooter-look-up"
+                    data-from={rootLang}
+                    data-to={lookupTargetLang}
+                  />
+                </li>
               )
             }
             {
@@ -524,6 +577,11 @@ const jsonLd = generateTextJsonLd(
         inRangeSuttaId={acronym}
       />
     </article>
+    {
+      availableLangs && (
+        <article popover id="definition" aria-label="Word definition" />
+      )
+    }
   </main>
   <nav aria-label={t(userLanguage, 'interface:articlePagination')}>
     <div>
@@ -595,6 +653,7 @@ const jsonLd = generateTextJsonLd(
     'commenter-side',
     'rooter',
     'rooter-first',
+    'rooter-look-up',
     'rooter-side',
     'segmenter',
     'positioner',
@@ -709,7 +768,7 @@ const jsonLd = generateTextJsonLd(
 
       if (el instanceof HTMLSelectElement) {
         const opt = el.options[el.selectedIndex]
-        prefs[id] = opt.dataset.name
+        if (opt) prefs[id] = opt.dataset.name
         return
       }
 
@@ -739,7 +798,205 @@ const jsonLd = generateTextJsonLd(
 
   load()
   init()
+
+  // Dispatch change on restored checkboxes so other scripts can react
+  IDS.forEach(id => {
+    const el = document.getElementById(id)
+    if (
+      el instanceof HTMLInputElement &&
+      el.type === 'checkbox' &&
+      el.checked
+    ) {
+      el.dispatchEvent(new Event('change'))
+    }
+  })
+
   waitForVoiceSelect().then(loadVoiceSelect)
+</script>
+
+<script>
+  /**
+   * Word Look-Up Handler
+   *
+   * Fetches dictionary definitions from the API when the look-up toggle is enabled.
+   * Displays definitions in a popover with prev/next navigation between words.
+   * Falls back to /define/{word} links when JS is unavailable.
+   */
+  type LookupEntry = {
+    d: string | string[]
+    g?: string
+    x?: string | string[]
+    p?: string
+  }
+  type PaliMatch = { base: string; entry?: LookupEntry; meaning?: string }
+
+  let data: Record<string, LookupEntry | PaliMatch[]> | null = null
+  let words: HTMLAnchorElement[] = []
+  let current = -1
+  const toggle = document.getElementById(
+    'rooter-look-up'
+  ) as HTMLInputElement | null
+  const isLzh = toggle?.dataset.from === 'lzh'
+  const popover = document.getElementById('definition') as HTMLElement | null
+
+  toggle?.addEventListener('change', async () => {
+    if (!toggle.checked || data) return
+
+    toggle.disabled = true
+
+    try {
+      const unique = new Set<string>()
+      document.querySelectorAll<HTMLAnchorElement>('a.look-up').forEach(el => {
+        unique.add(decodeURIComponent(el.pathname.split('/').pop()!))
+      })
+
+      const res = await fetch('/api/lookup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          words: [...unique],
+          from: toggle.dataset.from,
+          to: toggle.dataset.to,
+        }),
+      })
+
+      if (!res.ok) throw new Error()
+
+      data = await res.json()
+      words = [...document.querySelectorAll<HTMLAnchorElement>('a.look-up')]
+
+      for (const [i, el] of words.entries()) {
+        el.addEventListener('click', e => {
+          e.preventDefault()
+          words.forEach(w => w.classList.remove('active'))
+          current = i
+          show(decodeURIComponent(el.pathname.split('/').pop()!))
+        })
+      }
+    } catch {
+      toggle.checked = false
+    } finally {
+      toggle.disabled = false
+    }
+  })
+
+  function getWord(el: HTMLAnchorElement): string {
+    return decodeURIComponent(el.pathname.split('/').pop()!)
+  }
+
+  function show(word: string) {
+    if (!data || !popover) return
+
+    let items: string[]
+
+    if (isLzh && current >= 0) {
+      // Walk 3 chars backward/forward, stop at punctuation (text nodes) or segment boundary
+      let start = current
+      let end = current
+      const seg = words[current].closest('.segment')
+      for (let i = current - 1; i >= Math.max(0, current - 3); i--) {
+        if (words[i].closest('.segment') !== seg) break
+        if (words[i].nextSibling !== words[i + 1]) break
+        start = i
+      }
+      for (let i = current + 1; i < Math.min(words.length, current + 4); i++) {
+        if (words[i].closest('.segment') !== seg) break
+        if (words[i].previousSibling !== words[i - 1]) break
+        end = i
+      }
+      // Highlight group
+      for (let i = start; i <= end; i++) words[i].classList.add('active')
+      // Build context and find all substring matches
+      const context = words
+        .slice(start, end + 1)
+        .map(getWord)
+        .join('')
+      const entries: Array<{ term: string; entry: LookupEntry }> = []
+      for (let i = 0; i < context.length; i++) {
+        for (let len = 1; len <= context.length - i; len++) {
+          const substr = context.substring(i, i + len)
+          if (data[substr])
+            entries.push({ term: substr, entry: data[substr] as LookupEntry })
+        }
+      }
+      entries.sort((a, b) => b.term.length - a.term.length)
+      items = entries.map(e => {
+        const defs = Array.isArray(e.entry.d) ? e.entry.d.join('; ') : e.entry.d
+        return `<b>${e.term}</b>${e.entry.p ? ` (${e.entry.p})` : ''} ${defs} <a href="/define/${e.term}">📖</a>`
+      })
+    } else {
+      // Pali: each word maps to an array of decomposed matches
+      const matches = (data[word] as PaliMatch[]) ?? [
+        { base: word, meaning: '?' },
+      ]
+      // When a single match has the same base as the clicked word,
+      // skip the nested heading since the top-level <dfn> already shows it
+      const skipDt = matches.length === 1 && matches[0].base === word
+      items = []
+      for (const match of matches) {
+        let dd = ''
+        if (match.entry) {
+          const entry = match.entry
+          const defs = Array.isArray(entry.d) ? entry.d : [entry.d]
+          if (entry.g) dd += `<span class="grammar">${entry.g}</span>`
+          dd += `<ol class="definition">${defs.map(d => `<li>${d}</li>`).join('')}</ol>`
+          if (entry.x) {
+            const xrs = Array.isArray(entry.x) ? entry.x : [entry.x]
+            dd += `<ul class="xr">${xrs.map((t: string) => `<li><a href="/define/${t}">See: ${t}</a></li>`).join('')}</ul>`
+          }
+        } else {
+          dd = match.meaning ?? '<ol><li>?</li></ol>'
+        }
+        if (skipDt) {
+          items.push(`<dl><dd>${dd}</dd></dl>`)
+        } else {
+          items.push(
+            `<dl><dt><dfn>${match.base} <a href="/define/${match.base}">📖</a></dfn></dt><dd>${dd}</dd></dl>`
+          )
+        }
+      }
+      words[current]?.classList.add('active')
+    }
+
+    if (items.length === 0) return
+
+    const content = isLzh
+      ? `<dfn>${word}</dfn><ol>${items.map(d => `<li>${d}</li>`).join('')}</ol>`
+      : `<dfn>${word}</dfn>${items.join('')}`
+
+    popover.innerHTML =
+      `<section>${content}</section>` +
+      `<nav aria-label="Word definition navigation">` +
+      `<button id="def-prev" aria-label="Previous word"${current <= 0 ? ' disabled' : ''}>\u2190</button>` +
+      `<a href="/define/${word}" aria-label="Full definition for ${word}">📖</a>` +
+      `<button id="def-next" aria-label="Next word"${current >= words.length - 1 ? ' disabled' : ''}>\u2192</button></nav>`
+    popover.showPopover()
+    // Scroll clicked word into view if the popover will cover it
+    const rect = words[current]?.getBoundingClientRect()
+    // Lookup popover is set to 30vh
+    if (rect && rect.bottom > window.innerHeight * 0.7) {
+      words[current]?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+    }
+  }
+
+  popover?.addEventListener('click', e => {
+    const btn = (e.target as HTMLElement).closest('#def-prev, #def-next')
+    if (!btn) return
+    const next = current + (btn.id === 'def-prev' ? -1 : 1)
+    if (next < 0 || next >= words.length) return
+    words.forEach(w => w.classList.remove('active'))
+    current = next
+    show(getWord(words[current]))
+  })
+
+  popover?.addEventListener('toggle', (e: Event) => {
+    if ((e as ToggleEvent).newState === 'closed') {
+      words.forEach(w => w.classList.remove('active'))
+    }
+  })
+
+  // Auto-initialize if preference was restored by prefs handler script above
+  if (toggle?.checked) toggle.dispatchEvent(new Event('change'))
 </script>
 
 <script>
