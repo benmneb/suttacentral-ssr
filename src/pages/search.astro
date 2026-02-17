@@ -133,8 +133,9 @@ if (query) {
                               {hit.is_article
                                 ? hit.heading.title
                                 : (hit.name || hit.heading?.title) &&
-                                    hit.root_name !==
-                                      (hit.name || hit.heading?.title)
+                                    hit.root_name.trim().toLowerCase() !==
+                                      (hit.name.trim().toLowerCase() ||
+                                        hit.heading?.title.trim().toLowerCase())
                                   ? `${hit.root_name}—${hit.name || hit.heading?.title}`
                                   : hit.name ||
                                     hit.heading?.title ||
