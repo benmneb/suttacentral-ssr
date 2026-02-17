@@ -3,6 +3,7 @@ import '~/assets/search.css'
 import SearchForm from '~/components/search-form.astro'
 import TextMetaContent from '~/components/text-meta-content.astro'
 import { dictionaryTitles } from '~/constants/define'
+import { expansionData } from '~/constants/expansion'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getSearchLanguages, setSearchLanguages } from '~/utils/cookies'
@@ -10,6 +11,7 @@ import {
   getAllPreferredLanguages,
   getPreferredLanguage,
 } from '~/utils/language'
+import { expandUid } from '~/utils/strings'
 
 const { searchParams } = Astro.url
 const acceptLanguage = Astro.request.headers.get('accept-language')
@@ -143,7 +145,11 @@ if (query) {
                             </a>
                           </h2>
                           <p>
-                            {[hit.acronym, hit.full_lang, hit.author]
+                            {[
+                              hit.acronym || expandUid(hit.uid, expansionData),
+                              hit.full_lang,
+                              hit.author,
+                            ]
                               .filter(Boolean)
                               .join(' ∙ ')}
                           </p>
