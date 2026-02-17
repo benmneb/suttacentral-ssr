@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "Tekst-til-tale innstillinger",
   "viewoption:variant": "Variant:",
   "viewoption:voiceDefault": "STANDARD",
-  "viewoption:voiceLabel": "Stemme"
+  "viewoption:voiceLabel": "Stemme",
+  "viewoption:wordLookup": "Ordoppslag"
 }

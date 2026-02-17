@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "Ustawienia zamiany tekstu na mowę",
   "viewoption:variant": "Wariant:",
   "viewoption:voiceDefault": "DOMYŚLNY",
-  "viewoption:voiceLabel": "Głos"
+  "viewoption:voiceLabel": "Głos",
+  "viewoption:wordLookup": "Wyszukiwanie słów"
 }

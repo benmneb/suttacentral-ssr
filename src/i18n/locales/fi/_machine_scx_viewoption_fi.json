@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "Tekstistä puheeksi -asetukset",
   "viewoption:variant": "Variantti:",
   "viewoption:voiceDefault": "OLETUS",
-  "viewoption:voiceLabel": "Ääni"
+  "viewoption:voiceLabel": "Ääni",
+  "viewoption:wordLookup": "Sanan haku"
 }

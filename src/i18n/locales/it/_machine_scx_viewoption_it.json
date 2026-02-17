@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "Impostazioni sintesi vocale",
   "viewoption:variant": "Variante:",
   "viewoption:voiceDefault": "PREDEFINITO",
-  "viewoption:voiceLabel": "Voce"
+  "viewoption:voiceLabel": "Voce",
+  "viewoption:wordLookup": "Ricerca parole"
 }

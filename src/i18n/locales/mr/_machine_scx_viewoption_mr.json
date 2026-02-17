@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "टेक्स्ट टू स्पीच सेटिंग्ज",
   "viewoption:variant": "पर्याय:",
   "viewoption:voiceDefault": "डीफॉल्ट",
-  "viewoption:voiceLabel": "आवाज"
+  "viewoption:voiceLabel": "आवाज",
+  "viewoption:wordLookup": "शब्द शोध"
 }

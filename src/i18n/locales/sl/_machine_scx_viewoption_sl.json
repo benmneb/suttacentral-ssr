@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "Nastavitve pretvorbe besedila v govor",
   "viewoption:variant": "Različica:",
   "viewoption:voiceDefault": "PRIVZETO",
-  "viewoption:voiceLabel": "Glas"
+  "viewoption:voiceLabel": "Glas",
+  "viewoption:wordLookup": "Iskanje besed"
 }

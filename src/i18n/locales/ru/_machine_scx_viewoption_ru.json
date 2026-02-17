@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "Настройки озвучивания текста",
   "viewoption:variant": "Вариант:",
   "viewoption:voiceDefault": "ПО УМОЛЧАНИЮ",
-  "viewoption:voiceLabel": "Голос"
+  "viewoption:voiceLabel": "Голос",
+  "viewoption:wordLookup": "Поиск слов"
 }

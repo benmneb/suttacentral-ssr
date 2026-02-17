@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "텍스트 음성 변환 설정",
   "viewoption:variant": "이독:",
   "viewoption:voiceDefault": "기본값",
-  "viewoption:voiceLabel": "음성"
+  "viewoption:voiceLabel": "음성",
+  "viewoption:wordLookup": "단어 검색"
 }

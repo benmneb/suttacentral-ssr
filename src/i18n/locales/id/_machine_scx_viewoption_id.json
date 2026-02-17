@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "Pengaturan teks ke ucapan",
   "viewoption:variant": "Varian:",
   "viewoption:voiceDefault": "DEFAULT",
-  "viewoption:voiceLabel": "Suara"
+  "viewoption:voiceLabel": "Suara",
+  "viewoption:wordLookup": "Pencarian kata"
 }

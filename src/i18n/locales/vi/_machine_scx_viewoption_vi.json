@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "Cài đặt chuyển văn bản thành giọng nói",
   "viewoption:variant": "Dị bản:",
   "viewoption:voiceDefault": "MẶC ĐỊNH",
-  "viewoption:voiceLabel": "Giọng"
+  "viewoption:voiceLabel": "Giọng",
+  "viewoption:wordLookup": "Tra cứu từ"
 }

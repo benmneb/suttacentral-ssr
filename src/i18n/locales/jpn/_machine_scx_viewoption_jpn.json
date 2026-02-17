@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "テキスト読み上げ設定",
   "viewoption:variant": "異読：",
   "viewoption:voiceDefault": "デフォルト",
-  "viewoption:voiceLabel": "音声"
+  "viewoption:voiceLabel": "音声",
+  "viewoption:wordLookup": "単語検索"
 }

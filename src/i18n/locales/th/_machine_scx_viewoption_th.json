@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "การตั้งค่าการแปลงข้อความเป็นเสียง",
   "viewoption:variant": "ตัวแปร:",
   "viewoption:voiceDefault": "ค่าเริ่มต้น",
-  "viewoption:voiceLabel": "เสียง"
+  "viewoption:voiceLabel": "เสียง",
+  "viewoption:wordLookup": "การค้นหาคำ"
 }

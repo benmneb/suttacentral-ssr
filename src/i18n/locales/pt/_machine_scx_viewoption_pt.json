@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "Configurações de texto para fala",
   "viewoption:variant": "Variante:",
   "viewoption:voiceDefault": "PADRÃO",
-  "viewoption:voiceLabel": "Voz"
+  "viewoption:voiceLabel": "Voz",
+  "viewoption:wordLookup": "Pesquisa de palavras"
 }

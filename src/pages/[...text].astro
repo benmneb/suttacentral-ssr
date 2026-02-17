@@ -438,7 +438,9 @@ const jsonLd = generateTextJsonLd(
                     />
                   </li>
                   <li role="menuitem">
-                    <label for="rooter-look-up">↳ Word lookup</label>
+                    <label for="rooter-look-up">
+                      ↳ {t(userLanguage, 'viewoption:wordLookup')}
+                    </label>
                     <input
                       type="checkbox"
                       id="rooter-look-up"
@@ -453,7 +455,9 @@ const jsonLd = generateTextJsonLd(
             {
               isSegmented && isRootText && availableLangs && (
                 <li role="menuitem">
-                  <label for="rooter-look-up">Word lookup</label>
+                  <label for="rooter-look-up">
+                    {t(userLanguage, 'viewoption:wordLookup')}
+                  </label>
                   <input
                     type="checkbox"
                     id="rooter-look-up"

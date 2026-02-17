@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "Nastavení převodu textu na řeč",
   "viewoption:variant": "Varianta:",
   "viewoption:voiceDefault": "VÝCHOZÍ",
-  "viewoption:voiceLabel": "Hlas"
+  "viewoption:voiceLabel": "Hlas",
+  "viewoption:wordLookup": "Vyhledávání slov"
 }

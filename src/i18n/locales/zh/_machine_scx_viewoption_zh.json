@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "文本转语音设置",
   "viewoption:variant": "异读：",
   "viewoption:voiceDefault": "默认",
-  "viewoption:voiceLabel": "语音"
+  "viewoption:voiceLabel": "语音",
+  "viewoption:wordLookup": "词语查询"
 }

@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "ટેક્સ્ટ ટુ સ્પીચ સેટિંગ્સ",
   "viewoption:variant": "વૈકલ્પિક:",
   "viewoption:voiceDefault": "ડિફોલ્ટ",
-  "viewoption:voiceLabel": "અવાજ"
+  "viewoption:voiceLabel": "અવાજ",
+  "viewoption:wordLookup": "શબ્દ શોધ"
 }

@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "Text to speech settings",
   "viewoption:variant": "Variant:",
   "viewoption:voiceDefault": "DEFAULT",
-  "viewoption:voiceLabel": "Voice"
+  "viewoption:voiceLabel": "Voice",
+  "viewoption:wordLookup": "Word lookup"
 }

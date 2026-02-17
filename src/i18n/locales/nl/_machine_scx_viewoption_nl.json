@@ -22,5 +22,6 @@
   "viewoption:ttsSettings": "Tekst-naar-spraak instellingen",
   "viewoption:variant": "Variant:",
   "viewoption:voiceDefault": "STANDAARD",
-  "viewoption:voiceLabel": "Stem"
+  "viewoption:voiceLabel": "Stem",
+  "viewoption:wordLookup": "Woord opzoeken"
 }
