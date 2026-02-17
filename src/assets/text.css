@@ -312,6 +312,12 @@
   }
 }
 
+.segment .text {
+  /* Override default non-text cursor from `pointer-events: none`
+  on a.look-up on root text spans when lookup feature is disabled */
+  cursor: text;
+}
+
 a.look-up {
   color: inherit;
   text-decoration: none;
