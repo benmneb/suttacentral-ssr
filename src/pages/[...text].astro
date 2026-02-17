@@ -857,16 +857,20 @@ const jsonLd = generateTextJsonLd(
   let data: Record<string, LookupEntry | PaliMatch[]> | null = null
   let words: HTMLAnchorElement[] = []
   let current = -1
-  const toggle = document.getElementById(
+  const lookupToggle = document.getElementById(
     'rooter-look-up'
   ) as HTMLInputElement | null
-  const isLzh = toggle?.dataset.from === 'lzh'
+  const rooter = document.getElementById('rooter') as HTMLInputElement | null
+  const isLzh = lookupToggle?.dataset.from === 'lzh'
   const popover = document.getElementById('definition') as HTMLElement | null
 
-  toggle?.addEventListener('change', async () => {
-    if (!toggle.checked || data) return
+  lookupToggle?.addEventListener('change', async () => {
+    // disabled is used as loading state - prevent concurrent fetches
+    if (!lookupToggle.checked || data || lookupToggle.disabled) return
+    // Don't fetch if rooter checkbox exists but is unchecked (root text hidden)
+    if (rooter && !rooter.checked) return
 
-    toggle.disabled = true
+    lookupToggle.disabled = true
 
     try {
       const unique = new Set<string>()
@@ -879,8 +883,8 @@ const jsonLd = generateTextJsonLd(
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           words: [...unique],
-          from: toggle.dataset.from,
-          to: toggle.dataset.to,
+          from: lookupToggle.dataset.from,
+          to: lookupToggle.dataset.to,
         }),
       })
 
@@ -898,9 +902,22 @@ const jsonLd = generateTextJsonLd(
         })
       }
     } catch {
-      toggle.checked = false
+      lookupToggle.checked = false
     } finally {
-      toggle.disabled = false
+      lookupToggle.disabled = false
+    }
+  })
+
+  // When rooter is checked and lookup is already enabled, trigger the fetch
+  rooter?.addEventListener('change', () => {
+    // disabled is used as loading state - don't dispatch if fetch is in progress
+    if (
+      rooter.checked &&
+      lookupToggle?.checked &&
+      !data &&
+      !lookupToggle.disabled
+    ) {
+      lookupToggle.dispatchEvent(new Event('change'))
     }
   })
 
@@ -1018,9 +1035,6 @@ const jsonLd = generateTextJsonLd(
       words.forEach(w => w.classList.remove('active'))
     }
   })
-
-  // Auto-initialize if preference was restored by prefs handler script above
-  if (toggle?.checked) toggle.dispatchEvent(new Event('change'))
 </script>
 
 <script>
