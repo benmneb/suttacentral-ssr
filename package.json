@@ -9,7 +9,6 @@
   "packageManager": "pnpm@10.24.0",
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "pnpm fetch-dicts",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
