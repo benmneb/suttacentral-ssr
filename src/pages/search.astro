@@ -327,19 +327,32 @@ if (query) {
         overflow-wrap: break-word;
         padding-left: 3ch;
 
-        &:nth-of-type(2) {
-          list-style-type: disc;
-        }
         li:first-of-type h2 {
           margin-top: 0;
+        }
+
+        &:nth-of-type(2) {
+          list-style-type: none;
+
+          & > li:not(.dictionary-hit) {
+            border: 1px solid;
+            border-color: var(--bg-alt-1);
+            border-radius: var(--rounding);
+            padding: 1rem;
+
+            &:not(li:first-of-type) {
+              margin-top: 1rem;
+            }
+          }
         }
       }
 
       .dictionary-hit {
         border: 1px solid;
         border-radius: var(--rounding);
-        border-color: var(--bg-alt-4);
+        border-color: var(--bg-alt-3);
         padding: 1rem;
+        margin-bottom: 1rem;
         list-style: none;
 
         p:first-of-type {
