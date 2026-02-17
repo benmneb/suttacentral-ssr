@@ -11,7 +11,7 @@ import {
   getAllPreferredLanguages,
   getPreferredLanguage,
 } from '~/utils/language'
-import { expandUid } from '~/utils/strings'
+import { expandUid, normalise } from '~/utils/strings'
 
 const { searchParams } = Astro.url
 const acceptLanguage = Astro.request.headers.get('accept-language')
@@ -135,9 +135,9 @@ if (query) {
                               {hit.is_article
                                 ? hit.heading.title
                                 : (hit.name || hit.heading?.title) &&
-                                    hit.root_name.trim().toLowerCase() !==
-                                      (hit.name.trim().toLowerCase() ||
-                                        hit.heading?.title.trim().toLowerCase())
+                                    normalise(hit.root_name) !==
+                                      (normalise(hit.name) ||
+                                        normalise(hit.heading?.title))
                                   ? `${hit.root_name}—${hit.name || hit.heading?.title}`
                                   : hit.name ||
                                     hit.heading?.title ||

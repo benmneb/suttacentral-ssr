@@ -3,7 +3,7 @@ import '~/assets/details.css'
 import '~/assets/text-meta-content.css'
 import Heading, { type HeadingProps } from '~/components/heading.astro'
 import { t } from '~/i18n'
-import { toSentenceCase, uidToAcronym } from '~/utils/strings'
+import { normalise, toSentenceCase, uidToAcronym } from '~/utils/strings'
 import ParallelsDetails from './parallels-details.astro'
 
 interface Props {
@@ -68,7 +68,8 @@ function printIconsHTML(translation) {
             : entry.title || uidToAcronym(inRangeSuttaId!)
           : entry.original_title &&
               entry.translated_title &&
-              entry.original_title !== entry.translated_title
+              normalise(entry.original_title) !==
+                normalise(entry.translated_title)
             ? `${entry.original_title}—${entry.translated_title}`
             : entry.translated_title || entry.original_title
       }

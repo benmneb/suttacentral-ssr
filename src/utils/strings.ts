@@ -16,6 +16,11 @@ export function toSentenceCase(str: string): string {
     .replace(/(^\s*\p{L}|[.!?]\s+\p{L})/gu, match => match.toUpperCase())
 }
 
+export function normalise(str: string): string {
+  if (!str) return ''
+  return str.trim().toLowerCase()
+}
+
 export function uidToAcronym(uidInput: string) {
   if (!uidInput) return ''
   // I think it's only AN and Dhp that have range suttas, but anyway...
