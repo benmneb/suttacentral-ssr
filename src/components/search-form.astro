@@ -45,50 +45,46 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
     >
   </fieldset>
   <fieldset>
-    <div>
-      {
-        pathname !== '/search-options' && (
-          <>
-            <input type="checkbox" id="language-toggle" class="sr-only" />
-            <label for="language-toggle" class="language-toggle-label">
-              🌐
-              {!!languageArray?.length && (
-                <span> ({languageArray.length})</span>
-              )}
-              <span class="sr-only">
-                {t(userLanguage, 'interface:languages')}
-              </span>
-            </label>
-          </>
-        )
-      }
-    </div>
-    <div>
-      <legend class="sr-only">{t(userLanguage, 'search:searchOptions')}</legend>
-      <label>
-        {t(userLanguage, 'search:matchPartial')}
-        <input
-          type="checkbox"
-          name="matchpartial"
-          value="true"
-          checked={matchPartial}
-        />
-      </label>
-      {
-        pathname !== '/search-filter' && (
-          <label>
-            <span class="sr-only">Filter</span>
-            <button
-              type="button"
-              popovertarget="search-filters-modal"
-              aria-label={t(userLanguage, 'interface:searchFilter')}
-            >
-              ℹ️
-            </button>
+    <legend class="sr-only">{t(userLanguage, 'search:searchOptions')}</legend>
+    <label>
+      {t(userLanguage, 'search:matchPartial')}
+      <input
+        type="checkbox"
+        name="matchpartial"
+        value="true"
+        checked={matchPartial}
+      />
+    </label>
+    {
+      pathname !== '/search-filter' && (
+        <label>
+          <span class="sr-only">Filter</span>
+          <button
+            type="button"
+            popovertarget="search-filters-modal"
+            aria-label={t(userLanguage, 'interface:searchFilter')}
+          >
+            ℹ️
+          </button>
+        </label>
+      )
+    }
+    <!-- <div> -->
+    {
+      pathname !== '/search-options' && (
+        <>
+          <input type="checkbox" id="language-toggle" class="sr-only" />
+          <label for="language-toggle" class="language-toggle-label">
+            🌐
+            {!!languageArray?.length && <span> ({languageArray.length})</span>}
+            <span class="sr-only">
+              {t(userLanguage, 'interface:languages')}
+            </span>
           </label>
-        )
-      }
-    </div>
+        </>
+      )
+    }
+    <!-- </div> -->
     <SearchOptionsContent />
   </fieldset>
 </form>
@@ -154,7 +150,7 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
       padding: 0;
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
+      justify-content: end;
       gap: 0.5rem;
       color: var(--text-color-secondary);
 
@@ -173,8 +169,6 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
 
       .language-toggle-label {
         cursor: pointer;
-        /* border-radius: var(--rounding); */
-        /* padding: 0 0.2rem; */
 
         &:hover {
           background-color: var(--primary-color);
