@@ -176,6 +176,7 @@ if (query) {
                 {(!!dictionaryHits.length || !!suttaplexHits.length) && (
                   <ol>
                     {!!dictionaryHits.length &&
+                      page === 1 &&
                       dictionaryHits.map(hit => (
                         <li class="dictionary-hit">
                           <p>
