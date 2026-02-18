@@ -530,6 +530,10 @@ input[type='range'] {
 [popover]#parallels {
   max-width: calc(min(60ch, 100vw) - 2rem);
   width: 100%;
+
+  h1 {
+    margin-top: 0;
+  }
 }
 
 [popover]#info::backdrop,

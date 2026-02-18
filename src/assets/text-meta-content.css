@@ -16,11 +16,15 @@ hgroup:has(p) {
 }
 
 .leaf-node {
-  list-style: disc;
-  margin-left: 2rem;
+  list-style: none;
+  border: 1px solid var(--bg-alt-1);
+  border-radius: var(--rounding);
+  padding: 1rem;
+  margin-bottom: 1rem;
 
   h1 {
     font-size: x-large;
+    margin-top: 0;
   }
 }
 
