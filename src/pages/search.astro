@@ -70,7 +70,7 @@ if (query) {
 
   hits = searchData.hits.filter(h => h.category !== 'dictionary')
   dictionaryHits = searchData.hits.filter(h => h.category === 'dictionary')
-  suttaplexHits = searchData.suttaplex
+  suttaplexHits = searchData.suttaplex.slice(offset / 2, (page * limit) / 2)
 
   hasMore = searchData.total > page * limit
   hasPrevious = page > 1
