@@ -14,8 +14,7 @@ This project fetches data from SuttaCentral's public APIs at request time and se
 - **Instant search** — Fast, powerful search using SuttaCentral's API (includes Pali dictionary lookups)
 - **URLs you know and love** — Mirrors SuttaCentral.net URL structure (just change `.net` to `.now`, or use the [browser extension](https://sr.ht/~benmneb/suttacentral-redirect))
 - **Flexible text settings** — Customizable reading preferences for footnotes, root-text views, and reference links
-- **Minimal JavaScript** — Optional 7.44kb of client-side JS to persist text view settings in local storage and enable text-to-speech via the Web Speech API
-- Has a real favicon
+- **Minimal JavaScript** — Optional 7.65kb of client-side JS to enable inline Pali & Chinese dictionary lookups and text-to-speech via the Web Speech API
 
 ## Performance Comparisons
 
@@ -58,4 +57,4 @@ All benchmarks measured via <https://pagespeed.web.dev> for desktop on 22/01/202
 
 Donated to the public domain via [CC0](https://creativecommons.org/publicdomain/zero/1.0/)
 
-Favicon designed by [thesunshade](https://github.com/thesunshade/citation-helper)
+Favicon via [thesunshade](https://github.com/thesunshade/citation-helper)
