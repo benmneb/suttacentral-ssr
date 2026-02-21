@@ -10,6 +10,19 @@ details {
     &:active {
       background-color: var(--details-summary-hover-background);
     }
+
+    &::marker {
+      /* Same as var(--serif-font) but without the emojis, so Safari doesn't make it an emoji when closed */
+      font-family:
+        Iowan Old Style,
+        Apple Garamond,
+        Baskerville,
+        Times New Roman,
+        Droid Serif,
+        Times,
+        Source Serif Pro,
+        serif;
+    }
   }
 
   ul {
