@@ -807,23 +807,41 @@ const jsonLd = generateTextJsonLd(
   }
 
   /**
-   * Set up listeners for all elements present on the current page.
+   * Applies saved cookie prefs to all elements, overriding any stale server-rendered HTML
    */
-  function init() {
+  function applyPrefs() {
+    const prefs = getCookiePrefs()
     IDS.forEach(id => {
+      if (!(id in prefs)) return
       const el = document.getElementById(id)
       if (!el) return
-      const eventType =
-        el instanceof HTMLInputElement && el.type === 'range'
-          ? 'input'
-          : 'change'
-      el.addEventListener(eventType, save)
+      if (el instanceof HTMLInputElement && el.type === 'checkbox') {
+        el.checked = Boolean(prefs[id])
+      } else if (el instanceof HTMLInputElement && el.type === 'range') {
+        el.value = String(prefs[id])
+      } else if (el instanceof HTMLSelectElement) {
+        const opt = [...el.options].find(o => o.dataset.name === prefs[id])
+        if (opt) el.value = opt.value
+      }
     })
   }
 
-  init()
+  // Save immediately on any preference change via event delegation
+  document.addEventListener('change', e => {
+    if (e.target instanceof HTMLElement && IDS.includes(e.target.id)) save()
+  })
+  document.addEventListener('input', e => {
+    if (
+      e.target instanceof HTMLInputElement &&
+      e.target.type === 'range' &&
+      IDS.includes(e.target.id)
+    )
+      save()
+  })
 
-  // Dispatch change events on page load so other scripts can initialise correctly (word lookup, TTS)
+  // Correct any stale server-rendered HTML with current cookie values, then
+  // dispatch change events so other scripts (word lookup, TTS) initialise correctly
+  applyPrefs()
   IDS.forEach(id => {
     const el = document.getElementById(id)
     if (
@@ -836,6 +854,11 @@ const jsonLd = generateTextJsonLd(
   })
 
   waitForVoiceSelect().then(loadVoiceSelect)
+
+  // On BFCache restore the script doesn't re-run, so reapply via pageshow
+  window.addEventListener('pageshow', e => {
+    if (e.persisted) applyPrefs()
+  })
 </script>
 
 <script>
