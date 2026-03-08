@@ -485,10 +485,9 @@ a.look-up {
 }
 
 .tts-clickable {
-  cursor: pointer;
-
   &:hover {
     background-color: var(--tts-hover-background-color);
+    cursor: pointer;
   }
 }
 
