@@ -6,3 +6,8 @@ dd .eti {
 dd .info {
   display: none;
 }
+
+.grammar {
+  display: block;
+  color: var(--text-color-secondary);
+}

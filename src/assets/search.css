@@ -15,8 +15,14 @@ ol li a:has(.reference) {
   }
 }
 
-/* This class comes through from SC to highlight search term(s) in results  */
+/* These come through from SC search results */
 .highlight {
   background-color: var(--tts-hover-background-color);
   color: var(--tts-highlight-text-color);
+}
+
+/* Dictionary results */
+.grammar {
+  display: block;
+  color: var(--text-color-secondary);
 }
