@@ -130,10 +130,15 @@ function printIconsHTML(translation) {
       )
     }
     {
-      (entry.type === 'leaf' || entry.uid.startsWith('pli-tv-')) && (
+      (entry.type === 'leaf' ||
+        (entry.uid.startsWith('pli-tv-') && !!entry.parallel_count)) && (
         <ParallelsDetails
           data={entry}
-          parallelsOpen={parallelsOpen || !entry.translations.length}
+          parallelsOpen={
+            parallelsOpen ||
+            (!(entry.uid.startsWith('pli-tv-') && !!entry.parallel_count) &&
+              !entry.translations.length)
+          }
           userLanguage={userLanguage}
           isIndividualRangeSutta={isIndividualRangeSutta}
           inRangeSuttaId={inRangeSuttaId}

@@ -76,24 +76,23 @@ const jsonLd =
   <main>
     <ol>
       {
-        (isPatimokkha ? [suttaplexData[0]] : suttaplexData).map(
-          (entry: { type: string }) => (
-            <li
-              class={
-                suttaplexData.length > 1 && entry.type === 'leaf'
-                  ? 'leaf-node'
-                  : ''
-              }
-            >
-              <TextMetaContent
-                data={entry}
-                userLanguage={userLanguage}
-                isIndividualRangeSutta={isIndividualRangeSutta}
-                inRangeSuttaId={chapter}
-              />
-            </li>
-          )
-        )
+        (isPatimokkha ? [suttaplexData[0]] : suttaplexData).map(entry => (
+          <li
+            class={
+              (suttaplexData.length > 1 && entry.type === 'leaf') ||
+              (entry.type === 'root' && !!entry.parallel_count)
+                ? 'leaf-node'
+                : ''
+            }
+          >
+            <TextMetaContent
+              data={entry}
+              userLanguage={userLanguage}
+              isIndividualRangeSutta={isIndividualRangeSutta}
+              inRangeSuttaId={chapter}
+            />
+          </li>
+        ))
       }
       {
         isPatimokkha && (
