@@ -757,6 +757,11 @@ article {
     }
   }
 
+  a:not([href])[title] {
+    /* Used in legacy texts, ie in /an3.77/en/thanissaro */
+    cursor: help;
+  }
+
   blockquote:has(.verse-line) {
     margin-left: unset;
     margin-right: unset;
