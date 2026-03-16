@@ -16,3 +16,8 @@ table {
     font-weight: bold;
   }
 }
+
+dt {
+  font-weight: bold;
+  margin: 0.75em 0 0 0;
+}
