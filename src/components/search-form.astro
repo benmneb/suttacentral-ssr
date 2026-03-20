@@ -57,19 +57,23 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
     </label>
     {
       pathname !== '/search-filter' && (
-        <label>
-          <span class="sr-only">Filter</span>
-          <button
+        <>
+          <input
             type="button"
+            id="filter-toggle"
+            class="sr-only"
             popovertarget="search-filters-modal"
+          />
+          <label
+            for="filter-toggle"
+            class="filter-toggle-label"
             aria-label={t(userLanguage, 'interface:searchFilter')}
           >
             ℹ️
-          </button>
-        </label>
+          </label>
+        </>
       )
     }
-    <!-- <div> -->
     {
       pathname !== '/search-options' && (
         <>
@@ -84,7 +88,6 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
         </>
       )
     }
-    <!-- </div> -->
     <SearchOptionsContent />
   </fieldset>
 </form>
@@ -154,19 +157,7 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
       gap: 0.5rem;
       color: var(--text-color-secondary);
 
-      button {
-        border: none;
-        background: none;
-        cursor: pointer;
-        border-radius: var(--rounding);
-        font-size: inherit;
-        padding: 0 0.2rem;
-
-        &:hover {
-          background-color: var(--primary-color);
-        }
-      }
-
+      .filter-toggle-label,
       .language-toggle-label {
         cursor: pointer;
 
