@@ -8,7 +8,13 @@ import cloudflare from '@astrojs/cloudflare'
 export default defineConfig({
   devToolbar: { enabled: false },
   output: 'server',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imageService: 'compile',
+    prerenderEnvironment: 'node',
+  }),
+  session: {
+    driver: { entrypoint: 'unstorage/drivers/null' },
+  },
   site: 'https://suttacentral.now',
   vite: {
     plugins: [tailwindcss()],
