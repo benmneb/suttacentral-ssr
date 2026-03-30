@@ -5,7 +5,7 @@ import { generatePitakaJsonLd } from '~/utils/json-ld'
 import { getPreferredLanguage } from '~/utils/language'
 
 const { pathname } = Astro.url
-const uid = pathname?.split('/').pop()
+const uid = pathname?.split('/').pop()?.toLowerCase()
 
 const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = getPreferredLanguage(acceptLanguage)
