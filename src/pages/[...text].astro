@@ -22,9 +22,10 @@ if (parts.length !== 3) {
   return Astro.rewrite('/404')
 }
 const [acronym, language, authorUid] = parts
+const lowerAcronym = acronym.toLowerCase()
 
 const suttasResponse = await fetch(
-  `https://suttacentral.net/api/suttas/${acronym}/${authorUid}?lang=${language}&siteLanguage=${userLanguage}`
+  `https://suttacentral.net/api/suttas/${lowerAcronym}/${authorUid}?lang=${language}&siteLanguage=${userLanguage}`
 )
 const suttasData = await suttasResponse.json()
 
@@ -33,11 +34,11 @@ const isRangeSutta = !!suttasData.range_uid
 if (!suttasData.root_text && !suttasData.translation) {
   for (const author of suttasData.candidate_authors ?? []) {
     const response = await fetch(
-      `https://suttacentral.net/api/suttas/${acronym}/${author}?lang=${language}&siteLanguage=${userLanguage}`
+      `https://suttacentral.net/api/suttas/${lowerAcronym}/${author}?lang=${language}&siteLanguage=${userLanguage}`
     )
     const data = await response.json()
     if (data.root_text || data.translation) {
-      return Astro.redirect(`/${acronym}/${language}/${author}`)
+      return Astro.redirect(`/${lowerAcronym}/${language}/${author}`)
     }
   }
 
@@ -47,7 +48,7 @@ if (!suttasData.root_text && !suttasData.translation) {
 }
 
 const suttaplexResponse = await fetch(
-  `https://suttacentral.net/api/suttaplex/${suttasData.range_uid ?? acronym}?language=${userLanguage}`
+  `https://suttacentral.net/api/suttaplex/${suttasData.range_uid ?? lowerAcronym}?language=${userLanguage}`
 )
 const suttaplexData = await suttaplexResponse.json()
 
@@ -60,7 +61,7 @@ if (!suttaplexData?.[0]?.uid) {
 let bilaraData = {}
 if (suttasData.segmented) {
   const bilaraResponse = await fetch(
-    `https://suttacentral.net/api/bilarasuttas/${suttasData.range_uid ?? acronym}/${authorUid}?lang=${language}`
+    `https://suttacentral.net/api/bilarasuttas/${suttasData.range_uid ?? lowerAcronym}/${authorUid}?lang=${language}`
   )
   bilaraData = await bilaraResponse.json()
 
@@ -72,7 +73,7 @@ if (suttasData.segmented) {
 
   if (isRangeSutta) {
     const matchKey = (key: string) =>
-      key.split(':')[0].toLowerCase() === acronym.toLowerCase() ||
+      key.split(':')[0].toLowerCase() === lowerAcronym ||
       bilaraData.html_text[key]?.includes("class='range'") ||
       bilaraData.html_text[key]?.includes("class='range-title'") ||
       bilaraData.html_text[key]?.includes("class='subdivision'")
@@ -94,18 +95,18 @@ if (suttasData.segmented) {
 
 const [publicationData, crumbsData] = await Promise.all([
   fetch(
-    `https://suttacentral.net/api/publication_info/${suttasData.range_uid ?? acronym}/${language}/${authorUid}`
+    `https://suttacentral.net/api/publication_info/${suttasData.range_uid ?? lowerAcronym}/${language}/${authorUid}`
   ).then(r => r.json()),
   fetch(
-    `https://suttacentral.net/api/navigation_data/${suttasData.range_uid ?? acronym}?language=${userLanguage}`
+    `https://suttacentral.net/api/navigation_data/${suttasData.range_uid ?? lowerAcronym}?language=${userLanguage}`
   ).then(r => r.json()),
 ])
 const modifiedCrumbsData = [
   ...crumbsData,
   {
-    uid: acronym,
-    title: isRangeSutta ? uidToAcronym(acronym) : suttaplexData[0].acronym,
-    url: `/${acronym}`,
+    uid: lowerAcronym,
+    title: isRangeSutta ? uidToAcronym(lowerAcronym) : suttaplexData[0].acronym,
+    url: `/${lowerAcronym}`,
   },
   { uid: authorUid, title: suttasData.translation.author },
 ]
@@ -119,7 +120,7 @@ if (isRangeSutta) {
     const prefix = beginMatch[1]
     const vaggaStart = parseInt(beginMatch[2], 10)
     const vaggaEnd = parseInt(endMatch[3], 10)
-    const current = parseInt(acronym.replace(prefix, ''), 10)
+    const current = parseInt(lowerAcronym.replace(prefix, ''), 10)
     if (current > vaggaStart) rangePrev = `${prefix}${current - 1}`
     if (current < vaggaEnd) rangeNext = `${prefix}${current + 1}`
   }
@@ -311,7 +312,7 @@ const jsonLd = generateTextJsonLd(
 
 <Layout
   title={isRangeSutta
-    ? `${uidToAcronym(acronym)}—${suttasData.translation.author || suttasData.root_text.author}`
+    ? `${uidToAcronym(lowerAcronym)}—${suttasData.translation.author || suttasData.root_text.author}`
     : `${suttaplexData[0].acronym}: ${suttaplexData[0].original_title}—${suttasData.translation.author || suttasData.root_text.author}`}
   description={suttaplexData[0]?.blurb?.replace(/<[^>]*>/g, '')}
   breadcrumbs={modifiedCrumbsData}
@@ -607,7 +608,7 @@ const jsonLd = generateTextJsonLd(
         userLanguage={userLanguage}
         parallelsOpen
         isIndividualRangeSutta={isRangeSutta}
-        inRangeSuttaId={acronym}
+        inRangeSuttaId={lowerAcronym}
       />
     </article>
     {

@@ -10,15 +10,17 @@ const { chapter } = Astro.params
 const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = getPreferredLanguage(acceptLanguage)
 
+const lowerChapter = chapter?.toLowerCase()
+
 const suttaplexResponse = await fetch(
-  `https://suttacentral.net/api/suttaplex/${chapter}?language=${userLanguage}`
+  `https://suttacentral.net/api/suttaplex/${lowerChapter}?language=${userLanguage}`
 )
 let suttaplexData = await suttaplexResponse.json()
 let isIndividualRangeSutta = false
 
 if (!suttaplexData?.[0]?.uid) {
   const rangeSuttaplexResponse = await fetch(
-    `https://suttacentral.net/api/range_suttaplex/${chapter}?language=${userLanguage}`
+    `https://suttacentral.net/api/range_suttaplex/${lowerChapter}?language=${userLanguage}`
   )
   const rangeSuttaplexData = await rangeSuttaplexResponse.json()
   if (rangeSuttaplexData?.[0]?.uid) {
@@ -31,7 +33,7 @@ if (!suttaplexData?.[0]?.uid) {
   }
 }
 
-const crumbsUid = isIndividualRangeSutta ? suttaplexData[0].uid : chapter
+const crumbsUid = isIndividualRangeSutta ? suttaplexData[0].uid : lowerChapter
 const crumbsResponse = await fetch(
   `https://suttacentral.net/api/navigation_data/${crumbsUid}?language=${userLanguage}`
 )
@@ -41,33 +43,33 @@ const modifiedCrumbsData = [
   ...(suttaplexData.length === 1
     ? [
         {
-          uid: chapter,
+          uid: lowerChapter,
           title: isIndividualRangeSutta
-            ? uidToAcronym(chapter!)
+            ? uidToAcronym(lowerChapter!)
             : suttaplexData[0].acronym,
         },
       ]
     : []),
 ]
 
-const isPatimokkha = chapter?.endsWith('-pm')
+const isPatimokkha = lowerChapter?.endsWith('-pm')
 
 const origin = Astro.site?.origin ?? ''
 const jsonLd =
   suttaplexData.length === 1
     ? generateTextMetaJsonLd(suttaplexData[0], crumbsData, origin)
-    : generateChapterJsonLd(suttaplexData, chapter!, crumbsData, origin)
+    : generateChapterJsonLd(suttaplexData, lowerChapter!, crumbsData, origin)
 ---
 
 <Layout
   title={isIndividualRangeSutta
-    ? chapter?.startsWith('an')
-      ? uidToAcronym(chapter!)
+    ? lowerChapter?.startsWith('an')
+      ? uidToAcronym(lowerChapter!)
       : suttaplexData[0].title
     : `${
         suttaplexData[0]?.translated_name ||
         suttaplexData[0]?.original_title ||
-        chapter
+        lowerChapter
       }${suttaplexData[0]?.translated_title ? `—${suttaplexData[0].translated_title}` : ''}`}
   description={suttaplexData[0]?.blurb?.replace(/<[^>]*>/g, '')}
   breadcrumbs={modifiedCrumbsData}
@@ -89,7 +91,7 @@ const jsonLd =
               data={entry}
               userLanguage={userLanguage}
               isIndividualRangeSutta={isIndividualRangeSutta}
-              inRangeSuttaId={chapter}
+              inRangeSuttaId={lowerChapter}
             />
           </li>
         ))
@@ -107,7 +109,7 @@ const jsonLd =
                     data={entry}
                     userLanguage={userLanguage}
                     isIndividualRangeSutta={isIndividualRangeSutta}
-                    inRangeSuttaId={chapter}
+                    inRangeSuttaId={lowerChapter}
                   />
                 </li>
               ))}
