@@ -135,6 +135,12 @@
     display: flex;
   }
 
+  main article .endbook,
+  .endvagga,
+  .endkanda {
+    color: unset;
+  }
+
   &:has(#rooter-look-up:checked) .segment .root .text a.look-up {
     pointer-events: auto;
     &:hover,
