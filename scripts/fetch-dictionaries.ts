@@ -13,6 +13,21 @@ import { AVAILABLE_LOOKUPS } from '../src/constants/lookup.ts'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const DATA_DIR = join(__dirname, '..', 'public', 'data')
 
+/**
+ * Writes one dictionary entry per line, so a changed entry shows up as exactly
+ * one changed line in the diff. These files have >100k entries, so prettier
+ * (which wraps at 80 chars) blows them out to millions of lines and chokes
+ * editors — hence `public/data` sits in .prettierignore
+ */
+async function writeJson(filepath, data) {
+  const lines = Object.entries(data).map(
+    ([key, value]) => `${JSON.stringify(key)}:${JSON.stringify(value)}`
+  )
+  const json = `{\n${lines.join(',\n')}\n}\n`
+  await writeFile(filepath, json)
+  return json
+}
+
 const DICTIONARIES = Object.entries(AVAILABLE_LOOKUPS).flatMap(([from, tos]) =>
   tos.map(to => ({ from, to }))
 )
@@ -58,10 +73,10 @@ async function fetchDictionary({ from, to }) {
 
   const filename = `lookup-${from}-${to}.json`
   const filepath = join(DATA_DIR, filename)
-  await writeFile(filepath, JSON.stringify(compact))
+  const json = await writeJson(filepath, compact)
 
   const entries = Object.keys(compact).length
-  const sizeKB = Math.round(JSON.stringify(compact).length / 1024)
+  const sizeKB = Math.round(json.length / 1024)
   console.log(
     `  Saved ${filename} (${entries.toLocaleString()} entries, ${sizeKB.toLocaleString()} KB)`
   )
@@ -100,10 +115,10 @@ async function fetchDPD() {
 
       const jsonName = name.replace(/_/g, '-') + '.json'
       const jsonPath = join(DATA_DIR, jsonName)
-      await writeFile(jsonPath, JSON.stringify(data))
+      const json = await writeJson(jsonPath, data)
 
       const entries = Object.keys(data).length
-      const sizeKB = Math.round(JSON.stringify(data).length / 1024)
+      const sizeKB = Math.round(json.length / 1024)
       console.log(
         `  Saved ${jsonName} (${entries.toLocaleString()} entries, ${sizeKB.toLocaleString()} KB)`
       )

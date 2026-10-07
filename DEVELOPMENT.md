@@ -24,6 +24,8 @@ Dictionary files are committed to the repo for reproducible builds. To re-fetch 
 pnpm fetch-dicts
 ```
 
+The script writes one entry per line, so an upstream edit to a definition shows up as a single changed line rather than a multi-line hunk. `public/data` is in `.prettierignore` to keep it that way — prettier wraps at 80 characters, which turns `lookup-pli-en.json` into 600k+ lines and makes the diff unreadable (and slow enough to hang an editor).
+
 ### Dictionary Sources
 
 - **Pali/Chinese → target language**: `https://suttacentral.net/api/dictionaries/lookup?from={from}&to={to}`
