@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro'
+import { env } from 'cloudflare:workers'
 import {
   type LookupEntry,
   lookupPali,
@@ -9,27 +10,20 @@ import {
 const cache = new Map<string, unknown>()
 
 /**
- * Load a JSON file from `public/data/` as a static asset.
+ * Load a JSON file from `public/data/` via the ASSETS binding.
  * Dictionary files live outside the worker bundle to stay under
  * Cloudflare's 25 MB worker size limit. Results are cached in
  * memory so each file is only fetched/parsed once per worker instance.
+ *
+ * The binding works in dev too (Vite serves `public/`), so there is no
+ * separate filesystem path — `node:fs` cannot reach the project directory
+ * from inside workerd anyway.
  */
-async function loadAsset<T>(
-  path: string,
-  request: Request,
-  runtime: any
-): Promise<T | null> {
+async function loadAsset<T>(path: string, request: Request): Promise<T | null> {
   if (cache.has(path)) return cache.get(path) as T
-  let data: T
-  if (import.meta.env.DEV) {
-    const { readFile } = await import('node:fs/promises')
-    const raw = await readFile(`${process.cwd()}/public${path}`, 'utf-8')
-    data = JSON.parse(raw) as T
-  } else {
-    const res = await runtime.env.ASSETS.fetch(new URL(path, request.url))
-    if (!res.ok) return null
-    data = (await res.json()) as T
-  }
+  const res = await env.ASSETS.fetch(new URL(path, request.url))
+  if (!res.ok) return null
+  const data = (await res.json()) as T
   cache.set(path, data)
   return data
 }
@@ -53,14 +47,12 @@ async function loadAsset<T>(
  * @param from - Source language ('pli' or 'lzh')
  * @param to - Target language ('en', 'es', 'zh', 'pt', 'id', 'nl')
  */
-export const POST: APIRoute = async ({ request, locals }) => {
-  const runtime = (locals as any).runtime
+export const POST: APIRoute = async ({ request }) => {
   const { words, from, to } = await request.json()
 
   const dict = await loadAsset<Record<string, LookupEntry>>(
     `/data/lookup-${from}-${to}.json`,
-    request,
-    runtime
+    request
   )
   if (!dict) return new Response('{}', { status: 404 })
 
@@ -84,13 +76,11 @@ export const POST: APIRoute = async ({ request, locals }) => {
   // Pali: DPD lookup with compound decomposition fallback
   const dpdI2h = await loadAsset<Record<string, string[]>>(
     '/data/dpd-i2h.json',
-    request,
-    runtime
+    request
   )
   const dpdDecon = await loadAsset<Record<string, string>>(
     '/data/dpd-deconstructor.json',
-    request,
-    runtime
+    request
   )
 
   // Fall back to English dict for languages with limited coverage (e.g. id, nl)
@@ -98,8 +88,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     to !== 'en'
       ? await loadAsset<Record<string, LookupEntry>>(
           '/data/lookup-pli-en.json',
-          request,
-          runtime
+          request
         )
       : null
 

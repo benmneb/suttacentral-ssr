@@ -29,6 +29,7 @@
     "astro": "^6.0.8"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260702.1",
     "@tailwindcss/vite": "^4.1.17",
     "daisyui": "^5.5.11",
     "husky": "^9.1.7",
