@@ -67,9 +67,15 @@ const TRANSFORMATIONS: [RegExp, string][] = [
   ],
 ]
 
+/**
+ * Applies TRANSFORMATIONS to every value, dropping untranslated entries.
+ * SC serves empty strings for strings that have no translation yet; those
+ * should be left out entirely so the i18n fallback kicks in.
+ */
 function transform(data: Record<string, string>): Record<string, string> {
   const result: Record<string, string> = {}
   for (const [key, value] of Object.entries(data)) {
+    if (typeof value !== 'string' || value.trim() === '') continue
     result[key] = TRANSFORMATIONS.reduce(
       (acc, [pattern, replacement]) => acc.replace(pattern, replacement),
       value
@@ -123,6 +129,12 @@ for (const base of FILE_BASES) {
       }
 
       const data = transform(raw)
+
+      // Nothing translated at all — don't create/overwrite with an empty file
+      if (Object.keys(data).length === 0) {
+        stats.notFound++
+        return null
+      }
 
       try {
         const existing = JSON.parse(await readFile(filepath, 'utf-8'))
