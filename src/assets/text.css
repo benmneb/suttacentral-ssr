@@ -122,6 +122,7 @@
 /* Root text page: look-up toggle (no rooter parent needed) */
 &:has(#rooter-look-up:checked) .segment .translation .text a.look-up {
   pointer-events: auto;
+  cursor: pointer;
   &:hover,
   &.active {
     color: var(--background-color);
@@ -143,6 +144,7 @@
 
   &:has(#rooter-look-up:checked) .segment .root .text a.look-up {
     pointer-events: auto;
+    cursor: pointer;
     &:hover,
     &.active {
       color: var(--background-color);
@@ -320,19 +322,36 @@
 }
 
 .segment .text {
-  /* Override default non-text cursor from `pointer-events: none`
-  on a.look-up on root text spans when lookup feature is disabled */
   cursor: text;
 }
 
 a.look-up {
   color: inherit;
   text-decoration: none;
+  /* Unclickable without JS, so the /define/ fallback can only be reached by
+  enabling the lookup feature. With JS the block is lifted, see below */
   pointer-events: none;
+  /* The UA stylesheet gives any `a[href]` a pointer cursor, which would make
+  these look clickable while the feature is off. Beats inheriting from .text */
+  cursor: text;
 
   &:visited {
     color: inherit;
   }
+
+  /* These only look like links when the feature is on, so opt out of the
+  global `a:hover` highlight. The `:checked` rules above re-add it, and win */
+  &:hover,
+  &:active {
+    color: inherit;
+    background-color: transparent;
+  }
+}
+
+/* JS blocks the clicks itself, so let the links hit-test - the OS dictionary
+(3D press on macOS) needs that to find the word. Without JS they stay blocked */
+&[data-lookup-js] a.look-up {
+  pointer-events: auto;
 }
 
 #definition[popover] {

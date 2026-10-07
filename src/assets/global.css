@@ -71,7 +71,9 @@ a {
     text-decoration: none;
   }
 
-  &::selection {
+  /* Word look-up links are styled as plain text, so they select like the
+  prose around them rather than taking the link selection colour */
+  &:not(.look-up)::selection {
     background-color: var(--blue-dim);
   }
 }

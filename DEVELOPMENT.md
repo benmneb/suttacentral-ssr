@@ -35,7 +35,8 @@ The script writes one entry per line, so an upstream edit to a definition shows 
 ### Design Decisions
 
 1. **Server-side processing, minimal payload.** Official SC ships the full dictionary + DPD tables (~30MB) as client-side JS. This project processes words server-side and returns only matched results (~70-500KB) that are relevant to the current text.
-1. **Works without JavaScript.** Every word is an `<a href="/define/word">` link. If JS fails or is disabled, users still get definitions via the `/define/` route.
+1. **Works without JavaScript.** Every word is an `<a href="/define/word">` link. If JS fails or is disabled, ticking the "Word Lookup" checkbox makes those links navigable, so definitions are still reachable via the `/define/` route.
+1. **Clicks are blocked in CSS, and JS enables them.** The words are `pointer-events: none` so they can't be followed without JS; `data-lookup-js` on `<html>` lifts that and a delegated click handler on `main` blocks the clicks instead. Don't move this back into CSS: `pointer-events: none` takes the words out of hit-testing, which stops Firefox/macOS offering the native dictionary on a 3D press. For the same reason JS sets `draggable = false` on each link, so dragging selects text rather than dragging a URL. This mirrors the "listen" menu, whose controls ship disabled and are enabled by script.
 
 ---
 

@@ -880,9 +880,15 @@ const jsonLd = generateTextJsonLd(
   const rooter = document.getElementById('rooter') as HTMLInputElement | null
   const isLzh = lookupToggle?.dataset.from === 'lzh'
   const popover = document.getElementById('definition') as HTMLElement | null
+  // Every word of the root text, in document order. The DOM doesn't change
+  // after render, so collect them once
+  const lookUpLinks = [
+    ...document.querySelectorAll<HTMLAnchorElement>('a.look-up'),
+  ]
 
   /**
-   * Fetch the dictionary and claim clicks on the look-up links.
+   * Fetch the dictionary for the words on this page. Having `data` is what
+   * lets the click handler below show a definition.
    *
    * Called on load as well as on change, because the toggle can already be
    * checked from the cookie when the page renders. Relying on the prefs script
@@ -898,10 +904,7 @@ const jsonLd = generateTextJsonLd(
     lookupToggle.disabled = true
 
     try {
-      const unique = new Set<string>()
-      document.querySelectorAll<HTMLAnchorElement>('a.look-up').forEach(el => {
-        unique.add(decodeURIComponent(el.pathname.split('/').pop()!))
-      })
+      const unique = new Set(lookUpLinks.map(getWord))
 
       const res = await fetch('/api/lookup', {
         method: 'POST',
@@ -916,16 +919,7 @@ const jsonLd = generateTextJsonLd(
       if (!res.ok) throw new Error()
 
       data = await res.json()
-      words = [...document.querySelectorAll<HTMLAnchorElement>('a.look-up')]
-
-      for (const [i, el] of words.entries()) {
-        el.addEventListener('click', e => {
-          e.preventDefault()
-          words.forEach(w => w.classList.remove('active'))
-          current = i
-          show(decodeURIComponent(el.pathname.split('/').pop()!))
-        })
-      }
+      words = lookUpLinks
     } catch {
       lookupToggle.checked = false
     } finally {
@@ -938,6 +932,54 @@ const jsonLd = generateTextJsonLd(
   rooter?.addEventListener('change', enableLookup)
   // The toggle can be checked already, from the cookie read server-side
   enableLookup()
+
+  /**
+   * The links are `pointer-events: none` by default so they can't be followed
+   * without JS. With JS we lift that - the OS dictionary (3D press on macOS)
+   * needs them to hit-test - and block the clicks from here instead.
+   */
+  document.documentElement.dataset.lookupJs = ''
+
+  // Lifting pointer-events makes these drag like links, which eats text
+  // selection. draggable=false is the only cross-browser fix - Firefox has no
+  // -webkit-user-drag, and cancelling dragstart doesn't give the selection back
+  lookUpLinks.forEach(el => (el.draggable = false))
+
+  /**
+   * There is one of these per word, so while the feature is off they are just
+   * text and have no business being hundreds of tab stops. While it's on they
+   * go back in, so Enter opens a definition like a click does.
+   */
+  function setTabbable(tabbable: boolean) {
+    for (const el of lookUpLinks) {
+      if (tabbable) el.removeAttribute('tabindex')
+      else el.tabIndex = -1
+    }
+  }
+
+  setTabbable(!!lookupToggle?.checked)
+
+  lookupToggle?.addEventListener('change', () => {
+    setTabbable(lookupToggle.checked)
+    // Turning the feature off mid-page should stop it there and then
+    if (lookupToggle.checked) return
+    popover?.hidePopover()
+    words.forEach(w => w.classList.remove('active'))
+  })
+
+  document.querySelector('main')?.addEventListener('click', e => {
+    const link = (e.target as HTMLElement).closest<HTMLAnchorElement>(
+      'a.look-up'
+    )
+    if (!link) return
+    e.preventDefault() // never navigate while JS is live
+    // Checked state, not just `data` - the dictionary stays cached after the
+    // toggle goes off, and the links still hit-test because of data-lookup-js
+    if (!lookupToggle?.checked || !data) return
+    words.forEach(w => w.classList.remove('active'))
+    current = words.indexOf(link)
+    show(getWord(link))
+  })
 
   function getWord(el: HTMLAnchorElement): string {
     return decodeURIComponent(el.pathname.split('/').pop()!)
