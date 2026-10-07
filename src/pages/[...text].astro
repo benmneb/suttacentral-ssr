@@ -438,18 +438,20 @@ const jsonLd = generateTextJsonLd(
                       checked={viewPrefs['rooter-side'] ?? false}
                     />
                   </li>
-                  <li role="menuitem">
-                    <label for="rooter-look-up">
-                      ↳ {t(userLanguage, 'viewoption:wordLookup')}
-                    </label>
-                    <input
-                      type="checkbox"
-                      id="rooter-look-up"
-                      checked={viewPrefs['rooter-look-up'] ?? false}
-                      data-from={rootLang}
-                      data-to={lookupTargetLang}
-                    />
-                  </li>
+                  {availableLangs && (
+                    <li role="menuitem">
+                      <label for="rooter-look-up">
+                        ↳ {t(userLanguage, 'viewoption:wordLookup')}
+                      </label>
+                      <input
+                        type="checkbox"
+                        id="rooter-look-up"
+                        checked={viewPrefs['rooter-look-up'] ?? false}
+                        data-from={rootLang}
+                        data-to={lookupTargetLang}
+                      />
+                    </li>
+                  )}
                 </>
               )
             }
@@ -840,19 +842,10 @@ const jsonLd = generateTextJsonLd(
       save()
   })
 
-  // Correct any stale server-rendered HTML with current cookie values, then
-  // dispatch change events so other scripts (word lookup, TTS) initialise correctly
+  // Correct any stale server-rendered HTML with current cookie values.
+  // Scripts that need to act on a pref at load time read it themselves rather
+  // than waiting on a change event from here - this runs before they do.
   applyPrefs()
-  IDS.forEach(id => {
-    const el = document.getElementById(id)
-    if (
-      el instanceof HTMLInputElement &&
-      el.type === 'checkbox' &&
-      el.checked
-    ) {
-      el.dispatchEvent(new Event('change'))
-    }
-  })
 
   waitForVoiceSelect().then(loadVoiceSelect)
 
@@ -888,9 +881,17 @@ const jsonLd = generateTextJsonLd(
   const isLzh = lookupToggle?.dataset.from === 'lzh'
   const popover = document.getElementById('definition') as HTMLElement | null
 
-  lookupToggle?.addEventListener('change', async () => {
+  /**
+   * Fetch the dictionary and claim clicks on the look-up links.
+   *
+   * Called on load as well as on change, because the toggle can already be
+   * checked from the cookie when the page renders. Relying on the prefs script
+   * to dispatch a synthetic change event doesn't work - that script runs first,
+   * before this listener exists.
+   */
+  async function enableLookup() {
     // disabled is used as loading state - prevent concurrent fetches
-    if (!lookupToggle.checked || data || lookupToggle.disabled) return
+    if (!lookupToggle?.checked || data || lookupToggle.disabled) return
     // Don't fetch if rooter checkbox exists but is unchecked (root text hidden)
     if (rooter && !rooter.checked) return
 
@@ -930,20 +931,13 @@ const jsonLd = generateTextJsonLd(
     } finally {
       lookupToggle.disabled = false
     }
-  })
+  }
 
-  // When rooter is checked and lookup is already enabled, trigger the fetch
-  rooter?.addEventListener('change', () => {
-    // disabled is used as loading state - don't dispatch if fetch is in progress
-    if (
-      rooter.checked &&
-      lookupToggle?.checked &&
-      !data &&
-      !lookupToggle.disabled
-    ) {
-      lookupToggle.dispatchEvent(new Event('change'))
-    }
-  })
+  lookupToggle?.addEventListener('change', enableLookup)
+  // Covers enabling the root text while lookup is already on
+  rooter?.addEventListener('change', enableLookup)
+  // The toggle can be checked already, from the cookie read server-side
+  enableLookup()
 
   function getWord(el: HTMLAnchorElement): string {
     return decodeURIComponent(el.pathname.split('/').pop()!)
