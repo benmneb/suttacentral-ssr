@@ -723,6 +723,15 @@ article {
       background-color: var(--primary-color);
       color: var(--background-color);
     }
+
+    &.variant-btn {
+      color: var(--variant-btn-color);
+
+      &:focus {
+        background-color: var(--variant-btn-color);
+        color: var(--background-color);
+      }
+    }
   }
 
   ul li {
@@ -765,6 +774,7 @@ article {
 
     .inline-comment {
       display: none;
+      font-size: initial;
     }
   }
 

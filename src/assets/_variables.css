@@ -62,6 +62,7 @@
   --headings-color: var(--fg);
   --primary-color: light-dark(var(--orange), var(--yellow));
   --primary-color-alt: light-dark(var(--orange-alt), var(--yellow-dim));
+  --variant-btn-color: var(--blue);
   --shadow-color: light-dark(var(--gray-dim), var(--bg-hard));
   --tts-highlight-text-color: var(--headings-color);
   --tts-highlight-background-color: light-dark(var(--bg), var(--bg-alt-1));

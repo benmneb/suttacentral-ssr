@@ -185,7 +185,7 @@ function getRootLangHTML() {
         ${
           comment
             ? `
-        <button popovertarget="comment-${key}" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">*</button>
+        <button class="variant-btn" popovertarget="comment-${key}" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">*</button>
         <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">
           ${t(userLanguage, 'viewoption:variant')} ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
         </span>
@@ -221,6 +221,7 @@ function getSegmentedHTML() {
       const text = bilaraData.translation_text[key]
       const rootText = bilaraData.root_text[key]
       const comment = bilaraData.comment_text?.[key]
+      const variant = bilaraData.variant_text?.[key]
       const ref = key.split(':').pop()
 
       if (!html) return ''
@@ -256,6 +257,16 @@ function getSegmentedHTML() {
         <span class="text">
           ${rootLang === 'lzh' ? renderLookupChinese(rootText) : rootText.split(' ').map(renderLookupWord).join(' ')}
         </span>
+        ${
+          variant
+            ? `
+      <button class="variant-btn" popovertarget="variant-${key}" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">*</button>
+      <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">
+        ${t(userLanguage, 'viewoption:variant')} ${variant.replace(/https:\/\/suttacentral\.net/g, '')}
+      </span>
+      `
+            : ''
+        }
       </span>
       `
           : ''
@@ -267,6 +278,13 @@ function getSegmentedHTML() {
         commentsHtml += `
       <article id="comment-${key}" popover>
         ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
+      </article>
+    `
+      }
+      if (variant) {
+        commentsHtml += `
+      <article id="variant-${key}" popover>
+        Variant: ${variant.replace(/https:\/\/suttacentral\.net/g, '')}
       </article>
     `
       }
