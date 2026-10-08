@@ -65,6 +65,15 @@ const jsonLd = generatePitakaJsonLd(menuData, crumbsData, origin)
       set:text={`${menuData.root_name}${menuData.root_name && menuData.translated_name ? '—' : ''}${menuData.translated_name || ''}`}
     />
     {!!menuData.blurb && <p set:html={menuData.blurb} />}
+    {
+      shortcutsData?.[0]?.shortcuts?.includes(uid) && (
+        <p>
+          <a href={`/${uid}`}>
+            {t(userLanguage, 'interface:shortcutToFullList')} →
+          </a>
+        </p>
+      )
+    }
     <ol>
       {
         menuData.children.map(child => (
