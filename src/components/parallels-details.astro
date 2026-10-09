@@ -1,7 +1,7 @@
 ---
 import '~/assets/details.css'
 import { t } from '~/i18n'
-import { toSentenceCase, uidIsInRange } from '~/utils/strings'
+import { parseUidNumbers, toSentenceCase, uidIsInRange } from '~/utils/strings'
 const {
   data: entry,
   parallelsOpen,
@@ -34,20 +34,28 @@ function formatVolpages(volpages: string | null): string {
   return `${prefix} ${firstNum}—${lastNum}`
 }
 
-// Helper to get base path from segment key
-function getBasePath(segmentKey: string): string {
-  let basePath = segmentKey
-  if (segmentKey.includes('#')) {
-    basePath = segmentKey.split('#')[0]
-  }
-  return basePath
-}
-
 function getHashFragment(key: string): string {
   if (key.includes('#')) {
     return '#' + key.split('#')[1]
   }
   return ''
+}
+
+// The key says which span of this text the parallel covers. That span can run
+// across two suttas - sn36.31 is keyed sn36.30-31, because the parallel covers
+// the pair - and such a span is no uid at all, so it gets swapped for the text
+// on screen, as on .net. A key naming one sutta is kept, so the rows of a range
+// page like /an1.170-187 still point at an1.173, an1.174 and so on, one each
+function parallelHref(segmentKey: string): string {
+  const base = segmentKey.split('#')[0]
+  const span = parseUidNumbers(base)
+  const uid =
+    span && span.start !== span.end
+      ? isIndividualRangeSutta
+        ? inRangeSuttaId
+        : entry.uid
+      : base
+  return `/${uid}/${rootTrans.lang}/${rootTrans.author_uid}${getHashFragment(segmentKey)}`
 }
 
 function getParallelTypeTitle(type: string): string {
@@ -130,11 +138,7 @@ const parallelCount =
         filteredSegments.map(([segmentKey, parallels]) => (
           <li>
             {rootTrans ? (
-              <a
-                href={`/${getBasePath(segmentKey)}/${rootTrans.lang}/${rootTrans.author_uid}${getHashFragment(segmentKey)}`}
-              >
-                {segmentKey}
-              </a>
+              <a href={parallelHref(segmentKey)}>{segmentKey}</a>
             ) : (
               <span>{segmentKey}</span>
             )}
