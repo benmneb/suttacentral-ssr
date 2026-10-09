@@ -159,6 +159,32 @@ function renderLookupChinese(text: string): string {
 
 let commentsHtml = ''
 
+type TocEntry = { level: number; href: string; html: string; isTitle?: boolean }
+const toc: TocEntry[] = []
+
+function tocLabel(text: string): string {
+  const stripped = text.trim().replace(/^\d+(?:\.\d+)*\.\s*/, '')
+  // A heading that is only a number would leave a link with no name
+  return stripped || text.trim()
+}
+
+/**
+ * Record a segmented heading for the table of contents.
+ */
+function collectHeading(html: string, key: string, text?: string) {
+  const heading = html.match(/<h([2-4])([^>]*)>(?=\{\})/)
+  if (!heading || !text?.trim()) return
+  toc.push({
+    level: Number(heading[1]),
+    href: `#${key}`,
+    html: tocLabel(text),
+    // On a range page (eg an1.1-10) each sutta's own title is the only
+    // structure there is, so these stay - but on a single sutta of that range
+    // the one title is just the page title, and gets dropped below
+    isTitle: heading[2].includes('sutta-title'),
+  })
+}
+
 function getRootLangHTML() {
   if (!isSegmented || !isRootText) return null
 
@@ -170,6 +196,8 @@ function getRootLangHTML() {
       const ref = key.split(':').pop()
 
       if (!html) return ''
+
+      collectHeading(html, key, text)
 
       const segment = `
     <span id="${key}" class="segment">
@@ -225,6 +253,8 @@ function getSegmentedHTML() {
       const ref = key.split(':').pop()
 
       if (!html) return ''
+
+      collectHeading(html, key, text)
 
       const segment = `
     <span id="${key}" class="segment">
@@ -303,14 +333,33 @@ function getLegacyHTML() {
   const lastFooterPart = footerParts[footerParts.length - 1]
   const footerContent = lastFooterPart.split('</footer>')[0]
   const originalFooter = '<footer' + footerContent + '</footer>'
-  // Remove footer from HTML
   const htmlWithoutFooter = htmlContent.replace(originalFooter, '')
-  // Transform footer to info article with popover
   const modifiedFooter = originalFooter
     .replace('<footer', '<article id="info" popover')
     .replace('</footer>', '</article>')
 
-  return htmlWithoutFooter + modifiedFooter
+  // Collect headings for the table of contents, giving them an id to anchor to
+  // - legacy texts don't have any (eg pli-tv-kd1/horner has 67 bare headings)
+  let n = 0
+  const htmlWithHeadingIds = htmlWithoutFooter.replace(
+    /<h([2-4])([^>]*)>([\s\S]*?)<\/h\1>/g,
+    (match: string, level: string, attrs: string, inner: string) => {
+      const existingId = attrs.match(/\bid=["']([^"']+)["']/)
+      const id = existingId?.[1] ?? `toc-${++n}`
+      if (inner.trim()) {
+        toc.push({
+          level: Number(level),
+          href: `#${id}`,
+          html: tocLabel(inner),
+        })
+      }
+      return existingId
+        ? match
+        : `<h${level}${attrs} id="${id}">${inner}</h${level}>`
+    }
+  )
+
+  return htmlWithHeadingIds + modifiedFooter
 }
 
 const rootLangHTML = getRootLangHTML()
@@ -318,6 +367,9 @@ const segmentedHTML = getSegmentedHTML()
 const legacyHTML = getLegacyHTML()
 
 const articleHTML = rootLangHTML || segmentedHTML || legacyHTML
+
+// A lone sutta title is the page title, not a table of contents
+if (toc.length === 1 && toc[0].isTitle) toc.length = 0
 
 const origin = Astro.site?.origin ?? ''
 const jsonLd = generateTextJsonLd(
@@ -356,6 +408,41 @@ const jsonLd = generateTextJsonLd(
   <aside>
     <fieldset>
       <ul>
+        {
+          toc.length > 0 && (
+            <li>
+              <button
+                aria-haspopup="menu"
+                aria-expanded="false"
+                aria-controls="contents-menu"
+                aria-label={t(userLanguage, 'interface:tableOfContent')}
+                id="contents-button"
+              >
+                {toSentenceCase(t(userLanguage, 'interface:showToCButtonText'))}
+              </button>
+              <ol
+                class="dropdown"
+                role="menu"
+                aria-labelledby="contents-button"
+                id="contents-menu"
+              >
+                {toc.map(heading => (
+                  <li
+                    role="none"
+                    data-level={heading.level}
+                    data-title={heading.isTitle ? '' : undefined}
+                  >
+                    <a
+                      role="menuitem"
+                      href={heading.href}
+                      set:html={heading.html}
+                    />
+                  </li>
+                ))}
+              </ol>
+            </li>
+          )
+        }
         <li>
           <button
             popovertarget="info"
