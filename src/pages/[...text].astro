@@ -47,6 +47,15 @@ if (!suttasData.root_text && !suttasData.translation) {
     }
   }
 
+  // No text and no author left to try means either the uid is a fallen leaf -
+  // parallels but no text of its own, eg pli-tv-bi-vb-pj1 - or it isn't a real
+  // uid. The api still returns a suttaplex for the first and none for the
+  // second, which is what tells them apart. A fallen leaf has nothing but its
+  // suttaplex page, where .net sends these too; the rest take the 404 below
+  if (suttasData.suttaplex?.uid) {
+    return Astro.redirect(`/${suttasData.suttaplex.uid}`, 301)
+  }
+
   Astro.response.status = 404
   Astro.response.statusText = 'Text not found'
   return Astro.rewrite('/404')
