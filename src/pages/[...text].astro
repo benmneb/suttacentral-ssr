@@ -13,7 +13,6 @@ import {
   rangeUidToAcronym,
   toSentenceCase,
   uidIsInRange,
-  uidToAcronym,
 } from '~/utils/strings'
 
 const { text } = Astro.params
@@ -135,12 +134,21 @@ const displayedAcronym = isWholeRange
     : rangeUidToAcronym(displayedUid!) // nested, eg "AN 1.175–186"
   : rangeUidToAcronym(lowerAcronym)
 
+// A nested range reached by its own uid, eg /an1.175-186, is a bilara document
+// id and nothing else - no suttaplex answers to it, so it has no chapter page
+const shownUidNumbers = isRangeSutta ? parseUidNumbers(lowerAcronym) : null
+const hasChapterPage =
+  !shownUidNumbers || shownUidNumbers.start === shownUidNumbers.end
+
 const modifiedCrumbsData = [
   ...crumbsData,
   {
     uid: lowerAcronym,
-    title: isRangeSutta ? displayedAcronym : suttaplexData[0].acronym,
-    url: `/${lowerAcronym}`,
+    // Names what it links to - the uid asked for, not what's on screen
+    title: isRangeSutta
+      ? rangeUidToAcronym(lowerAcronym)
+      : suttaplexData[0].acronym,
+    url: hasChapterPage ? `/${lowerAcronym}` : undefined,
   },
   { uid: authorUid, title: suttasData.translation.author },
 ]
