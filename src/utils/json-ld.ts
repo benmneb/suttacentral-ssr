@@ -1,7 +1,7 @@
 import { siteMetaData } from '~/constants/meta-data'
 
 interface Breadcrumb {
-  url: string
+  url?: string
   title: string
 }
 
@@ -36,7 +36,8 @@ function buildBreadcrumbList(
       '@type': 'ListItem',
       position: index + 2,
       name: crumb.title,
-      item: `${origin}${crumb.url}`,
+      // The last crumb is the page itself, so it has nowhere to point
+      ...(crumb.url && { item: `${origin}${crumb.url}` }),
     })
   })
 
