@@ -418,7 +418,11 @@ const jsonLd = generateTextJsonLd(
                 aria-label={t(userLanguage, 'interface:tableOfContent')}
                 id="contents-button"
               >
-                {toSentenceCase(t(userLanguage, 'interface:showToCButtonText'))}
+                <span>
+                  {toSentenceCase(
+                    t(userLanguage, 'interface:showToCButtonText')
+                  )}
+                </span>
               </button>
               <ol
                 class="dropdown"
@@ -448,7 +452,9 @@ const jsonLd = generateTextJsonLd(
             popovertarget="info"
             aria-label={t(userLanguage, 'viewoption:showPublicationInfo')}
           >
-            {toSentenceCase(t(userLanguage, 'interface:infoButtonText'))}
+            <span>
+              {toSentenceCase(t(userLanguage, 'interface:infoButtonText'))}
+            </span>
           </button>
         </li>
         <li>
@@ -459,7 +465,9 @@ const jsonLd = generateTextJsonLd(
             aria-label={t(userLanguage, 'interface:textSettings')}
             id="views-button"
           >
-            {toSentenceCase(t(userLanguage, 'interface:toolsButtonText'))}
+            <span>
+              {toSentenceCase(t(userLanguage, 'interface:toolsButtonText'))}
+            </span>
           </button>
           <ul
             class="dropdown"
@@ -608,11 +616,13 @@ const jsonLd = generateTextJsonLd(
             popovertarget="parallels"
             aria-label={t(userLanguage, 'viewoption:showParallelTexts')}
           >
-            {
-              toSentenceCase(
-                t(userLanguage, 'interface:showParallelsButtonText')
-              )
-            }
+            <span>
+              {
+                toSentenceCase(
+                  t(userLanguage, 'interface:showParallelsButtonText')
+                )
+              }
+            </span>
           </button>
         </li>
         <li>
@@ -623,7 +633,7 @@ const jsonLd = generateTextJsonLd(
             aria-label={t(userLanguage, 'viewoption:ttsSettings')}
             id="listen-menu-button"
           >
-            {t(userLanguage, 'viewoption:listen')}
+            <span>{t(userLanguage, 'viewoption:listen')}</span>
           </button>
           <ul
             class="dropdown"

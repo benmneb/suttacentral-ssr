@@ -579,6 +579,10 @@ aside {
   &:has(#positioner:checked) {
     position: sticky;
     top: 0.5rem;
+
+    @media only screen and (max-width: 600px) {
+      top: 0;
+    }
   }
 
   fieldset {
@@ -639,6 +643,28 @@ aside {
     /* Needed for the menus width */
     > ul > li:has(> #contents-menu) {
       position: static;
+    }
+
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+      border-radius: 0;
+
+      > ul > li {
+        flex: 1;
+      }
+
+      > ul > li > button {
+        width: 100%;
+        justify-content: center;
+
+        &:hover {
+          border-radius: 0;
+        }
+
+        > span {
+          text-align: center;
+        }
+      }
     }
 
     ul li ul,
