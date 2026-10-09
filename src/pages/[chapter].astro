@@ -4,7 +4,7 @@ import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { generateChapterJsonLd, generateTextMetaJsonLd } from '~/utils/json-ld'
 import { getPreferredLanguage } from '~/utils/language'
-import { uidToAcronym } from '~/utils/strings'
+import { rangeSuttaTitle, uidToAcronym } from '~/utils/strings'
 
 const { chapter } = Astro.params
 const acceptLanguage = Astro.request.headers.get('accept-language')
@@ -63,9 +63,7 @@ const jsonLd =
 
 <Layout
   title={isIndividualRangeSutta
-    ? lowerChapter?.startsWith('an')
-      ? uidToAcronym(lowerChapter!)
-      : suttaplexData[0].title
+    ? rangeSuttaTitle(suttaplexData[0].title, lowerChapter!)
     : `${
         suttaplexData[0]?.translated_name ||
         suttaplexData[0]?.original_title ||

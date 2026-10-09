@@ -8,7 +8,13 @@ import Layout from '~/layouts/Layout.astro'
 import { getViewPrefs } from '~/utils/cookies'
 import { generateTextJsonLd } from '~/utils/json-ld'
 import { getPreferredLanguage } from '~/utils/language'
-import { toSentenceCase, uidToAcronym } from '~/utils/strings'
+import {
+  parseUidNumbers,
+  rangeUidToAcronym,
+  toSentenceCase,
+  uidIsInRange,
+  uidToAcronym,
+} from '~/utils/strings'
 
 const { text } = Astro.params
 const viewPrefs = getViewPrefs(Astro.cookies)
@@ -58,7 +64,9 @@ if (!suttaplexData?.[0]?.uid) {
   return Astro.rewrite('/404')
 }
 
-let bilaraData = {}
+let bilaraData: any = {}
+let displayedUid: string | null = null // which bilara document gets rendered
+let keyPrefixes: string[] = [] // all of them in the response, in order
 if (suttasData.segmented) {
   const bilaraResponse = await fetch(
     `https://suttacentral.net/api/bilarasuttas/${suttasData.range_uid ?? lowerAcronym}/${authorUid}?lang=${language}`
@@ -71,9 +79,26 @@ if (suttasData.segmented) {
     return Astro.rewrite('/404')
   }
 
-  if (isRangeSutta) {
+  // The bilara keys are what can actually be isolated. Usually that's one
+  // prefix per sutta (an1.1:…, an1.2:…), but some ranges are a single document
+  // keyed by the range itself (sn45.50-54:…) and some nest a sub-range inside a
+  // wider one (an1.175-186:… inside range_uid an1.170-187). Either way the
+  // containing document is the smallest thing there is to show - as on .net
+  keyPrefixes = [
+    ...new Set<string>(
+      bilaraData.keys_order.map((key: string) =>
+        key.split(':')[0].toLowerCase()
+      )
+    ),
+  ]
+  displayedUid =
+    keyPrefixes.find(prefix => prefix === lowerAcronym) ??
+    keyPrefixes.find(prefix => uidIsInRange(lowerAcronym, prefix)) ??
+    null
+
+  if (isRangeSutta && displayedUid) {
     const matchKey = (key: string) =>
-      key.split(':')[0].toLowerCase() === lowerAcronym ||
+      key.split(':')[0].toLowerCase() === displayedUid ||
       bilaraData.html_text[key]?.includes("class='range'") ||
       bilaraData.html_text[key]?.includes("class='range-title'") ||
       bilaraData.html_text[key]?.includes("class='subdivision'")
@@ -101,11 +126,20 @@ const [publicationData, crumbsData] = await Promise.all([
     `https://suttacentral.net/api/navigation_data/${suttasData.range_uid ?? lowerAcronym}?language=${userLanguage}`
   ).then(r => r.json()),
 ])
+// When true the page shows a whole range document, not one sutta of it, so it
+// should name the range rather than the uid that was asked for
+const isWholeRange = !!displayedUid && displayedUid !== lowerAcronym
+const displayedAcronym = isWholeRange
+  ? displayedUid === suttaplexData[0].uid
+    ? suttaplexData[0].acronym // eg "SN 45.50–54", straight from the API
+    : rangeUidToAcronym(displayedUid!) // nested, eg "AN 1.175–186"
+  : rangeUidToAcronym(lowerAcronym)
+
 const modifiedCrumbsData = [
   ...crumbsData,
   {
     uid: lowerAcronym,
-    title: isRangeSutta ? uidToAcronym(lowerAcronym) : suttaplexData[0].acronym,
+    title: isRangeSutta ? displayedAcronym : suttaplexData[0].acronym,
     url: `/${lowerAcronym}`,
   },
   { uid: authorUid, title: suttasData.translation.author },
@@ -114,15 +148,27 @@ const modifiedCrumbsData = [
 let rangePrev: string | null = null
 let rangeNext: string | null = null
 if (isRangeSutta) {
-  const beginMatch = suttasData.vaggaBegin?.match(/^(.+?)(\d+)-(\d+)$/)
-  const endMatch = suttasData.vaggaEnd?.match(/^(.+?)(\d+)-(\d+)$/)
-  if (beginMatch && endMatch) {
-    const prefix = beginMatch[1]
-    const vaggaStart = parseInt(beginMatch[2], 10)
-    const vaggaEnd = parseInt(endMatch[3], 10)
-    const current = parseInt(lowerAcronym.replace(prefix, ''), 10)
-    if (current > vaggaStart) rangePrev = `${prefix}${current - 1}`
-    if (current < vaggaEnd) rangeNext = `${prefix}${current + 1}`
+  // Inside the document the neighbours are known exactly, its key prefixes being
+  // the siblings in order - so a nested range gets linked as the one page it is,
+  // and not as whichever of its numbers happens to come next
+  const shownIndex = displayedUid ? keyPrefixes.indexOf(displayedUid) : -1
+  if (shownIndex > 0) rangePrev = keyPrefixes[shownIndex - 1]
+  if (shownIndex > -1 && shownIndex < keyPrefixes.length - 1)
+    rangeNext = keyPrefixes[shownIndex + 1]
+
+  // That leaves the ends of the response, where the next text along is a fetch
+  // of its own, and legacy ranges, which have no keys at all. Both fall back to
+  // counting by number within the vagga - from the ends of what's on screen,
+  // not from the uid asked for, or "next" from sn45.50 is sn45.51, the same
+  // page again
+  const begin = parseUidNumbers(suttasData.vaggaBegin)
+  const end = parseUidNumbers(suttasData.vaggaEnd)
+  const shown = parseUidNumbers(displayedUid ?? lowerAcronym)
+  if (begin && end && shown) {
+    if (!rangePrev && shown.start - 1 >= begin.start)
+      rangePrev = `${begin.prefix}${shown.start - 1}`
+    if (!rangeNext && shown.end + 1 <= end.end)
+      rangeNext = `${begin.prefix}${shown.end + 1}`
   }
 }
 
@@ -382,7 +428,7 @@ const jsonLd = generateTextJsonLd(
 
 <Layout
   title={isRangeSutta
-    ? `${uidToAcronym(lowerAcronym)}—${suttasData.translation.author || suttasData.root_text.author}`
+    ? `${displayedAcronym}—${suttasData.translation.author || suttasData.root_text.author}`
     : `${suttaplexData[0].acronym}: ${suttaplexData[0].original_title}—${suttasData.translation.author || suttasData.root_text.author}`}
   description={suttaplexData[0]?.blurb?.replace(/<[^>]*>/g, '')}
   breadcrumbs={modifiedCrumbsData}
@@ -752,7 +798,7 @@ const jsonLd = generateTextJsonLd(
             <>
               <span>{t(userLanguage, 'interface:previous')}</span>
               <a href={`/${rangePrev}/${language}/${authorUid}`} rel="prev">
-                {uidToAcronym(rangePrev)}
+                {rangeUidToAcronym(rangePrev)}
               </a>
             </>
           )
@@ -776,7 +822,7 @@ const jsonLd = generateTextJsonLd(
             <>
               <span>{t(userLanguage, 'interface:next')}</span>
               <a href={`/${rangeNext}/${language}/${authorUid}`} rel="next">
-                {uidToAcronym(rangeNext)}
+                {rangeUidToAcronym(rangeNext)}
               </a>
             </>
           )

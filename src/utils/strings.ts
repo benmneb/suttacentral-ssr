@@ -30,6 +30,48 @@ export function uidToAcronym(uidInput: string) {
   ) // eg "AN 1.1", "Dhp 1"...
 }
 
+/**
+ * Split the trailing number(s) off a uid. Handles both a plain uid and a range:
+ * "sn45.1" -> { prefix: "sn45.", start: 1, end: 1 }
+ * "an1.1-10" -> { prefix: "an1.", start: 1, end: 10 }
+ * "dhp383-423" -> { prefix: "dhp", start: 383, end: 423 }
+ */
+export function parseUidNumbers(uid: string) {
+  const match = String(uid ?? '').match(/^(.+?)(\d+)(?:-(\d+))?$/)
+  if (!match) return null
+  const start = parseInt(match[2], 10)
+  return {
+    prefix: match[1],
+    start,
+    end: match[3] ? parseInt(match[3], 10) : start,
+  }
+}
+
+/** Is `uid` covered by `rangeUid`? eg "sn45.52" is in "sn45.50-54" */
+export function uidIsInRange(uid: string, rangeUid: string): boolean {
+  const range = parseUidNumbers(rangeUid)
+  if (!range || !uid.startsWith(range.prefix)) return false
+  const rest = uid.slice(range.prefix.length)
+  if (!/^\d+$/.test(rest)) return false
+  const no = parseInt(rest, 10)
+  return no >= range.start && no <= range.end
+}
+
+/**
+ * The `title` of a range suttaplex is sometimes a real expanded name
+ * ("Dhammapada 5") and sometimes just the uid that was asked for ("sn45.50"),
+ * so fall back to the acronym when it's the latter
+ */
+export function rangeSuttaTitle(title: string | null, uid: string) {
+  if (title && normalise(title) !== normalise(uid)) return title
+  return uidToAcronym(uid)
+}
+
+/** Like `uidToAcronym`, but with the en dash .net uses for ranges */
+export function rangeUidToAcronym(uid: string) {
+  return uidToAcronym(uid).replace(/(\d)-(\d)/, '$1–$2') // eg "AN 1.175–186"
+}
+
 export function uidToTitle(uidInput: string) {
   if (uidInput.includes('.')) return uidInput.split('.')[1] // "AN 1.1" -> "1" as per .net
   return uidToAcronym(uidInput).split('Dhp ')[1] // just the number too (.net just leaves the chapter title...)
