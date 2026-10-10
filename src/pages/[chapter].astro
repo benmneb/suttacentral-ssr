@@ -12,10 +12,39 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
 
 const lowerChapter = chapter?.toLowerCase()
 
-const suttaplexResponse = await fetch(
-  `https://suttacentral.net/api/suttaplex/${lowerChapter}?language=${userLanguage}`
-)
-let suttaplexData = await suttaplexResponse.json()
+async function fetchCrumbs(uid: string | undefined) {
+  const r = await fetch(
+    `https://suttacentral.net/api/navigation_data/${uid}?language=${userLanguage}`
+  )
+  return r.json()
+}
+
+async function fetchSuttaplex() {
+  const r = await fetch(
+    `https://suttacentral.net/api/suttaplex/${lowerChapter}?language=${userLanguage}`
+  )
+  return r.json()
+}
+
+// A branch's crumbs end with the branch itself, a leaf's with its parent
+// chapter. So a branch can fetch its parent's menu, which holds its siblings
+// for prev/next, alongside the suttaplex rather than after it
+async function fetchSiblings() {
+  const crumbs = await crumbsPromise
+  const parentUid = crumbs.at(-1)?.uid === lowerChapter && crumbs.at(-2)?.uid
+  if (!parentUid) return []
+  const r = await fetch(
+    `https://suttacentral.net/api/menu/${parentUid}?language=${userLanguage}`
+  )
+  return (await r.json())?.[0]?.children ?? []
+}
+
+const crumbsPromise = fetchCrumbs(lowerChapter)
+let [suttaplexData, crumbsData, siblings] = await Promise.all([
+  fetchSuttaplex(),
+  crumbsPromise,
+  fetchSiblings(),
+])
 let isIndividualRangeSutta = false
 
 if (!suttaplexData?.[0]?.uid) {
@@ -33,11 +62,8 @@ if (!suttaplexData?.[0]?.uid) {
   }
 }
 
-const crumbsUid = isIndividualRangeSutta ? suttaplexData[0].uid : lowerChapter
-const crumbsResponse = await fetch(
-  `https://suttacentral.net/api/navigation_data/${crumbsUid}?language=${userLanguage}`
-)
-const crumbsData = await crumbsResponse.json()
+// The range's own uid has no crumbs, only the range it belongs to
+if (isIndividualRangeSutta) crumbsData = await fetchCrumbs(suttaplexData[0].uid)
 const modifiedCrumbsData = [
   ...crumbsData,
   ...(suttaplexData.length === 1
@@ -51,6 +77,23 @@ const modifiedCrumbsData = [
       ]
     : []),
 ]
+
+// The api leaves previous/next empty on branches, so a chapter finds its
+// neighbours among its parent's children instead
+let previous = suttaplexData[0]?.previous
+let next = suttaplexData[0]?.next
+if (!previous?.uid && !next?.uid) {
+  const index = siblings.findIndex(sibling => sibling.uid === lowerChapter)
+  const toLink = sibling =>
+    sibling && {
+      uid: sibling.uid,
+      name: sibling.translated_name?.trim() || sibling.root_name,
+    }
+  if (index > -1) {
+    previous = toLink(siblings[index - 1])
+    next = toLink(siblings[index + 1])
+  }
+}
 
 const isPatimokkha = lowerChapter?.endsWith('-pm')
 
@@ -120,11 +163,11 @@ const jsonLd =
   <nav aria-label={t(userLanguage, 'interface:articlePagination')}>
     <div>
       {
-        suttaplexData[0]?.previous?.uid && (
+        previous?.uid && (
           <>
             <span>{t(userLanguage, 'interface:previous')}</span>
-            <a href={`/${suttaplexData[0].previous.uid}`} rel="prev">
-              {suttaplexData[0].previous?.name}
+            <a href={`/${previous.uid}`} rel="prev">
+              {previous.name}
             </a>
           </>
         )
@@ -132,11 +175,11 @@ const jsonLd =
     </div>
     <div>
       {
-        suttaplexData[0]?.next?.uid && (
+        next?.uid && (
           <>
             <span>{t(userLanguage, 'interface:next')}</span>
-            <a href={`/${suttaplexData[0].next.uid}`} rel="next">
-              {suttaplexData[0].next?.name}
+            <a href={`/${next.uid}`} rel="next">
+              {next.name}
             </a>
           </>
         )
