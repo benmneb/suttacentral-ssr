@@ -7,6 +7,9 @@ export type LookupEntry = {
   p?: string
 }
 
+/** A dictionary that may need fetching before it can answer */
+export type Dict<T> = { get(key: string): Promise<T | undefined> }
+
 export type PaliMatch = {
   base: string
   entry?: LookupEntry
@@ -38,18 +41,18 @@ function normalizeDpdWord(word: string): string {
   return word.replace(/[''""]/g, '').replace(/ṁ/g, 'ṃ')
 }
 
-function exactMatch(
+async function exactMatch(
   word: string,
-  dict: Record<string, LookupEntry>
-): PaliMatch | null {
-  if (dict[word]) return { base: word, entry: dict[word] }
-  return null
+  dict: Dict<LookupEntry>
+): Promise<PaliMatch | null> {
+  const entry = await dict.get(word)
+  return entry ? { base: word, entry } : null
 }
 
-function fuzzyMatch(
+async function fuzzyMatch(
   word: string,
-  dict: Record<string, LookupEntry>
-): PaliMatch | null {
+  dict: Dict<LookupEntry>
+): Promise<PaliMatch | null> {
   for (const [ending, keepChars, minLen, replacement] of PALI_ENDINGS) {
     if (
       word.length > minLen &&
@@ -57,17 +60,18 @@ function fuzzyMatch(
     ) {
       const stem =
         word.substring(0, word.length - ending.length + keepChars) + replacement
-      if (dict[stem]) return { base: stem, entry: dict[stem] }
+      const entry = await dict.get(stem)
+      if (entry) return { base: stem, entry }
     }
   }
   return null
 }
 
-function matchComplete(
+async function matchComplete(
   word: string,
-  dict: Record<string, LookupEntry>,
+  dict: Dict<LookupEntry>,
   isTi: boolean
-): PaliMatch[] | null {
+): Promise<PaliMatch[] | null> {
   const matches: PaliMatch[] = []
   // Try pi/vy/ti variants — handles Pali orthographic variations
   for (let pi = 0; pi < 2; pi++)
@@ -91,7 +95,7 @@ function matchComplete(
           else if (w.includes('by')) w = w.replace(/by/g, 'vy')
           else continue
         }
-        const match = exactMatch(w, dict) || fuzzyMatch(w, dict)
+        const match = (await exactMatch(w, dict)) || (await fuzzyMatch(w, dict))
         if (match) {
           matches.push(match)
           if (pi) matches.push({ base: 'pi', meaning: 'too' })
@@ -101,11 +105,11 @@ function matchComplete(
   return null
 }
 
-function matchPartial(
+async function matchPartial(
   word: string,
-  dict: Record<string, LookupEntry>,
+  dict: Dict<LookupEntry>,
   maxLength = 4
-): (PaliMatch & { leftover: string }) | null {
+): Promise<(PaliMatch & { leftover: string }) | null> {
   for (let vy = 0; vy < 2; vy++) {
     let w = word
     if (vy) {
@@ -117,10 +121,11 @@ function matchPartial(
     for (let i = 0; i < w.length; i++) {
       const part = w.substring(0, w.length - i)
       if (part.length < maxLength) break
-      if (dict[part]) {
+      const entry = await dict.get(part)
+      if (entry) {
         return {
           base: part,
-          entry: dict[part],
+          entry,
           leftover: w.substring(w.length - i),
         }
       }
@@ -130,34 +135,37 @@ function matchPartial(
 }
 
 /** DPD lookup — tries inflection-to-headword mapping first, then deconstructor */
-function lookupDpd(
+async function lookupDpd(
   word: string,
-  dict: Record<string, LookupEntry>,
-  dpdI2h: Record<string, string[]>,
-  dpdDecon: Record<string, string>
-): PaliMatch[] {
+  dict: Dict<LookupEntry>,
+  dpdI2h: Dict<string[]>,
+  dpdDecon: Dict<string>
+): Promise<PaliMatch[]> {
   const allMatches: PaliMatch[] = []
   const headwords: string[] = []
 
-  if (word in dpdI2h) {
+  const inflections = await dpdI2h.get(word)
+  if (inflections) {
     // Extract unique root headwords (entries like "ta 1.1" → root "ta")
-    for (const entry of dpdI2h[word]) {
+    for (const entry of inflections) {
       const root = entry.split(' ')[0]
       if (!headwords.includes(root)) headwords.push(root)
     }
   }
 
-  if (word in dpdDecon) {
-    const firstComponent = dpdDecon[word].split('+')[0].trim()
+  const deconstruction = await dpdDecon.get(word)
+  if (deconstruction !== undefined) {
+    const firstComponent = deconstruction.split('+')[0].trim()
     if (!headwords.includes(firstComponent)) headwords.push(firstComponent)
-    allMatches.push({ base: word, meaning: dpdDecon[word] })
+    allMatches.push({ base: word, meaning: deconstruction })
   }
 
   for (const hw of headwords) {
     // DPD uses ṃ (dot below), SC dicts use ṁ (dot above) — same thing
     const hwNorm = hw.replace(/ṃ/g, 'ṁ')
-    if (dict[hwNorm]) {
-      allMatches.push({ base: hwNorm, entry: dict[hwNorm] })
+    const entry = await dict.get(hwNorm)
+    if (entry) {
+      allMatches.push({ base: hwNorm, entry })
     }
   }
 
@@ -165,10 +173,10 @@ function lookupDpd(
 }
 
 /** Compound decomposition with sandhi resolution (fallback when DPD has no entry) */
-function lookupCompound(
+async function lookupCompound(
   word: string,
-  dict: Record<string, LookupEntry>
-): PaliMatch[] {
+  dict: Dict<LookupEntry>
+): Promise<PaliMatch[]> {
   let allMatches: PaliMatch[] = []
   let isTi = false
   let w = word
@@ -182,7 +190,7 @@ function lookupCompound(
   let unword: string | null = null
 
   let matchResult: PaliMatch[] | (PaliMatch & { leftover: string }) | null =
-    matchComplete(w, dict, isTi)
+    await matchComplete(w, dict, isTi)
 
   if (
     !matchResult ||
@@ -195,7 +203,7 @@ function lookupCompound(
       unword = w.substring(1)
     }
     if (unword) {
-      matchResult = matchComplete(unword, dict, isTi)
+      matchResult = await matchComplete(unword, dict, isTi)
       if (matchResult && Array.isArray(matchResult) && matchResult.length > 0) {
         allMatches.push({ base: 'an', meaning: 'non/not' })
       }
@@ -207,9 +215,9 @@ function lookupCompound(
 
   if (allMatches.length === 0) {
     // No complete match — try compound decomposition via longest prefix
-    matchResult = matchPartial(w, dict)
+    matchResult = await matchPartial(w, dict)
     if (unword) {
-      const matchPartialResult = matchPartial(unword, dict)
+      const matchPartialResult = await matchPartial(unword, dict)
       if (
         (matchPartialResult && !matchResult) ||
         (matchPartialResult &&
@@ -258,14 +266,14 @@ function lookupCompound(
 
       let found = false
       for (const start of starts) {
-        const completeResult = matchComplete(start + leftover, dict, isTi)
+        const completeResult = await matchComplete(start + leftover, dict, isTi)
         if (completeResult && completeResult.length > 0) {
           allMatches = allMatches.concat(completeResult)
           foundComplete = true
           found = true
           break
         }
-        const partialResult = matchPartial(start + leftover, dict)
+        const partialResult = await matchPartial(start + leftover, dict)
         if (partialResult) {
           matchResult = partialResult
           found = true
@@ -290,24 +298,50 @@ function lookupCompound(
   return allMatches
 }
 
-export function lookupPali(
+export async function lookupPali(
   rawWord: string,
-  dict: Record<string, LookupEntry>,
-  dpdI2h: Record<string, string[]> | null,
-  dpdDecon: Record<string, string> | null
-): PaliMatch[] {
+  dict: Dict<LookupEntry>,
+  dpdI2h: Dict<string[]> | null,
+  dpdDecon: Dict<string> | null
+): Promise<PaliMatch[]> {
   const cleaned = cleanPaliWord(rawWord)
   if (!cleaned) return []
 
   // Try DPD first (uses ṃ normalization — DPD data uses dot-below)
   if (dpdI2h && dpdDecon) {
     const dpdWord = normalizeDpdWord(cleaned)
-    const dpdMatches = lookupDpd(dpdWord, dict, dpdI2h, dpdDecon)
+    const dpdMatches = await lookupDpd(dpdWord, dict, dpdI2h, dpdDecon)
     if (dpdMatches.length > 0) return dpdMatches
   }
 
   // Fall back to compound decomposition (keeps ṁ — endings table uses dot-above)
   return lookupCompound(cleaned, dict)
+}
+
+/**
+ * Chinese: every dictionary entry that appears as a substring of the text,
+ * after normalizing character variants. Longest first, as the longer terms
+ * are the more specific
+ */
+export async function lookupLzh(
+  rawText: string,
+  dict: Dict<LookupEntry>
+): Promise<Array<{ term: string; entry: LookupEntry }>> {
+  const text = normalizeHanzi(rawText)
+  const found = new Map<string, LookupEntry>()
+
+  for (let i = 0; i < text.length; i++) {
+    for (let len = 1; len <= Math.min(20, text.length - i); len++) {
+      const term = text.substring(i, i + len)
+      if (found.has(term)) continue
+      const entry = await dict.get(term)
+      if (entry) found.set(term, entry)
+    }
+  }
+
+  return [...found]
+    .map(([term, entry]) => ({ term, entry }))
+    .sort((a, b) => b.term.length - a.term.length)
 }
 
 /** Strip internal fields (leftover) before sending response */

@@ -132,6 +132,10 @@
     color: var(--background-color);
     background-color: var(--primary-color);
   }
+  /* The first click on a word waits on the server */
+  &[aria-busy='true'] {
+    cursor: progress;
+  }
 }
 
 &:has(#rooter:checked) {
@@ -153,6 +157,9 @@
     &.active {
       color: var(--background-color);
       background-color: var(--primary-color);
+    }
+    &[aria-busy='true'] {
+      cursor: progress;
     }
   }
 

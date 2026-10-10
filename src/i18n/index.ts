@@ -1,7 +1,8 @@
 /**
  * Translation system for internationalization.
  *
- * Automatically discovers and loads all translation files from the locales directory.
+ * Automatically discovers translation files in the locales directory, and loads
+ * each locale the first time it's asked for.
  * Translation files should be organized as: ./locales/{language_code}/{filename}.json
  *
  * Translation file names are the same as `suttacentral` repo,
@@ -16,15 +17,19 @@
  */
 
 /**
- * Store for all translation strings, organized by locale.
- * Automatically populated from JSON files in the locales directory.
+ * Store for the translation strings of each locale loaded so far.
+ * Populated by `loadLocale`, which the middleware awaits for each request.
  *
  * @type {Record<string, Record<string, string>>}
  */
 const translations: Record<string, Record<string, string>> = {}
 
-// Dynamically import all translation files
-const modules = import.meta.glob('./locales/*/*.json', { eager: true })
+// Lazily import translation files. Importing them all eagerly bundles every
+// locale into one 7 MB chunk, which a fresh Worker instance has to evaluate
+// within a single request's CPU time
+const modules = import.meta.glob<Record<string, string>>('./locales/*/*.json', {
+  import: 'default',
+})
 
 // Sort paths to ensure _machine_ files are processed first
 // This way official translations overwrite machine translations if keys conflict
@@ -36,21 +41,33 @@ const sortedPaths = Object.keys(modules).sort((a, b) => {
   return a.localeCompare(b) // alphabetical within each group
 })
 
+/** Each locale's file paths, in the order they should be merged */
+const localePaths: Record<string, string[]> = {}
 for (const path of sortedPaths) {
-  const match = path.match(/\.\/locales\/([^/]+)\/([^/]+)\.json$/)
-  if (match) {
-    const [, locale, filename] = match
+  const match = path.match(/\.\/locales\/([^/]+)\/[^/]+\.json$/)
+  if (match) (localePaths[match[1]] ??= []).push(path)
+}
 
-    // Auto-create locale object if it doesn't exist
-    if (!translations[locale]) {
-      translations[locale] = {}
-    }
+const loading = new Map<string, Promise<void>>()
 
-    translations[locale] = {
-      ...translations[locale],
-      ...(modules[path] as any).default,
+/**
+ * Loads a locale's translations, once per worker instance, so `t` can use them.
+ * Unknown locales are ignored, and `t` falls back to English for them.
+ *
+ * @param {string} locale - The language code (e.g., 'en', 'fr', 'ja').
+ */
+export function loadLocale(locale: string): Promise<void> {
+  const paths = localePaths[locale]
+  if (!paths) return Promise.resolve()
+
+  if (!loading.has(locale)) {
+    const load = async () => {
+      const files = await Promise.all(paths.map(path => modules[path]()))
+      translations[locale] = Object.assign({}, ...files)
     }
+    loading.set(locale, load())
   }
+  return loading.get(locale)!
 }
 
 /**

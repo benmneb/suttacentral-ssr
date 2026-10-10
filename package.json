@@ -8,12 +8,13 @@
   "private": true,
   "packageManager": "pnpm@10.24.0",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "dev": "node scripts/shard-dictionaries.ts && astro dev",
+    "build": "node scripts/shard-dictionaries.ts && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "prepare": "husky",
     "fetch-dicts": "node scripts/fetch-dictionaries.ts",
+    "shard-dicts": "node scripts/shard-dictionaries.ts",
     "sync-i18n": "node scripts/sync-i18n.ts",
     "sync-api-constants": "node scripts/sync-api-constants.ts"
   },

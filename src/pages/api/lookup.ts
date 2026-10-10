@@ -1,115 +1,76 @@
 import type { APIRoute } from 'astro'
-import { env } from 'cloudflare:workers'
+import { AVAILABLE_LOOKUPS } from '~/constants/lookup'
 import {
   type LookupEntry,
+  lookupLzh,
   lookupPali,
-  normalizeHanzi,
   serializeMatch,
 } from '~/utils/lookup'
+import { getShardedDict } from '~/utils/sharded-dict'
 
-const cache = new Map<string, unknown>()
-
-/**
- * Load a JSON file from `public/data/` via the ASSETS binding.
- * Dictionary files live outside the worker bundle to stay under
- * Cloudflare's 25 MB worker size limit. Results are cached in
- * memory so each file is only fetched/parsed once per worker instance.
- *
- * The binding works in dev too (Vite serves `public/`), so there is no
- * separate filesystem path — `node:fs` cannot reach the project directory
- * from inside workerd anyway.
- */
-async function loadAsset<T>(path: string, request: Request): Promise<T | null> {
-  if (cache.has(path)) return cache.get(path) as T
-  const res = await env.ASSETS.fetch(new URL(path, request.url))
-  if (!res.ok) return null
-  const data = (await res.json()) as T
-  cache.set(path, data)
-  return data
-}
+/** Longer than any real word, short enough to bound the work one request does */
+const MAX_LENGTH = 100
 
 /**
- * Dictionary lookup API endpoint.
+ * Dictionary lookup API endpoint, one word per request.
  *
- * Accepts a list of words and a language pair, performs all linguistic
- * processing server-side (DPD inflection mapping, compound decomposition,
- * sandhi resolution), and returns only the matched results. This keeps
- * ~25MB of dictionary data and processing logic off the client.
+ * Performs all linguistic processing server-side (DPD inflection mapping,
+ * compound decomposition, sandhi resolution) and returns only the matched
+ * results. The dictionaries are sharded, so a lookup parses just the few
+ * shards its word touches - parsing whole dictionaries, or every word on a
+ * page at once, runs past the Worker CPU limit.
  *
  * For Pali: tries DPD inflection-to-headword first, then compound
  * decomposition with fuzzy matching. Falls back to the English dictionary
  * for languages with limited coverage (e.g. Indonesian, Dutch).
  *
  * For Chinese: finds all dictionary entries that appear as substrings
- * in the joined text, after normalizing character variants.
+ * in the text, after normalizing character variants.
  *
- * @param words - Array of words to look up
  * @param from - Source language ('pli' or 'lzh')
  * @param to - Target language ('en', 'es', 'zh', 'pt', 'id', 'nl')
+ * @param word - Pali word to look up
+ * @param text - Run of Chinese characters around the one clicked
  */
-export const POST: APIRoute = async ({ request }) => {
-  const { words, from, to } = await request.json()
+export const GET: APIRoute = async ({ url }) => {
+  const from = url.searchParams.get('from') ?? ''
+  const to = url.searchParams.get('to') ?? ''
+  const query = url.searchParams.get(from === 'lzh' ? 'text' : 'word')
 
-  const dict = await loadAsset<Record<string, LookupEntry>>(
-    `/data/lookup-${from}-${to}.json`,
-    request
-  )
-  if (!dict) return new Response('{}', { status: 404 })
-
-  if (from === 'lzh') {
-    // Chinese: find all dictionary entries that appear as substrings in the text
-    const result: Record<string, LookupEntry> = {}
-    const text = normalizeHanzi(words.join(''))
-
-    for (let i = 0; i < text.length; i++) {
-      for (let len = 1; len <= Math.min(20, text.length - i); len++) {
-        const substr = text.substring(i, i + len)
-        if (dict[substr] && !result[substr]) result[substr] = dict[substr]
-      }
-    }
-
-    return new Response(JSON.stringify(result), {
-      headers: { 'Content-Type': 'application/json' },
-    })
+  // Both end up in an asset path, so only ever the known pairs
+  if (!AVAILABLE_LOOKUPS[from]?.includes(to) || !query) {
+    return new Response('[]', { status: 400 })
+  }
+  if (query.length > MAX_LENGTH) {
+    return new Response('[]', { status: 414 })
   }
 
-  // Pali: DPD lookup with compound decomposition fallback
-  const dpdI2h = await loadAsset<Record<string, string[]>>(
-    '/data/dpd-i2h.json',
-    request
-  )
-  const dpdDecon = await loadAsset<Record<string, string>>(
-    '/data/dpd-deconstructor.json',
-    request
-  )
+  const dict = getShardedDict<LookupEntry>(`lookup-${from}-${to}`, url.origin)
+  let result: unknown
 
-  // Fall back to English dict for languages with limited coverage (e.g. id, nl)
-  const enDict =
-    to !== 'en'
-      ? await loadAsset<Record<string, LookupEntry>>(
-          '/data/lookup-pli-en.json',
-          request
-        )
-      : null
+  if (from === 'lzh') {
+    result = await lookupLzh(query, dict)
+  } else {
+    const dpdI2h = getShardedDict<string[]>('dpd-i2h', url.origin)
+    const dpdDecon = getShardedDict<string>('dpd-deconstructor', url.origin)
 
-  const result: Record<
-    string,
-    Array<{ base: string; entry?: LookupEntry; meaning?: string }>
-  > = {}
+    let matches = await lookupPali(query, dict, dpdI2h, dpdDecon)
 
-  for (const word of words) {
-    let matches = lookupPali(word, dict, dpdI2h, dpdDecon)
-
-    if (matches.length === 0 && enDict) {
-      matches = lookupPali(word, enDict, dpdI2h, dpdDecon)
+    // Fall back to English dict for languages with limited coverage (e.g. id, nl)
+    if (matches.length === 0 && to !== 'en') {
+      const enDict = getShardedDict<LookupEntry>('lookup-pli-en', url.origin)
+      matches = await lookupPali(query, enDict, dpdI2h, dpdDecon)
     }
 
-    if (matches.length > 0) {
-      result[word] = matches.map(serializeMatch)
-    }
+    result = matches.map(serializeMatch)
   }
 
   return new Response(JSON.stringify(result), {
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      // The dictionaries only change with a deploy, so a word clicked twice
+      // needn't come back here
+      'Cache-Control': 'public, max-age=86400',
+    },
   })
 }

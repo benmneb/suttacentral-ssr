@@ -26,3 +26,5 @@ pnpm-debug.log*
 # wrangler
 .wrangler
 
+# dictionary shards, generated from data/ on build and dev
+public/data/

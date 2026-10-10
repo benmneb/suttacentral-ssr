@@ -1075,7 +1075,8 @@ const jsonLd = generateTextJsonLd(
   /**
    * Word Look-Up Handler
    *
-   * Fetches dictionary definitions from the API when the look-up toggle is enabled.
+   * Fetches the definition of a clicked word from the API while the look-up
+   * toggle is enabled.
    * Displays definitions in a popover with prev/next navigation between words.
    * Falls back to /define/{word} links when JS is unavailable.
    */
@@ -1086,68 +1087,46 @@ const jsonLd = generateTextJsonLd(
     p?: string
   }
   type PaliMatch = { base: string; entry?: LookupEntry; meaning?: string }
+  type LzhMatch = { term: string; entry: LookupEntry }
 
-  let data: Record<string, LookupEntry | PaliMatch[]> | null = null
-  let words: HTMLAnchorElement[] = []
   let current = -1
   const lookupToggle = document.getElementById(
     'rooter-look-up'
   ) as HTMLInputElement | null
-  const rooter = document.getElementById('rooter') as HTMLInputElement | null
   const isLzh = lookupToggle?.dataset.from === 'lzh'
   const popover = document.getElementById('definition') as HTMLElement | null
   // Every word of the root text, in document order. The DOM doesn't change
   // after render, so collect them once
-  const lookUpLinks = [
-    ...document.querySelectorAll<HTMLAnchorElement>('a.look-up'),
-  ]
+  const words = [...document.querySelectorAll<HTMLAnchorElement>('a.look-up')]
+  // Answers so far, by the word (or run of characters) asked about, so going
+  // back over a word doesn't ask again
+  const answers = new Map<string, Promise<PaliMatch[] | LzhMatch[]>>()
 
   /**
-   * Fetch the dictionary for the words on this page. Having `data` is what
-   * lets the click handler below show a definition.
-   *
-   * Called on load as well as on change, because the toggle can already be
-   * checked from the cookie when the page renders. Relying on the prefs script
-   * to dispatch a synthetic change event doesn't work - that script runs first,
-   * before this listener exists.
+   * Ask the server about one word at a time, as it's clicked. Looking up every
+   * word on the page in one go is more than a Worker gets the CPU time for.
    */
-  async function enableLookup() {
-    // disabled is used as loading state - prevent concurrent fetches
-    if (!lookupToggle?.checked || data || lookupToggle.disabled) return
-    // Don't fetch if rooter checkbox exists but is unchecked (root text hidden)
-    if (rooter && !rooter.checked) return
-
-    lookupToggle.disabled = true
-
-    try {
-      const unique = new Set(lookUpLinks.map(getWord))
-
-      const res = await fetch('/api/lookup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          words: [...unique],
-          from: lookupToggle.dataset.from,
-          to: lookupToggle.dataset.to,
-        }),
-      })
-
-      if (!res.ok) throw new Error()
-
-      data = await res.json()
-      words = lookUpLinks
-    } catch {
-      lookupToggle.checked = false
-    } finally {
-      lookupToggle.disabled = false
-    }
+  function lookUp(query: string): Promise<PaliMatch[] | LzhMatch[]> {
+    if (!answers.has(query)) answers.set(query, fetchAnswer(query))
+    return answers.get(query)!
   }
 
-  lookupToggle?.addEventListener('change', enableLookup)
-  // Covers enabling the root text while lookup is already on
-  rooter?.addEventListener('change', enableLookup)
-  // The toggle can be checked already, from the cookie read server-side
-  enableLookup()
+  async function fetchAnswer(query: string): Promise<PaliMatch[] | LzhMatch[]> {
+    const params = new URLSearchParams({
+      from: lookupToggle?.dataset.from ?? '',
+      to: lookupToggle?.dataset.to ?? '',
+      [isLzh ? 'text' : 'word']: query,
+    })
+    try {
+      const res = await fetch(`/api/lookup?${params}`)
+      if (!res.ok) throw new Error()
+      return await res.json()
+    } catch {
+      // Not knowing isn't an answer - let the next click try again
+      answers.delete(query)
+      return []
+    }
+  }
 
   /**
    * The links are `pointer-events: none` by default so they can't be followed
@@ -1159,7 +1138,7 @@ const jsonLd = generateTextJsonLd(
   // Lifting pointer-events makes these drag like links, which eats text
   // selection. draggable=false is the only cross-browser fix - Firefox has no
   // -webkit-user-drag, and cancelling dragstart doesn't give the selection back
-  lookUpLinks.forEach(el => (el.draggable = false))
+  words.forEach(el => (el.draggable = false))
 
   /**
    * There is one of these per word, so while the feature is off they are just
@@ -1167,7 +1146,7 @@ const jsonLd = generateTextJsonLd(
    * go back in, so Enter opens a definition like a click does.
    */
   function setTabbable(tabbable: boolean) {
-    for (const el of lookUpLinks) {
+    for (const el of words) {
       if (tabbable) el.removeAttribute('tabindex')
       else el.tabIndex = -1
     }
@@ -1189,9 +1168,8 @@ const jsonLd = generateTextJsonLd(
     )
     if (!link) return
     e.preventDefault() // never navigate while JS is live
-    // Checked state, not just `data` - the dictionary stays cached after the
-    // toggle goes off, and the links still hit-test because of data-lookup-js
-    if (!lookupToggle?.checked || !data) return
+    // The links still hit-test with the toggle off, because of data-lookup-js
+    if (!lookupToggle?.checked) return
     words.forEach(w => w.classList.remove('active'))
     current = words.indexOf(link)
     show(getWord(link))
@@ -1201,8 +1179,8 @@ const jsonLd = generateTextJsonLd(
     return decodeURIComponent(el.pathname.split('/').pop()!)
   }
 
-  function show(word: string) {
-    if (!data || !popover) return
+  async function show(word: string) {
+    if (!popover) return
 
     let items: string[]
 
@@ -1223,29 +1201,25 @@ const jsonLd = generateTextJsonLd(
       }
       // Highlight group
       for (let i = start; i <= end; i++) words[i].classList.add('active')
-      // Build context and find all substring matches
+      open(word)
+      // The server finds every term within the context, longest first
       const context = words
         .slice(start, end + 1)
         .map(getWord)
         .join('')
-      const entries: Array<{ term: string; entry: LookupEntry }> = []
-      for (let i = 0; i < context.length; i++) {
-        for (let len = 1; len <= context.length - i; len++) {
-          const substr = context.substring(i, i + len)
-          if (data[substr])
-            entries.push({ term: substr, entry: data[substr] as LookupEntry })
-        }
-      }
-      entries.sort((a, b) => b.term.length - a.term.length)
+      const entries = (await answer(context)) as LzhMatch[] | null
+      if (!entries) return
       items = entries.map(e => {
         const defs = Array.isArray(e.entry.d) ? e.entry.d.join('; ') : e.entry.d
         return `<b>${e.term}</b>${e.entry.p ? ` (${e.entry.p})` : ''} ${defs} <a href="/define/${e.term}">📖</a>`
       })
     } else {
       // Pali: each word maps to an array of decomposed matches
-      const matches = (data[word] as PaliMatch[]) ?? [
-        { base: word, meaning: '?' },
-      ]
+      words[current]?.classList.add('active')
+      open(word)
+      const found = (await answer(word)) as PaliMatch[] | null
+      if (!found) return
+      const matches = found.length ? found : [{ base: word, meaning: '?' }]
       // When a single match has the same base as the clicked word,
       // skip the nested heading since the top-level <dfn> already shows it
       const skipDt = matches.length === 1 && matches[0].base === word
@@ -1272,17 +1246,28 @@ const jsonLd = generateTextJsonLd(
           )
         }
       }
-      words[current]?.classList.add('active')
     }
 
-    if (items.length === 0) return
+    const section = popover.querySelector('section')
+    if (!section) return
+    section.insertAdjacentHTML(
+      'beforeend',
+      isLzh
+        ? `<ol>${(items.length ? items : ['?']).map(d => `<li>${d}</li>`).join('')}</ol>`
+        : items.join('')
+    )
+    section.removeAttribute('aria-busy')
+  }
 
-    const content = isLzh
-      ? `<dfn>${word}</dfn><ol>${items.map(d => `<li>${d}</li>`).join('')}</ol>`
-      : `<dfn>${word}</dfn>${items.join('')}`
-
+  /**
+   * Open the popover on the word straight away, the definitions following
+   * into its section once the server answers - so the popover and its
+   * navigation are already in place, rather than appearing all at once
+   */
+  function open(word: string) {
+    if (!popover) return
     popover.innerHTML =
-      `<section>${content}</section>` +
+      `<section aria-busy="true"><dfn>${word}</dfn></section>` +
       `<nav aria-label="Word definition navigation">` +
       `<button id="def-prev" aria-label="Previous word"${current <= 0 ? ' disabled' : ''}>\u2190</button>` +
       `<a href="/define/${word}" aria-label="Full definition for ${word}">📖</a>` +
@@ -1294,6 +1279,20 @@ const jsonLd = generateTextJsonLd(
     if (rect && rect.bottom > window.innerHeight * 0.7) {
       words[current]?.scrollIntoView({ block: 'center', behavior: 'smooth' })
     }
+  }
+
+  /**
+   * Look up the word on show, or null if it's no longer the one to show -
+   * another was clicked, or the feature turned off, while this one was asked.
+   * The word is busy meanwhile, as the first click on it waits on the server.
+   */
+  async function answer(query: string) {
+    const link = words[current]
+    link?.setAttribute('aria-busy', 'true')
+    const shown = current
+    const result = await lookUp(query)
+    link?.removeAttribute('aria-busy')
+    return current === shown && lookupToggle?.checked ? result : null
   }
 
   popover?.addEventListener('click', e => {

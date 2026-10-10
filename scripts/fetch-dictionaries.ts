@@ -1,6 +1,6 @@
 /**
  * Fetches lookup dictionaries from SuttaCentral API and saves them
- * as compact JSON files for use at SSR render time.
+ * as compact JSON files, which the build shards for the lookup endpoint.
  *
  * Run: pnpm fetch-dicts
  */
@@ -11,13 +11,14 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { AVAILABLE_LOOKUPS } from '../src/constants/lookup.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const DATA_DIR = join(__dirname, '..', 'public', 'data')
+// Sharded into public/data on build, see scripts/shard-dictionaries.ts
+const DATA_DIR = join(__dirname, '..', 'data')
 
 /**
  * Writes one dictionary entry per line, so a changed entry shows up as exactly
  * one changed line in the diff. These files have >100k entries, so prettier
  * (which wraps at 80 chars) blows them out to millions of lines and chokes
- * editors — hence `public/data` sits in .prettierignore
+ * editors — hence `data` sits in .prettierignore
  */
 async function writeJson(filepath, data) {
   const lines = Object.entries(data).map(

@@ -6,15 +6,18 @@ Clicking a root language word (Pali/Chinese) shows DPD dictionary definitions in
 
 ### Architecture
 
-Dictionary data lives in `public/data/` as static assets (not bundled into the Worker, to stay under Cloudflare's 25 MB worker size limit). They are fetched at runtime via Cloudflare's ASSETS binding.
+Dictionary data lives in `data/`, one JSON file per dictionary. On `build` and `dev`, [`scripts/shard-dictionaries.ts`](scripts/shard-dictionaries.ts) splits each one into ~100 KB shards in `public/data/` (gitignored), which are served as static assets (not bundled into the Worker, to stay under Cloudflare's 25 MB worker size limit) and fetched at runtime via Cloudflare's ASSETS binding.
+
+The endpoint looks up one word per request, as it's clicked, and parses only the shards that word touches. Parsing a whole dictionary (21 MB for Pali–English), or looking up every word on a page at once, runs past the Worker's 10 ms CPU limit on the free plan and fails with Error 1102.
 
 Key files:
 
-- [`src/pages/api/lookup.ts`](src/pages/api/lookup.ts) — POST endpoint that processes words server-side and returns only matched results
+- [`src/pages/api/lookup.ts`](src/pages/api/lookup.ts) — GET endpoint that processes one word server-side and returns only matched results
 - [`src/constants/lookup.ts`](src/constants/lookup.ts) — `AVAILABLE_LOOKUPS` (single source of truth for supported language pairs as per current SC), Pali endings, Hanzi variant normalization
 - [`src/utils/lookup.ts`](src/utils/lookup.ts) — Pali compound decomposition and DPD inflection mapping logic
+- [`src/utils/sharded-dict.ts`](src/utils/sharded-dict.ts) — Fetches and caches the shards a lookup needs
 - [`scripts/fetch-dictionaries.ts`](scripts/fetch-dictionaries.ts) — Fetches and compacts dictionary data from SuttaCentral API
-- `public/data/` — Dictionary JSON files (~30 MB)
+- `data/` — Dictionary JSON files (~30 MB)
 
 ### Updating Dictionaries
 
@@ -24,7 +27,7 @@ Dictionary files are committed to the repo for reproducible builds. To re-fetch 
 pnpm fetch-dicts
 ```
 
-The script writes one entry per line, so an upstream edit to a definition shows up as a single changed line rather than a multi-line hunk. `public/data` is in `.prettierignore` to keep it that way — prettier wraps at 80 characters, which turns `lookup-pli-en.json` into 600k+ lines and makes the diff unreadable (and slow enough to hang an editor).
+The script writes one entry per line, so an upstream edit to a definition shows up as a single changed line rather than a multi-line hunk. `data` is in `.prettierignore` to keep it that way — prettier wraps at 80 characters, which turns `lookup-pli-en.json` into 600k+ lines and makes the diff unreadable (and slow enough to hang an editor).
 
 ### Dictionary Sources
 

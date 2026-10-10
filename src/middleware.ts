@@ -1,6 +1,8 @@
 // src/middleware.ts
 import { defineMiddleware } from 'astro:middleware'
 import { ISO_CODES, PITAKA_BASKETS } from '~/constants/iso-codes'
+import { loadLocale } from '~/i18n'
+import { getPreferredLanguage } from '~/utils/language'
 
 // Paths .net moved, so old links and bookmarks still land somewhere
 const MOVED: Record<string, string> = {
@@ -64,6 +66,16 @@ export const onRequest = defineMiddleware(async (context, next) => {
         return ((performance.now() - startTime) / 1000).toFixed(2)
       },
     })
+  }
+
+  // Pages translate as they render, so have the strings ready. English is
+  // what `t` falls back to. The API has nothing to translate
+  if (!path.startsWith('/api/')) {
+    const acceptLanguage = context.request.headers.get('accept-language')
+    await Promise.all([
+      loadLocale('en'),
+      loadLocale(getPreferredLanguage(acceptLanguage)),
+    ])
   }
 
   const response = await next()
