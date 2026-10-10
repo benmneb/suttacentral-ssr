@@ -163,7 +163,7 @@ if (term) {
               <ol>
                 {adjacentData[0].map(adjacentTerm =>
                   adjacentTerm === term ? (
-                    <li>
+                    <li class="no-list-item">
                       <span>{adjacentTerm}</span>
                     </li>
                   ) : (
@@ -269,6 +269,10 @@ if (term) {
       font-size: inherit;
       cursor: pointer;
     }
+  }
+
+  .no-list-item {
+    display: block;
   }
 </style>
 
