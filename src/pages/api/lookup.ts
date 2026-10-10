@@ -8,7 +8,7 @@ import {
   paliLookupKeys,
   serializeMatch,
 } from '~/utils/lookup'
-import { getShardedDict } from '~/utils/sharded-dict'
+import { DICTIONARY_VERSION, getShardedDict } from '~/utils/sharded-dict'
 
 /** Longer than any real word, short enough to bound the work one request does */
 const MAX_LENGTH = 100
@@ -34,7 +34,7 @@ const MAX_LENGTH = 100
  * @param word - Pali word to look up
  * @param text - Run of Chinese characters around the one clicked
  */
-export const GET: APIRoute = async ({ url }) => {
+export const GET: APIRoute = async ({ url, locals }) => {
   const from = url.searchParams.get('from') ?? ''
   const to = url.searchParams.get('to') ?? ''
   const query = url.searchParams.get(from === 'lzh' ? 'text' : 'word')
@@ -46,6 +46,23 @@ export const GET: APIRoute = async ({ url }) => {
   if (query.length > MAX_LENGTH) {
     return new Response('[]', { status: 414 })
   }
+
+  // Answers are shared by everyone the same data centre serves, so a word
+  // anyone has looked up lately needs no shards at all. Keyed on only what
+  // decides the answer, plus the dictionaries version so an update to them
+  // doesnt serve stale answers
+  const cacheKey = new Request(
+    `${url.origin}/api/lookup?${new URLSearchParams({
+      from,
+      to,
+      q: query,
+      v: DICTIONARY_VERSION,
+    })}`
+  )
+  // Not there in every dev setup, where lookups just go uncached
+  const cache = (globalThis.caches as { default?: Cache } | undefined)?.default
+  const cached = await cache?.match(cacheKey)
+  if (cached) return cached
 
   const dict = getShardedDict<LookupEntry>(`lookup-${from}-${to}`, url.origin)
   let result: unknown
@@ -81,12 +98,18 @@ export const GET: APIRoute = async ({ url }) => {
     result = matches.map(serializeMatch)
   }
 
-  return new Response(JSON.stringify(result), {
+  const response = new Response(JSON.stringify(result), {
     headers: {
       'Content-Type': 'application/json',
-      // The dictionaries only change with a deploy, so a word clicked twice
-      // needn't come back here
-      'Cache-Control': 'public, max-age=86400',
+      // A month, both in the data centre and the browser. The data centre key
+      // has the dictionaries version, so an update is never stale there. The
+      // browser's doesnt, but updates are rare, and an old definition for a
+      // few weeks after one is harmless
+      'Cache-Control': 'public, max-age=2592000',
     },
   })
+  if (cache) {
+    locals.cfContext?.waitUntil(cache.put(cacheKey, response.clone()))
+  }
+  return response
 }

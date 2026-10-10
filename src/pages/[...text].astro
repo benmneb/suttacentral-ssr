@@ -1175,8 +1175,54 @@ const jsonLd = generateTextJsonLd(
     show(getWord(link))
   })
 
+  /**
+   * Ask on press, not release - a click only fires once the button comes back
+   * up, and the answer can be on its way by then. The click that follows gets
+   * the same request through `lookUp`. Not for touch, where a press is as
+   * likely the start of a scroll as of a tap
+   */
+  document.querySelector('main')?.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'touch' || !lookupToggle?.checked) return
+    const link = (e.target as HTMLElement).closest<HTMLAnchorElement>(
+      'a.look-up'
+    )
+    if (link) lookUp(queryFor(words.indexOf(link)))
+  })
+
   function getWord(el: HTMLAnchorElement): string {
     return decodeURIComponent(el.pathname.split('/').pop()!)
+  }
+
+  /**
+   * The characters either side of a Chinese one that make up its context: up
+   * to 3 each way, stopping at punctuation (text nodes) or the segment's end
+   */
+  function lzhRange(index: number): [number, number] {
+    let start = index
+    let end = index
+    const seg = words[index].closest('.segment')
+    for (let i = index - 1; i >= Math.max(0, index - 3); i--) {
+      if (words[i].closest('.segment') !== seg) break
+      if (words[i].nextSibling !== words[i + 1]) break
+      start = i
+    }
+    for (let i = index + 1; i < Math.min(words.length, index + 4); i++) {
+      if (words[i].closest('.segment') !== seg) break
+      if (words[i].previousSibling !== words[i - 1]) break
+      end = i
+    }
+    return [start, end]
+  }
+
+  /** What to ask the server about the word at this index */
+  function queryFor(index: number): string {
+    if (!isLzh) return getWord(words[index])
+    // The server finds every term within the context, longest first
+    const [start, end] = lzhRange(index)
+    return words
+      .slice(start, end + 1)
+      .map(getWord)
+      .join('')
   }
 
   async function show(word: string) {
@@ -1185,29 +1231,11 @@ const jsonLd = generateTextJsonLd(
     let items: string[]
 
     if (isLzh && current >= 0) {
-      // Walk 3 chars backward/forward, stop at punctuation (text nodes) or segment boundary
-      let start = current
-      let end = current
-      const seg = words[current].closest('.segment')
-      for (let i = current - 1; i >= Math.max(0, current - 3); i--) {
-        if (words[i].closest('.segment') !== seg) break
-        if (words[i].nextSibling !== words[i + 1]) break
-        start = i
-      }
-      for (let i = current + 1; i < Math.min(words.length, current + 4); i++) {
-        if (words[i].closest('.segment') !== seg) break
-        if (words[i].previousSibling !== words[i - 1]) break
-        end = i
-      }
       // Highlight group
+      const [start, end] = lzhRange(current)
       for (let i = start; i <= end; i++) words[i].classList.add('active')
       open(word)
-      // The server finds every term within the context, longest first
-      const context = words
-        .slice(start, end + 1)
-        .map(getWord)
-        .join('')
-      const entries = (await answer(context)) as LzhMatch[] | null
+      const entries = (await answer(queryFor(current))) as LzhMatch[] | null
       if (!entries) return
       items = entries.map(e => {
         const defs = Array.isArray(e.entry.d) ? e.entry.d.join('; ') : e.entry.d
@@ -1217,7 +1245,7 @@ const jsonLd = generateTextJsonLd(
       // Pali: each word maps to an array of decomposed matches
       words[current]?.classList.add('active')
       open(word)
-      const found = (await answer(word)) as PaliMatch[] | null
+      const found = (await answer(queryFor(current))) as PaliMatch[] | null
       if (!found) return
       const matches = found.length ? found : [{ base: word, meaning: '?' }]
       // When a single match has the same base as the clicked word,

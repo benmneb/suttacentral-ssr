@@ -10,6 +10,8 @@ Dictionary data lives in `data/`, one JSON file per dictionary. On `build` and `
 
 The endpoint looks up one word per request, as it's clicked, and parses only the shards that word touches. The index of which prefix lives in which shard is bundled into the Worker (`src/generated/dictionary-indexes.json`, also gitignored), and the shards a word will need are all fetched in parallel before the lookup starts — each `ASSETS.fetch` is a round trip in production, so fetching them one by one as the lookup reaches them made clicks take 1–2 seconds. Parsing a whole dictionary (21 MB for Pali–English), or looking up every word on a page at once, runs past the Worker's 10 ms CPU limit on the free plan and fails with Error 1102.
 
+Answers are kept in the data centre's cache (the Workers Cache API) for a month, keyed on the word, the language pair and a hash of the dictionaries, so a word anyone nearby has looked up recently skips the shards entirely, and updated dictionaries never serve stale answers from there. Browsers keep answers for a month too, by URL alone, so after a `pnpm fetch-dicts` a returning visitor may see an old definition until theirs expires. Pages are never cached. On mouse and pen, the request starts on `pointerdown` rather than `click`.
+
 Key files:
 
 - [`src/pages/api/lookup.ts`](src/pages/api/lookup.ts) — GET endpoint that processes one word server-side and returns only matched results

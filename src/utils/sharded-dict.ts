@@ -16,7 +16,10 @@ type Shard = Record<string, unknown>
 const MAX_SHARDS = 300
 
 // Written by `scripts/shard-dictionaries.ts`, which `build` and `dev` run first
-const indexes = dictionaryIndexes as Record<string, ShardIndex>
+const indexes = dictionaryIndexes.indexes as Record<string, ShardIndex>
+
+/** A hash of the dictionaries' contents, which changes whenever they do */
+export const DICTIONARY_VERSION = dictionaryIndexes.version
 // Map keeps insertion order, so the first key is always the least recently used
 const shards = new Map<string, Promise<Shard | null>>()
 

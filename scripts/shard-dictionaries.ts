@@ -7,6 +7,7 @@
  * this first, or run it alone with: pnpm shard-dicts
  */
 
+import { createHash } from 'node:crypto'
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -123,11 +124,16 @@ async function shardDictionary(
 // Start clean, so a dictionary dropped from data/ doesnt linger as shards
 await rm(SHARDS_DIR, { recursive: true, force: true })
 const indexes: Record<string, object> = {}
-for (const file of await readdir(SOURCE_DIR)) {
+// Changes only when the dictionaries do, so cached lookups outlive a deploy
+// that leaves them alone, and go stale with one that updates them
+const hash = createHash('sha1')
+for (const file of (await readdir(SOURCE_DIR)).sort()) {
   if (!file.endsWith('.json')) continue
   const name = file.replace(/\.json$/, '')
-  const data = JSON.parse(await readFile(join(SOURCE_DIR, file), 'utf8'))
-  indexes[name] = await shardDictionary(name, data)
+  const json = await readFile(join(SOURCE_DIR, file), 'utf8')
+  hash.update(name).update(json)
+  indexes[name] = await shardDictionary(name, JSON.parse(json))
 }
+const version = hash.digest('hex').slice(0, 12)
 await mkdir(dirname(INDEXES_FILE), { recursive: true })
-await writeFile(INDEXES_FILE, JSON.stringify(indexes))
+await writeFile(INDEXES_FILE, JSON.stringify({ version, indexes }))
