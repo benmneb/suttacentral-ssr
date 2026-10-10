@@ -844,7 +844,11 @@ hr {
 }
 
 section,
-article {
+article,
+/* Some bilara documents close their </article> before the last key, leaving a
+   paragraph of segments loose in main (sn34.20-27:1.12). It got none of this,
+   so its number and Pāli showed no matter what the view settings said */
+main > p {
   overflow-wrap: break-word;
 
   [lang='pli'] {
@@ -1074,6 +1078,11 @@ article {
     font-weight: bold;
     color: var(--text-color-secondary);
   }
+  /* The & copies are for the loose paragraph above: an end line out there wears
+     the class itself, so a descendant selector never reaches it */
+  &.endsection,
+  &.end,
+  &.endsubsection,
   .endsection,
   .end,
   .endsubsection {
@@ -1081,11 +1090,15 @@ article {
     text-align: center;
     color: var(--text-color-secondary);
   }
+  &.endsutta,
   .endsutta {
     font-weight: bold;
     text-align: center;
     color: var(--text-color-secondary);
   }
+  &.endbook,
+  &.endvagga,
+  &.endkanda,
   .endbook,
   .endvagga,
   .endkanda {
@@ -1094,6 +1107,7 @@ article {
     text-transform: capitalize;
     color: var(--text-color-secondary);
   }
+  &.endbook,
   .endbook {
     font-weight: bold;
   }
