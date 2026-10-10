@@ -14,6 +14,14 @@ import { fileURLToPath } from 'node:url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const SOURCE_DIR = join(__dirname, '..', 'data')
 const SHARDS_DIR = join(__dirname, '..', 'public', 'data')
+// Bundled into the Worker, so finding a shard costs no fetch of its own
+const INDEXES_FILE = join(
+  __dirname,
+  '..',
+  'src',
+  'generated',
+  'dictionary-indexes.json'
+)
 
 /** A bucket bigger than this gets split by its next character */
 const MAX_SHARD_BYTES = 100 * 1024
@@ -73,7 +81,7 @@ function groupByCodePoint(entries: Entries): Map<string, Entries> {
 }
 
 /**
- * Writes `public/data/<name>/<n>.json` for each shard, plus an `index.json`
+ * Writes `public/data/<name>/<n>.json` for each shard, and returns the index
  * that says how to find the shard for a key. Shards are numbered rather than
  * named after their prefix as keys differ only by case in places, and macOS
  * filenames dont.
@@ -81,7 +89,7 @@ function groupByCodePoint(entries: Entries): Map<string, Entries> {
 async function shardDictionary(
   name: string,
   data: Record<string, unknown>
-): Promise<void> {
+): Promise<object> {
   const dir = join(SHARDS_DIR, name)
   await mkdir(dir, { recursive: true })
 
@@ -103,20 +111,23 @@ async function shardDictionary(
     prefixes[key] = n++
   }
 
-  const index = byCodePoint
-    ? { by: 'codePoint', shards: LZH_SHARDS }
-    : { by: 'prefix', prefixes }
-  await writeFile(join(dir, 'index.json'), JSON.stringify(index))
-
   console.log(
     `  Sharded ${name} into ${n} files (largest ${Math.round(largest / 1024)} KB)`
   )
+
+  return byCodePoint
+    ? { by: 'codePoint', shards: LZH_SHARDS }
+    : { by: 'prefix', prefixes }
 }
 
 // Start clean, so a dictionary dropped from data/ doesnt linger as shards
 await rm(SHARDS_DIR, { recursive: true, force: true })
+const indexes: Record<string, object> = {}
 for (const file of await readdir(SOURCE_DIR)) {
   if (!file.endsWith('.json')) continue
+  const name = file.replace(/\.json$/, '')
   const data = JSON.parse(await readFile(join(SOURCE_DIR, file), 'utf8'))
-  await shardDictionary(file.replace(/\.json$/, ''), data)
+  indexes[name] = await shardDictionary(name, data)
 }
+await mkdir(dirname(INDEXES_FILE), { recursive: true })
+await writeFile(INDEXES_FILE, JSON.stringify(indexes))

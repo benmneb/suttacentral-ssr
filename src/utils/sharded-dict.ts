@@ -1,4 +1,5 @@
 import { env } from 'cloudflare:workers'
+import dictionaryIndexes from '~/generated/dictionary-indexes.json'
 import type { Dict } from '~/utils/lookup'
 
 type ShardIndex =
@@ -14,7 +15,8 @@ type Shard = Record<string, unknown>
  */
 const MAX_SHARDS = 300
 
-const indexes = new Map<string, Promise<ShardIndex | null>>()
+// Written by `scripts/shard-dictionaries.ts`, which `build` and `dev` run first
+const indexes = dictionaryIndexes as Record<string, ShardIndex>
 // Map keeps insertion order, so the first key is always the least recently used
 const shards = new Map<string, Promise<Shard | null>>()
 
@@ -30,16 +32,6 @@ async function fetchJson<T>(path: string, origin: string): Promise<T | null> {
   const res = await env.ASSETS.fetch(new URL(path, origin))
   if (!res.ok) return null
   return (await res.json()) as T
-}
-
-function loadIndex(name: string, origin: string): Promise<ShardIndex | null> {
-  if (!indexes.has(name)) {
-    const index = fetchJson<ShardIndex>(`/data/${name}/index.json`, origin)
-    indexes.set(name, index)
-    // A failed fetch shouldnt stick, the next request can try again
-    index.then(i => i ?? indexes.delete(name))
-  }
-  return indexes.get(name)!
 }
 
 function loadShard(name: string, n: number, origin: string) {
@@ -68,20 +60,52 @@ function shardFor(key: string, index: ShardIndex): number | null {
   return null
 }
 
+export type ShardedDict<T> = Dict<T> & {
+  /**
+   * Fetch every shard that keys starting like these could be in, all at once.
+   * A lookup awaits its keys one after another, and in production each fetch
+   * of a shard is a round trip of its own - so without this, a word costs
+   * several of them back to back.
+   */
+  prefetch(keys: string[]): Promise<void>
+}
+
+/**
+ * Lookups never ask for a prefix shorter than this, so its shard (which holds
+ * only the keys that are the prefix itself) is not worth prefetching
+ */
+const MIN_PROBE_LENGTH = 4
+
 /**
  * One of the dictionaries split up by `scripts/shard-dictionaries.ts`, which
  * fetches and parses only the shards that keys are looked up in
  */
-export function getShardedDict<T>(name: string, origin: string): Dict<T> {
+export function getShardedDict<T>(
+  name: string,
+  origin: string
+): ShardedDict<T> {
+  const index = indexes[name]
   return {
     async get(key) {
-      const index = await loadIndex(name, origin)
       if (!index) return undefined
       const n = shardFor(key, index)
       if (n === null) return undefined
       const shard = await loadShard(name, n, origin)
       if (!shard || !Object.hasOwn(shard, key)) return undefined
       return shard[key] as T
+    },
+
+    async prefetch(keys) {
+      if (!index) return
+      const needed = new Set<number>()
+      for (const key of keys) {
+        const shortest = Math.min(MIN_PROBE_LENGTH, key.length)
+        for (let i = key.length; i >= shortest; i--) {
+          const n = shardFor(key.slice(0, i), index)
+          if (n !== null) needed.add(n)
+        }
+      }
+      await Promise.all([...needed].map(n => loadShard(name, n, origin)))
     },
   }
 }

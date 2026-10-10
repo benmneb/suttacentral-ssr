@@ -298,6 +298,27 @@ async function lookupCompound(
   return allMatches
 }
 
+/**
+ * The forms of a word that `lookupPali` starts its probing from, so the shards
+ * they need can be fetched up front: as written (with ṁ) for the dictionary,
+ * also without a negating a-/an- and with vy and by swapped, and as DPD spells
+ * it (with ṃ) for the DPD tables
+ */
+export function paliLookupKeys(rawWord: string): {
+  dict: string[]
+  dpd: string[]
+} {
+  const word = cleanPaliWord(rawWord)
+  if (!word) return { dict: [], dpd: [] }
+
+  const dict = [word]
+  if (word.startsWith('a')) dict.push(word.substring(1), word.substring(2))
+  if (word.includes('vy')) dict.push(word.replace(/vy/g, 'by'))
+  else if (word.includes('by')) dict.push(word.replace(/by/g, 'vy'))
+
+  return { dict, dpd: [normalizeDpdWord(word)] }
+}
+
 export async function lookupPali(
   rawWord: string,
   dict: Dict<LookupEntry>,

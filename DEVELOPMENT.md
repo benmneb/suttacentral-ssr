@@ -8,7 +8,7 @@ Clicking a root language word (Pali/Chinese) shows DPD dictionary definitions in
 
 Dictionary data lives in `data/`, one JSON file per dictionary. On `build` and `dev`, [`scripts/shard-dictionaries.ts`](scripts/shard-dictionaries.ts) splits each one into ~100 KB shards in `public/data/` (gitignored), which are served as static assets (not bundled into the Worker, to stay under Cloudflare's 25 MB worker size limit) and fetched at runtime via Cloudflare's ASSETS binding.
 
-The endpoint looks up one word per request, as it's clicked, and parses only the shards that word touches. Parsing a whole dictionary (21 MB for Pali–English), or looking up every word on a page at once, runs past the Worker's 10 ms CPU limit on the free plan and fails with Error 1102.
+The endpoint looks up one word per request, as it's clicked, and parses only the shards that word touches. The index of which prefix lives in which shard is bundled into the Worker (`src/generated/dictionary-indexes.json`, also gitignored), and the shards a word will need are all fetched in parallel before the lookup starts — each `ASSETS.fetch` is a round trip in production, so fetching them one by one as the lookup reaches them made clicks take 1–2 seconds. Parsing a whole dictionary (21 MB for Pali–English), or looking up every word on a page at once, runs past the Worker's 10 ms CPU limit on the free plan and fails with Error 1102.
 
 Key files:
 

@@ -4,6 +4,8 @@ import {
   type LookupEntry,
   lookupLzh,
   lookupPali,
+  normalizeHanzi,
+  paliLookupKeys,
   serializeMatch,
 } from '~/utils/lookup'
 import { getShardedDict } from '~/utils/sharded-dict'
@@ -48,17 +50,31 @@ export const GET: APIRoute = async ({ url }) => {
   const dict = getShardedDict<LookupEntry>(`lookup-${from}-${to}`, url.origin)
   let result: unknown
 
+  // Fetching shards one at a time as the lookup reaches them costs a round
+  // trip each, so start them all together up front
   if (from === 'lzh') {
+    await dict.prefetch([...normalizeHanzi(query)])
     result = await lookupLzh(query, dict)
   } else {
     const dpdI2h = getShardedDict<string[]>('dpd-i2h', url.origin)
     const dpdDecon = getShardedDict<string>('dpd-deconstructor', url.origin)
+    const enDict =
+      to !== 'en'
+        ? getShardedDict<LookupEntry>('lookup-pli-en', url.origin)
+        : null
+
+    const keys = paliLookupKeys(query)
+    await Promise.all([
+      dict.prefetch(keys.dict),
+      dpdI2h.prefetch(keys.dpd),
+      dpdDecon.prefetch(keys.dpd),
+      enDict?.prefetch(keys.dict),
+    ])
 
     let matches = await lookupPali(query, dict, dpdI2h, dpdDecon)
 
     // Fall back to English dict for languages with limited coverage (e.g. id, nl)
-    if (matches.length === 0 && to !== 'en') {
-      const enDict = getShardedDict<LookupEntry>('lookup-pli-en', url.origin)
+    if (matches.length === 0 && enDict) {
       matches = await lookupPali(query, enDict, dpdI2h, dpdDecon)
     }
 
