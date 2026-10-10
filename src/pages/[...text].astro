@@ -8,6 +8,7 @@ import Layout from '~/layouts/Layout.astro'
 import { getViewPrefs } from '~/utils/cookies'
 import { generateTextJsonLd } from '~/utils/json-ld'
 import { getPreferredLanguage } from '~/utils/language'
+import { referenceEditionName } from '~/constants/reference-editions'
 import {
   parseUidNumbers,
   rangeUidToAcronym,
@@ -117,6 +118,7 @@ if (suttasData.segmented) {
       'translation_text',
       'comment_text',
       'variant_text',
+      'reference_text',
     ]) {
       if (!bilaraData[prop]) continue
       bilaraData[prop] = Object.fromEntries(
@@ -232,6 +234,33 @@ function tocLabel(text: string): string {
 }
 
 /**
+ * The reference span for a segment: the SuttaCentral number, then an anchor per
+ * id in `reference_text` - "bj10.20, cck12.12, ms9M_53" and so on.
+ *
+ * Those stay hidden like the number does, but they give every reference an id
+ * to land on, so a link like /mn2/en/sujato#bj10.20 works. A fragment never
+ * reaches the server, so they all have to be here for CSS to reveal the one
+ * that gets targeted.
+ */
+function renderReferences(key: string, ref: string) {
+  const ids = (bilaraData.reference_text?.[key] ?? '')
+    .split(',')
+    .map((id: string) => id.trim())
+    .filter(Boolean)
+
+  return `
+      <span class="reference" id="${ref}">
+        <a href="#${ref}" title="${t(userLanguage, 'text:segmentNumber')}">${ref}</a>
+        ${ids
+          .map(
+            (id: string) =>
+              `<a class="ref" id="${id}" href="#${id}" title="${referenceEditionName(id) ?? id}">${id}</a>`
+          )
+          .join('')}
+      </span>`
+}
+
+/**
  * Record a segmented heading for the table of contents.
  */
 function collectHeading(html: string, key: string, text?: string) {
@@ -264,9 +293,7 @@ function getRootLangHTML() {
 
       const segment = `
     <span id="${key}" class="segment">
-      <span class="reference" id="${ref}">
-        <a href="#${ref}" title="${t(userLanguage, 'text:segmentNumber')}">${ref}</a>
-      </span>
+${renderReferences(key, ref)}
       ${
         text
           ? `
@@ -321,9 +348,7 @@ function getSegmentedHTML() {
 
       const segment = `
     <span id="${key}" class="segment">
-      <span class="reference" id="${ref}">
-        <a href="#${ref}" title="${t(userLanguage, 'text:segmentNumber')}">${ref}</a>
-      </span>
+${renderReferences(key, ref)}
       ${
         text
           ? `
