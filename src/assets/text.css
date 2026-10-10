@@ -529,11 +529,26 @@ a.look-up {
   background-color: var(--tts-highlight-background-color);
 }
 
+/* The sentence being read in non segmented texts. Kept apart from
+   .tts-highlight, its fallback, as browsers that don't know ::highlight()
+   would drop the whole rule */
+::highlight(tts-current) {
+  color: var(--tts-highlight-text-color);
+  background-color: var(--tts-highlight-background-color);
+}
+
 .tts-clickable {
-  &:hover {
+  cursor: pointer;
+
+  /* An element split into sentences gets the hover on the sentence instead,
+     from the listen script */
+  &:not(.tts-sentences):hover {
     background-color: var(--tts-hover-background-color);
-    cursor: pointer;
   }
+}
+
+::highlight(tts-hover) {
+  background-color: var(--tts-hover-background-color);
 }
 
 .tts-controls {
