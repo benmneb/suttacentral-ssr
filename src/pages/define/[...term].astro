@@ -67,74 +67,76 @@ if (term) {
       {
         !!dictionaryData.length && (
           <article>
-            {dictionaryData.map(entry => (
-              <dl>
-                <dt>{entry.word || entry.entry}</dt>
-                <dd>
-                  <small>
-                    {dictionaryTitles?.[entry.dictname]}{' '}
+            <dl>
+              {dictionaryData.map(entry => (
+                <>
+                  <dt>
+                    {dictionaryTitles[entry.dictname] ?? entry.dictname}
                     {entry.dictname === 'dpd' && (
-                      <a href={`https://dpdict.net/?q=${term}`}>
-                        [{t(userLanguage, 'dictionary:link')}]
-                      </a>
+                      <>
+                        {' '}
+                        <a href={`https://dpdict.net/?q=${term}`}>
+                          [{t(userLanguage, 'dictionary:link')}]
+                        </a>
+                      </>
                     )}
-                  </small>
-                </dd>
-                {entry.grammar && (
-                  <dd>
-                    <em>{entry.grammar}</em>
-                  </dd>
-                )}
-                {entry.text && (
-                  <dd
-                    set:html={entry.text.replaceAll(
-                      'https://suttacentral.net',
-                      ''
-                    )}
-                  />
-                )}
-                {entry.definition && (
-                  <dd>
-                    {Array.isArray(entry.definition) ? (
-                      <ol>
-                        {entry.definition.map(d => (
-                          <li set:html={d} />
-                        ))}
-                      </ol>
-                    ) : (
-                      entry.definition
-                    )}
-                  </dd>
-                )}
-                {entry.xr && (
-                  <dd>
-                    <ul>
-                      {Array.isArray(entry.xr) ? (
-                        <>
-                          {entry.xr.map(d => (
-                            <li>
-                              <a href={`/define/${d}`}>{d}</a>
-                            </li>
-                          ))}
-                        </>
-                      ) : (
-                        <li>
-                          <a href={`/define/${entry.xr}`}>{entry.xr}</a>
-                        </li>
+                  </dt>
+                  {entry.grammar && (
+                    <dd>
+                      <em>{entry.grammar}</em>
+                    </dd>
+                  )}
+                  {entry.text && (
+                    <dd
+                      set:html={entry.text.replaceAll(
+                        'https://suttacentral.net',
+                        ''
                       )}
-                    </ul>
-                  </dd>
-                )}
-                {entry.pronunciation && (
-                  <dd>
-                    <strong>
-                      {t(userLanguage, 'dictionary:pronunciation')}
-                    </strong>{' '}
-                    {entry.pronunciation}
-                  </dd>
-                )}
-              </dl>
-            ))}
+                    />
+                  )}
+                  {entry.definition && (
+                    <dd>
+                      {Array.isArray(entry.definition) ? (
+                        <ol>
+                          {entry.definition.map(d => (
+                            <li set:html={d} />
+                          ))}
+                        </ol>
+                      ) : (
+                        entry.definition
+                      )}
+                    </dd>
+                  )}
+                  {entry.xr && (
+                    <dd>
+                      <ul>
+                        {Array.isArray(entry.xr) ? (
+                          <>
+                            {entry.xr.map(d => (
+                              <li>
+                                <a href={`/define/${d}`}>{d}</a>
+                              </li>
+                            ))}
+                          </>
+                        ) : (
+                          <li>
+                            <a href={`/define/${entry.xr}`}>{entry.xr}</a>
+                          </li>
+                        )}
+                      </ul>
+                    </dd>
+                  )}
+                  {entry.pronunciation && (
+                    <dd>
+                      <strong>
+                        {t(userLanguage, 'dictionary:pronunciation')}
+                      </strong>{' '}
+                      {entry.pronunciation}
+                    </dd>
+                  )}
+                </>
+              ))}
+            </dl>
           </article>
         )
       }
@@ -209,6 +211,21 @@ if (term) {
 
       & > section {
         max-width: var(--content-max-width);
+      }
+
+      & > article > dl {
+        & > dt {
+          font-weight: bold;
+          margin-bottom: 0.4rem;
+
+          > a {
+            font-weight: initial;
+          }
+        }
+
+        & > dd + dt {
+          margin-top: 1em;
+        }
       }
 
       & > nav {
