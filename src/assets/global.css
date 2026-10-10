@@ -89,6 +89,8 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.5;
+  /* So the text page aside can follow the header out of view */
+  timeline-scope: --site-header;
 
   main {
     margin: auto;

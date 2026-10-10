@@ -679,12 +679,38 @@ aside {
       position: static;
     }
 
+    /* Slides in from the right as the header scrolls out of view, so search
+       stays in reach. Browsers without scroll timelines never show it */
+    .aside-search {
+      display: none;
+
+      @supports (animation-timeline: view()) {
+        display: block;
+        overflow: hidden;
+        max-width: 0;
+        border-radius: 0;
+        visibility: hidden;
+        animation: aside-search-in linear both;
+        animation-timeline: --site-header;
+        animation-range: exit 0% exit 100%;
+      }
+    }
+
     @media only screen and (max-width: 600px) {
       width: 100%;
       border-radius: 0;
 
       > ul > li {
         flex: 1;
+      }
+
+      > ul > li.aside-search {
+        flex: 0 0 auto;
+      }
+
+      /* Search sits right of it, so anchor the menu to the screen edge */
+      > ul > li:has(> #listen-menu) {
+        position: static;
       }
 
       > ul > li > button {
@@ -863,6 +889,13 @@ aside {
         }
       }
     }
+  }
+}
+
+@keyframes aside-search-in {
+  to {
+    max-width: 3rem;
+    visibility: visible;
   }
 }
 
