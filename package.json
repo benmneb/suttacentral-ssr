@@ -14,7 +14,8 @@
     "astro": "astro",
     "prepare": "husky",
     "fetch-dicts": "node scripts/fetch-dictionaries.ts",
-    "sync-i18n": "node scripts/sync-i18n.ts"
+    "sync-i18n": "node scripts/sync-i18n.ts",
+    "sync-api-constants": "node scripts/sync-api-constants.ts"
   },
   "engines": {
     "node": ">=23.6"
