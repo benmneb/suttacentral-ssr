@@ -18,6 +18,7 @@
   "viewoption:showSegments": "Prikaži segmente",
   "viewoption:showVariantReading": "Prikaži različico besedila za segment {ref}",
   "viewoption:stop": "Ustavi",
+  "viewoption:ttsNoVoices": "Ni najdenih glasov. »Poslušaj« bere na glas z glasovi za sintezo govora, nameščenimi v vaši napravi - dodajte glas v nastavitvah govora svojega sistema in nato znova naložite stran.",
   "viewoption:ttsNoscript": "Omogočite javascript za poslušanje tega besedila. Deluje 100% lokalno v vašem brskalniku prek vmesnika SpeechSynthesis API, tudi brez povezave.",
   "viewoption:ttsSettings": "Nastavitve pretvorbe besedila v govor",
   "viewoption:variant": "Različica:",

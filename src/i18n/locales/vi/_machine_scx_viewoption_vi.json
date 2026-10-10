@@ -18,6 +18,7 @@
   "viewoption:showSegments": "Hiển thị các đoạn",
   "viewoption:showVariantReading": "Hiển thị dị bản cho đoạn {ref}",
   "viewoption:stop": "Dừng",
+  "viewoption:ttsNoVoices": "Không tìm thấy giọng nói nào. “Nghe” đọc to bằng các giọng chuyển văn bản thành giọng nói được cài đặt trên thiết bị của bạn - hãy thêm một giọng nói trong cài đặt giọng nói của hệ thống, rồi tải lại trang.",
   "viewoption:ttsNoscript": "Vui lòng bật javascript để nghe văn bản này. Nó hoạt động 100% cục bộ trong trình duyệt của bạn thông qua API SpeechSynthesis, kể cả khi ngoại tuyến.",
   "viewoption:ttsSettings": "Cài đặt chuyển văn bản thành giọng nói",
   "viewoption:variant": "Dị bản:",

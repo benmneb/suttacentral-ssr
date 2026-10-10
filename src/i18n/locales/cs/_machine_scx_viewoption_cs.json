@@ -18,6 +18,7 @@
   "viewoption:showSegments": "Zobrazit segmenty",
   "viewoption:showVariantReading": "Zobrazit variantní čtení pro segment {ref}",
   "viewoption:stop": "Zastavit",
+  "viewoption:ttsNoVoices": "Nebyly nalezeny žádné hlasy. „Poslouchat“ čte nahlas pomocí hlasů pro převod textu na řeč nainstalovaných ve vašem zařízení - přidejte hlas v nastavení řeči svého systému a poté stránku znovu načtěte.",
   "viewoption:ttsNoscript": "Pro poslech tohoto textu povolte javascript. Funguje 100% lokálně ve vašem prohlížeči prostřednictvím rozhraní SpeechSynthesis API, včetně offline režimu.",
   "viewoption:ttsSettings": "Nastavení převodu textu na řeč",
   "viewoption:variant": "Varianta:",

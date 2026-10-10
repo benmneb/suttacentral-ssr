@@ -18,6 +18,7 @@
   "viewoption:showSegments": "Näytä segmentit",
   "viewoption:showVariantReading": "Näytä varianttilukutapa segmentille {ref}",
   "viewoption:stop": "Pysäytä",
+  "viewoption:ttsNoVoices": "Ääniä ei löytynyt. ”Kuuntele” lukee ääneen laitteellesi asennetuilla puhesynteesiäänillä - lisää ääni järjestelmäsi puheasetuksista ja lataa sivu sitten uudelleen.",
   "viewoption:ttsNoscript": "Ota javascript käyttöön kuunnellaksesi tätä tekstiä. Se toimii 100% paikallisesti selaimessasi SpeechSynthesis API:n kautta, myös offline-tilassa.",
   "viewoption:ttsSettings": "Tekstistä puheeksi -asetukset",
   "viewoption:variant": "Variantti:",

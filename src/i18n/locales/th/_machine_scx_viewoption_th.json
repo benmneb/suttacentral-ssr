@@ -18,6 +18,7 @@
   "viewoption:showSegments": "แสดงส่วน",
   "viewoption:showVariantReading": "แสดงการอ่านที่แตกต่างสำหรับส่วน {ref}",
   "viewoption:stop": "หยุด",
+  "viewoption:ttsNoVoices": "ไม่พบเสียง “ฟัง” จะอ่านออกเสียงด้วยเสียงข้อความเป็นคำพูดที่ติดตั้งอยู่ในอุปกรณ์ของคุณ - เพิ่มเสียงในการตั้งค่าเสียงพูดของระบบ แล้วโหลดหน้านี้ใหม่",
   "viewoption:ttsNoscript": "กรุณาเปิดใช้งาน javascript เพื่อฟังข้อความนี้ มันทำงาน 100% ในเครื่องของคุณผ่าน SpeechSynthesis API รวมถึงเมื่อออฟไลน์",
   "viewoption:ttsSettings": "การตั้งค่าการแปลงข้อความเป็นเสียง",
   "viewoption:variant": "ตัวแปร:",

@@ -18,6 +18,7 @@
   "viewoption:showSegments": "Segmente anzeigen",
   "viewoption:showVariantReading": "Variantenlesung für Segment {ref} anzeigen",
   "viewoption:stop": "Stopp",
+  "viewoption:ttsNoVoices": "Keine Stimmen gefunden. „Anhören“ liest mit den auf Ihrem Gerät installierten Text-zu-Sprache-Stimmen vor - fügen Sie in den Sprachausgabe-Einstellungen Ihres Systems eine Stimme hinzu und laden Sie die Seite dann neu.",
   "viewoption:ttsNoscript": "Bitte aktivieren Sie JavaScript, um diesen Text anzuhören. Es funktioniert vollständig lokal in Ihrem Browser über die SpeechSynthesis API, auch offline.",
   "viewoption:ttsSettings": "Text-zu-Sprache-Einstellungen",
   "viewoption:variant": "Variante:",

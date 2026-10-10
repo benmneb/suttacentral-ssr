@@ -18,6 +18,7 @@
   "viewoption:showSegments": "Show segments",
   "viewoption:showVariantReading": "Show variant reading for segment {ref}",
   "viewoption:stop": "Stop",
+  "viewoption:ttsNoVoices": "No voices found. Listen reads aloud with the text-to-speech voices installed on your device - add a voice in your system's speech settings, then reload the page.",
   "viewoption:ttsNoscript": "Please enable javascript to listen to this text. It works 100% locally in your browser via the SpeechSynthesis API, including while offline.",
   "viewoption:ttsSettings": "Text to speech settings",
   "viewoption:variant": "Variant:",

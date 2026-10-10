@@ -507,6 +507,21 @@ a.look-up {
   li[role='menuitem'] {
     display: none;
   }
+
+  noscript,
+  #no-voices {
+    padding: 0.4rem;
+  }
+
+  /* The script widens the menu to 100vw on init, so this needs its own */
+  #no-voices {
+    max-width: 30ch;
+  }
+
+  /* The dropdown displays every li, so hidden needs saying again */
+  #no-voices[hidden] {
+    display: none;
+  }
 }
 
 .tts-highlight {

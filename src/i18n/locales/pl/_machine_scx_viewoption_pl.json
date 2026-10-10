@@ -18,6 +18,7 @@
   "viewoption:showSegments": "Pokaż segmenty",
   "viewoption:showVariantReading": "Pokaż wariant odczytu dla segmentu {ref}",
   "viewoption:stop": "Zatrzymaj",
+  "viewoption:ttsNoVoices": "Nie znaleziono głosów. „Słuchaj” czyta na głos za pomocą głosów syntezatora mowy zainstalowanych na Twoim urządzeniu - dodaj głos w ustawieniach mowy swojego systemu, a następnie odśwież stronę.",
   "viewoption:ttsNoscript": "Włącz javascript, aby odsłuchać ten tekst. Działa w 100% lokalnie w przeglądarce za pomocą interfejsu SpeechSynthesis API, również w trybie offline.",
   "viewoption:ttsSettings": "Ustawienia zamiany tekstu na mowę",
   "viewoption:variant": "Wariant:",

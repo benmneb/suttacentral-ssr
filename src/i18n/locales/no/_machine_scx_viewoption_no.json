@@ -18,6 +18,7 @@
   "viewoption:showSegments": "Vis segmenter",
   "viewoption:showVariantReading": "Vis variantlesning for segment {ref}",
   "viewoption:stop": "Stopp",
+  "viewoption:ttsNoVoices": "Ingen stemmer funnet. «Lytt» leser høyt med tekst-til-tale-stemmene som er installert på enheten din - legg til en stemme i systemets taleinnstillinger, og last inn siden på nytt.",
   "viewoption:ttsNoscript": "Aktiver javascript for å lytte til denne teksten. Det fungerer 100% lokalt i nettleseren din via SpeechSynthesis API, også offline.",
   "viewoption:ttsSettings": "Tekst-til-tale innstillinger",
   "viewoption:variant": "Variant:",

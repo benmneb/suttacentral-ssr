@@ -18,6 +18,7 @@
   "viewoption:showSegments": "セグメントを表示",
   "viewoption:showVariantReading": "セグメント{ref}の異読を表示",
   "viewoption:stop": "停止",
+  "viewoption:ttsNoVoices": "音声が見つかりません。「聴く」はお使いのデバイスにインストールされた音声合成の音声で読み上げます。システムの音声設定で音声を追加してから、ページを再読み込みしてください。",
   "viewoption:ttsNoscript": "このテキストを聴くにはjavascriptを有効にしてください。SpeechSynthesis APIを介してブラウザ内で100%ローカルに動作し、オフラインでも使用できます。",
   "viewoption:ttsSettings": "テキスト読み上げ設定",
   "viewoption:variant": "異読：",

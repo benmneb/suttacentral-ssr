@@ -18,6 +18,7 @@
   "viewoption:showSegments": "Tampilkan segmen",
   "viewoption:showVariantReading": "Tampilkan bacaan varian untuk segmen {ref}",
   "viewoption:stop": "Berhenti",
+  "viewoption:ttsNoVoices": "Tidak ada suara yang ditemukan. “Dengarkan” membacakan dengan suara text-to-speech yang terpasang di perangkat Anda - tambahkan suara di pengaturan ucapan sistem Anda, lalu muat ulang halaman.",
   "viewoption:ttsNoscript": "Harap aktifkan javascript untuk mendengarkan teks ini. Ini berfungsi 100% secara lokal di browser Anda melalui API SpeechSynthesis, termasuk saat offline.",
   "viewoption:ttsSettings": "Pengaturan teks ke ucapan",
   "viewoption:variant": "Varian:",

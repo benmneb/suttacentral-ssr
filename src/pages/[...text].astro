@@ -738,6 +738,10 @@ const jsonLd = generateTextJsonLd(
                 {t(userLanguage, 'viewoption:ttsNoscript')}
               </noscript>
             </li>
+            {/* No role="menuitem": the script un-hides all of those */}
+            <li id="no-voices" hidden>
+              {t(userLanguage, 'viewoption:ttsNoVoices')}
+            </li>
             <li role="menuitem" class="tts-controls">
               <button id="prev" type="button">
                 <span>⏮️</span><span>{t(userLanguage, 'viewoption:prev')}</span>
@@ -1352,6 +1356,7 @@ const jsonLd = generateTextJsonLd(
   const LABEL_RESUME = LABEL_PLAY
   const LABEL_DEFAULT = rootMenuEl.dataset.labelDefault
   const voiceSelect = document.getElementById('voice-select')
+  const noVoicesEl = document.getElementById('no-voices')
   const pitch = document.getElementById('pitch')
   const pitchValue = document.getElementById('pitch-value')
   const rate = document.getElementById('rate')
@@ -1591,7 +1596,7 @@ const jsonLd = generateTextJsonLd(
 
     function populateVoiceList() {
       voices =
-        typeof synth.getVoices === 'function' ? synth.getVoices().slice() : []
+        typeof synth?.getVoices === 'function' ? synth.getVoices().slice() : []
 
       // Group voices by language
       const byLang = new Map()
@@ -1697,6 +1702,14 @@ const jsonLd = generateTextJsonLd(
         selIndex,
         Math.max(0, voiceSelect.options.length - 1)
       )
+
+      // No voices means the device has none installed, not that anything here
+      // is broken. Checked on every fill, as Chrome hands back none at first
+      // and the rest a moment later
+      const hasVoices = voices.length > 0
+      if (noVoicesEl) noVoicesEl.hidden = hasVoices
+      voiceSelect.disabled = !hasVoices
+      playPauseBtn.disabled = !hasVoices
     }
     populateVoiceList()
     if (typeof synth !== 'undefined' && synth.onvoiceschanged !== undefined) {

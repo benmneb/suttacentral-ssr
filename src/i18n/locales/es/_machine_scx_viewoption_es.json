@@ -18,6 +18,7 @@
   "viewoption:showSegments": "Mostrar segmentos",
   "viewoption:showVariantReading": "Mostrar lectura variante para el segmento {ref}",
   "viewoption:stop": "Detener",
+  "viewoption:ttsNoVoices": "No se han encontrado voces. «Escuchar» lee en voz alta con las voces de texto a voz instaladas en su dispositivo - añada una voz en la configuración de voz de su sistema y luego recargue la página.",
   "viewoption:ttsNoscript": "Habilite javascript para escuchar este texto. Funciona 100% localmente en su navegador a través de la API SpeechSynthesis, incluso sin conexión.",
   "viewoption:ttsSettings": "Configuración de texto a voz",
   "viewoption:variant": "Variante:",

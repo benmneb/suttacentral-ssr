@@ -18,6 +18,7 @@
   "viewoption:showSegments": "Afficher les segments",
   "viewoption:showVariantReading": "Afficher la lecture variante pour le segment {ref}",
   "viewoption:stop": "Arrêter",
+  "viewoption:ttsNoVoices": "Aucune voix trouvée. « Écouter » lit à voix haute avec les voix de synthèse vocale installées sur votre appareil - ajoutez une voix dans les paramètres de synthèse vocale de votre système, puis rechargez la page.",
   "viewoption:ttsNoscript": "Veuillez activer JavaScript pour écouter ce texte. Cela fonctionne entièrement localement dans votre navigateur via l'API SpeechSynthesis, y compris hors ligne.",
   "viewoption:ttsSettings": "Paramètres de synthèse vocale",
   "viewoption:variant": "Variante :",

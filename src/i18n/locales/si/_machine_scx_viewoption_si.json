@@ -18,6 +18,7 @@
   "viewoption:showSegments": "ඛණ්ඩ පෙන්වන්න",
   "viewoption:showVariantReading": "{ref} ඛණ්ඩය සඳහා විකල්ප පාඨය පෙන්වන්න",
   "viewoption:stop": "නවත්වන්න",
+  "viewoption:ttsNoVoices": "හඬ හමු නොවීය. “සවන් දෙන්න” ඔබේ උපාංගයේ ස්ථාපනය කර ඇති පෙළ-සිට-කථන හඬවලින් හඬ නඟා කියවයි - ඔබේ පද්ධතියේ කථන සැකසුම්වල හඬක් එක් කර, පසුව පිටුව නැවත පූරණය කරන්න.",
   "viewoption:ttsNoscript": "මෙම පාඨය සවන් දීමට කරුණාකර javascript සක්‍රීය කරන්න. එය SpeechSynthesis API හරහා ඔබේ බ්‍රවුසරයේ 100% දේශීයව ක්‍රියා කරයි, offline වුවද.",
   "viewoption:ttsSettings": "පෙළ-සිට-කථාව සැකසුම්",
   "viewoption:variant": "විකල්පය:",

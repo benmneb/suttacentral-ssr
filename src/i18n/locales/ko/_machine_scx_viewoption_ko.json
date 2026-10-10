@@ -18,6 +18,7 @@
   "viewoption:showSegments": "세그먼트 표시",
   "viewoption:showVariantReading": "세그먼트 {ref}에 대한 이독 표시",
   "viewoption:stop": "정지",
+  "viewoption:ttsNoVoices": "음성을 찾을 수 없습니다. “듣기”는 기기에 설치된 텍스트 음성 변환 음성으로 읽어 줍니다 - 시스템의 음성 설정에서 음성을 추가한 다음 페이지를 새로 고치세요.",
   "viewoption:ttsNoscript": "이 텍스트를 들으려면 자바스크립트를 활성화하세요. SpeechSynthesis API를 통해 브라우저에서 100% 로컬로 작동하며, 오프라인에서도 사용 가능합니다.",
   "viewoption:ttsSettings": "텍스트 음성 변환 설정",
   "viewoption:variant": "이독:",
