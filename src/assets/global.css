@@ -124,6 +124,10 @@ body {
   max-width: calc(min(600px, 100vw) - 2rem);
 }
 
+[popover]#search-modal {
+  padding: 0;
+}
+
 [popover]#search-modal::backdrop,
 [popover]#search-filters-modal::backdrop {
   backdrop-filter: blur(3px);

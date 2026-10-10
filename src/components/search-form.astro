@@ -18,6 +18,7 @@ const {
   languageArray,
 } = Astro.props
 const pathname = Astro.url.pathname
+const isSearchPage = pathname.startsWith('/search')
 
 const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = getPreferredLanguage(acceptLanguage)
@@ -44,56 +45,60 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
       >🔎</button
     >
   </fieldset>
-  <fieldset>
-    <legend class="sr-only">{t(userLanguage, 'search:searchOptions')}</legend>
-    <label>
-      {t(userLanguage, 'search:matchPartial')}
-      <input
-        type="checkbox"
-        name="matchpartial"
-        value="true"
-        checked={matchPartial}
-      />
-    </label>
-    {
-      pathname !== '/search-filter' && (
-        <>
+  {
+    isSearchPage && (
+      <fieldset>
+        <legend class="sr-only">
+          {t(userLanguage, 'search:searchOptions')}
+        </legend>
+        <label>
+          {t(userLanguage, 'search:matchPartial')}
           <input
-            type="button"
-            id="filter-toggle"
-            class="sr-only"
-            popovertarget="search-filters-modal"
+            type="checkbox"
+            name="matchpartial"
+            value="true"
+            checked={matchPartial}
           />
-          <label
-            for="filter-toggle"
-            class="filter-toggle-label"
-            aria-label={t(userLanguage, 'interface:searchFilter')}
-          >
-            ℹ️
-          </label>
-        </>
-      )
-    }
-    {
-      pathname !== '/search-options' && (
-        <>
-          <input type="checkbox" id="language-toggle" class="sr-only" />
-          <label for="language-toggle" class="language-toggle-label">
-            🌐
-            {!!languageArray?.length && <span> ({languageArray.length})</span>}
-            <span class="sr-only">
-              {t(userLanguage, 'interface:languages')}
-            </span>
-          </label>
-        </>
-      )
-    }
-    <SearchOptionsContent />
-  </fieldset>
+        </label>
+        {pathname !== '/search-filter' && (
+          <>
+            <input
+              type="button"
+              id="filter-toggle"
+              class="sr-only"
+              popovertarget="search-filters-modal"
+            />
+            <label
+              for="filter-toggle"
+              class="filter-toggle-label"
+              aria-label={t(userLanguage, 'interface:searchFilter')}
+            >
+              ℹ️
+            </label>
+          </>
+        )}
+        {pathname !== '/search-options' && (
+          <>
+            <input type="checkbox" id="language-toggle" class="sr-only" />
+            <label for="language-toggle" class="language-toggle-label">
+              🌐
+              {!!languageArray?.length && (
+                <span> ({languageArray.length})</span>
+              )}
+              <span class="sr-only">
+                {t(userLanguage, 'interface:languages')}
+              </span>
+            </label>
+          </>
+        )}
+        <SearchOptionsContent />
+      </fieldset>
+    )
+  }
 </form>
 
 {
-  pathname !== '/search-filter' && (
+  isSearchPage && pathname !== '/search-filter' && (
     <section id="search-filters-modal" popover>
       <SearchFilterContent />
     </section>
