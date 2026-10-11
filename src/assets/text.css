@@ -917,8 +917,10 @@ section,
 article,
 /* Some bilara documents close their </article> before the last key, leaving a
    paragraph of segments loose in main (sn34.20-27:1.12). It got none of this,
-   so its number and Pāli showed no matter what the view settings said */
-main > p {
+   so its number and Pāli showed no matter what the view settings said.
+   :where() keeps it from raising the nested rules' specificity, which
+   gave the parallels list bullets over details.css */
+:where(main > p) {
   overflow-wrap: break-word;
 
   [lang='pli'] {
