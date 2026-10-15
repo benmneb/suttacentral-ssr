@@ -224,6 +224,40 @@ function renderLookupChinese(text: string): string {
 
 let commentsHtml = ''
 
+type Illustration = {
+  segment: string
+  filename: string
+  creator?: string
+  creation_date?: string
+  alt?: string
+}
+
+const illustrationsBySegment = new Map<string, Illustration[]>()
+for (const illustration of (bilaraData.illustrations ?? []) as Illustration[]) {
+  const { segment } = illustration
+  illustrationsBySegment.set(segment, [
+    ...(illustrationsBySegment.get(segment) ?? []),
+    illustration,
+  ])
+}
+const hasIllustrations =
+  isSegmented &&
+  bilaraData.keys_order.some((key: string) => illustrationsBySegment.has(key))
+
+/** Spans, as a <figure> can't go inside the <p> they usually end */
+function renderIllustrations(key: string) {
+  return (illustrationsBySegment.get(key) ?? [])
+    .map(({ filename, alt = '', creator, creation_date }) => {
+      const credit = [creator, creation_date].filter(Boolean).join(', ')
+      return `
+      <span class="illustration" role="figure">
+        <img src="https://suttacentral.net/img/optimized-illustrations/${filename}.avif" alt="${alt.replace(/"/g, '&quot;')}" loading="lazy" decoding="async">
+        ${credit ? `<span class="caption">${credit}</span>` : ''}
+      </span>`
+    })
+    .join('')
+}
+
 type TocEntry = { level: number; href: string; html: string; isTitle?: boolean }
 const toc: TocEntry[] = []
 
@@ -314,6 +348,7 @@ ${renderReferences(key, ref)}
       `
           : ''
       }
+${renderIllustrations(key)}
     </span>
   `
 
@@ -389,6 +424,7 @@ ${renderReferences(key, ref)}
       `
           : ''
       }
+${renderIllustrations(key)}
     </span>
   `
 
@@ -732,6 +768,32 @@ const jsonLd = generateTextJsonLd(
               )
             }
             {
+              hasIllustrations && (
+                <li role="menuitem">
+                  <label for="illustrator">
+                    <span>
+                      {toSentenceCase(
+                        t(userLanguage, 'viewoption:showIllustrations')
+                      )}
+                    </span>
+                    <kbd
+                      aria-hidden="true"
+                      title={t(userLanguage, 'viewoption:hotkeyToggle', {
+                        key: 'I',
+                      })}
+                    >
+                      I
+                    </kbd>
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="illustrator"
+                    checked={viewPrefs.illustrator ?? true}
+                  />
+                </li>
+              )
+            }
+            {
               (isSegmented ||
                 suttasData.translation.text.includes("class='ref")) && (
                 <li role="menuitem">
@@ -1023,6 +1085,7 @@ const jsonLd = generateTextJsonLd(
     'rooter-look-up',
     'rooter-side',
     'segmenter',
+    'illustrator',
     'positioner',
     'voice-select',
     'rate',
@@ -1210,6 +1273,7 @@ const jsonLd = generateTextJsonLd(
     f: ['rooter-first'],
     d: ['rooter-look-up'],
     r: ['segmenter'],
+    i: ['illustrator'],
     p: ['positioner'],
   }
 

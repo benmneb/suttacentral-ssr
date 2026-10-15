@@ -105,6 +105,37 @@
   display: initial;
 }
 
+.illustration {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 1.5rem auto;
+  grid-column: 1 / -1;
+  order: 3;
+
+  img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 480px;
+    margin: 0 auto;
+  }
+
+  .caption {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: small;
+    text-align: center;
+    color: var(--text-color-secondary);
+  }
+}
+
+/* Hidden lazy images aren't fetched */
+&:not(:has(#illustrator:checked)) .illustration {
+  display: none;
+}
+
 &:has(#rooter:checked) .segment {
   display: grid;
   margin-bottom: 0.3rem;
