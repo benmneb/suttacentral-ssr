@@ -34,7 +34,7 @@
 
       &:has(#commenter-side:checked) {
         main {
-          max-width: var(--content-double-width-gap);
+          grid-template-columns: minmax(0, 1fr);
         }
         main ~ nav {
           max-width: var(--content-double-width);
@@ -165,7 +165,7 @@
 
   &:has(#rooter-side:checked) {
     main {
-      max-width: var(--content-double-width-gap);
+      grid-template-columns: minmax(0, 1fr);
     }
     main ~ nav {
       max-width: var(--content-double-width);
@@ -1393,6 +1393,14 @@ article,
       background-color: var(--bg-soft);
     }
   }
+}
+
+/* Not main's width, as changing it turns off scroll anchoring */
+main:has(.segment) {
+  display: grid;
+  max-width: var(--content-double-width-gap);
+  grid-template-columns: minmax(0, var(--content-max-width));
+  justify-content: center;
 }
 
 main ~ nav {

@@ -1194,6 +1194,13 @@ const jsonLd = generateTextJsonLd(
    * step through them, turning each on in order and then all off again.
    * Listen keys click their control, which does nothing while it's disabled.
    * The key hints are only shown when a fine pointer suggests a keyboard.
+   *
+   * Also keeps the reading position when a view setting changes, by key or
+   * by click. Sidenotes rebuild each segment's layout, which loses the
+   * browser's own scroll anchor, so the segment at the top of the screen is
+   * put back where it was.
+   * Unlike accounting for this with notes view, this layout shift fix
+   * is not possible in CSS without a big refactor, so it's handled here.
    */
   'use strict'
 
@@ -1214,10 +1221,64 @@ const jsonLd = generateTextJsonLd(
     a: 'auto-scroll',
   }
 
+  const viewsMenu = document.getElementById('views-menu')
+  let anchor = null
+
+  // Has to run before the checkbox flips, as the old layout is gone after
+  function rememberAnchor() {
+    const texts = document.querySelectorAll('main .translation > .text')
+    if (!texts.length) return
+    // The screen starts below the pinned menu, as text under it can't be seen
+    const menuBottom = viewsMenu
+      ?.closest('aside')
+      ?.getBoundingClientRect().bottom
+    const edge = Math.max(0, menuBottom ?? 0)
+    let lo = 0
+    let hi = texts.length - 1
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1
+      if (texts[mid].getBoundingClientRect().bottom <= edge) lo = mid + 1
+      else hi = mid
+    }
+    // Hidden ones have an empty rect, so never count
+    let el = texts[lo]
+    let top = Infinity
+    for (const text of el.closest('.segment').querySelectorAll('.text')) {
+      const rect = text.getBoundingClientRect()
+      if (rect.bottom > edge && rect.top < top) {
+        el = text
+        top = rect.top
+      }
+    }
+    if (top === Infinity) top = el.getBoundingClientRect().top
+    anchor = { el, top }
+  }
+
+  function restoreAnchor() {
+    if (!anchor) return
+    const { el, top } = anchor
+    // Not window.scrollBy, which after a change this big leaves Safari blank
+    const correct = () => {
+      document.scrollingElement.scrollTop +=
+        el.getBoundingClientRect().top - top
+    }
+    correct()
+    // Again next frame, after the browser's own correction
+    requestAnimationFrame(() => {
+      correct()
+      anchor = null
+    })
+  }
+
+  viewsMenu?.addEventListener('pointerdown', rememberAnchor)
+  viewsMenu?.addEventListener('keydown', rememberAnchor)
+  viewsMenu?.addEventListener('change', restoreAnchor)
+
   function cycle(ids) {
     const els = ids.map(id => document.getElementById(id)).filter(Boolean)
     if (!els.length) return
 
+    rememberAnchor()
     const level = els.findIndex(el => !el.checked)
     const next = ((level === -1 ? els.length : level) + 1) % (els.length + 1)
     els.forEach((el, i) => {
