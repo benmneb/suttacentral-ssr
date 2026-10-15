@@ -2,6 +2,7 @@
   "viewoption:asSidenotes": "作为旁注",
   "viewoption:autoScroll": "自动滚动",
   "viewoption:hotkeyCycle": "按 {key} 依次切换这些选项",
+  "viewoption:hotkeyPress": "按 {key}",
   "viewoption:hotkeyToggle": "按 {key} 切换",
   "viewoption:inline": "内联",
   "viewoption:listen": "收听",

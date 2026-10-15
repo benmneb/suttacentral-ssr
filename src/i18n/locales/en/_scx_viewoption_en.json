@@ -2,6 +2,7 @@
   "viewoption:asSidenotes": "As sidenotes",
   "viewoption:autoScroll": "Auto-scroll",
   "viewoption:hotkeyCycle": "Press {key} to cycle through these",
+  "viewoption:hotkeyPress": "Press {key}",
   "viewoption:hotkeyToggle": "Press {key} to toggle",
   "viewoption:inline": "Inline",
   "viewoption:listen": "Listen",

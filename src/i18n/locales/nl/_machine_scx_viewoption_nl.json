@@ -2,6 +2,7 @@
   "viewoption:asSidenotes": "Als kanttekeningen",
   "viewoption:autoScroll": "Automatisch scrollen",
   "viewoption:hotkeyCycle": "Druk op {key} om tussen deze opties te wisselen",
+  "viewoption:hotkeyPress": "Druk op {key}",
   "viewoption:hotkeyToggle": "Druk op {key} om aan of uit te zetten",
   "viewoption:inline": "Inline",
   "viewoption:listen": "Luisteren",

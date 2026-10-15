@@ -2,6 +2,7 @@
   "viewoption:asSidenotes": "เป็นหมายเหตุข้างเคียง",
   "viewoption:autoScroll": "เลื่อนอัตโนมัติ",
   "viewoption:hotkeyCycle": "กด {key} เพื่อสลับระหว่างตัวเลือกเหล่านี้",
+  "viewoption:hotkeyPress": "กด {key}",
   "viewoption:hotkeyToggle": "กด {key} เพื่อเปิดหรือปิด",
   "viewoption:inline": "ในบรรทัด",
   "viewoption:listen": "ฟัง",

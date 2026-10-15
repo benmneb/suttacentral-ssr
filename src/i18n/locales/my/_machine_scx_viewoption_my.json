@@ -2,6 +2,7 @@
   "viewoption:asSidenotes": "ဘေးမှတ်စုများအဖြစ်",
   "viewoption:autoScroll": "အလိုအလျောက်ရွှေ့ခြင်း",
   "viewoption:hotkeyCycle": "ဤရွေးချယ်မှုများကို အလှည့်ကျပြောင်းရန် {key} ကိုနှိပ်ပါ",
+  "viewoption:hotkeyPress": "{key} ကိုနှိပ်ပါ",
   "viewoption:hotkeyToggle": "ဖွင့်/ပိတ်ရန် {key} ကိုနှိပ်ပါ",
   "viewoption:inline": "စာကြောင်းတွင်း",
   "viewoption:listen": "နားထောင်ရန်",

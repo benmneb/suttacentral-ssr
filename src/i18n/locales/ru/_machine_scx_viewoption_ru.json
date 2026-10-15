@@ -2,6 +2,7 @@
   "viewoption:asSidenotes": "На полях",
   "viewoption:autoScroll": "Автопрокрутка",
   "viewoption:hotkeyCycle": "Нажмите {key}, чтобы переключать эти параметры",
+  "viewoption:hotkeyPress": "Нажмите {key}",
   "viewoption:hotkeyToggle": "Нажмите {key}, чтобы включить или выключить",
   "viewoption:inline": "Встроенный",
   "viewoption:listen": "Слушать",

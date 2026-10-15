@@ -332,7 +332,7 @@
   }
 }
 
-.segment .text {
+.segment .text:not(.tts-clickable) {
   cursor: text;
 }
 
@@ -547,6 +547,10 @@ a.look-up {
 .tts-clickable {
   cursor: pointer;
 
+  a.look-up {
+    cursor: pointer;
+  }
+
   /* An element split into sentences gets the hover on the sentence instead,
      from the listen script */
   &:not(.tts-sentences):hover {
@@ -571,12 +575,51 @@ a.look-up {
     &[disabled] {
       opacity: 0.2;
       cursor: not-allowed;
+
+      kbd {
+        pointer-events: none;
+      }
+    }
+
+    > span:first-of-type {
+      font-size: larger;
+    }
+
+    > span:nth-of-type(2) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  /* Sized to the longer of play and pause in any language, so swapping
+     between them doesn't resize the menu */
+  [data-play] {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    &::before,
+    &::after {
+      content: attr(data-play);
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+    }
+
+    &::after {
+      content: attr(data-pause);
     }
   }
 }
 
 input[type='range'] {
   accent-color: var(--primary-color);
+}
+
+#rate-value,
+#pitch-value {
+  margin-left: 0.4rem;
 }
 
 [popover] {

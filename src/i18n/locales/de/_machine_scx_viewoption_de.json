@@ -2,6 +2,7 @@
   "viewoption:asSidenotes": "Als Randnotizen",
   "viewoption:autoScroll": "Automatisches Scrollen",
   "viewoption:hotkeyCycle": "Drücken Sie {key}, um durch diese Optionen zu schalten",
+  "viewoption:hotkeyPress": "Drücken Sie {key}",
   "viewoption:hotkeyToggle": "Drücken Sie {key} zum Umschalten",
   "viewoption:inline": "Eingebettet",
   "viewoption:listen": "Anhören",

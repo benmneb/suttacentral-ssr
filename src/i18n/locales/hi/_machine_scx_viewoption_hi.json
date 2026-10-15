@@ -2,6 +2,7 @@
   "viewoption:asSidenotes": "साइड नोट के रूप में",
   "viewoption:autoScroll": "ऑटो-स्क्रॉल",
   "viewoption:hotkeyCycle": "इन विकल्पों के बीच बदलने के लिए {key} दबाएँ",
+  "viewoption:hotkeyPress": "{key} दबाएँ",
   "viewoption:hotkeyToggle": "टॉगल करने के लिए {key} दबाएँ",
   "viewoption:inline": "इनलाइन",
   "viewoption:listen": "सुनें",

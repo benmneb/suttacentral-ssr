@@ -2,6 +2,7 @@
   "viewoption:asSidenotes": "En notes marginales",
   "viewoption:autoScroll": "Défilement automatique",
   "viewoption:hotkeyCycle": "Appuyez sur {key} pour passer d’une option à l’autre",
+  "viewoption:hotkeyPress": "Appuyez sur {key}",
   "viewoption:hotkeyToggle": "Appuyez sur {key} pour activer ou désactiver",
   "viewoption:inline": "En ligne",
   "viewoption:listen": "Écouter",

@@ -2,6 +2,7 @@
   "viewoption:asSidenotes": "측면 주석으로",
   "viewoption:autoScroll": "자동 스크롤",
   "viewoption:hotkeyCycle": "{key} 키를 눌러 이 옵션들을 차례로 전환",
+  "viewoption:hotkeyPress": "{key} 키 누르기",
   "viewoption:hotkeyToggle": "{key} 키를 눌러 전환",
   "viewoption:inline": "인라인",
   "viewoption:listen": "듣기",

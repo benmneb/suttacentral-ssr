@@ -2,6 +2,7 @@
   "viewoption:asSidenotes": "Sivuhuomautuksina",
   "viewoption:autoScroll": "Automaattinen vieritys",
   "viewoption:hotkeyCycle": "Paina {key} selataksesi näitä vaihtoehtoja",
+  "viewoption:hotkeyPress": "Paina {key}",
   "viewoption:hotkeyToggle": "Paina {key} vaihtaaksesi",
   "viewoption:inline": "Rivinsisäinen",
   "viewoption:listen": "Kuuntele",

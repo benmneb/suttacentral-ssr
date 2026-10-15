@@ -819,16 +819,48 @@ const jsonLd = generateTextJsonLd(
             </li>
             <li role="menuitem" class="tts-controls">
               <button id="prev" type="button">
-                <span>⏮️</span><span>{t(userLanguage, 'viewoption:prev')}</span>
+                <span aria-hidden="true">⏮️</span><span
+                  ><span>{t(userLanguage, 'viewoption:prev')}</span><kbd
+                    aria-hidden="true"
+                    title={t(userLanguage, 'viewoption:hotkeyPress', {
+                      key: 'H',
+                    })}>H</kbd
+                  ></span
+                >
               </button>
               <button id="playpause" type="button">
-                <span>▶️</span><span>{t(userLanguage, 'viewoption:play')}</span>
+                <span aria-hidden="true">▶️</span><span
+                  ><span
+                    data-play={t(userLanguage, 'viewoption:play')}
+                    data-pause={t(userLanguage, 'viewoption:pause')}
+                    >{t(userLanguage, 'viewoption:play')}</span
+                  ><kbd
+                    aria-hidden="true"
+                    title={t(userLanguage, 'viewoption:hotkeyPress', {
+                      key: 'J',
+                    })}>J</kbd
+                  ></span
+                >
               </button>
               <button id="stop" type="button">
-                <span>⏹️</span><span>{t(userLanguage, 'viewoption:stop')}</span>
+                <span aria-hidden="true">⏹️</span><span
+                  ><span>{t(userLanguage, 'viewoption:stop')}</span><kbd
+                    aria-hidden="true"
+                    title={t(userLanguage, 'viewoption:hotkeyPress', {
+                      key: 'K',
+                    })}>K</kbd
+                  ></span
+                >
               </button>
               <button id="next" type="button">
-                <span>⏭️</span><span>{t(userLanguage, 'viewoption:next')}</span>
+                <span aria-hidden="true">⏭️</span><span
+                  ><span>{t(userLanguage, 'viewoption:next')}</span><kbd
+                    aria-hidden="true"
+                    title={t(userLanguage, 'viewoption:hotkeyPress', {
+                      key: 'L',
+                    })}>L</kbd
+                  ></span
+                >
               </button>
             </li>
             <li role="menuitem">
@@ -862,9 +894,17 @@ const jsonLd = generateTextJsonLd(
               <div id="pitch-value">1.0</div>
             </li>
             <li role="menuitem">
-              <label for="auto-scroll"
-                >{t(userLanguage, 'viewoption:autoScroll')}</label
-              >
+              <label for="auto-scroll">
+                <span>{t(userLanguage, 'viewoption:autoScroll')}</span>
+                <kbd
+                  aria-hidden="true"
+                  title={t(userLanguage, 'viewoption:hotkeyToggle', {
+                    key: 'A',
+                  })}
+                >
+                  A
+                </kbd>
+              </label>
               <input
                 type="checkbox"
                 id="auto-scroll"
@@ -1148,21 +1188,30 @@ const jsonLd = generateTextJsonLd(
 
 <script>
   /**
-   * View Settings Hotkeys
+   * View Settings and Listen Hotkeys
    *
    * Toggles view settings from the keyboard. Keys with more than one setting
    * step through them, turning each on in order and then all off again.
+   * Listen keys click their control, which does nothing while it's disabled.
    * The key hints are only shown when a fine pointer suggests a keyboard.
    */
   'use strict'
 
-  const KEYS = {
+  const VIEW_SETTINGS = {
     n: ['commenter', 'commenter-inline', 'commenter-side'],
     v: ['rooter', 'rooter-side'],
     f: ['rooter-first'],
     d: ['rooter-look-up'],
     r: ['segmenter'],
     p: ['positioner'],
+  }
+
+  const LISTEN_CONTROLS = {
+    h: 'prev',
+    j: 'playpause',
+    k: 'stop',
+    l: 'next',
+    a: 'auto-scroll',
   }
 
   function cycle(ids) {
@@ -1180,14 +1229,20 @@ const jsonLd = generateTextJsonLd(
   }
 
   // Set here rather than in the markup so they're only announced when they work
-  for (const [key, ids] of Object.entries(KEYS)) {
+  const shortcuts = [
+    ...Object.entries(VIEW_SETTINGS).map(([key, ids]) => [key, ids[0]]),
+    ...Object.entries(LISTEN_CONTROLS),
+  ]
+  for (const [key, id] of shortcuts) {
     document
-      .getElementById(ids[0])
+      .getElementById(id)
       ?.setAttribute('aria-keyshortcuts', key.toUpperCase())
   }
 
   if (matchMedia('(any-pointer: fine)').matches) {
-    document.getElementById('views-menu')?.classList.add('hotkeys')
+    for (const id of ['views-menu', 'listen-menu']) {
+      document.getElementById(id)?.classList.add('hotkeys')
+    }
   }
 
   document.addEventListener('keydown', e => {
@@ -1196,11 +1251,15 @@ const jsonLd = generateTextJsonLd(
     if (
       target instanceof HTMLElement &&
       (target.isContentEditable ||
-        target.matches('input:not([type="checkbox"]), textarea, select'))
+        target.matches(
+          'input:not([type="checkbox"], [type="range"]), textarea, select'
+        ))
     )
       return
-    const ids = KEYS[e.key.toLowerCase()]
-    if (ids) cycle(ids)
+    const key = e.key.toLowerCase()
+    if (VIEW_SETTINGS[key]) cycle(VIEW_SETTINGS[key])
+    else if (LISTEN_CONTROLS[key])
+      document.getElementById(LISTEN_CONTROLS[key])?.click()
   })
 </script>
 
@@ -1551,7 +1610,8 @@ const jsonLd = generateTextJsonLd(
   const prevBtn = document.getElementById('prev')
   const playPauseBtn = document.getElementById('playpause')
   const playPauseBtnIcon = playPauseBtn.getElementsByTagName('span')[0]
-  const playPauseBtnLabel = playPauseBtn.getElementsByTagName('span')[1]
+  // The inner span, so setting its text leaves the key hint beside it
+  const playPauseBtnLabel = playPauseBtn.querySelector('span span')
   const nextBtn = document.getElementById('next')
   const stopBtn = document.getElementById('stop')
   const autoScrollToggle = document.getElementById('auto-scroll')

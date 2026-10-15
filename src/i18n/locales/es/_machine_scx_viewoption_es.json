@@ -2,6 +2,7 @@
   "viewoption:asSidenotes": "Como notas al margen",
   "viewoption:autoScroll": "Desplazamiento automático",
   "viewoption:hotkeyCycle": "Pulse {key} para alternar entre estas opciones",
+  "viewoption:hotkeyPress": "Pulse {key}",
   "viewoption:hotkeyToggle": "Pulse {key} para activar o desactivar",
   "viewoption:inline": "En línea",
   "viewoption:listen": "Escuchar",

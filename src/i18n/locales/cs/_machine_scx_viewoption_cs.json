@@ -2,6 +2,7 @@
   "viewoption:asSidenotes": "Jako poznámky na okraji",
   "viewoption:autoScroll": "Automatické posouvání",
   "viewoption:hotkeyCycle": "Stiskněte {key} pro přepínání mezi těmito možnostmi",
+  "viewoption:hotkeyPress": "Stiskněte {key}",
   "viewoption:hotkeyToggle": "Stiskněte {key} pro přepnutí",
   "viewoption:inline": "V řádku",
   "viewoption:listen": "Poslouchat",
