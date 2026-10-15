@@ -244,6 +244,36 @@ const hasIllustrations =
   isSegmented &&
   bilaraData.keys_order.some((key: string) => illustrationsBySegment.has(key))
 
+/** Markup the "Highlight text-critical details" setting styles, in text.css */
+const HIGHLIGHT_MARKUP = new RegExp(
+  `class=['"](?:[^'"]*\\s)?(?:${[
+    'kamma',
+    'patimokkha',
+    'suttanta',
+    'jataka',
+    'nidana',
+    'padabhajaniya',
+    'cakka',
+    'anapatti',
+    'vinaya-vinita',
+    'term',
+    'gloss',
+    'supplied2?',
+    'surplus',
+    'var',
+    'corr(?:ected)?',
+    'unclear',
+    'expanded',
+    'metre',
+    ...(isSegmented ? ['rule'] : []),
+  ].join('|')})['"\\s]|data-(?:counter|doxy|direction)=`
+)
+const hasHighlights = isSegmented
+  ? Object.values(bilaraData.html_text as Record<string, string>).some(html =>
+      HIGHLIGHT_MARKUP.test(html)
+    )
+  : HIGHLIGHT_MARKUP.test(suttasData.translation?.text ?? '')
+
 /** Spans, as a <figure> can't go inside the <p> they usually end */
 function renderIllustrations(key: string) {
   return (illustrationsBySegment.get(key) ?? [])
@@ -794,6 +824,41 @@ const jsonLd = generateTextJsonLd(
               )
             }
             {
+              hasHighlights && (
+                <li role="menuitem">
+                  {/* The short label keeps the menu narrow, the title says
+                      what it highlights - on the label for mouse hover (not
+                      its span, which span[title] would give a help cursor),
+                      and on the input, where screen readers read it as the
+                      description */}
+                  <label
+                    for="highlighter"
+                    title={t(userLanguage, 'viewoption:showHighlighting')}
+                  >
+                    <span>
+                      {toSentenceCase(
+                        t(userLanguage, 'viewoption:showHighlightingTitle')
+                      )}
+                    </span>
+                    <kbd
+                      aria-hidden="true"
+                      title={t(userLanguage, 'viewoption:hotkeyToggle', {
+                        key: 'T',
+                      })}
+                    >
+                      T
+                    </kbd>
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="highlighter"
+                    title={t(userLanguage, 'viewoption:showHighlighting')}
+                    checked={viewPrefs.highlighter ?? false}
+                  />
+                </li>
+              )
+            }
+            {
               (isSegmented ||
                 suttasData.translation.text.includes("class='ref")) && (
                 <li role="menuitem">
@@ -1086,6 +1151,7 @@ const jsonLd = generateTextJsonLd(
     'rooter-side',
     'segmenter',
     'illustrator',
+    'highlighter',
     'positioner',
     'voice-select',
     'rate',
@@ -1274,6 +1340,7 @@ const jsonLd = generateTextJsonLd(
     d: ['rooter-look-up'],
     r: ['segmenter'],
     i: ['illustrator'],
+    t: ['highlighter'],
     p: ['positioner'],
   }
 
