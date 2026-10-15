@@ -1,5 +1,8 @@
 {
+  "viewoption:asSidenotes": "साइड नोट के रूप में",
   "viewoption:autoScroll": "ऑटो-स्क्रॉल",
+  "viewoption:hotkeyCycle": "इन विकल्पों के बीच बदलने के लिए {key} दबाएँ",
+  "viewoption:hotkeyToggle": "टॉगल करने के लिए {key} दबाएँ",
   "viewoption:inline": "इनलाइन",
   "viewoption:listen": "सुनें",
   "viewoption:next": "अगला",
@@ -15,7 +18,7 @@
   "viewoption:showParallelTexts": "समानांतर ग्रंथ दिखाएं",
   "viewoption:showPublicationInfo": "प्रकाशन जानकारी दिखाएं",
   "viewoption:showRootText": "मूल ग्रंथ दिखाएं",
-  "viewoption:showSegments": "खंड दिखाएं",
+  "viewoption:showSegments": "संदर्भ दिखाएं",
   "viewoption:showVariantReading": "खंड {ref} के लिए वैकल्पिक पाठ दिखाएं",
   "viewoption:stop": "बंद करें",
   "viewoption:ttsNoVoices": "कोई आवाज़ नहीं मिली। “सुनें” आपके डिवाइस पर इंस्टॉल की गई टेक्स्ट-टू-स्पीच आवाज़ों से पढ़कर सुनाता है - अपने सिस्टम की स्पीच सेटिंग्स में एक आवाज़ जोड़ें, फिर पेज फिर से लोड करें।",

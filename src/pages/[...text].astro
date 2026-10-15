@@ -572,7 +572,15 @@ const jsonLd = generateTextJsonLd(
                 <>
                   <li role="menuitem">
                     <label for="commenter">
-                      {t(userLanguage, 'viewoption:showComments')}
+                      <span>{t(userLanguage, 'viewoption:showComments')}</span>
+                      <kbd
+                        aria-hidden="true"
+                        title={t(userLanguage, 'viewoption:hotkeyCycle', {
+                          key: 'N',
+                        })}
+                      >
+                        N
+                      </kbd>
                     </label>
                     <input
                       type="checkbox"
@@ -583,7 +591,10 @@ const jsonLd = generateTextJsonLd(
                   </li>
                   <li role="menuitem">
                     <label for="commenter-inline">
-                      ↳ {t(userLanguage, 'viewoption:inline')}
+                      <span>
+                        <span aria-hidden="true">↳</span>{' '}
+                        {t(userLanguage, 'viewoption:inline')}
+                      </span>
                     </label>
                     <input
                       type="checkbox"
@@ -594,7 +605,10 @@ const jsonLd = generateTextJsonLd(
                   </li>
                   <li role="menuitem">
                     <label for="commenter-side">
-                      ↳ {t(userLanguage, 'viewoption:sideBySide')}
+                      <span>
+                        <span aria-hidden="true">↳</span>{' '}
+                        {t(userLanguage, 'viewoption:asSidenotes')}
+                      </span>
                     </label>
                     <input
                       type="checkbox"
@@ -610,28 +624,33 @@ const jsonLd = generateTextJsonLd(
                 <>
                   <li role="menuitem">
                     <label for="rooter">
-                      {t(userLanguage, 'viewoption:showRootText')}
+                      <span>{t(userLanguage, 'viewoption:showRootText')}</span>
+                      <kbd
+                        aria-hidden="true"
+                        title={t(userLanguage, 'viewoption:hotkeyCycle', {
+                          key: 'V',
+                        })}
+                      >
+                        V
+                      </kbd>
                     </label>
                     <input
                       type="checkbox"
                       id="rooter"
                       checked={viewPrefs.rooter ?? false}
-                      aria-controls="rooter-first rooter-side"
-                    />
-                  </li>
-                  <li role="menuitem">
-                    <label for="rooter-first">
-                      ↳ {t(userLanguage, 'viewoption:rootFirst')}
-                    </label>
-                    <input
-                      type="checkbox"
-                      id="rooter-first"
-                      checked={viewPrefs['rooter-first'] ?? false}
+                      aria-controls={
+                        availableLangs
+                          ? 'rooter-side rooter-first rooter-look-up'
+                          : 'rooter-side rooter-first'
+                      }
                     />
                   </li>
                   <li role="menuitem">
                     <label for="rooter-side">
-                      ↳ {t(userLanguage, 'viewoption:sideBySide')}
+                      <span>
+                        <span aria-hidden="true">↳</span>{' '}
+                        {t(userLanguage, 'viewoption:sideBySide')}
+                      </span>
                     </label>
                     <input
                       type="checkbox"
@@ -639,10 +658,42 @@ const jsonLd = generateTextJsonLd(
                       checked={viewPrefs['rooter-side'] ?? false}
                     />
                   </li>
+                  <li role="menuitem">
+                    <label for="rooter-first">
+                      <span>
+                        <span aria-hidden="true">↳</span>{' '}
+                        {t(userLanguage, 'viewoption:rootFirst')}
+                      </span>
+                      <kbd
+                        aria-hidden="true"
+                        title={t(userLanguage, 'viewoption:hotkeyToggle', {
+                          key: 'F',
+                        })}
+                      >
+                        F
+                      </kbd>
+                    </label>
+                    <input
+                      type="checkbox"
+                      id="rooter-first"
+                      checked={viewPrefs['rooter-first'] ?? false}
+                    />
+                  </li>
                   {availableLangs && (
                     <li role="menuitem">
                       <label for="rooter-look-up">
-                        ↳ {t(userLanguage, 'viewoption:wordLookup')}
+                        <span>
+                          <span aria-hidden="true">↳</span>{' '}
+                          {t(userLanguage, 'viewoption:wordLookup')}
+                        </span>
+                        <kbd
+                          aria-hidden="true"
+                          title={t(userLanguage, 'viewoption:hotkeyToggle', {
+                            key: 'D',
+                          })}
+                        >
+                          D
+                        </kbd>
                       </label>
                       <input
                         type="checkbox"
@@ -660,7 +711,15 @@ const jsonLd = generateTextJsonLd(
               isSegmented && isRootText && availableLangs && (
                 <li role="menuitem">
                   <label for="rooter-look-up">
-                    {t(userLanguage, 'viewoption:wordLookup')}
+                    <span>{t(userLanguage, 'viewoption:wordLookup')}</span>
+                    <kbd
+                      aria-hidden="true"
+                      title={t(userLanguage, 'viewoption:hotkeyToggle', {
+                        key: 'D',
+                      })}
+                    >
+                      D
+                    </kbd>
                   </label>
                   <input
                     type="checkbox"
@@ -677,7 +736,15 @@ const jsonLd = generateTextJsonLd(
                 suttasData.translation.text.includes("class='ref")) && (
                 <li role="menuitem">
                   <label for="segmenter">
-                    {t(userLanguage, 'viewoption:showSegments')}
+                    <span>{t(userLanguage, 'viewoption:showSegments')}</span>
+                    <kbd
+                      aria-hidden="true"
+                      title={t(userLanguage, 'viewoption:hotkeyToggle', {
+                        key: 'R',
+                      })}
+                    >
+                      R
+                    </kbd>
                   </label>
                   <input
                     type="checkbox"
@@ -688,9 +755,17 @@ const jsonLd = generateTextJsonLd(
               )
             }
             <li role="menuitem">
-              <label for="positioner"
-                >{t(userLanguage, 'viewoption:pinMenu')}</label
-              >
+              <label for="positioner">
+                <span>{t(userLanguage, 'viewoption:pinMenu')}</span>
+                <kbd
+                  aria-hidden="true"
+                  title={t(userLanguage, 'viewoption:hotkeyToggle', {
+                    key: 'P',
+                  })}
+                >
+                  P
+                </kbd>
+              </label>
               <input
                 type="checkbox"
                 id="positioner"
@@ -1068,6 +1143,64 @@ const jsonLd = generateTextJsonLd(
   // On BFCache restore the script doesn't re-run, so reapply via pageshow
   window.addEventListener('pageshow', e => {
     if (e.persisted) applyPrefs()
+  })
+</script>
+
+<script>
+  /**
+   * View Settings Hotkeys
+   *
+   * Toggles view settings from the keyboard. Keys with more than one setting
+   * step through them, turning each on in order and then all off again.
+   * The key hints are only shown when a fine pointer suggests a keyboard.
+   */
+  'use strict'
+
+  const KEYS = {
+    n: ['commenter', 'commenter-inline', 'commenter-side'],
+    v: ['rooter', 'rooter-side'],
+    f: ['rooter-first'],
+    d: ['rooter-look-up'],
+    r: ['segmenter'],
+    p: ['positioner'],
+  }
+
+  function cycle(ids) {
+    const els = ids.map(id => document.getElementById(id)).filter(Boolean)
+    if (!els.length) return
+
+    const level = els.findIndex(el => !el.checked)
+    const next = ((level === -1 ? els.length : level) + 1) % (els.length + 1)
+    els.forEach((el, i) => {
+      if (el.checked === i < next) return
+      el.checked = i < next
+      // Setting checked doesn't fire change, which saving prefs relies on
+      el.dispatchEvent(new Event('change', { bubbles: true }))
+    })
+  }
+
+  // Set here rather than in the markup so they're only announced when they work
+  for (const [key, ids] of Object.entries(KEYS)) {
+    document
+      .getElementById(ids[0])
+      ?.setAttribute('aria-keyshortcuts', key.toUpperCase())
+  }
+
+  if (matchMedia('(any-pointer: fine)').matches) {
+    document.getElementById('views-menu')?.classList.add('hotkeys')
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey || e.metaKey || e.altKey) return
+    const target = e.target
+    if (
+      target instanceof HTMLElement &&
+      (target.isContentEditable ||
+        target.matches('input:not([type="checkbox"]), textarea, select'))
+    )
+      return
+    const ids = KEYS[e.key.toLowerCase()]
+    if (ids) cycle(ids)
   })
 </script>
 

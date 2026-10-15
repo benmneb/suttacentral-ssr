@@ -1,5 +1,8 @@
 {
+  "viewoption:asSidenotes": "Als kanttekeningen",
   "viewoption:autoScroll": "Automatisch scrollen",
+  "viewoption:hotkeyCycle": "Druk op {key} om tussen deze opties te wisselen",
+  "viewoption:hotkeyToggle": "Druk op {key} om aan of uit te zetten",
   "viewoption:inline": "Inline",
   "viewoption:listen": "Luisteren",
   "viewoption:next": "Volgende",
@@ -15,7 +18,7 @@
   "viewoption:showParallelTexts": "Parallelle teksten tonen",
   "viewoption:showPublicationInfo": "Publicatie-informatie tonen",
   "viewoption:showRootText": "Brontekst tonen",
-  "viewoption:showSegments": "Segmenten tonen",
+  "viewoption:showSegments": "Verwijzingen tonen",
   "viewoption:showVariantReading": "Toon variantlezing voor segment {ref}",
   "viewoption:stop": "Stoppen",
   "viewoption:ttsNoVoices": "Geen stemmen gevonden. ‘Luisteren’ leest voor met de tekst-naar-spraakstemmen die op uw apparaat zijn geïnstalleerd - voeg een stem toe in de spraakinstellingen van uw systeem en laad de pagina opnieuw.",

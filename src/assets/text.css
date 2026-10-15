@@ -703,6 +703,26 @@ aside {
       }
     }
 
+    kbd {
+      /* This is unhidden in JS when there's a keyboard */
+      display: none;
+      border: 1px solid var(--shadow-color);
+      border-radius: var(--rounding);
+      padding: 0 0.2rem;
+      color: var(--text-color);
+      font-size: xx-small;
+      cursor: pointer;
+      margin: 0 0 0 0.2rem;
+      background-color: var(--background-color-secondary);
+      box-shadow:
+        0 1px 1px rgb(0 0 0 / 0.2),
+        0 1px 0 0 rgb(255 255 255 / 0.1) inset;
+
+      .hotkeys & {
+        display: inline;
+      }
+    }
+
     @media only screen and (max-width: 600px) {
       width: 100%;
       border-radius: 0;
@@ -773,6 +793,9 @@ aside {
         label {
           width: 100%;
           padding: 0 0.3rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
 
         input {
