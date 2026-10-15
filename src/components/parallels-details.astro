@@ -1,6 +1,8 @@
 ---
 import '~/assets/details.css'
+import ParallelList from '~/components/parallel-list.astro'
 import { t } from '~/i18n'
+import { getHashFragment } from '~/utils/parallels'
 import { parseUidNumbers, toSentenceCase, uidIsInRange } from '~/utils/strings'
 const {
   data: entry,
@@ -8,38 +10,17 @@ const {
   userLanguage,
   isIndividualRangeSutta,
   inRangeSuttaId,
+  parallelsData: preFetched,
 } = Astro.props
 
-const parallelsResponse = await fetch(
-  `https://suttacentral.net/api/parallels/${entry.uid}`
-)
-const parallelsData = await parallelsResponse.json()
+// The text page has fetched them already, for its margin
+const parallelsData =
+  preFetched ??
+  (await (
+    await fetch(`https://suttacentral.net/api/parallels/${entry.uid}`)
+  ).json())
 
 const rootTrans = entry.translations.find((t: any) => t.is_root)
-
-// Make pretty PTS volpages
-function formatVolpages(volpages: string | null): string {
-  if (!volpages) return ''
-  if (!volpages.includes('PTS')) return volpages
-
-  const parts = volpages.trim().split(', ')
-  if (parts.length < 2) return volpages
-
-  const firstParts = parts[0].trim().split(' ')
-  const lastParts = parts[parts.length - 1].trim().split(' ')
-  const prefix = firstParts[0]
-  const firstNum = firstParts[firstParts.length - 1]
-  const lastNum = lastParts[lastParts.length - 1]
-
-  return `${prefix} ${firstNum}—${lastNum}`
-}
-
-function getHashFragment(key: string): string {
-  if (key.includes('#')) {
-    return '#' + key.split('#')[1]
-  }
-  return ''
-}
 
 // The key says which span of this text the parallel covers. That span can run
 // across two suttas - sn36.31 is keyed sn36.30-31, because the parallel covers
@@ -56,21 +37,6 @@ function parallelHref(segmentKey: string): string {
         : entry.uid
       : base
   return `/${uid}/${rootTrans.lang}/${rootTrans.author_uid}${getHashFragment(segmentKey)}`
-}
-
-function getParallelTypeTitle(type: string): string {
-  switch (type) {
-    case 'full':
-      return t(userLanguage, 'suttaplex:fullParallel')
-    case 'mention':
-      return t(userLanguage, 'suttaplex:mention')
-    case 'retelling':
-      return t(userLanguage, 'suttaplex:retellingParallel')
-    case 'resembling': // ¿¿what texts have this??
-      return t(userLanguage, 'suttaplex:resemblingParallel')
-    default:
-      return ''
-  }
 }
 
 // The API returns parallels in no particular order (sn1.20#20.1 before
@@ -147,56 +113,10 @@ const parallelCount =
             ) : (
               <span>{segmentKey}</span>
             )}
-            <ul>
-              {(parallels as any[]).map(parallel => {
-                const prettyVolpages = formatVolpages(parallel.to.volpages)
-                const hasTranslations = parallel.to.translations?.length > 0
-                const firstTrans = parallel.to.translations?.[0]
-                const displayTitle =
-                  parallel.to.translated_title?.trim() ||
-                  parallel.to.original_title?.trim() ||
-                  parallel.to.acronym?.trim()
-
-                return (
-                  <li
-                    class={`parallel-list-item-${parallel.to.type}`}
-                    title={getParallelTypeTitle(parallel.to.type)}
-                  >
-                    {hasTranslations ? (
-                      <a
-                        href={`/${parallel.to.uid}/${firstTrans.lang}/${firstTrans.author_uid}${getHashFragment(parallel.to.to)}`}
-                        hreflang={firstTrans.lang}
-                      >
-                        {displayTitle}
-                      </a>
-                    ) : (
-                      <span>{displayTitle}</span>
-                    )}
-
-                    {/* Secondary info line */}
-                    {parallel.to.translated_title &&
-                    parallel.to.original_title ? (
-                      <div>
-                        {parallel.to.original_title.trim()}
-                        {parallel.to.acronym && (
-                          <> ∙ {parallel.to.acronym.trim()}</>
-                        )}
-                        {prettyVolpages && <> ∙ {prettyVolpages.trim()}</>}
-                      </div>
-                    ) : parallel.to.original_title ? (
-                      <div>
-                        {parallel.to.acronym && (
-                          <>{parallel.to.acronym.trim()}</>
-                        )}
-                        {prettyVolpages && <> ∙ {prettyVolpages.trim()}</>}
-                      </div>
-                    ) : parallel.to.acronym && prettyVolpages ? (
-                      <div>{prettyVolpages.trim()}</div>
-                    ) : null}
-                  </li>
-                )
-              })}
-            </ul>
+            <ParallelList
+              parallels={parallels as any[]}
+              userLanguage={userLanguage}
+            />
           </li>
         ))
       ) : (

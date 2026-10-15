@@ -15,6 +15,7 @@ interface Props {
   headingLevel?: HeadingProps['level']
   isIndividualRangeSutta?: boolean
   inRangeSuttaId?: string
+  parallelsData?: any // /api/parallels response, if fetched already
 }
 
 const {
@@ -24,6 +25,7 @@ const {
   headingLevel,
   isIndividualRangeSutta = false,
   inRangeSuttaId,
+  parallelsData,
 } = Astro.props
 
 const translations = entry.translations.filter(t => t.lang === userLanguage)
@@ -140,6 +142,7 @@ function printIconsHTML(translation) {
           userLanguage={userLanguage}
           isIndividualRangeSutta={isIndividualRangeSutta}
           inRangeSuttaId={inRangeSuttaId}
+          parallelsData={parallelsData}
         />
       )
     }

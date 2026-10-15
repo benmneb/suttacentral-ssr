@@ -1,5 +1,6 @@
 ---
 import '~/assets/text.css'
+import ParallelList from '~/components/parallel-list.astro'
 import PublicationInfo from '~/components/publication-info.astro'
 import TextMetaContent from '~/components/text-meta-content.astro'
 import { AVAILABLE_LOOKUPS } from '~/constants/lookup'
@@ -9,6 +10,11 @@ import { getViewPrefs } from '~/utils/cookies'
 import { generateTextJsonLd } from '~/utils/json-ld'
 import { getPreferredLanguage } from '~/utils/language'
 import { referenceEditionName } from '~/constants/reference-editions'
+import {
+  PARALLEL_TYPES,
+  parallelTypeTitle,
+  parseParallelKey,
+} from '~/utils/parallels'
 import {
   parseUidNumbers,
   rangeUidToAcronym,
@@ -128,13 +134,16 @@ if (suttasData.segmented) {
   }
 }
 
-const [publicationData, crumbsData] = await Promise.all([
+const [publicationData, crumbsData, parallelsData] = await Promise.all([
   fetch(
     `https://suttacentral.net/api/publication_info/${suttasData.range_uid ?? lowerAcronym}/${language}/${authorUid}`
   ).then(r => r.json()),
   fetch(
     `https://suttacentral.net/api/navigation_data/${suttasData.range_uid ?? lowerAcronym}?language=${userLanguage}`
   ).then(r => r.json()),
+  fetch(`https://suttacentral.net/api/parallels/${suttaplexData[0].uid}`).then(
+    r => r.json()
+  ),
 ])
 // When true the page shows a whole range document, not one sutta of it, so it
 // should name the range rather than the uid that was asked for
@@ -274,6 +283,157 @@ const hasHighlights = isSegmented
     )
   : HIGHLIGHT_MARKUP.test(suttasData.translation?.text ?? '')
 
+/**
+ * A passage the "Show parallels" setting brackets in the margin. The api keys
+ * a parallel to where it starts, so it runs to the end of that section
+ */
+type ParallelRun = {
+  start: number // indexes into shownKeys
+  end: number
+  type: string // the strongest of them, which the bracket is drawn as
+  label: string
+  groups: [string, any[]][] // type, parallels
+  lane: number // 0 is closest to the text
+}
+
+// The keys that get rendered, so the ones a bracket can be anchored to
+const shownKeys: string[] = isSegmented
+  ? bilaraData.keys_order.filter(
+      (key: string) =>
+        bilaraData.html_text[key] &&
+        (!isRangeSutta ||
+          !displayedUid ||
+          key.split(':')[0].toLowerCase() === displayedUid)
+    )
+  : []
+const shownIndex = new Map(shownKeys.map((key, i) => [key, i]))
+const referenceIndex = new Map<string, number>()
+shownKeys.forEach((key, i) => {
+  const uid = key.split(':')[0]
+  for (const id of (bilaraData.reference_text?.[key] ?? '').split(',')) {
+    if (id.trim()) referenceIndex.set(`${uid}:${id.trim()}`, i)
+  }
+})
+
+function findShown(uid: string, ref: string) {
+  return shownIndex.get(`${uid}:${ref}`) ?? referenceIndex.get(`${uid}:${ref}`)
+}
+
+// The keys sharing all but its last number
+function sectionOf(key: string) {
+  const [uid, ref] = key.split(':')
+  return ref.includes('.') ? `${uid}:${ref.replace(/\.[^.]+$/, '')}` : key
+}
+
+const BLOCK_END = /\{\}.*<\/(?:p|blockquote|li|h\d|header|section|article)>/
+
+// The end of the section `i` starts, or of the paragraph or verse it's in
+function passageEnd(i: number) {
+  const section = sectionOf(shownKeys[i])
+  const inSection = (j: number) =>
+    !!shownKeys[j] && sectionOf(shownKeys[j]) === section
+  let end = i
+  while (inSection(end + 1)) end++
+  // Sections can open with a heading at .0, so .1 starts one too
+  if (!inSection(i - 1) || /\.[01]$/.test(shownKeys[i])) return end
+  while (i < end && !BLOCK_END.test(bilaraData.html_text[shownKeys[i]])) i++
+  return i
+}
+
+// Every key of it on screen, or of the suttas a range key like sn12.1-2 covers
+function wholeTextSpan(base: string) {
+  const covered = shownKeys
+    .map((key, i) => [key.split(':')[0], i] as const)
+    .filter(([uid]) => uid === base || uidIsInRange(uid, base))
+    .map(([, i]) => i)
+  return covered.length ? [covered[0], covered.at(-1)!] : null
+}
+
+function parallelSpan(key: string) {
+  const { base, start, end } = parseParallelKey(key)
+  if (!start) return wholeTextSpan(base)
+  const first = findShown(base, start)
+  const last = findShown(base, end!)
+  if (first === undefined || last === undefined || last < first) return null
+  return [first, passageEnd(last)]
+}
+
+function spanLabel(key: string, start: number, end: number) {
+  const { base, start: from } = parseParallelKey(key)
+  const acronym =
+    base === suttaplexData[0].uid
+      ? suttaplexData[0].acronym
+      : rangeUidToAcronym(base)
+  if (!from) return acronym
+  const ref = (i: number) => shownKeys[i].split(':')[1]
+  const refs = start === end ? ref(start) : `${ref(start)}–${ref(end)}`
+  return `${acronym}:${refs}`
+}
+
+const runsBySpan = new Map<string, ParallelRun>()
+for (const [key, parallels] of Object.entries(parallelsData ?? {})) {
+  if (key.startsWith('_scx_') || !Array.isArray(parallels)) continue
+  const span = parallelSpan(key)
+  if (!span) continue
+  const [start, end] = span
+  const id = `${start}-${end}`
+  const run: ParallelRun = runsBySpan.get(id) ?? {
+    start,
+    end,
+    type: '',
+    label: spanLabel(key, start, end),
+    groups: [],
+    lane: 0,
+  }
+  for (const parallel of parallels) {
+    const type = parallel.to?.type ?? ''
+    const group = run.groups.find(([t]) => t === type)
+    if (group) group[1].push(parallel)
+    else run.groups.push([type, [parallel]])
+  }
+  runsBySpan.set(id, run)
+}
+
+const rank = (type: string) =>
+  (PARALLEL_TYPES as readonly string[]).indexOf(type) >>> 0 // unknown last
+const parallelRuns = [...runsBySpan.values()].sort(
+  (a, b) => a.start - b.start || b.end - a.end
+)
+for (const run of parallelRuns) {
+  run.groups.sort(([a], [b]) => rank(a) - rank(b))
+  run.type = PARALLEL_TYPES.find(type => type === run.groups[0][0]) ?? 'mention'
+}
+
+// Overlapping, or one ending on the line the next starts on
+function clash(a: ParallelRun, b: ParallelRun) {
+  const meets = (x: ParallelRun, y: ParallelRun) =>
+    x.end + 1 === y.start &&
+    !BLOCK_END.test(bilaraData.html_text[shownKeys[x.end]])
+  return (a.start <= b.end && b.start <= a.end) || meets(a, b) || meets(b, a)
+}
+
+// Like a git graph: shortest first, each in the nearest lane without a clash
+const lanes: ParallelRun[][] = []
+for (const run of parallelRuns.toSorted(
+  (a, b) => a.end - a.start - (b.end - b.start) || a.start - b.start
+)) {
+  let lane = lanes.findIndex(others => !others.some(o => clash(o, run)))
+  if (lane === -1) lane = lanes.push([]) - 1
+  lanes[lane].push(run)
+  run.lane = lane
+}
+
+const hasParallels = parallelRuns.length > 0
+
+// The segments a bracket starts or ends on, so it can be anchored to them
+const parallelAnchors = new Set(parallelRuns.flatMap(r => [r.start, r.end]))
+function anchorStyle(key: string) {
+  const i = shownIndex.get(key)
+  return i !== undefined && parallelAnchors.has(i)
+    ? ` style="anchor-name: --ps${i}"`
+    : ''
+}
+
 /** Spans, as a <figure> can't go inside the <p> they usually end */
 function renderIllustrations(key: string) {
   return (illustrationsBySegment.get(key) ?? [])
@@ -356,7 +516,7 @@ function getRootLangHTML() {
       collectHeading(html, key, text)
 
       const segment = `
-    <span id="${key}" class="segment">
+    <span id="${key}" class="segment"${anchorStyle(key)}>
 ${renderReferences(key, ref)}
       ${
         text
@@ -412,7 +572,7 @@ function getSegmentedHTML() {
       collectHeading(html, key, text)
 
       const segment = `
-    <span id="${key}" class="segment">
+    <span id="${key}" class="segment"${anchorStyle(key)}>
 ${renderReferences(key, ref)}
       ${
         text
@@ -859,6 +1019,28 @@ const jsonLd = generateTextJsonLd(
               )
             }
             {
+              hasParallels && (
+                <li role="menuitem">
+                  <label for="paralleler">
+                    <span>{t(userLanguage, 'viewoption:showParallels')}</span>
+                    <kbd
+                      aria-hidden="true"
+                      title={t(userLanguage, 'viewoption:hotkeyToggle', {
+                        key: 'P',
+                      })}
+                    >
+                      P
+                    </kbd>
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="paralleler"
+                    checked={viewPrefs.paralleler ?? false}
+                  />
+                </li>
+              )
+            }
+            {
               (isSegmented ||
                 suttasData.translation.text.includes("class='ref")) && (
                 <li role="menuitem">
@@ -887,10 +1069,10 @@ const jsonLd = generateTextJsonLd(
                 <kbd
                   aria-hidden="true"
                   title={t(userLanguage, 'viewoption:hotkeyToggle', {
-                    key: 'P',
+                    key: 'M',
                   })}
                 >
-                  P
+                  M
                 </kbd>
               </label>
               <input
@@ -1052,9 +1234,60 @@ const jsonLd = generateTextJsonLd(
       </ul>
     </fieldset>
   </aside>
-  <main>
+  <main style={hasParallels ? `--parallel-lanes: ${lanes.length}` : undefined}>
     <Fragment set:html={articleHTML} />
     <Fragment set:html={commentsHtml} />
+
+    {
+      hasParallels && (
+        <ol
+          class="parallel-runs"
+          aria-label={toSentenceCase(
+            t(userLanguage, 'interface:showParallelsButtonText')
+          )}
+        >
+          {parallelRuns.map((run, i) => {
+            const count = run.groups.reduce((n, [, p]) => n + p.length, 0)
+            const countLabel = t(
+              userLanguage,
+              count !== 1
+                ? 'suttaplex:countParallels'
+                : 'suttaplex:countParallel',
+              { count }
+            )
+            return (
+              <li>
+                <button
+                  class="parallel-run"
+                  popovertarget={`parallels-${i}`}
+                  data-type={run.type}
+                  data-outer={run.lane === lanes.length - 1 ? '' : undefined}
+                  aria-label={`${run.label}, ${countLabel}`}
+                  style={`--lane: ${run.lane}; top: anchor(--ps${run.start} top); bottom: anchor(--ps${run.end} bottom)`}
+                />
+                <article id={`parallels-${i}`} popover>
+                  <h2>
+                    {t(userLanguage, 'viewoption:parallelsOf', {
+                      ref: run.label,
+                    })}
+                  </h2>
+                  {run.groups.map(([type, parallels]) => (
+                    <section>
+                      <p>{parallelTypeTitle(userLanguage, type)}</p>
+                      <ParallelList
+                        parallels={parallels}
+                        userLanguage={userLanguage}
+                        typeTitles={false}
+                      />
+                    </section>
+                  ))}
+                </article>
+              </li>
+            )
+          })}
+        </ol>
+      )
+    }
 
     {
       !!publicationData && !publicationData.error && (
@@ -1069,6 +1302,7 @@ const jsonLd = generateTextJsonLd(
         parallelsOpen
         isIndividualRangeSutta={isRangeSutta}
         inRangeSuttaId={lowerAcronym}
+        parallelsData={parallelsData}
       />
     </article>
     {
@@ -1152,6 +1386,7 @@ const jsonLd = generateTextJsonLd(
     'segmenter',
     'illustrator',
     'highlighter',
+    'paralleler',
     'positioner',
     'voice-select',
     'rate',
@@ -1341,7 +1576,8 @@ const jsonLd = generateTextJsonLd(
     r: ['segmenter'],
     i: ['illustrator'],
     t: ['highlighter'],
-    p: ['positioner'],
+    p: ['paralleler'],
+    m: ['positioner'],
   }
 
   const LISTEN_CONTROLS = {

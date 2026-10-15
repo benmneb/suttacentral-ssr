@@ -1,0 +1,81 @@
+---
+import { getHashFragment, parallelTypeTitle } from '~/utils/parallels'
+
+interface Props {
+  parallels: any[] // one key's entries from /api/parallels
+  userLanguage: string
+  // Off where the list is already headed with its type
+  typeTitles?: boolean
+}
+
+const { parallels, userLanguage, typeTitles = true } = Astro.props
+
+// Make pretty PTS volpages
+function formatVolpages(volpages: string | null): string {
+  if (!volpages) return ''
+  if (!volpages.includes('PTS')) return volpages
+
+  const parts = volpages.trim().split(', ')
+  if (parts.length < 2) return volpages
+
+  const firstParts = parts[0].trim().split(' ')
+  const lastParts = parts[parts.length - 1].trim().split(' ')
+  const prefix = firstParts[0]
+  const firstNum = firstParts[firstParts.length - 1]
+  const lastNum = lastParts[lastParts.length - 1]
+
+  return `${prefix} ${firstNum}—${lastNum}`
+}
+---
+
+<ul class="parallel-list">
+  {
+    parallels.map(parallel => {
+      const prettyVolpages = formatVolpages(parallel.to.volpages)
+      const hasTranslations = parallel.to.translations?.length > 0
+      const firstTrans = parallel.to.translations?.[0]
+      const displayTitle =
+        parallel.to.translated_title?.trim() ||
+        parallel.to.original_title?.trim() ||
+        parallel.to.acronym?.trim()
+
+      return (
+        <li
+          class={`parallel-list-item-${parallel.to.type}`}
+          title={
+            typeTitles
+              ? parallelTypeTitle(userLanguage, parallel.to.type)
+              : undefined
+          }
+        >
+          {hasTranslations ? (
+            <a
+              href={`/${parallel.to.uid}/${firstTrans.lang}/${firstTrans.author_uid}${getHashFragment(parallel.to.to)}`}
+              hreflang={firstTrans.lang}
+            >
+              {displayTitle}
+            </a>
+          ) : (
+            <span>{displayTitle}</span>
+          )}
+
+          {/* Secondary info line */}
+          {parallel.to.translated_title && parallel.to.original_title ? (
+            <div>
+              {parallel.to.original_title.trim()}
+              {parallel.to.acronym && <> ∙ {parallel.to.acronym.trim()}</>}
+              {prettyVolpages && <> ∙ {prettyVolpages.trim()}</>}
+            </div>
+          ) : parallel.to.original_title ? (
+            <div>
+              {parallel.to.acronym && <>{parallel.to.acronym.trim()}</>}
+              {prettyVolpages && <> ∙ {prettyVolpages.trim()}</>}
+            </div>
+          ) : parallel.to.acronym && prettyVolpages ? (
+            <div>{prettyVolpages.trim()}</div>
+          ) : null}
+        </li>
+      )
+    })
+  }
+</ul>

@@ -34,7 +34,7 @@
 
       &:has(#commenter-side:checked) {
         main {
-          grid-template-columns: minmax(0, 1fr);
+          --main-column: 1fr;
         }
         main ~ nav {
           max-width: var(--content-double-width);
@@ -149,7 +149,7 @@
     --mark-color: var(--purple);
   }
   .anapatti {
-    --mark-color: var(--green);
+    --mark-color: var(--yellow);
   }
   .vinaya-vinita {
     --mark-color: var(--gray);
@@ -288,6 +288,177 @@
   }
 }
 
+/* Show parallels */
+.parallel-runs {
+  display: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+main:has(.segment) {
+  --parallel-lanes: 1;
+  --parallel-column: var(--content-max-width);
+  --parallel-gap: 4px;
+  --parallel-room: max(1rem, (100vw - var(--parallel-column)) / 2 - 0.5rem);
+  --parallel-want: calc(
+    var(--parallel-gap) + var(--parallel-lanes) * 0.5rem + 0.5rem
+  );
+  --parallel-space: calc(var(--parallel-room) + var(--parallel-reserve, 0px));
+  --parallel-step: min(
+    0.5rem,
+    (var(--parallel-space) - var(--parallel-gap)) / var(--parallel-lanes)
+  );
+  --parallel-edge: clamp(
+    0px,
+    var(--parallel-space) - var(--parallel-gap) - var(--parallel-lanes) *
+      var(--parallel-step),
+    0.5rem
+  );
+  --parallel-line: clamp(1px, var(--parallel-step) - 1px, 2px);
+}
+
+&:has(#rooter:checked):has(#rooter-side:checked),
+&:has(#commenter:checked):has(#commenter-inline:checked):has(
+    #commenter-side:checked
+  ) {
+  main:has(.segment) {
+    --parallel-column: var(--content-double-width-gap);
+  }
+}
+
+@supports (anchor-name: --a) {
+  &:has(#paralleler:checked) {
+    .parallel-runs {
+      display: block;
+    }
+
+    main:has(.segment) {
+      --parallel-reserve: clamp(
+        0px,
+        var(--parallel-want) - var(--parallel-room),
+        2rem
+      );
+    }
+  }
+}
+@supports not (anchor-name: --a) {
+  #views-menu li[role='menuitem']:has(#paralleler) {
+    display: none;
+  }
+}
+
+/* Not article, as a range page has one per sutta */
+main:has(.segment) > :first-child {
+  anchor-name: --text-column;
+}
+
+.parallel-run {
+  --parallel-color: var(--yellow);
+  position: absolute;
+  left: calc(
+    anchor(--text-column left) - var(--parallel-gap) - (var(--lane) + 1) *
+      var(--parallel-step)
+  );
+  right: anchor(--text-column right);
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  outline: none;
+  /* Spans the text for the tint, so only the bracket takes clicks */
+  pointer-events: none;
+
+  &[data-type='retelling'] {
+    --parallel-color: var(--purple);
+  }
+  &[data-type='mention'] {
+    --parallel-color: var(--orange);
+  }
+
+  &::before {
+    --tick: max(4px, var(--parallel-step) - 2px);
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    width: var(--parallel-step);
+    pointer-events: auto;
+    cursor: pointer;
+    background:
+      linear-gradient(var(--parallel-color) 0 0) left top / var(--tick)
+        var(--parallel-line),
+      linear-gradient(var(--parallel-color) 0 0) left bottom / var(--tick)
+        var(--parallel-line),
+      linear-gradient(var(--parallel-color) 0 0) left / var(--parallel-line)
+        100%;
+    background-repeat: no-repeat;
+    transition: opacity 0.15s;
+  }
+
+  &[data-outer]::before {
+    left: calc(-1 * var(--parallel-edge));
+    padding-left: var(--parallel-edge);
+    background-origin: content-box;
+    background-clip: content-box;
+  }
+
+  &:has(+ :popover-open)::before {
+    --open-line: min(var(--parallel-line) * 2, var(--parallel-step));
+    background-size:
+      var(--tick) var(--open-line),
+      var(--tick) var(--open-line),
+      var(--open-line) 100%;
+  }
+  .parallel-runs:has(:popover-open) &:not(:has(+ :popover-open))::before {
+    opacity: 0.3;
+  }
+
+  &:focus-visible::before {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 1px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: var(--rounding);
+    pointer-events: none;
+  }
+
+  &:hover::after,
+  &:focus-visible::after,
+  &:has(+ :popover-open)::after {
+    background-color: color-mix(
+      in srgb,
+      var(--parallel-color) 10%,
+      transparent
+    );
+  }
+}
+
+.parallel-runs [popover] {
+  max-width: calc(min(60ch, 100vw) - 2rem);
+
+  h2 {
+    margin-top: 0;
+    font-size: 1.1rem;
+  }
+
+  p {
+    margin-bottom: 0.25rem;
+    color: var(--text-color-secondary);
+    font-size: 0.9rem;
+  }
+
+  .parallel-list {
+    margin: 0;
+    padding-left: 2rem;
+  }
+}
+
 &:has(#rooter:checked) .segment {
   display: grid;
   margin-bottom: 0.3rem;
@@ -348,7 +519,7 @@
 
   &:has(#rooter-side:checked) {
     main {
-      grid-template-columns: minmax(0, 1fr);
+      --main-column: 1fr;
     }
     main ~ nav {
       max-width: var(--content-double-width);
@@ -842,6 +1013,9 @@ aside {
   display: flex;
   justify-content: end;
   pointer-events: none;
+  /* Over the parallels' brackets, which come later and are positioned too */
+  position: relative;
+  z-index: 1;
 
   &:has(#positioner:checked) {
     position: sticky;
@@ -1582,8 +1756,15 @@ article,
 main:has(.segment) {
   display: grid;
   max-width: var(--content-double-width-gap);
-  grid-template-columns: minmax(0, var(--content-max-width));
+  /* The first is the margin the parallels need */
+  grid-template-columns:
+    var(--parallel-reserve, 0px)
+    minmax(0, var(--main-column, var(--content-max-width)));
   justify-content: center;
+
+  > * {
+    grid-column: 2;
+  }
 }
 
 main ~ nav {
