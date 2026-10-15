@@ -138,7 +138,6 @@
 
 /* Highlight text-critical details */
 &:has(#highlighter:checked) {
-  /* Vinaya, each part of a rule's structure, nested blocks nesting */
   .nidana {
     --mark-color: var(--aqua);
   }
@@ -159,25 +158,24 @@
     --mark-label: 'Formal act of the Sangha';
   }
   .patimokkha {
-    --mark-color: var(--red);
+    --mark-color: var(--green);
     --mark-label: 'In the pātimokkha recitation';
   }
   /* Not .net's :not(.patimokkha) .rule, which every rule matches */
   .rule:not(.patimokkha *):has(.segment) {
     --mark-color: var(--red);
     --mark-label: 'Not in the pātimokkha recitation';
-    border-inline-start-style: dashed;
   }
   .suttanta {
-    --mark-color: var(--yellow);
+    --mark-color: var(--brown);
     --mark-label: 'Also found in the suttas';
   }
   .jataka {
-    --mark-color: var(--brown);
+    --mark-color: var(--headings-color);
     --mark-label: 'A past life story (Jātaka)';
   }
 
-  /* :where, so .rule's dashed border and span.kamma's inline label win */
+  /* :where, so span.kamma's inline label wins */
   :where(
     .nidana,
     .padabhajaniya,
@@ -190,7 +188,7 @@
     .suttanta,
     .jataka
   ):not(span) {
-    border-inline-start: 3px solid var(--mark-color);
+    border-inline-start: 2px dotted var(--mark-color);
     padding-inline-start: 0.75rem;
   }
 
@@ -210,6 +208,11 @@
     font-weight: bold;
     font-variant-caps: all-small-caps;
     letter-spacing: 0.05em;
+  }
+
+  :is(.nidana, .padabhajaniya, .cakka, .anapatti) > :is(h2, h3, h4):first-child,
+  .vinaya-vinita > .uddana:first-child > .uddana-intro:first-child {
+    color: color-mix(in srgb, var(--mark-color) 75%, var(--headings-color));
   }
 
   /* Legacy texts mark formal acts mid-paragraph */
