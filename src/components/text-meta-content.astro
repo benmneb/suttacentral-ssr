@@ -2,9 +2,10 @@
 import '~/assets/details.css'
 import '~/assets/text-meta-content.css'
 import Heading, { type HeadingProps } from '~/components/heading.astro'
+import RootTitle from '~/components/root-title.astro'
 import * as heroicon from '~/constants/heroicons'
 import { t } from '~/i18n'
-import { normalise, rangeSuttaTitle, toSentenceCase } from '~/utils/strings'
+import { rangeSuttaTitle, toSentenceCase } from '~/utils/strings'
 import ParallelsDetails from './parallels-details.astro'
 
 interface Props {
@@ -69,14 +70,15 @@ function printIconsHTML(translation) {
   <hgroup>
     <Heading level={headingLevel}>
       {
-        isIndividualRangeSutta
-          ? rangeSuttaTitle(entry.title, inRangeSuttaId!)
-          : entry.original_title &&
-              entry.translated_title &&
-              normalise(entry.original_title) !==
-                normalise(entry.translated_title)
-            ? `${entry.original_title}—${entry.translated_title}`
-            : entry.translated_title || entry.original_title
+        isIndividualRangeSutta ? (
+          rangeSuttaTitle(entry.title, inRangeSuttaId!)
+        ) : (
+          <RootTitle
+            root={entry.original_title}
+            translation={entry.translated_title}
+            lang={entry.root_lang}
+          />
+        )
       }
     </Heading>
     {!!entry.acronym && !isIndividualRangeSutta && <p>{entry.acronym}</p>}

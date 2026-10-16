@@ -1,4 +1,5 @@
 ---
+import RootTitle from '~/components/root-title.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { generatePitakaJsonLd } from '~/utils/json-ld'
@@ -82,9 +83,13 @@ function cardDetails(child: any) {
   jsonLd={jsonLd}
 >
   <main>
-    <h1
-      set:text={`${menuData.root_name}${menuData.root_name && menuData.translated_name ? '—' : ''}${menuData.translated_name || ''}`}
-    />
+    <h1>
+      <RootTitle
+        root={menuData.root_name}
+        translation={menuData.translated_name}
+        lang={menuData.root_lang_iso}
+      />
+    </h1>
     {!!menuData.blurb && <p set:html={menuData.blurb} />}
     {
       shortcutsData?.[0]?.shortcuts?.includes(uid) && (
@@ -101,9 +106,11 @@ function cardDetails(child: any) {
           <li>
             <hgroup>
               <h2>
-                <a
+                <RootTitle
+                  root={child.root_name}
+                  translation={child.translated_name}
+                  lang={child.root_lang_iso}
                   href={child._scx_href ?? `${menuData.uid}/${child.uid}`}
-                  set:text={`${child.root_name}${child.root_name && child.translated_name ? '—' : ''}${child.translated_name || ''}`}
                 />
               </h2>
               {!!cardDetails(child) && <p>{cardDetails(child)}</p>}
@@ -130,7 +137,7 @@ function cardDetails(child: any) {
 
   hgroup:has(p) {
     h2 {
-      margin-bottom: 0;
+      margin-bottom: 0.4rem;
     }
 
     p {

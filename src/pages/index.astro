@@ -1,4 +1,5 @@
 ---
+import RootTitle from '~/components/root-title.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { generateIndexJsonLd } from '~/utils/json-ld'
@@ -14,20 +15,35 @@ const tipitakaData = await tipitakaResponse.json()
 
 const origin = Astro.site?.origin ?? ''
 const jsonLd = generateIndexJsonLd(tipitakaData, origin)
+
+// eg "Tipiṭaka—the Three Baskets of the Buddhist canon", some locales spaced
+const [homeRoot, homeTranslation, ...rest] = t(userLanguage, 'home:1').split(
+  /\s*—\s*/
+)
+const homeIsPair = !!homeTranslation && !rest.length
 ---
 
 <Layout jsonLd={jsonLd} title={t(userLanguage, 'home:1')}>
   <main>
-    <h1 set:html={t(userLanguage, 'home:1')} />
+    {
+      homeIsPair ? (
+        <h1>
+          <RootTitle root={homeRoot} translation={homeTranslation} lang="pli" />
+        </h1>
+      ) : (
+        <h1 set:html={t(userLanguage, 'home:1')} />
+      )
+    }
     <ol>
       {
         tipitakaData.map(pitaka => (
           <li>
             <article>
               <h2>
-                <a
+                <RootTitle
+                  root={pitaka.root_name}
+                  translation={pitaka.translated_name}
                   href={`/pitaka/${pitaka.uid}`}
-                  set:text={`${pitaka.root_name}${pitaka.root_name && pitaka.translated_name ? '—' : ''}${pitaka.translated_name || ''}`}
                 />
               </h2>
               {!!pitaka.blurb && <p set:html={pitaka.blurb} />}

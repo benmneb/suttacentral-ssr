@@ -1,0 +1,50 @@
+---
+import { normalise } from '~/utils/strings'
+
+interface Props {
+  root?: string
+  translation?: string
+  lang?: string | null
+  href?: string
+}
+
+const { lang, href } = Astro.props
+// The API leaves trailing spaces on names
+const root = Astro.props.root?.trim()
+const translation = Astro.props.translation?.trim()
+const isPair =
+  !!root && !!translation && normalise(root) !== normalise(translation)
+// By script, as romanised titles like Madhyamāgama are tagged lzh too
+const isUpright =
+  !!root &&
+  /[\p{Script=Han}\p{Script=Hangul}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Tibetan}]/u.test(
+    root
+  )
+---
+
+{
+  isPair ? (
+    <span class="root-title">
+      {href ? (
+        <a href={href}>
+          <dfn
+            lang={lang || undefined}
+            class={isUpright ? 'upright' : undefined}
+          >
+            {root}
+          </dfn>
+        </a>
+      ) : (
+        <dfn lang={lang || undefined} class={isUpright ? 'upright' : undefined}>
+          {root}
+        </dfn>
+      )}
+      {/* The space keeps the two apart in reader mode and copied text */}
+      <span>{` ${translation}`}</span>
+    </span>
+  ) : href ? (
+    <a href={href}>{translation || root}</a>
+  ) : (
+    translation || root
+  )
+}

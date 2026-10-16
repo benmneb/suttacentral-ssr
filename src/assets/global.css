@@ -158,3 +158,18 @@ ol li::marker {
 input[type='checkbox'] {
   accent-color: var(--primary-color);
 }
+
+.root-title {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  > span {
+    color: var(--text-color-secondary);
+    font-size: 0.8em;
+  }
+}
+
+.root-title .upright {
+  font-style: normal;
+}

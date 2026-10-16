@@ -1,5 +1,6 @@
 ---
 import '~/assets/search.css'
+import RootTitle from '~/components/root-title.astro'
 import SearchForm from '~/components/search-form.astro'
 import TextMetaContent from '~/components/text-meta-content.astro'
 import { dictionaryTitles } from '~/constants/define'
@@ -11,7 +12,7 @@ import {
   getAllPreferredLanguages,
   getPreferredLanguage,
 } from '~/utils/language'
-import { expandUid, normalise } from '~/utils/strings'
+import { expandUid } from '~/utils/strings'
 
 const { searchParams } = Astro.url
 const acceptLanguage = Astro.request.headers.get('accept-language')
@@ -131,18 +132,16 @@ if (query) {
                       <li>
                         <hgroup>
                           <h2>
-                            <a href={hit.url}>
-                              {hit.is_article
-                                ? hit.heading.title
-                                : (hit.name || hit.heading?.title) &&
-                                    normalise(hit.root_name) !==
-                                      (normalise(hit.name) ||
-                                        normalise(hit.heading?.title))
-                                  ? `${hit.root_name}—${hit.name || hit.heading?.title}`
-                                  : hit.name ||
-                                    hit.heading?.title ||
-                                    hit.root_name}
-                            </a>
+                            {hit.is_article ? (
+                              <a href={hit.url}>{hit.heading.title}</a>
+                            ) : (
+                              <RootTitle
+                                root={hit.root_name}
+                                translation={hit.name || hit.heading?.title}
+                                lang={hit.root_lang}
+                                href={hit.url}
+                              />
+                            )}
                           </h2>
                           <p>
                             {[
