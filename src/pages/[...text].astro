@@ -757,13 +757,10 @@ const jsonLd = generateTextJsonLd(
                 aria-expanded="false"
                 aria-controls="contents-menu"
                 aria-label={t(userLanguage, 'interface:tableOfContent')}
+                title={t(userLanguage, 'interface:tableOfContent')}
                 id="contents-button"
               >
-                <span>
-                  {toSentenceCase(
-                    t(userLanguage, 'interface:showToCButtonText')
-                  )}
-                </span>
+                <Fragment set:html={heroicon.numberedListMicro} />
               </button>
               <ol
                 class="dropdown"
@@ -792,10 +789,9 @@ const jsonLd = generateTextJsonLd(
           <button
             popovertarget="info"
             aria-label={t(userLanguage, 'viewoption:showPublicationInfo')}
+            title={t(userLanguage, 'viewoption:showPublicationInfo')}
           >
-            <span>
-              {toSentenceCase(t(userLanguage, 'interface:infoButtonText'))}
-            </span>
+            <Fragment set:html={heroicon.informationCircleMicro} />
           </button>
         </li>
         <li>
@@ -804,11 +800,10 @@ const jsonLd = generateTextJsonLd(
             aria-expanded="false"
             aria-controls="views-menu"
             aria-label={t(userLanguage, 'interface:textSettings')}
+            title={t(userLanguage, 'interface:textSettings')}
             id="views-button"
           >
-            <span>
-              {toSentenceCase(t(userLanguage, 'interface:toolsButtonText'))}
-            </span>
+            <Fragment set:html={heroicon.eyeMicro} />
           </button>
           <ul
             class="dropdown"
@@ -1114,14 +1109,9 @@ const jsonLd = generateTextJsonLd(
           <button
             popovertarget="parallels"
             aria-label={t(userLanguage, 'viewoption:showParallelTexts')}
+            title={t(userLanguage, 'viewoption:showParallelTexts')}
           >
-            <span>
-              {
-                toSentenceCase(
-                  t(userLanguage, 'interface:showParallelsButtonText')
-                )
-              }
-            </span>
+            <Fragment set:html={heroicon.arrowsRightLeftMicro} />
           </button>
         </li>
         <li>
@@ -1130,9 +1120,10 @@ const jsonLd = generateTextJsonLd(
             aria-expanded="false"
             aria-controls="listen-menu"
             aria-label={t(userLanguage, 'viewoption:ttsSettings')}
+            title={t(userLanguage, 'viewoption:ttsSettings')}
             id="listen-menu-button"
           >
-            <span>{t(userLanguage, 'viewoption:listen')}</span>
+            <Fragment set:html={heroicon.speakerWaveMicro} />
           </button>
           <ul
             class="dropdown"
@@ -1166,11 +1157,7 @@ const jsonLd = generateTextJsonLd(
               </button>
               <button id="playpause" type="button">
                 <span set:html={heroicon.play} /><span
-                  ><span
-                    data-play={t(userLanguage, 'viewoption:play')}
-                    data-pause={t(userLanguage, 'viewoption:pause')}
-                    >{t(userLanguage, 'viewoption:play')}</span
-                  ><kbd
+                  ><span>{t(userLanguage, 'viewoption:play')}</span><kbd
                     aria-hidden="true"
                     title={t(userLanguage, 'viewoption:hotkeyPress', {
                       key: 'J',

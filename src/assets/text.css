@@ -918,13 +918,17 @@ a.look-up {
 
 .tts-controls {
   display: flex;
-  height: 3rem;
+  min-height: 3rem;
 
   button {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    /* height: 100% can't stretch against the aside's min-height */
+    height: auto;
+    align-self: stretch;
+    padding-block: 0.5rem;
 
     &[disabled] {
       opacity: 0.2;
@@ -935,8 +939,10 @@ a.look-up {
       }
     }
 
+    /* Flex, so the icon has no line box to sit low in */
     > span:first-of-type {
-      font-size: larger;
+      display: flex;
+      font-size: large;
     }
 
     > span:nth-of-type(2) {
@@ -944,25 +950,19 @@ a.look-up {
       justify-content: center;
       align-items: center;
     }
-  }
 
-  /* Sized to the longer of play and pause in any language, so swapping
-     between them doesn't resize the menu */
-  [data-play] {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-
-    &::before,
-    &::after {
-      content: attr(data-play);
-      height: 0;
-      overflow: hidden;
-      visibility: hidden;
+    kbd {
+      margin: 0.3rem 0 0;
     }
 
-    &::after {
-      content: attr(data-pause);
+    /* Like .sr-only, as they name the buttons */
+    > span:nth-of-type(2) > span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
     }
   }
 }
@@ -1109,6 +1109,12 @@ aside {
       }
     }
 
+    /* rem, as the button's em is the browser's control font-size */
+    > ul > li > button > .icon.micro {
+      inline-size: 1rem;
+      block-size: 1rem;
+    }
+
     /* Needed for the menus width */
     > ul > li:has(> #contents-menu) {
       position: static;
@@ -1128,13 +1134,6 @@ aside {
         animation: aside-search-in linear both;
         animation-timeline: --site-header;
         animation-range: exit 0% exit 100%;
-      }
-
-      /* rem like the header's, as the button's em is the browser's control
-         default */
-      .icon.micro {
-        inline-size: 1rem;
-        block-size: 1rem;
       }
 
       button:focus > .icon,
@@ -1172,24 +1171,37 @@ aside {
       }
 
       > ul > li.aside-search {
-        flex: 0 0 auto;
+        flex: 0 1 0;
+        max-width: none;
+        animation-name: aside-search-grow;
       }
 
-      /* Search sits right of it, so anchor the menu to the screen edge */
+      > ul > li:has(> #views-menu),
       > ul > li:has(> #listen-menu) {
         position: static;
       }
 
+      #views-menu,
+      #listen-menu {
+        left: 0;
+        right: 0;
+        width: auto;
+        max-width: none;
+        border-top-left-radius: 0;
+
+        > li:first-of-type {
+          border-top-left-radius: 0;
+        }
+      }
+
+      /* Any smaller and Chrome's touch adjustment moves taps to the search */
       > ul > li > button {
         width: 100%;
+        min-height: 2.75rem;
         justify-content: center;
 
         &:hover {
           border-radius: 0;
-        }
-
-        > span {
-          text-align: center;
         }
       }
     }
@@ -1274,16 +1286,21 @@ aside {
     }
 
     #contents-menu {
-      border-top-left-radius: 0;
       counter-reset: toc2 toc3 toc4;
       list-style: none;
       margin: 0;
       padding: 0;
       max-height: 70vh;
       overflow-y: auto;
-      left: 0;
-      right: 0;
-      width: auto;
+      min-width: 100%;
+      max-width: min(25rem, 100vw);
+
+      @media only screen and (max-width: 600px) {
+        border-top-left-radius: 0;
+        left: 0;
+        width: auto;
+        max-width: none;
+      }
 
       a {
         width: 100%;
@@ -1309,8 +1326,10 @@ aside {
         }
       }
 
-      li:first-of-type {
-        border-top-left-radius: 0;
+      @media only screen and (max-width: 600px) {
+        li:first-of-type {
+          border-top-left-radius: 0;
+        }
       }
 
       /**
@@ -1359,12 +1378,35 @@ aside {
         }
       }
     }
+
+    /* Big enough for a finger, whatever the screen size. The labels and
+       links fill their rows so all of it is a target */
+    @media (pointer: coarse) {
+      > ul > li > button,
+      ul li ul > li[role='menuitem'],
+      ul li ol > li {
+        min-height: 2.75rem;
+      }
+
+      ul li ul > li > label,
+      #contents-menu a {
+        align-self: stretch;
+        align-items: center;
+      }
+    }
   }
 }
 
 @keyframes aside-search-in {
   to {
     max-width: 3rem;
+    visibility: visible;
+  }
+}
+
+@keyframes aside-search-grow {
+  to {
+    flex-grow: 1;
     visibility: visible;
   }
 }
