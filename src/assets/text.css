@@ -873,7 +873,7 @@ a.look-up {
     display: flex;
   }
 
-  /* On touch, the controls stay under the bar while there's something to
+  /* On touch, the controls stay by the bar while there's something to
      stop, so it can be paused or skipped with the menu closed. The rest comes
      back from the listen button, or while one of its rows is in use, as a tap
      leaves the controls hovered and would otherwise open it all */
@@ -1063,6 +1063,42 @@ body:has([popover]#parallels:popover-open) {
   overflow: hidden;
 }
 
+/* A set height, so what opens from the bar can clear the controls */
+@media (hover: none) {
+  :root {
+    --tts-controls-height: 2.75rem;
+  }
+
+  :root:has(#listen-menu.hotkeys) {
+    --tts-controls-height: 3.5rem;
+  }
+
+  .tts-controls {
+    height: var(--tts-controls-height);
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  body:has(#positioner:checked) {
+    padding-bottom: 2.75rem;
+
+    #definition[popover] {
+      bottom: 2.75rem;
+      clip-path: inset(-2rem 0 0);
+    }
+
+    @media (hover: none) {
+      &:has(#stop:enabled) #definition[popover] {
+        bottom: calc(2.75rem + var(--tts-controls-height));
+      }
+    }
+
+    :is(h2, h3, h4, .segment, .reference, a.ref) {
+      scroll-margin-top: 0;
+    }
+  }
+}
+
 aside {
   display: flex;
   justify-content: end;
@@ -1229,6 +1265,57 @@ aside {
         &:hover {
           border-radius: 0;
         }
+      }
+
+      /* The bar, not the aside, as the reading place script measures that */
+      &:has(#positioner:checked) {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        /* A filter, so it also falls from whatever opens above the bar */
+        filter: drop-shadow(0 0.3rem 1rem var(--shadow-color));
+
+        ul li ul,
+        ul li ol {
+          top: auto;
+          bottom: 100%;
+          border-radius: var(--rounding) var(--rounding) 0 0;
+
+          > li:is(:hover, :focus-within) {
+            &:first-of-type {
+              border-radius: var(--rounding) var(--rounding) 0 0;
+            }
+
+            &:last-of-type {
+              border-radius: 0;
+            }
+          }
+        }
+
+        #views-menu,
+        #listen-menu {
+          max-height: calc(100dvh - 2.75rem);
+          overflow-y: auto;
+        }
+
+        @media (hover: none) {
+          &:has(#stop:enabled) :is(#contents-menu, #views-menu) {
+            top: auto;
+            bottom: calc(100% + var(--tts-controls-height));
+          }
+
+          &:has(#stop:enabled) #views-menu {
+            max-height: calc(100dvh - 2.75rem - var(--tts-controls-height));
+          }
+        }
+      }
+    }
+
+    /* Past the listen controls, which stay up on touch while playing */
+    @media (hover: none) {
+      &:has(#stop:enabled) :is(#contents-menu, #views-menu) {
+        top: calc(100% + var(--tts-controls-height));
       }
     }
 
