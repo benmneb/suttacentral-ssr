@@ -1174,13 +1174,21 @@ const jsonLd = generateTextJsonLd(
               </button>
             </li>
             <li role="menuitem">
-              <label for="voice-select"
+              <label
+                for="voice-select"
+                data-also-a={t(userLanguage, 'viewoption:rate')}
+                data-also-b={t(userLanguage, 'viewoption:pitch')}
                 >{t(userLanguage, 'viewoption:voiceLabel')}</label
               >
               <select id="voice-select"></select>
             </li>
             <li role="menuitem">
-              <label for="rate">{t(userLanguage, 'viewoption:rate')}</label>
+              <label
+                for="rate"
+                data-also-a={t(userLanguage, 'viewoption:voiceLabel')}
+                data-also-b={t(userLanguage, 'viewoption:pitch')}
+                >{t(userLanguage, 'viewoption:rate')}</label
+              >
               <input
                 type="range"
                 min="0.5"
@@ -1192,7 +1200,12 @@ const jsonLd = generateTextJsonLd(
               <div id="rate-value">1.0</div>
             </li>
             <li role="menuitem">
-              <label for="pitch">{t(userLanguage, 'viewoption:pitch')}</label>
+              <label
+                for="pitch"
+                data-also-a={t(userLanguage, 'viewoption:voiceLabel')}
+                data-also-b={t(userLanguage, 'viewoption:rate')}
+                >{t(userLanguage, 'viewoption:pitch')}</label
+              >
               <input
                 type="range"
                 min="0"
