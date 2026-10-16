@@ -21,6 +21,14 @@ export function normalise(str: string): string {
   return str.trim().toLowerCase()
 }
 
+/** Lets a long Pali compound title wrap before its suffix, eg "-sutta" */
+export function softHyphenateTitle(title: string): string {
+  return title.replace(
+    /(?<=\p{L})(sutta|vagga|paṇṇāsa|saṁyutta|nipāta)(?=\s*$)/u,
+    '\u00AD$1'
+  )
+}
+
 /**
  * Make pretty PTS volpages, "PTS MN 1.1, PTS 1.2, PTS 1.3" to "PTS 1.1–1.3".
  * The book is left out, as the acronym is always beside it

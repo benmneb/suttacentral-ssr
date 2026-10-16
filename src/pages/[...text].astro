@@ -19,6 +19,7 @@ import {
 import {
   parseUidNumbers,
   rangeUidToAcronym,
+  softHyphenateTitle,
   toSentenceCase,
   uidIsInRange,
 } from '~/utils/strings'
@@ -215,10 +216,15 @@ function cleanWord(text: string): string {
   return text.toLowerCase().replace(/^[^\p{L}]+|[^\p{L}]+$/gu, '')
 }
 
-function renderLookupWord(text: string): string {
+// A soft hyphen only in what shows, as the lookup is of the whole word
+function renderLookupWord(text: string, isHeading = false): string {
   const cleaned = cleanWord(text)
   if (!cleaned) return text // punctuation etc
-  return `<a class="look-up" href="/define/${cleaned}">${text}</a>`
+  return `<a class="look-up" href="/define/${cleaned}">${isHeading ? softHyphenateTitle(text) : text}</a>`
+}
+
+function isHeadingHTML(html: string): boolean {
+  return /<h[1-6][^>]*>\{\}/.test(html)
 }
 
 function renderLookupChinese(text: string): string {
@@ -515,6 +521,7 @@ function getRootLangHTML() {
       if (!html) return ''
 
       collectHeading(html, key, text)
+      const isHeading = isHeadingHTML(html)
 
       const segment = `
     <span id="${key}" class="segment"${anchorStyle(key)}>
@@ -524,7 +531,18 @@ ${renderReferences(key, ref)}
           ? `
       <!-- This is not a translation, its the root text, the class is so it's not \`display: none\` by default. -->
       <span class="translation" lang="${suttasData.root_text.lang}" translate="no">
-        <span class="text">${availableLangs ? (rootLang === 'lzh' ? renderLookupChinese(text) : text.split(' ').map(renderLookupWord).join(' ')) : text}</span>
+        <span class="text">${
+          availableLangs
+            ? rootLang === 'lzh'
+              ? renderLookupChinese(text)
+              : text
+                  .split(' ')
+                  .map(word => renderLookupWord(word, isHeading))
+                  .join(' ')
+            : isHeading
+              ? softHyphenateTitle(text)
+              : text
+        }</span>
         ${
           comment
             ? `
@@ -571,6 +589,7 @@ function getSegmentedHTML() {
       if (!html) return ''
 
       collectHeading(html, key, text)
+      const isHeading = isHeadingHTML(html)
 
       const segment = `
     <span id="${key}" class="segment"${anchorStyle(key)}>
@@ -599,7 +618,14 @@ ${renderReferences(key, ref)}
           ? `
       <span class="root" lang="${suttasData.suttaplex.root_lang}" translate="no">
         <span class="text">
-          ${rootLang === 'lzh' ? renderLookupChinese(rootText) : rootText.split(' ').map(renderLookupWord).join(' ')}
+          ${
+            rootLang === 'lzh'
+              ? renderLookupChinese(rootText)
+              : rootText
+                  .split(' ')
+                  .map(word => renderLookupWord(word, isHeading))
+                  .join(' ')
+          }
         </span>
         ${
           variant
@@ -1335,7 +1361,7 @@ const jsonLd = generateTextJsonLd(
               href={`/${suttasData.translation.previous.uid}/${suttasData.translation.previous.lang}/${suttasData.translation.previous.author_uid}`}
               rel="prev"
             >
-              {suttasData.translation.previous?.name}
+              {softHyphenateTitle(suttasData.translation.previous?.name ?? '')}
             </a>
           </>
         ) : (
@@ -1359,7 +1385,7 @@ const jsonLd = generateTextJsonLd(
               href={`/${suttasData.translation.next.uid}/${suttasData.translation.next.lang}/${suttasData.translation.next.author_uid}`}
               rel="next"
             >
-              {suttasData.translation.next?.name}
+              {softHyphenateTitle(suttasData.translation.next?.name ?? '')}
             </a>
           </>
         ) : (

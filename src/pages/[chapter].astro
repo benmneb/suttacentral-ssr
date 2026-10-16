@@ -4,7 +4,11 @@ import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { generateChapterJsonLd, generateTextMetaJsonLd } from '~/utils/json-ld'
 import { getPreferredLanguage } from '~/utils/language'
-import { rangeSuttaTitle, uidToAcronym } from '~/utils/strings'
+import {
+  rangeSuttaTitle,
+  softHyphenateTitle,
+  uidToAcronym,
+} from '~/utils/strings'
 
 const { chapter } = Astro.params
 const acceptLanguage = Astro.request.headers.get('accept-language')
@@ -190,7 +194,7 @@ const jsonLd =
           <>
             <span>{t(userLanguage, 'interface:previous')}</span>
             <a href={`/${previous.uid}`} rel="prev">
-              {previous.name}
+              {softHyphenateTitle(previous.name)}
             </a>
           </>
         )
@@ -202,7 +206,7 @@ const jsonLd =
           <>
             <span>{t(userLanguage, 'interface:next')}</span>
             <a href={`/${next.uid}`} rel="next">
-              {next.name}
+              {softHyphenateTitle(next.name)}
             </a>
           </>
         )

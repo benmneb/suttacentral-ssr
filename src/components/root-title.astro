@@ -1,5 +1,5 @@
 ---
-import { normalise } from '~/utils/strings'
+import { normalise, softHyphenateTitle } from '~/utils/strings'
 
 interface Props {
   root?: string
@@ -31,20 +31,20 @@ const isUpright =
             lang={lang || undefined}
             class={isUpright ? 'upright' : undefined}
           >
-            {root}
+            {softHyphenateTitle(root)}
           </dfn>
         </a>
       ) : (
         <dfn lang={lang || undefined} class={isUpright ? 'upright' : undefined}>
-          {root}
+          {softHyphenateTitle(root)}
         </dfn>
       )}
       {/* The space keeps the two apart in reader mode and copied text */}
       <span>{` ${translation}`}</span>
     </span>
   ) : href ? (
-    <a href={href}>{translation || root}</a>
+    <a href={href}>{softHyphenateTitle(translation || root || '')}</a>
   ) : (
-    translation || root
+    softHyphenateTitle(translation || root || '')
   )
 }
