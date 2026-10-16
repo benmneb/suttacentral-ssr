@@ -1266,14 +1266,14 @@ const jsonLd = generateTextJsonLd(
                   style={`--lane: ${run.lane}; top: anchor(--ps${run.start} top); bottom: anchor(--ps${run.end} bottom)`}
                 />
                 <article id={`parallels-${i}`} popover>
-                  <h2>
+                  <h1>
                     {t(userLanguage, 'viewoption:parallelsOf', {
                       ref: run.label,
                     })}
-                  </h2>
+                  </h1>
                   {run.groups.map(([type, parallels]) => (
                     <section>
-                      <p>{parallelTypeTitle(userLanguage, type)}</p>
+                      <h2>{parallelTypeTitle(userLanguage, type)}</h2>
                       <ParallelList
                         parallels={parallels}
                         userLanguage={userLanguage}

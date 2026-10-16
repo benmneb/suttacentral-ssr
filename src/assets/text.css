@@ -443,17 +443,14 @@ main:has(.segment) > :first-child {
 }
 
 .parallel-runs [popover] {
-  max-width: calc(min(60ch, 100vw) - 2rem);
-
-  h2 {
-    margin-top: 0;
-    font-size: 1.1rem;
+  h1 {
+    font-size: 1.3rem;
   }
 
-  p {
-    margin-bottom: 0.25rem;
-    color: var(--text-color-secondary);
-    font-size: 0.9rem;
+  h2 {
+    font-size: 1rem;
+    font-weight: normal;
+    color: var(--text-color);
   }
 
   .parallel-list {
@@ -993,7 +990,8 @@ input[type='range'] {
 }
 
 [popover]#info,
-[popover]#parallels {
+[popover]#parallels,
+[popover][id^='parallels-'] {
   max-width: calc(min(60ch, 100vw) - 2rem);
   width: 100%;
 
