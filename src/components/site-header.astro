@@ -27,12 +27,20 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
 <header>
   <nav aria-label={t(userLanguage, 'header:breadcrumb')}>
     <ul>
-      <li>
-        <a href="/" aria-label={t(userLanguage, 'interface:home')}
-          ><Fragment set:html={heroicon.homeMicro} /><span class="sr-only"
-            >{t(userLanguage, 'interface:home')}</span
-          ></a
-        >
+      <li aria-current={pathname === '/' ? 'page' : undefined}>
+        {
+          pathname === '/' ? (
+            <span>
+              <Fragment set:html={heroicon.homeMicro} />
+              <span class="sr-only">{t(userLanguage, 'interface:home')}</span>
+            </span>
+          ) : (
+            <a href="/" aria-label={t(userLanguage, 'interface:home')}>
+              <Fragment set:html={heroicon.homeMicro} />
+              <span class="sr-only">{t(userLanguage, 'interface:home')}</span>
+            </a>
+          )
+        }
       </li>{
         localisedCrumbs?.map((b, i, a) => (
           <li aria-current={i === a.length - 1 ? 'page' : undefined}>
