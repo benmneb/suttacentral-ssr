@@ -869,6 +869,32 @@ a.look-up {
     display: none;
   }
 
+  &.scripted li[role='menuitem'] {
+    display: flex;
+  }
+
+  /* On touch, the controls stay under the bar while there's something to
+     stop, so it can be paused or skipped with the menu closed. The rest comes
+     back from the listen button, or while one of its rows is in use, as a tap
+     leaves the controls hovered and would otherwise open it all */
+  @media (hover: none) {
+    &:has(#stop:enabled) {
+      display: block;
+
+      li:not(:has(> #listen-menu-button:is(:hover, :focus)))
+        > &:not(:has(> li:not(.tts-controls):is(:hover, :focus-within)))
+        > li:not(.tts-controls) {
+        display: none;
+      }
+    }
+
+    /* From the script when a session ends, for the same reason, until the
+       next tap */
+    &.closed {
+      display: none;
+    }
+  }
+
   noscript,
   #no-voices {
     padding: 0.4rem;

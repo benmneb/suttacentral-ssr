@@ -2082,9 +2082,8 @@ const jsonLd = generateTextJsonLd(
   } else {
     // enable all the controls (they are disabled by default to show fallback text if user has JS turned off)
     rootMenuEl.style.maxWidth = '100vw'
-    rootMenuEl.querySelectorAll('li[role="menuitem"]').forEach(el => {
-      el.style.display = 'flex'
-    })
+    // A class, not inline styles, so CSS can still hide the rows while playing
+    rootMenuEl.classList.add('scripted')
 
     const articleEl = document.querySelector('main > article, main > section')
 
@@ -2420,6 +2419,19 @@ const jsonLd = generateTextJsonLd(
       if (prevBtn) prevBtn.disabled = !enabled
       if (nextBtn) nextBtn.disabled = !enabled
       if (stopBtn) stopBtn.disabled = !enabled
+    }
+
+    // On touch the controls stay up while playing, and the tap that ended it
+    // left them hovered, which would open the whole menu, so it's shut until
+    // the next tap
+    function closeMenuOnTouch() {
+      if (!matchMedia('(hover: none)').matches) return
+      rootMenuEl.classList.add('closed')
+      document.addEventListener(
+        'pointerdown',
+        () => rootMenuEl.classList.remove('closed'),
+        { once: true, capture: true }
+      )
     }
 
     function ensureVisible(index) {
@@ -2767,6 +2779,7 @@ const jsonLd = generateTextJsonLd(
       playPauseBtnIcon.innerHTML = ICON_PLAY
       setNavControlsEnabled(false)
       updateClickableSpans()
+      closeMenuOnTouch()
     }
 
     function stopSession() {
@@ -2784,6 +2797,7 @@ const jsonLd = generateTextJsonLd(
       playPauseBtnIcon.innerHTML = ICON_PLAY
       setNavControlsEnabled(false)
       updateClickableSpans()
+      closeMenuOnTouch()
     }
 
     // single button behavior
