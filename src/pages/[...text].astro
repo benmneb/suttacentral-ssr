@@ -1151,7 +1151,7 @@ const jsonLd = generateTextJsonLd(
               {t(userLanguage, 'viewoption:ttsNoVoices')}
             </li>
             <li role="menuitem" class="tts-controls">
-              <button id="prev" type="button">
+              <button id="prev" type="button" disabled>
                 <span set:html={heroicon.backward} /><span
                   ><span>{t(userLanguage, 'viewoption:prev')}</span><kbd
                     aria-hidden="true"
@@ -1171,7 +1171,7 @@ const jsonLd = generateTextJsonLd(
                   ></span
                 >
               </button>
-              <button id="stop" type="button">
+              <button id="stop" type="button" disabled>
                 <span set:html={heroicon.stop} /><span
                   ><span>{t(userLanguage, 'viewoption:stop')}</span><kbd
                     aria-hidden="true"
@@ -1181,7 +1181,7 @@ const jsonLd = generateTextJsonLd(
                   ></span
                 >
               </button>
-              <button id="next" type="button">
+              <button id="next" type="button" disabled>
                 <span set:html={heroicon.forward} /><span
                   ><span>{t(userLanguage, 'viewoption:next')}</span><kbd
                     aria-hidden="true"
