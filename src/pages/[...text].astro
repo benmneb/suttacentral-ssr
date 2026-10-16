@@ -754,7 +754,8 @@ const jsonLd = generateTextJsonLd(
             <li>
               <button
                 aria-haspopup="menu"
-                aria-expanded="false"
+                popovertarget="contents-menu"
+                tabindex="0"
                 aria-controls="contents-menu"
                 aria-label={t(userLanguage, 'interface:tableOfContent')}
                 title={t(userLanguage, 'interface:tableOfContent')}
@@ -764,6 +765,7 @@ const jsonLd = generateTextJsonLd(
               </button>
               <ol
                 class="dropdown"
+                popover
                 role="menu"
                 aria-labelledby="contents-button"
                 id="contents-menu"
@@ -797,7 +799,8 @@ const jsonLd = generateTextJsonLd(
         <li>
           <button
             aria-haspopup="menu"
-            aria-expanded="false"
+            popovertarget="views-menu"
+            tabindex="0"
             aria-controls="views-menu"
             aria-label={t(userLanguage, 'interface:textSettings')}
             title={t(userLanguage, 'interface:textSettings')}
@@ -807,6 +810,7 @@ const jsonLd = generateTextJsonLd(
           </button>
           <ul
             class="dropdown"
+            popover
             role="menu"
             aria-labelledby="views-button"
             id="views-menu"
@@ -1117,7 +1121,8 @@ const jsonLd = generateTextJsonLd(
         <li>
           <button
             aria-haspopup="menu"
-            aria-expanded="false"
+            popovertarget="listen-menu"
+            tabindex="0"
             aria-controls="listen-menu"
             aria-label={t(userLanguage, 'viewoption:ttsSettings')}
             title={t(userLanguage, 'viewoption:ttsSettings')}
@@ -1127,6 +1132,7 @@ const jsonLd = generateTextJsonLd(
           </button>
           <ul
             class="dropdown"
+            popover
             role="menu"
             aria-labelledby="listen-menu-button"
             id="listen-menu"
@@ -2421,17 +2427,10 @@ const jsonLd = generateTextJsonLd(
       if (stopBtn) stopBtn.disabled = !enabled
     }
 
-    // On touch the controls stay up while playing, and the tap that ended it
-    // left them hovered, which would open the whole menu, so it's shut until
-    // the next tap
     function closeMenuOnTouch() {
       if (!matchMedia('(hover: none)').matches) return
-      rootMenuEl.classList.add('closed')
-      document.addEventListener(
-        'pointerdown',
-        () => rootMenuEl.classList.remove('closed'),
-        { once: true, capture: true }
-      )
+      // Older browsers have no popovers, and show the menu on hover instead
+      if (rootMenuEl.matches?.(':popover-open')) rootMenuEl.hidePopover()
     }
 
     function ensureVisible(index) {
@@ -2779,7 +2778,6 @@ const jsonLd = generateTextJsonLd(
       playPauseBtnIcon.innerHTML = ICON_PLAY
       setNavControlsEnabled(false)
       updateClickableSpans()
-      closeMenuOnTouch()
     }
 
     function stopSession() {
@@ -2797,7 +2795,6 @@ const jsonLd = generateTextJsonLd(
       playPauseBtnIcon.innerHTML = ICON_PLAY
       setNavControlsEnabled(false)
       updateClickableSpans()
-      closeMenuOnTouch()
     }
 
     // single button behavior
@@ -2836,6 +2833,9 @@ const jsonLd = generateTextJsonLd(
     playPauseBtn.addEventListener('click', togglePlayPause)
     if (nextBtn) nextBtn.addEventListener('click', nextSpan)
     if (stopBtn) stopBtn.addEventListener('click', stopSession)
+    rootMenuEl
+      .querySelector('.tts-controls')
+      ?.addEventListener('click', closeMenuOnTouch)
 
     // The element of visibleTextSpans the target is in, if any
     function itemElementAt(target) {

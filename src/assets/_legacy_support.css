@@ -1,14 +1,14 @@
 /* For all the OG's still using browsers that do not support HTML popovers. */
 /* (...just hide the content) */
 
-/* Not hidden then reverted like [popover], as reverting would also undo the
-   display a button is given elsewhere, eg the text page aside's flex */
+/* Not reverted like [popover], which would undo a button's own display */
 @supports not selector(:popover-open) {
-  button[popovertarget] {
+  button[popovertarget]:not([popovertarget$='-menu']) {
     display: none;
   }
 }
 
+/* Hidden first so browsers without @supports selector() hide it too */
 [popover] {
   display: none;
 }
