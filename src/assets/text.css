@@ -1102,6 +1102,18 @@ aside {
         animation-timeline: --site-header;
         animation-range: exit 0% exit 100%;
       }
+
+      /* rem like the header's, as the button's em is the browser's control
+         default */
+      .icon.micro {
+        inline-size: 1rem;
+        block-size: 1rem;
+      }
+
+      button:focus > .icon,
+      button:hover > .icon {
+        color: var(--background-color);
+      }
     }
 
     kbd {
