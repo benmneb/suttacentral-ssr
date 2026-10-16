@@ -15,6 +15,19 @@ hgroup:has(p) {
   }
 }
 
+.volpages {
+  font-size: small;
+
+  > span:first-child {
+    margin-inline: 0.25em;
+    opacity: 0.7;
+  }
+
+  > span[title] {
+    white-space: nowrap;
+  }
+}
+
 .leaf-node {
   list-style: none;
   border: 1px solid var(--bg-alt-1);

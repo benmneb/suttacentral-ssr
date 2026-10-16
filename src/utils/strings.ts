@@ -21,6 +21,31 @@ export function normalise(str: string): string {
   return str.trim().toLowerCase()
 }
 
+/**
+ * Make pretty PTS volpages, "PTS MN 1.1, PTS 1.2, PTS 1.3" to "PTS 1.1–1.3".
+ * The book is left out, as the acronym is always beside it
+ */
+export function formatVolpages(volpages?: string | null): string {
+  if (!volpages) return ''
+  if (!volpages.includes('PTS')) return volpages.trim()
+
+  // Some end in a comma
+  const parts = volpages
+    .split(',')
+    .map(part => part.trim())
+    .filter(Boolean)
+  const firstParts = parts[0].split(' ')
+  const lastParts = parts[parts.length - 1].split(' ')
+  // Keeps the edition, as in "PTS (2nd ed) SN 1.1"
+  const prefix = parts[0].match(/^PTS(?: \(\w+ ed\))?/)?.[0] ?? firstParts[0]
+  const firstNum = firstParts[firstParts.length - 1]
+  const lastNum = lastParts[lastParts.length - 1]
+
+  return parts.length < 2
+    ? `${prefix} ${firstNum}`
+    : `${prefix} ${firstNum}–${lastNum}`
+}
+
 export function uidToAcronym(uidInput: string) {
   if (!uidInput) return ''
   // I think it's only AN and Dhp that have range suttas, but anyway...

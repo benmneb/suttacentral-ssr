@@ -5,7 +5,11 @@ import Heading, { type HeadingProps } from '~/components/heading.astro'
 import RootTitle from '~/components/root-title.astro'
 import * as heroicon from '~/constants/heroicons'
 import { t } from '~/i18n'
-import { rangeSuttaTitle, toSentenceCase } from '~/utils/strings'
+import {
+  formatVolpages,
+  rangeSuttaTitle,
+  toSentenceCase,
+} from '~/utils/strings'
 import ParallelsDetails from './parallels-details.astro'
 
 interface Props {
@@ -39,6 +43,12 @@ const otherTranslations = entry.translations.filter(
   t => t.lang !== userLanguage && t.lang !== entry.root_lang
 )
 const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
+// Both PTS editions, where they differ
+const volpages = [
+  ...new Set(
+    [entry.volpages, entry.alt_volpages].map(formatVolpages).filter(Boolean)
+  ),
+]
 
 const alignedHTML = `<span title="${t(userLanguage, 'suttaplex:aligned')}: ${t(userLanguage, 'suttaplex:alignedDescription')}" role="icon">${heroicon.link}</span>`
 const annotatedHTML = `<span title="${t(userLanguage, 'suttaplex:annotated')}: ${t(userLanguage, 'suttaplex:annotatedDescription')}" role="icon">${heroicon.pencilSquare}</span>`
@@ -81,7 +91,21 @@ function printIconsHTML(translation) {
         )
       }
     </Heading>
-    {!!entry.acronym && !isIndividualRangeSutta && <p>{entry.acronym}</p>}
+    {
+      !!entry.acronym && !isIndividualRangeSutta && (
+        <p>
+          {entry.acronym.trim()}
+          {volpages.map(v => (
+            <span class="volpages">
+              <span>∙</span>
+              <span title={t(userLanguage, 'suttaplex:volumeAndPage')}>
+                {v}
+              </span>
+            </span>
+          ))}
+        </p>
+      )
+    }
   </hgroup>
   {!!entry.blurb && <p set:html={entry.blurb} />}
   <section>

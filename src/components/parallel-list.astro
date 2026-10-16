@@ -1,5 +1,6 @@
 ---
 import { getHashFragment, parallelTypeTitle } from '~/utils/parallels'
+import { formatVolpages } from '~/utils/strings'
 
 interface Props {
   parallels: any[] // one key's entries from /api/parallels
@@ -9,23 +10,6 @@ interface Props {
 }
 
 const { parallels, userLanguage, typeTitles = true } = Astro.props
-
-// Make pretty PTS volpages
-function formatVolpages(volpages: string | null): string {
-  if (!volpages) return ''
-  if (!volpages.includes('PTS')) return volpages
-
-  const parts = volpages.trim().split(', ')
-  if (parts.length < 2) return volpages
-
-  const firstParts = parts[0].trim().split(' ')
-  const lastParts = parts[parts.length - 1].trim().split(' ')
-  const prefix = firstParts[0]
-  const firstNum = firstParts[firstParts.length - 1]
-  const lastNum = lastParts[lastParts.length - 1]
-
-  return `${prefix} ${firstNum}—${lastNum}`
-}
 ---
 
 <ul class="parallel-list">
