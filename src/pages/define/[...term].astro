@@ -1,6 +1,7 @@
 ---
 import '~/assets/define.css'
 import { dictionaryTitles } from '~/constants/define'
+import * as heroicon from '~/constants/heroicons'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getPreferredLanguage } from '~/utils/language'
@@ -153,7 +154,8 @@ if (term) {
           />
           <button
             aria-label={t(userLanguage, 'dictionary:define')}
-            type="submit">🔎</button
+            type="submit"
+            ><Fragment set:html={heroicon.magnifyingGlass} /></button
           >
         </form>
         {

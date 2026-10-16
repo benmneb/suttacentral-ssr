@@ -1,4 +1,5 @@
 ---
+import * as heroicon from '~/constants/heroicons'
 import { t } from '~/i18n'
 import { getPreferredLanguage } from '~/utils/language'
 
@@ -28,7 +29,9 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
     <ul>
       <li>
         <a href="/" aria-label={t(userLanguage, 'interface:home')}
-          >📚<span class="sr-only">{t(userLanguage, 'interface:home')}</span></a
+          ><Fragment set:html={heroicon.homeMicro} /><span class="sr-only"
+            >{t(userLanguage, 'interface:home')}</span
+          ></a
         >
       </li>{
         localisedCrumbs?.map((b, i, a) => (
@@ -51,7 +54,7 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
         aria-label={t(userLanguage, 'search:search')}
         title={t(userLanguage, 'header:searchShortcut')}
       >
-        🔎
+        <Fragment set:html={heroicon.magnifyingGlass} />
       </button>
     )
   }

@@ -55,6 +55,10 @@ All benchmarks measured via <https://pagespeed.web.dev> for desktop on 22/01/202
 
 ## License
 
+_Programmed for the purpose of pleasing people pursuing perfection_
+
 Donated to the public domain via [CC0](https://creativecommons.org/publicdomain/zero/1.0/)
 
 Favicon via [thesunshade](https://github.com/thesunshade/citation-helper)
+
+[UI icons](src/constants/heroicons.ts) from [Heroicons](https://heroicons.com) by Tailwind Labs, MIT licensed

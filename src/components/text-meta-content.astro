@@ -2,6 +2,7 @@
 import '~/assets/details.css'
 import '~/assets/text-meta-content.css'
 import Heading, { type HeadingProps } from '~/components/heading.astro'
+import * as heroicon from '~/constants/heroicons'
 import { t } from '~/i18n'
 import { normalise, rangeSuttaTitle, toSentenceCase } from '~/utils/strings'
 import ParallelsDetails from './parallels-details.astro'
@@ -34,8 +35,8 @@ const otherTranslations = entry.translations.filter(
 )
 const rootTexts = entry.translations.filter(t => t.lang === entry.root_lang)
 
-const alignedHTML = `<span title="${t(userLanguage, 'suttaplex:aligned')}: ${t(userLanguage, 'suttaplex:alignedDescription')}" role="icon">🔗</span>`
-const annotatedHTML = `<span title="${t(userLanguage, 'suttaplex:annotated')}: ${t(userLanguage, 'suttaplex:annotatedDescription')}" role="icon">📝</span>`
+const alignedHTML = `<span title="${t(userLanguage, 'suttaplex:aligned')}: ${t(userLanguage, 'suttaplex:alignedDescription')}" role="icon">${heroicon.link}</span>`
+const annotatedHTML = `<span title="${t(userLanguage, 'suttaplex:annotated')}: ${t(userLanguage, 'suttaplex:annotatedDescription')}" role="icon">${heroicon.pencilSquare}</span>`
 
 function translationHref(translation) {
   const uid =

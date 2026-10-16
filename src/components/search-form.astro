@@ -1,6 +1,7 @@
 ---
 import SearchFilterContent from '~/components/search-filter-content.astro'
 import SearchOptionsContent from '~/components/search-options-content.astro'
+import * as heroicon from '~/constants/heroicons'
 import { t } from '~/i18n'
 import { getPreferredLanguage } from '~/utils/language'
 
@@ -42,7 +43,7 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
       value={query}
     />
     <button aria-label={t(userLanguage, 'search:search')} type="submit"
-      >🔎</button
+      ><Fragment set:html={heroicon.magnifyingGlass} /></button
     >
   </fieldset>
   {
@@ -73,7 +74,7 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
               class="filter-toggle-label"
               aria-label={t(userLanguage, 'interface:searchFilter')}
             >
-              ℹ️
+              <Fragment set:html={heroicon.informationCircle} />
             </label>
           </>
         )}
@@ -81,7 +82,7 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
           <>
             <input type="checkbox" id="language-toggle" class="sr-only" />
             <label for="language-toggle" class="language-toggle-label">
-              🌐
+              <Fragment set:html={heroicon.globeAlt} />
               {!!languageArray?.length && (
                 <span> ({languageArray.length})</span>
               )}

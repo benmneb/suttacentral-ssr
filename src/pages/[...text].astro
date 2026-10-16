@@ -3,6 +3,7 @@ import '~/assets/text.css'
 import ParallelList from '~/components/parallel-list.astro'
 import PublicationInfo from '~/components/publication-info.astro'
 import TextMetaContent from '~/components/text-meta-content.astro'
+import * as heroicon from '~/constants/heroicons'
 import { AVAILABLE_LOOKUPS } from '~/constants/lookup'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
@@ -1128,7 +1129,7 @@ const jsonLd = generateTextJsonLd(
             </li>
             <li role="menuitem" class="tts-controls">
               <button id="prev" type="button">
-                <span aria-hidden="true">⏮️</span><span
+                <span set:html={heroicon.backward} /><span
                   ><span>{t(userLanguage, 'viewoption:prev')}</span><kbd
                     aria-hidden="true"
                     title={t(userLanguage, 'viewoption:hotkeyPress', {
@@ -1138,7 +1139,7 @@ const jsonLd = generateTextJsonLd(
                 >
               </button>
               <button id="playpause" type="button">
-                <span aria-hidden="true">▶️</span><span
+                <span set:html={heroicon.play} /><span
                   ><span
                     data-play={t(userLanguage, 'viewoption:play')}
                     data-pause={t(userLanguage, 'viewoption:pause')}
@@ -1152,7 +1153,7 @@ const jsonLd = generateTextJsonLd(
                 >
               </button>
               <button id="stop" type="button">
-                <span aria-hidden="true">⏹️</span><span
+                <span set:html={heroicon.stop} /><span
                   ><span>{t(userLanguage, 'viewoption:stop')}</span><kbd
                     aria-hidden="true"
                     title={t(userLanguage, 'viewoption:hotkeyPress', {
@@ -1162,7 +1163,7 @@ const jsonLd = generateTextJsonLd(
                 >
               </button>
               <button id="next" type="button">
-                <span aria-hidden="true">⏭️</span><span
+                <span set:html={heroicon.forward} /><span
                   ><span>{t(userLanguage, 'viewoption:next')}</span><kbd
                     aria-hidden="true"
                     title={t(userLanguage, 'viewoption:hotkeyPress', {
@@ -1228,7 +1229,7 @@ const jsonLd = generateTextJsonLd(
             aria-label={t(userLanguage, 'search:search')}
             title={t(userLanguage, 'header:searchShortcut')}
           >
-            🔎
+            <Fragment set:html={heroicon.magnifyingGlass} />
           </button>
         </li>
       </ul>
@@ -1692,6 +1693,8 @@ const jsonLd = generateTextJsonLd(
 </script>
 
 <script>
+  import { arrowLeft, arrowRight, bookOpen } from '~/constants/heroicons'
+
   /**
    * Word Look-Up Handler
    *
@@ -1859,7 +1862,7 @@ const jsonLd = generateTextJsonLd(
       if (!entries) return
       items = entries.map(e => {
         const defs = Array.isArray(e.entry.d) ? e.entry.d.join('; ') : e.entry.d
-        return `<b>${e.term}</b>${e.entry.p ? ` (${e.entry.p})` : ''} ${defs} <a href="/define/${e.term}">📖</a>`
+        return `<b>${e.term}</b>${e.entry.p ? ` (${e.entry.p})` : ''} ${defs} <a href="/define/${e.term}" aria-label="Full definition for ${e.term}">${bookOpen}</a>`
       })
     } else {
       // Pali: each word maps to an array of decomposed matches
@@ -1890,7 +1893,7 @@ const jsonLd = generateTextJsonLd(
           items.push(`<dl><dd>${dd}</dd></dl>`)
         } else {
           items.push(
-            `<dl><dt><dfn>${match.base} <a href="/define/${match.base}">📖</a></dfn></dt><dd>${dd}</dd></dl>`
+            `<dl><dt><dfn>${match.base} <a href="/define/${match.base}" aria-label="Full definition for ${match.base}">${bookOpen}</a></dfn></dt><dd>${dd}</dd></dl>`
           )
         }
       }
@@ -1917,9 +1920,9 @@ const jsonLd = generateTextJsonLd(
     popover.innerHTML =
       `<section aria-busy="true"><dfn>${word}</dfn></section>` +
       `<nav aria-label="Word definition navigation">` +
-      `<button id="def-prev" aria-label="Previous word"${current <= 0 ? ' disabled' : ''}>\u2190</button>` +
-      `<a href="/define/${word}" aria-label="Full definition for ${word}">📖</a>` +
-      `<button id="def-next" aria-label="Next word"${current >= words.length - 1 ? ' disabled' : ''}>\u2192</button></nav>`
+      `<button id="def-prev" aria-label="Previous word"${current <= 0 ? ' disabled' : ''}>${arrowLeft}</button>` +
+      `<a href="/define/${word}" aria-label="Full definition for ${word}">${bookOpen}</a>` +
+      `<button id="def-next" aria-label="Next word"${current >= words.length - 1 ? ' disabled' : ''}>${arrowRight}</button></nav>`
     popover.showPopover()
     // Scroll clicked word into view if the popover will cover it
     const rect = words[current]?.getBoundingClientRect()
@@ -1961,6 +1964,8 @@ const jsonLd = generateTextJsonLd(
 </script>
 
 <script>
+  import { pause, play } from '~/constants/heroicons'
+
   /**
    * Text-to-Speech Player
    *
@@ -1986,8 +1991,7 @@ const jsonLd = generateTextJsonLd(
    * // Cancel all playback
    * window._scx_listen.cancel()
    */
-
-  'use strict'
+  ;('use strict')
 
   // Configurable constants
   const TIMEOUT_MS = 60
@@ -1996,9 +2000,9 @@ const jsonLd = generateTextJsonLd(
   const CLASS_SENTENCES = 'tts-sentences'
   const HIGHLIGHT_NAME = 'tts-current'
   const HOVER_HIGHLIGHT_NAME = 'tts-hover'
-  const ICON_PLAY = '▶️'
-  const ICON_PAUSE = '⏸️'
-  const ICON_RESUME = '▶️'
+  const ICON_PLAY = play
+  const ICON_PAUSE = pause
+  const ICON_RESUME = play
 
   const synth = window.speechSynthesis
 
@@ -2419,16 +2423,16 @@ const jsonLd = generateTextJsonLd(
     function updatePlayPauseLabel() {
       if (synth.paused) {
         playPauseBtnLabel.textContent = LABEL_RESUME
-        playPauseBtnIcon.textContent = ICON_RESUME
+        playPauseBtnIcon.innerHTML = ICON_RESUME
         return
       }
       if (synth.speaking && !synth.paused) {
         playPauseBtnLabel.textContent = LABEL_PAUSE
-        playPauseBtnIcon.textContent = ICON_PAUSE
+        playPauseBtnIcon.innerHTML = ICON_PAUSE
         return
       }
       playPauseBtnLabel.textContent = LABEL_PLAY
-      playPauseBtnIcon.textContent = ICON_PLAY
+      playPauseBtnIcon.innerHTML = ICON_PLAY
     }
 
     function populateVoiceList() {
@@ -2632,7 +2636,7 @@ const jsonLd = generateTextJsonLd(
       isPlaying = true
       currentIndex = Math.max(0, Math.min(index, visibleTextContent.length - 1))
       playPauseBtnLabel.textContent = LABEL_PAUSE
-      playPauseBtnIcon.textContent = ICON_PAUSE
+      playPauseBtnIcon.innerHTML = ICON_PAUSE
       setNavControlsEnabled(true)
       updateClickableSpans()
       speakNext()
@@ -2644,7 +2648,7 @@ const jsonLd = generateTextJsonLd(
           synth.pause()
           // set label immediately for UI responsiveness
           playPauseBtnLabel.textContent = LABEL_RESUME
-          playPauseBtnIcon.textContent = ICON_RESUME
+          playPauseBtnIcon.innerHTML = ICON_RESUME
           return
         } catch (err) {
           console.error('pause failed', err)
@@ -2659,7 +2663,7 @@ const jsonLd = generateTextJsonLd(
           synth.resume()
           // set label immediately for UI responsiveness
           playPauseBtnLabel.textContent = LABEL_PAUSE
-          playPauseBtnIcon.textContent = ICON_PAUSE
+          playPauseBtnIcon.innerHTML = ICON_PAUSE
         } catch (err) {
           console.error('resume failed', err)
         }
@@ -2671,7 +2675,7 @@ const jsonLd = generateTextJsonLd(
         // nothing is speaking but we have work to do
         speakNext()
         playPauseBtnLabel.textContent = LABEL_PAUSE
-        playPauseBtnIcon.textContent = ICON_PAUSE
+        playPauseBtnIcon.innerHTML = ICON_PAUSE
       }
       updateClickableSpans()
     }
@@ -2734,7 +2738,7 @@ const jsonLd = generateTextJsonLd(
       currentUtterance = null
       currentIndex = 0
       playPauseBtnLabel.textContent = LABEL_PLAY
-      playPauseBtnIcon.textContent = ICON_PLAY
+      playPauseBtnIcon.innerHTML = ICON_PLAY
       setNavControlsEnabled(false)
       updateClickableSpans()
     }
@@ -2751,7 +2755,7 @@ const jsonLd = generateTextJsonLd(
       isPlaying = false
       currentIndex = 0
       playPauseBtnLabel.textContent = LABEL_PLAY
-      playPauseBtnIcon.textContent = ICON_PLAY
+      playPauseBtnIcon.innerHTML = ICON_PLAY
       setNavControlsEnabled(false)
       updateClickableSpans()
     }
@@ -2781,7 +2785,7 @@ const jsonLd = generateTextJsonLd(
       ) {
         isPlaying = true
         playPauseBtnLabel.textContent = LABEL_PAUSE
-        playPauseBtnIcon.textContent = ICON_PAUSE
+        playPauseBtnIcon.innerHTML = ICON_PAUSE
         updateClickableSpans()
         speakNext()
       }
