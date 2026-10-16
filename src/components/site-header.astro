@@ -62,7 +62,7 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
         aria-label={t(userLanguage, 'search:search')}
         title={t(userLanguage, 'header:searchShortcut')}
       >
-        <Fragment set:html={heroicon.magnifyingGlass} />
+        <Fragment set:html={heroicon.magnifyingGlassMicro} />
       </button>
     )
   }
@@ -76,6 +76,12 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
     align-items: baseline;
     margin: 1rem;
     view-timeline-name: --site-header;
+
+    /* rem, as the button's em is the browser's control font-size */
+    & :global(.icon.micro) {
+      inline-size: 1rem;
+      block-size: 1rem;
+    }
 
     ul {
       list-style: none;
