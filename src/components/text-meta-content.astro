@@ -17,6 +17,8 @@ interface Props {
   isIndividualRangeSutta?: boolean
   inRangeSuttaId?: string
   parallelsData?: any // /api/parallels response, if fetched already
+  lazyParallels?: boolean // on a list page, loaded only when opened
+  parallelsId?: string
 }
 
 const {
@@ -27,6 +29,8 @@ const {
   isIndividualRangeSutta = false,
   inRangeSuttaId,
   parallelsData,
+  lazyParallels,
+  parallelsId,
 } = Astro.props
 
 const translations = entry.translations.filter(t => t.lang === userLanguage)
@@ -144,6 +148,8 @@ function printIconsHTML(translation) {
           isIndividualRangeSutta={isIndividualRangeSutta}
           inRangeSuttaId={inRangeSuttaId}
           parallelsData={parallelsData}
+          lazy={lazyParallels}
+          id={parallelsId}
         />
       )
     }

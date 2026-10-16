@@ -1,0 +1,37 @@
+---
+import ParallelList from '~/components/parallel-list.astro'
+import { t } from '~/i18n'
+import { parallelHref } from '~/utils/parallels'
+
+interface Props {
+  id?: string
+  segments: [string, any[]][] // from parallelSegments
+  onScreenUid: string // what a key spanning two suttas points at instead
+  rootTrans?: { lang: string; author_uid: string }
+  userLanguage: string
+}
+
+const { id, segments, onScreenUid, rootTrans, userLanguage } = Astro.props
+
+const href = (segmentKey: string) =>
+  parallelHref(segmentKey, onScreenUid, rootTrans!)
+---
+
+<ul id={id}>
+  {
+    segments.length ? (
+      segments.map(([segmentKey, parallels]) => (
+        <li>
+          {rootTrans ? (
+            <a href={href(segmentKey)}>{segmentKey}</a>
+          ) : (
+            <span>{segmentKey}</span>
+          )}
+          <ParallelList parallels={parallels} userLanguage={userLanguage} />
+        </li>
+      ))
+    ) : (
+      <li>{t(userLanguage, 'suttaplex:hasNoParallels')}</li>
+    )
+  }
+</ul>

@@ -1,0 +1,47 @@
+---
+import ParallelSegments from '~/components/parallel-segments.astro'
+import { getPreferredLanguage } from '~/utils/language'
+import { parallelSegments } from '~/utils/parallels'
+
+// Just the list, for lazy-parallels to fetch into a card
+export const partial = true
+
+const { uid } = Astro.params
+const acceptLanguage = Astro.request.headers.get('accept-language')
+const userLanguage = getPreferredLanguage(acceptLanguage)
+
+const lowerUid = uid?.toLowerCase()
+
+async function fetchParallels() {
+  const r = await fetch(`https://suttacentral.net/api/parallels/${lowerUid}`)
+  return r.json()
+}
+
+async function fetchSuttaplex() {
+  const r = await fetch(
+    `https://suttacentral.net/api/suttaplex/${lowerUid}?language=${userLanguage}`
+  )
+  return r.json()
+}
+
+const [parallelsData, suttaplexData] = await Promise.all([
+  fetchParallels(),
+  fetchSuttaplex(),
+])
+const entry = suttaplexData?.[0]
+
+if (!entry?.uid) {
+  return new Response(null, { status: 404 })
+}
+
+Astro.response.headers.set('X-Robots-Tag', 'noindex')
+
+const rootTrans = entry.translations.find((t: any) => t.is_root)
+---
+
+<ParallelSegments
+  segments={parallelSegments(parallelsData)}
+  onScreenUid={entry.uid}
+  rootTrans={rootTrans}
+  userLanguage={userLanguage}
+/>

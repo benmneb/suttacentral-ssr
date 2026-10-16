@@ -19,11 +19,9 @@ async function fetchCrumbs(uid: string | undefined) {
   return r.json()
 }
 
-async function fetchSuttaplex() {
-  const r = await fetch(
-    `https://suttacentral.net/api/suttaplex/${lowerChapter}?language=${userLanguage}`
-  )
-  return r.json()
+async function fetchShortcuts(): Promise<string[]> {
+  const r = await fetch(`https://suttacentral.net/api/shortcuts`)
+  return (await r.json())?.[0]?.shortcuts ?? []
 }
 
 // A branch's crumbs end with the branch itself, a leaf's with its parent
@@ -39,10 +37,31 @@ async function fetchSiblings() {
   return (await r.json())?.[0]?.children ?? []
 }
 
+const suttaplexAbort = new AbortController()
+const suttaplexPromise = fetch(
+  `https://suttacentral.net/api/suttaplex/${lowerChapter}?language=${userLanguage}`,
+  { signal: suttaplexAbort.signal }
+)
 const crumbsPromise = fetchCrumbs(lowerChapter)
-let [suttaplexData, crumbsData, siblings] = await Promise.all([
-  fetchSuttaplex(),
+let [crumbsData, shortcuts] = await Promise.all([
   crumbsPromise,
+  fetchShortcuts(),
+])
+
+// A full list like /sn is too big for a Worker, so it goes to its menu page
+const ownCrumb = crumbsData.at(-1)
+if (
+  ownCrumb?.uid === lowerChapter &&
+  ownCrumb.url?.startsWith('/pitaka/') &&
+  !shortcuts.includes(lowerChapter!)
+) {
+  suttaplexPromise.catch(() => {})
+  suttaplexAbort.abort()
+  return Astro.redirect(ownCrumb.url, 302)
+}
+
+let [suttaplexData, siblings] = await Promise.all([
+  suttaplexPromise.then(r => r.json()),
   fetchSiblings(),
 ])
 let isIndividualRangeSutta = false
@@ -96,6 +115,7 @@ if (!previous?.uid && !next?.uid) {
 }
 
 const isPatimokkha = lowerChapter?.endsWith('-pm')
+const isList = suttaplexData.length > 1
 
 const origin = Astro.site?.origin ?? ''
 const jsonLd =
@@ -133,6 +153,8 @@ const jsonLd =
               userLanguage={userLanguage}
               isIndividualRangeSutta={isIndividualRangeSutta}
               inRangeSuttaId={lowerChapter}
+              lazyParallels={isList}
+              parallelsId={isList ? undefined : 'parallels'}
             />
           </li>
         ))
@@ -151,6 +173,7 @@ const jsonLd =
                     userLanguage={userLanguage}
                     isIndividualRangeSutta={isIndividualRangeSutta}
                     inRangeSuttaId={lowerChapter}
+                    lazyParallels={isList}
                   />
                 </li>
               ))}
@@ -187,6 +210,42 @@ const jsonLd =
     </div>
   </nav>
 </Layout>
+
+<script>
+  // A card's parallels are a link to its own page, which is all there is
+  // without JS. With it, opening them fetches the list into the card instead,
+  // and the link stays hidden unless that fails
+  document.documentElement.dataset.parallelsFetch = ''
+  const loading = new WeakSet<HTMLDetailsElement>()
+
+  async function loadParallels(details: HTMLDetailsElement) {
+    loading.add(details)
+    delete details.dataset.parallelsFailed
+    try {
+      const response = await fetch(`/parallels/${details.dataset.parallels}`)
+      if (!response.ok) throw new Error(`${response.status}`)
+      const html = await response.text()
+      const list = document.createRange().createContextualFragment(html)
+      details.querySelector(':scope > ul')?.replaceWith(list)
+      // Loaded, so not hidden or fetched again
+      delete details.dataset.parallels
+    } catch {
+      details.dataset.parallelsFailed = ''
+    } finally {
+      loading.delete(details)
+    }
+  }
+
+  for (const details of document.querySelectorAll<HTMLDetailsElement>(
+    'details[data-parallels]'
+  )) {
+    details.addEventListener('toggle', () => {
+      if (details.open && details.dataset.parallels && !loading.has(details)) {
+        loadParallels(details)
+      }
+    })
+  }
+</script>
 
 <style>
   ol {

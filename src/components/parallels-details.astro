@@ -1,9 +1,9 @@
 ---
 import '~/assets/details.css'
-import ParallelList from '~/components/parallel-list.astro'
+import ParallelSegments from '~/components/parallel-segments.astro'
 import { t } from '~/i18n'
-import { getHashFragment } from '~/utils/parallels'
-import { parseUidNumbers, toSentenceCase, uidIsInRange } from '~/utils/strings'
+import { parallelSegments } from '~/utils/parallels'
+import { toSentenceCase, uidToAcronym } from '~/utils/strings'
 const {
   data: entry,
   parallelsOpen,
@@ -11,90 +11,42 @@ const {
   isIndividualRangeSutta,
   inRangeSuttaId,
   parallelsData: preFetched,
+  lazy,
+  id,
 } = Astro.props
 
-// The text page has fetched them already, for its margin
-const parallelsData =
-  preFetched ??
-  (await (
-    await fetch(`https://suttacentral.net/api/parallels/${entry.uid}`)
-  ).json())
+// Lazy on list pages, where a fetch per card passes the Worker's 50 subrequests
+const parallelsData = lazy
+  ? null
+  : (preFetched ??
+    (await (
+      await fetch(`https://suttacentral.net/api/parallels/${entry.uid}`)
+    ).json()))
 
 const rootTrans = entry.translations.find((t: any) => t.is_root)
 
-// The key says which span of this text the parallel covers. That span can run
-// across two suttas - sn36.31 is keyed sn36.30-31, because the parallel covers
-// the pair - and such a span is no uid at all, so it gets swapped for the text
-// on screen, as on .net. A key naming one sutta is kept, so the rows of a range
-// page like /an1.170-187 still point at an1.173, an1.174 and so on, one each
-function parallelHref(segmentKey: string): string {
-  const base = segmentKey.split('#')[0]
-  const span = parseUidNumbers(base)
-  const uid =
-    span && span.start !== span.end
-      ? isIndividualRangeSutta
-        ? inRangeSuttaId
-        : entry.uid
-      : base
-  return `/${uid}/${rootTrans.lang}/${rootTrans.author_uid}${getHashFragment(segmentKey)}`
-}
-
-// The API returns parallels in no particular order (sn1.20#20.1 before
-// sn1.20#2.1-#3.1, dhp10 before dhp2), so keys are compared as numbers:
-// the whole sutta, then #2.1, #20.1, #21.1...
-const parallelsCollator = new Intl.Collator('en', { numeric: true })
-
-// Filter out metadata entries
-const segments = Object.entries(parallelsData)
-  .filter(([key]) => !key.startsWith('_scx_'))
-  .sort(([a], [b]) => parallelsCollator.compare(a, b))
-
 // Filtered to include only relevant parallels for this individual range entry
-const filterUid = inRangeSuttaId ?? entry.uid
-
-const filteredSegments =
-  !!segments.length &&
-  (isIndividualRangeSutta
-    ? segments.filter(([k]) => {
-        // Direct matches, and start of range
-        if (
-          k === filterUid ||
-          k.startsWith(`${filterUid}-`) ||
-          k.startsWith(`${filterUid}#`)
-        ) {
-          return true
-        }
-
-        // Check if uid is at the END of a range
-        // So if uid is dhp20, will match dhp*-20, and if uid is an1.197, will match an1.*-197, and both with # links
-        const uidPrefix = filterUid.split(/(\d+)/)[0]
-        const uidEndNum = filterUid.match(/\d+$/)?.[0]
-        if (
-          uidEndNum &&
-          new RegExp(`^${uidPrefix}(\\d+)(\\.\\d+)?-${uidEndNum}(#.*)?$`).test(
-            k
-          )
-        ) {
-          return true
-        }
-
-        // Check if uid is WITHIN a range (an1.1 matches an1.1-5, dhp2 matches dhp1-3)
-        if (uidIsInRange(filterUid, k.split('#')[0])) return true
-
-        return false
-      })
-    : segments)
+const segments = lazy
+  ? []
+  : parallelSegments(
+      parallelsData,
+      isIndividualRangeSutta ? inRangeSuttaId : undefined
+    )
 
 const parallelCount =
-  isIndividualRangeSutta && filteredSegments
-    ? filteredSegments.reduce(
-        (sum, [, parallels]) => sum + (parallels as any[]).length,
-        0
-      )
+  isIndividualRangeSutta && !lazy
+    ? segments.reduce((sum, [, parallels]) => sum + parallels.length, 0)
     : entry.parallel_count
+
+const linkText = `${t(userLanguage, 'viewoption:parallelsOf', {
+  ref: entry.acronym || uidToAcronym(entry.uid),
+})} →`
 ---
 
-<details open={parallelsOpen && parallelCount}>
+<details
+  open={!lazy && parallelsOpen && parallelCount}
+  data-parallels={lazy && parallelCount ? entry.uid : undefined}
+>
   <summary>
     {
       toSentenceCase(
@@ -103,25 +55,21 @@ const parallelCount =
     }
     ({parallelCount})
   </summary>
-  <ul>
-    {
-      !!filteredSegments.length ? (
-        filteredSegments.map(([segmentKey, parallels]) => (
-          <li>
-            {rootTrans ? (
-              <a href={parallelHref(segmentKey)}>{segmentKey}</a>
-            ) : (
-              <span>{segmentKey}</span>
-            )}
-            <ParallelList
-              parallels={parallels as any[]}
-              userLanguage={userLanguage}
-            />
-          </li>
-        ))
-      ) : (
-        <li>{t(userLanguage, 'suttaplex:hasNoParallels')}</li>
-      )
-    }
-  </ul>
+  {
+    lazy && parallelCount ? (
+      <ul>
+        <li>
+          <a href={`/${entry.uid}#parallels`}>{linkText}</a>
+        </li>
+      </ul>
+    ) : (
+      <ParallelSegments
+        id={id}
+        segments={segments}
+        onScreenUid={isIndividualRangeSutta ? inRangeSuttaId : entry.uid}
+        rootTrans={rootTrans}
+        userLanguage={userLanguage}
+      />
+    )
+  }
 </details>
