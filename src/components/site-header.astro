@@ -120,6 +120,10 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
       &:focus,
       &:hover {
         background-color: var(--primary-color);
+
+        > :global(.icon) {
+          color: var(--background-color);
+        }
       }
     }
   }
