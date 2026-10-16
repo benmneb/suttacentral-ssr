@@ -2,7 +2,7 @@
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { generatePitakaJsonLd } from '~/utils/json-ld'
-import { getPreferredLanguage } from '~/utils/language'
+import { getLanguageName, getPreferredLanguage } from '~/utils/language'
 
 const { pathname } = Astro.url
 const uid = pathname?.split('/').pop()?.toLowerCase()
@@ -52,6 +52,27 @@ const [crumbsData, shortcutsData] = await Promise.all([
 
 const origin = Astro.site?.origin ?? ''
 const jsonLd = generatePitakaJsonLd(menuData, crumbsData, origin)
+
+const userLanguageName = getLanguageName(userLanguage)
+
+// A language code Intl doesnt know would throw
+let numberFormat: Intl.NumberFormat
+try {
+  numberFormat = new Intl.NumberFormat(userLanguage)
+} catch {
+  numberFormat = new Intl.NumberFormat()
+}
+
+// Like .net's card header, eg "SN 1–11 ∙ Pāli → 657 English"
+function cardDetails(child: any) {
+  const translated =
+    child.yellow_brick_road &&
+    `${numberFormat.format(child.yellow_brick_road_count)} ${userLanguageName}`
+  const languages = [child.root_lang_name, translated]
+    .filter(Boolean)
+    .join('\u2002→\u2002')
+  return [child.child_range, languages].filter(Boolean).join('  ∙  ')
+}
 ---
 
 <Layout
@@ -78,12 +99,15 @@ const jsonLd = generatePitakaJsonLd(menuData, crumbsData, origin)
       {
         menuData.children.map(child => (
           <li>
-            <h2>
-              <a
-                href={child._scx_href ?? `${menuData.uid}/${child.uid}`}
-                set:text={`${child.root_name}${child.root_name && child.translated_name ? '—' : ''}${child.translated_name || ''}`}
-              />
-            </h2>
+            <hgroup>
+              <h2>
+                <a
+                  href={child._scx_href ?? `${menuData.uid}/${child.uid}`}
+                  set:text={`${child.root_name}${child.root_name && child.translated_name ? '—' : ''}${child.translated_name || ''}`}
+                />
+              </h2>
+              {!!cardDetails(child) && <p>{cardDetails(child)}</p>}
+            </hgroup>
             {!!child.blurb && <p set:html={child.blurb} />}
             {shortcutsData?.[0]?.shortcuts?.includes(child.uid) && (
               <p>
@@ -102,5 +126,18 @@ const jsonLd = generatePitakaJsonLd(menuData, crumbsData, origin)
 <style>
   ol {
     list-style-type: upper-roman;
+  }
+
+  hgroup:has(p) {
+    h2 {
+      margin-bottom: 0;
+    }
+
+    p {
+      margin-top: 0;
+      color: var(--text-color-secondary);
+      /* Keeps the wider gaps around the ∙ */
+      white-space: pre-wrap;
+    }
   }
 </style>
