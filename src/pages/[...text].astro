@@ -2666,7 +2666,6 @@ const jsonLd = generateTextJsonLd(
 
     // Controls
     function startSessionFrom(index = 0) {
-      computeVisibleText()
       if (!visibleTextContent.length || !visibleTextSpans.length) return
       sessionId += 1
       isCancelled = false
@@ -2718,7 +2717,6 @@ const jsonLd = generateTextJsonLd(
     }
 
     function prevSpan() {
-      computeVisibleText()
       if (!visibleTextContent.length) return
       const newIndex = Math.max(0, currentIndex - 1)
       sessionId += 1
@@ -2742,7 +2740,6 @@ const jsonLd = generateTextJsonLd(
     }
 
     function nextSpan() {
-      computeVisibleText()
       if (!visibleTextContent.length) return
       const newIndex = Math.min(visibleTextContent.length - 1, currentIndex + 1)
       sessionId += 1
@@ -2809,8 +2806,10 @@ const jsonLd = generateTextJsonLd(
         pauseSession()
         return
       }
-      // not started -> start session from currentIndex (or 0)
+      // not started -> start session from currentIndex (or 0). What's visible
+      // now is what the session reads, whatever the view does after
       if (!isPlaying) {
+        computeVisibleText()
         startSessionFrom(currentIndex || 0)
         return
       }
@@ -2926,7 +2925,7 @@ const jsonLd = generateTextJsonLd(
         const clickedElement = itemElementAt(ev.target)
         if (!clickedElement) return
 
-        computeVisibleText()
+        // -1 for text shown since the session started, which isn't read
         const idx = indexAtPoint(clickedElement, ev)
         if (idx < 0) return
 
