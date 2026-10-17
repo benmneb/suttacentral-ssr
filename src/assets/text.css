@@ -1451,6 +1451,31 @@ aside {
       &:has(#stop:enabled) :is(#contents-menu, #views-menu) {
         --past-tts: var(--tts-controls-height);
       }
+
+      @media only screen and (max-width: 600px) {
+        @supports (anchor-name: --a) {
+          &:has(#stop:enabled) :is(#contents-menu, #views-menu):popover-open {
+            border-top: 1px solid var(--bg-alt-3);
+          }
+        }
+
+        &:has(#positioner:checked):has(#stop:enabled)
+          :is(#contents-menu, #views-menu):popover-open {
+          border-top: none;
+          border-bottom: 1px solid var(--bg-alt-3);
+        }
+
+        body:has(
+            :is(#contents-menu, #views-menu, #info, #parallels):popover-open
+          )
+          &:has(#stop:enabled)
+          #listen-menu:not(:popover-open) {
+          &,
+          > li {
+            border-radius: 0;
+          }
+        }
+      }
     }
 
     /* A class, to win over the site's own popover styles */
