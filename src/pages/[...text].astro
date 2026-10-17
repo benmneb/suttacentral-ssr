@@ -434,6 +434,9 @@ for (const run of parallelRuns.toSorted(
 
 const hasParallels = parallelRuns.length > 0
 
+const hasReferences =
+  isSegmented || suttasData.translation.text.includes("class='ref")
+
 // The segments a bracket starts or ends on, so it can be anchored to them
 const parallelAnchors = new Set(parallelRuns.flatMap(r => [r.start, r.end]))
 function anchorStyle(key: string) {
@@ -849,12 +852,9 @@ const jsonLd = generateTextJsonLd(
                       aria-controls="commenter-inline"
                     />
                   </li>
-                  <li role="menuitem">
+                  <li role="menuitem" class="sub">
                     <label for="commenter-inline">
-                      <span>
-                        <span aria-hidden="true">↳</span>{' '}
-                        {t(userLanguage, 'viewoption:inline')}
-                      </span>
+                      <span>{t(userLanguage, 'viewoption:inline')}</span>
                     </label>
                     <input
                       type="checkbox"
@@ -863,12 +863,9 @@ const jsonLd = generateTextJsonLd(
                       aria-controls="commenter-side"
                     />
                   </li>
-                  <li role="menuitem">
+                  <li role="menuitem" class="sub">
                     <label for="commenter-side">
-                      <span>
-                        <span aria-hidden="true">↳</span>{' '}
-                        {t(userLanguage, 'viewoption:asSidenotes')}
-                      </span>
+                      <span>{t(userLanguage, 'viewoption:asSidenotes')}</span>
                     </label>
                     <input
                       type="checkbox"
@@ -876,6 +873,7 @@ const jsonLd = generateTextJsonLd(
                       checked={viewPrefs['commenter-side'] ?? false}
                     />
                   </li>
+                  <li role="separator" />
                 </>
               )
             }
@@ -905,12 +903,9 @@ const jsonLd = generateTextJsonLd(
                       }
                     />
                   </li>
-                  <li role="menuitem">
+                  <li role="menuitem" class="sub">
                     <label for="rooter-side">
-                      <span>
-                        <span aria-hidden="true">↳</span>{' '}
-                        {t(userLanguage, 'viewoption:sideBySide')}
-                      </span>
+                      <span>{t(userLanguage, 'viewoption:sideBySide')}</span>
                     </label>
                     <input
                       type="checkbox"
@@ -918,12 +913,9 @@ const jsonLd = generateTextJsonLd(
                       checked={viewPrefs['rooter-side'] ?? false}
                     />
                   </li>
-                  <li role="menuitem">
+                  <li role="menuitem" class="sub">
                     <label for="rooter-first">
-                      <span>
-                        <span aria-hidden="true">↳</span>{' '}
-                        {t(userLanguage, 'viewoption:rootFirst')}
-                      </span>
+                      <span>{t(userLanguage, 'viewoption:rootFirst')}</span>
                       <kbd
                         aria-hidden="true"
                         title={t(userLanguage, 'viewoption:hotkeyToggle', {
@@ -940,12 +932,9 @@ const jsonLd = generateTextJsonLd(
                     />
                   </li>
                   {availableLangs && (
-                    <li role="menuitem">
+                    <li role="menuitem" class="sub">
                       <label for="rooter-look-up">
-                        <span>
-                          <span aria-hidden="true">↳</span>{' '}
-                          {t(userLanguage, 'viewoption:wordLookup')}
-                        </span>
+                        <span>{t(userLanguage, 'viewoption:wordLookup')}</span>
                         <kbd
                           aria-hidden="true"
                           title={t(userLanguage, 'viewoption:hotkeyToggle', {
@@ -964,31 +953,35 @@ const jsonLd = generateTextJsonLd(
                       />
                     </li>
                   )}
+                  <li role="separator" />
                 </>
               )
             }
             {
               isSegmented && isRootText && availableLangs && (
-                <li role="menuitem">
-                  <label for="rooter-look-up">
-                    <span>{t(userLanguage, 'viewoption:wordLookup')}</span>
-                    <kbd
-                      aria-hidden="true"
-                      title={t(userLanguage, 'viewoption:hotkeyToggle', {
-                        key: 'D',
-                      })}
-                    >
-                      D
-                    </kbd>
-                  </label>
-                  <input
-                    type="checkbox"
-                    id="rooter-look-up"
-                    checked={viewPrefs['rooter-look-up'] ?? false}
-                    data-from={rootLang}
-                    data-to={lookupTargetLang}
-                  />
-                </li>
+                <>
+                  <li role="menuitem">
+                    <label for="rooter-look-up">
+                      <span>{t(userLanguage, 'viewoption:wordLookup')}</span>
+                      <kbd
+                        aria-hidden="true"
+                        title={t(userLanguage, 'viewoption:hotkeyToggle', {
+                          key: 'D',
+                        })}
+                      >
+                        D
+                      </kbd>
+                    </label>
+                    <input
+                      type="checkbox"
+                      id="rooter-look-up"
+                      checked={viewPrefs['rooter-look-up'] ?? false}
+                      data-from={rootLang}
+                      data-to={lookupTargetLang}
+                    />
+                  </li>
+                  <li role="separator" />
+                </>
               )
             }
             {
@@ -1075,8 +1068,7 @@ const jsonLd = generateTextJsonLd(
               )
             }
             {
-              (isSegmented ||
-                suttasData.translation.text.includes("class='ref")) && (
+              hasReferences && (
                 <li role="menuitem">
                   <label for="segmenter">
                     <span>{t(userLanguage, 'viewoption:showSegments')}</span>
@@ -1096,6 +1088,16 @@ const jsonLd = generateTextJsonLd(
                   />
                 </li>
               )
+            }
+            {
+              /* Sets the bar's own setting apart. The groups above end in a
+                line of their own, so without these rows there's one already */
+            }
+            {
+              (hasIllustrations ||
+                hasHighlights ||
+                hasParallels ||
+                hasReferences) && <li role="separator" />
             }
             <li role="menuitem">
               <label for="positioner">

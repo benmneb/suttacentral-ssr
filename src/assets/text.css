@@ -1081,6 +1081,29 @@ input[type='range'] {
     }
   }
 
+  aside:has(~ main #info:popover-open) #info-button,
+  aside:has(~ main #parallels:popover-open) #parallels-button {
+    background-color: var(--primary-color);
+    color: var(--background-color);
+  }
+
+  aside:has(~ main #info:not(:popover-open))
+    #info-button:focus:not(:focus-visible, :active),
+  aside:has(~ main #parallels:not(:popover-open))
+    #parallels-button:focus:not(:focus-visible, :active) {
+    @media (hover: none) {
+      background-color: inherit;
+      color: var(--fg-alt-3);
+    }
+
+    @media (hover: hover) {
+      &:not(:hover) {
+        background-color: inherit;
+        color: var(--fg-alt-3);
+      }
+    }
+  }
+
   /* Past the listen controls, which stay up on touch while playing */
   @media (hover: none) {
     body:has(#stop:enabled) :is(#info, #parallels) {
@@ -1246,7 +1269,7 @@ aside {
       display: flex;
       align-items: center;
       height: 100%;
-      min-height: 1.5rem;
+      min-height: 1.75rem;
       padding: 0 0.5rem;
       border: none;
       font-weight: bold;
@@ -1504,6 +1527,54 @@ aside {
       }
     }
 
+    /* With a mouse, a little room around rows that were only as tall as
+       their text, and as tall as the bar's buttons. On touch they're taller
+       still, below. Not the listen controls, which have their own */
+    @media not all and (pointer: coarse) {
+      ul li ul > li[role='menuitem']:not(.tts-controls),
+      ul li ol > li {
+        min-height: 1.75rem;
+      }
+
+      ul li ul > li > label {
+        align-self: stretch;
+      }
+    }
+
+    #views-menu {
+      /* Under the option they change, set in rather than marked with an
+         arrow */
+      > li.sub > label {
+        padding-inline-start: 1.3rem;
+      }
+
+      /* Between the notes, the root text, what else can be shown, and the
+         bar's own setting. No margin, so the rows' own room is all there is
+         either side, as at the top and bottom of the menu */
+      > li[role='separator'] {
+        display: block;
+        width: auto;
+        height: 1px;
+        margin: 0 0.3rem;
+        padding: 0;
+        background: var(--bg-alt-3);
+      }
+    }
+
+    /* A key on every row was a column of boxes beside the checkboxes, so
+       only the row pointed at or focused shows its own. Still there, unseen,
+       so the menu doesn't change width. The listen controls keep theirs, part
+       of each button's label */
+    :is(#views-menu, #listen-menu) > li:not(.tts-controls) {
+      kbd {
+        opacity: 0;
+      }
+
+      &:is(:hover, :focus-within) kbd {
+        opacity: 1;
+      }
+    }
+
     .dropdown:popover-open {
       display: block;
     }
@@ -1529,12 +1600,37 @@ aside {
       li:has(> #contents-menu:popover-open) > #contents-button {
         border-bottom-left-radius: 0;
       }
+
+      li:has(> .dropdown:popover-open) > button {
+        background-color: var(--primary-color);
+        color: var(--background-color);
+      }
+
+      li:has(> .dropdown:not(:popover-open))
+        > button:focus:not(:focus-visible, :active) {
+        @media (hover: none) {
+          background-color: inherit;
+          color: var(--fg-alt-3);
+        }
+
+        @media (hover: hover) {
+          &:not(:hover) {
+            background-color: inherit;
+            color: var(--fg-alt-3);
+          }
+        }
+      }
     }
 
     @supports not selector(:popover-open) {
       li:hover > .dropdown,
       li:focus-within > .dropdown {
         display: block;
+      }
+
+      li:focus-within:has(> .dropdown) > button {
+        background-color: var(--primary-color);
+        color: var(--background-color);
       }
 
       #contents-button {
@@ -1762,7 +1858,7 @@ article,
   .segment,
   .reference,
   a.ref {
-    scroll-margin-top: 2.5rem;
+    scroll-margin-top: 2.75rem;
   }
 
   button[popovertarget]:not(form button) {
