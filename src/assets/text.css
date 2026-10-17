@@ -1480,7 +1480,8 @@ aside {
         display: flex;
         align-items: center;
 
-        &:not(#contents-menu > li) {
+        /* Two :not()s, as lightningcss makes one an :-webkit-any() without > */
+        &:not(#contents-menu > li):not(.tts-controls) {
           padding-right: 0.3rem;
         }
 
