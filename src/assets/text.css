@@ -872,18 +872,15 @@ a.look-up {
     display: flex;
   }
 
-  /* The controls stay by the bar while there's something to stop, so it can
-     be paused or skipped with the menu closed. The rest comes back while it's
-     open, from the listen button, or with a mouse while it's pointed at. Only
-     with popovers, as without them nothing would hide it again. The rest is
-     still there, unseen and flat, so the controls keep the menu's width */
+  /* Only with popovers, as without them nothing would hide it again */
   @supports selector(:popover-open) {
-    &:has(#stop:enabled) {
+    &:has(#stop:enabled, #stop.pressed) {
       display: block;
     }
 
     @media (hover: none) {
-      &:has(#stop:enabled):not(:popover-open) > li:not(.tts-controls) {
+      &:has(#stop:enabled, #stop.pressed):not(:popover-open)
+        > li:not(.tts-controls) {
         visibility: hidden;
         height: 0;
         min-height: 0;
@@ -892,9 +889,9 @@ a.look-up {
     }
 
     @media (hover: hover) {
-      li:not(:hover) > &:has(#stop:enabled):not(:popover-open),
+      li:not(:hover) > &:has(#stop:enabled, #stop.pressed):not(:popover-open),
       li:has(> button:focus:not(:focus-visible, :active))
-        > &:has(#stop:enabled):not(:popover-open) {
+        > &:has(#stop:enabled, #stop.pressed):not(:popover-open) {
         > li:not(.tts-controls) {
           visibility: hidden;
           height: 0;
@@ -1003,6 +1000,10 @@ a.look-up {
       overflow: hidden;
       clip-path: inset(50%);
       white-space: nowrap;
+    }
+
+    &.pressed {
+      animation: key-press 0.3s ease-out;
     }
   }
 }
@@ -1637,7 +1638,7 @@ aside {
         }
 
         li:has(> button:focus:not(:focus-visible, :active))
-          > #listen-menu:has(#stop:enabled):not(:popover-open) {
+          > #listen-menu:has(#stop:enabled, #stop.pressed):not(:popover-open) {
           visibility: visible;
         }
 
@@ -1890,6 +1891,14 @@ aside {
   to {
     flex-grow: 1;
     visibility: visible;
+  }
+}
+
+@keyframes key-press {
+  from {
+    opacity: 1;
+    background-color: var(--primary-color);
+    color: var(--background-color);
   }
 }
 

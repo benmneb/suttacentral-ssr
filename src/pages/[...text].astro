@@ -1596,6 +1596,7 @@ const jsonLd = generateTextJsonLd(
    * Toggles view settings from the keyboard. Keys with more than one setting
    * step through them, turning each on in order and then all off again.
    * Listen keys click their control, which does nothing while it's disabled.
+   * A button that was enabled flashes, so the key is seen to have worked.
    * The key hints are only shown when a fine pointer suggests a keyboard.
    *
    * Also keeps the reading position when a view setting changes, by key or
@@ -1730,9 +1731,32 @@ const jsonLd = generateTextJsonLd(
       return
     const key = e.key.toLowerCase()
     if (VIEW_SETTINGS[key]) cycle(VIEW_SETTINGS[key])
-    else if (LISTEN_CONTROLS[key])
-      document.getElementById(LISTEN_CONTROLS[key])?.click()
+    else if (LISTEN_CONTROLS[key]) {
+      const el = document.getElementById(LISTEN_CONTROLS[key])
+      // Checked before the click, as stop disables itself
+      const flash = el instanceof HTMLButtonElement && !el.disabled
+      el?.click()
+      if (flash) flashPressed(el)
+    }
   })
+
+  // The reflow between restarts the animation
+  function flashPressed(el: HTMLElement) {
+    el.classList.remove('pressed')
+    void el.offsetWidth
+    el.classList.add('pressed')
+  }
+
+  // Off once done, as the menu showing again would play it again, and a
+  // pressed stop keeps the controls up
+  for (const id of Object.values(LISTEN_CONTROLS)) {
+    for (const type of ['animationend', 'animationcancel'] as const) {
+      document.getElementById(id)?.addEventListener(type, e => {
+        if (e.animationName === 'key-press')
+          (e.currentTarget as HTMLElement).classList.remove('pressed')
+      })
+    }
+  }
 </script>
 
 <script>
