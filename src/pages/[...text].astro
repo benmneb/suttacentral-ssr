@@ -842,7 +842,7 @@ const jsonLd = generateTextJsonLd(
                 <>
                   <li>
                     <label for="commenter">
-                      <span>{t(userLanguage, 'viewoption:showComments')}</span>
+                      <span>{t(userLanguage, 'viewoption:comments')}</span>
                       <kbd
                         aria-hidden="true"
                         title={t(userLanguage, 'viewoption:hotkeyCycle', {
@@ -870,9 +870,9 @@ const jsonLd = generateTextJsonLd(
                       aria-controls="commenter-side"
                     />
                   </li>
-                  <li class="sub">
+                  <li class="sub sub-sub">
                     <label for="commenter-side">
-                      <span>{t(userLanguage, 'viewoption:asSidenotes')}</span>
+                      <span>{t(userLanguage, 'viewoption:marginNotes')}</span>
                     </label>
                     <input
                       type="checkbox"
@@ -889,7 +889,7 @@ const jsonLd = generateTextJsonLd(
                 <>
                   <li>
                     <label for="rooter">
-                      <span>{t(userLanguage, 'viewoption:showRootText')}</span>
+                      <span>{t(userLanguage, 'viewoption:rootText')}</span>
                       <kbd
                         aria-hidden="true"
                         title={t(userLanguage, 'viewoption:hotkeyCycle', {
@@ -995,11 +995,7 @@ const jsonLd = generateTextJsonLd(
               hasIllustrations && (
                 <li>
                   <label for="illustrator">
-                    <span>
-                      {toSentenceCase(
-                        t(userLanguage, 'viewoption:showIllustrations')
-                      )}
-                    </span>
+                    <span>{t(userLanguage, 'viewoption:illustrations')}</span>
                     <kbd
                       aria-hidden="true"
                       title={t(userLanguage, 'viewoption:hotkeyToggle', {
@@ -1020,20 +1016,12 @@ const jsonLd = generateTextJsonLd(
             {
               hasHighlights && (
                 <li>
-                  {/* The short label keeps the menu narrow, the title says
-                      what it highlights - on the label for mouse hover (not
-                      its span, which span[title] would give a help cursor),
-                      and on the input, where screen readers read it as the
-                      description */}
+                  {/* Not on the span, which span[title] gives a help cursor */}
                   <label
                     for="highlighter"
                     title={t(userLanguage, 'viewoption:showHighlighting')}
                   >
-                    <span>
-                      {toSentenceCase(
-                        t(userLanguage, 'viewoption:showHighlightingTitle')
-                      )}
-                    </span>
+                    <span>{t(userLanguage, 'viewoption:highlighting')}</span>
                     <kbd
                       aria-hidden="true"
                       title={t(userLanguage, 'viewoption:hotkeyToggle', {
@@ -1056,7 +1044,7 @@ const jsonLd = generateTextJsonLd(
               hasParallels && (
                 <li>
                   <label for="paralleler">
-                    <span>{t(userLanguage, 'viewoption:showParallels')}</span>
+                    <span>{t(userLanguage, 'viewoption:parallels')}</span>
                     <kbd
                       aria-hidden="true"
                       title={t(userLanguage, 'viewoption:hotkeyToggle', {
@@ -1078,7 +1066,7 @@ const jsonLd = generateTextJsonLd(
               hasReferences && (
                 <li>
                   <label for="segmenter">
-                    <span>{t(userLanguage, 'viewoption:showSegments')}</span>
+                    <span>{t(userLanguage, 'viewoption:segments')}</span>
                     <kbd
                       aria-hidden="true"
                       title={t(userLanguage, 'viewoption:hotkeyToggle', {

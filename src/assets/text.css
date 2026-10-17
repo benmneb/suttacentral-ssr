@@ -1,10 +1,6 @@
 @import url(./_variables.css);
 
 &:has(#commenter:checked) {
-  #views-menu > li:has(#commenter-inline) {
-    display: flex;
-  }
-
   .segment button[popovertarget] {
     display: initial;
   }
@@ -28,10 +24,6 @@
 
     /* can't use `var(--content-max-width)` in media queries :'( */
     @media only screen and (min-width: 600px) {
-      #views-menu > li:has(#commenter-side) {
-        display: flex;
-      }
-
       &:has(#commenter-side:checked) {
         main {
           --main-column: 1fr;
@@ -473,10 +465,6 @@ main:has(.segment) > :first-child {
   }
 }
 
-&:not(:has(#rooter)) #views-menu > li:has(#rooter-look-up) {
-  display: flex;
-}
-
 /* Root text page: look-up toggle (no rooter parent needed) */
 &:has(#rooter-look-up:checked) .segment .translation .text a.look-up {
   pointer-events: auto;
@@ -493,11 +481,6 @@ main:has(.segment) > :first-child {
 }
 
 &:has(#rooter:checked) {
-  #views-menu > li:has(#rooter-first),
-  #views-menu > li:has(#rooter-look-up) {
-    display: flex;
-  }
-
   main article .endbook,
   .endvagga,
   .endkanda {
@@ -528,10 +511,6 @@ main:has(.segment) > :first-child {
 
   /* can't use `var(--content-max-width)` in media queries :'( */
   @media only screen and (min-width: 600px) {
-    #views-menu > li:has(#rooter-side) {
-      display: flex;
-    }
-
     &:has(#rooter-side:checked) {
       .segment {
         display: grid;
@@ -862,9 +841,24 @@ a.look-up {
   }
 }
 
-#views-menu > li:has(#commenter-inline),
-#views-menu > li:has(#commenter-side) {
-  display: none;
+/* Flat, not display: none, so the menu doesn't widen as it shows */
+&:not(:has(#commenter:checked)) #views-menu > li:has(#commenter-inline),
+&:not(:has(#commenter:checked):has(#commenter-inline:checked))
+  #views-menu
+  > li:has(#commenter-side),
+&:has(#rooter):not(:has(#rooter:checked))
+  #views-menu
+  > li:is(:has(#rooter-side), :has(#rooter-first), :has(#rooter-look-up)) {
+  visibility: hidden;
+  height: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media not all and (min-width: 600px) {
+  #views-menu > li:is(:has(#commenter-side), :has(#rooter-side)) {
+    display: none;
+  }
 }
 
 #listen-menu {
@@ -1468,7 +1462,7 @@ aside {
       max-height: none;
       overflow: visible;
       margin: 0;
-      padding: 0 0.3rem 0 0;
+      padding: 0;
       border: none;
       box-shadow: none;
       background-color: var(--bg-alt-2);
@@ -1480,6 +1474,7 @@ aside {
     ul li ul,
     ul li ol {
       li {
+        box-sizing: border-box;
         width: 100%;
         display: flex;
         align-items: center;
@@ -1518,12 +1513,6 @@ aside {
         input {
           cursor: pointer;
         }
-
-        &:has(#rooter-first),
-        &:has(#rooter-side),
-        &:has(#rooter-look-up) {
-          display: none;
-        }
       }
     }
 
@@ -1543,10 +1532,12 @@ aside {
     }
 
     #views-menu {
-      /* Under the option they change, set in rather than marked with an
-         arrow */
       > li.sub > label {
         padding-inline-start: 1.3rem;
+      }
+
+      > li.sub-sub > label {
+        padding-inline-start: 2.3rem;
       }
 
       /* Between the notes, the root text, what else can be shown, and the
