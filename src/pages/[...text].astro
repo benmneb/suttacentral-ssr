@@ -1410,6 +1410,8 @@ const jsonLd = generateTextJsonLd(
    * Cookies read server-side to prevent layout shift, which also
    * eliminates localStorage operations for that perf.
    *
+   * The voice is kept per text language.
+   *
    * @requires document.cookie
    */
   'use strict'
@@ -1427,7 +1429,6 @@ const jsonLd = generateTextJsonLd(
     'highlighter',
     'paralleler',
     'positioner',
-    'voice-select',
     'rate',
     'pitch',
     'auto-scroll',
@@ -1435,6 +1436,11 @@ const jsonLd = generateTextJsonLd(
 
   const COOKIE_NAME = 'viewPrefs'
   const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 2 // 2 years
+
+  const voiceKey = lang => `voice-${(lang || '').split('-')[0].toLowerCase()}`
+  const VOICE_KEY = voiceKey(
+    document.getElementById('listen-menu')?.dataset.textLang
+  )
 
   function getCookiePrefs() {
     try {
@@ -1463,54 +1469,46 @@ const jsonLd = generateTextJsonLd(
   }
 
   /**
-   * Wait for the voice-select element to be populated with options.
-   * These can load asynchronously from SpeechSynthesis API,
-   * so may not be immediately available.
-   * Polls every 50ms until options are available or 5 seconds elapse.
-   *
-   * @returns {Promise<void>} Resolves when options are populated or element doesn't exist
+   * A voice saved before they were kept per language becomes its own
+   * language's voice
    */
-  function waitForVoiceSelect() {
-    return new Promise(resolve => {
-      const voiceSelect = document.getElementById('voice-select')
-      if (!voiceSelect) {
-        resolve()
-        return
-      }
-
-      if (voiceSelect.options.length > 1) {
-        resolve()
-        return
-      }
-
-      let elapsed = 0
-      const interval = setInterval(() => {
-        elapsed += 50
-        if (voiceSelect.options.length > 1) {
-          clearInterval(interval)
-          resolve()
-        } else if (elapsed >= 5000) {
-          clearInterval(interval)
-          console.warn('Timeout waiting for voice-select options')
-          resolve()
-        }
-      }, 50)
-    })
+  function migrateVoice() {
+    const prefs = getCookiePrefs()
+    const name = prefs['voice-select']
+    if (!name) return
+    const voices = window.speechSynthesis?.getVoices() ?? []
+    if (!voices.length) return
+    const voice = voices.find(v => v.name === name)
+    // Gone from the device, so it has no language to go to
+    if (voice) {
+      const key = voiceKey(voice.lang)
+      if (!(key in prefs)) prefs[key] = name
+    }
+    delete prefs['voice-select']
+    saveToCookie(prefs)
+    applyVoice(prefs)
   }
 
   /**
-   * Load voice-select preference once options are available
+   * Hands the listen script this language's voice
    */
-  function loadVoiceSelect() {
+  function applyVoice(prefs) {
     const el = document.getElementById('voice-select')
-    if (!el) return
-
-    const prefs = getCookiePrefs()
-    if (!('voice-select' in prefs)) return
-
-    const wanted = prefs['voice-select']
-    const opt = [...el.options].find(o => o.dataset.name === wanted)
+    if (!el || !(VOICE_KEY in prefs)) return
+    el.dataset.saved = prefs[VOICE_KEY]
+    const opt = [...el.options].find(o => o.dataset.name === prefs[VOICE_KEY])
     if (opt) el.value = opt.value
+  }
+
+  /** Saves the voice for this language, when the reader picks it */
+  function saveVoice() {
+    const el = document.getElementById('voice-select')
+    const name = el?.options[el.selectedIndex]?.dataset.name
+    if (!name) return
+    const prefs = getCookiePrefs()
+    prefs[VOICE_KEY] = name
+    saveToCookie(prefs)
+    el.dataset.saved = name
   }
 
   /**
@@ -1525,12 +1523,6 @@ const jsonLd = generateTextJsonLd(
 
       if (el instanceof HTMLInputElement && el.type === 'checkbox') {
         prefs[id] = el.checked
-        return
-      }
-
-      if (el instanceof HTMLSelectElement) {
-        const opt = el.options[el.selectedIndex]
-        if (opt?.dataset.name) prefs[id] = opt.dataset.name
         return
       }
 
@@ -1556,16 +1548,16 @@ const jsonLd = generateTextJsonLd(
         el.checked = Boolean(prefs[id])
       } else if (el instanceof HTMLInputElement && el.type === 'range') {
         el.value = String(prefs[id])
-      } else if (el instanceof HTMLSelectElement) {
-        const opt = [...el.options].find(o => o.dataset.name === prefs[id])
-        if (opt) el.value = opt.value
       }
     })
+    applyVoice(prefs)
   }
 
   // Save immediately on any preference change via event delegation
   document.addEventListener('change', e => {
-    if (e.target instanceof HTMLElement && IDS.includes(e.target.id)) save()
+    if (!(e.target instanceof HTMLElement)) return
+    if (e.target.id === 'voice-select') saveVoice()
+    else if (IDS.includes(e.target.id)) save()
   })
   document.addEventListener('input', e => {
     if (
@@ -1581,7 +1573,8 @@ const jsonLd = generateTextJsonLd(
   // than waiting on a change event from here - this runs before they do.
   applyPrefs()
 
-  waitForVoiceSelect().then(loadVoiceSelect)
+  migrateVoice()
+  window.speechSynthesis?.addEventListener?.('voiceschanged', migrateVoice)
 
   // On BFCache restore the script doesn't re-run, so reapply via pageshow
   window.addEventListener('pageshow', e => {
@@ -2526,6 +2519,21 @@ const jsonLd = generateTextJsonLd(
       playPauseBtnIcon.innerHTML = ICON_PLAY
     }
 
+    // Text languages whose voices go by another code: Literary Chinese,
+    // Japanese, Kannada, Classical Tibetan, and Norwegian, as Bokmål
+    const VOICE_LANGS = {
+      lzh: 'zh',
+      jpn: 'ja',
+      kan: 'kn',
+      xct: 'bo',
+      no: 'nb',
+    }
+    // Where a language's regions are not just accents. zh-HK voices speak
+    // Cantonese, so Mandarin first, the mainland's and then Taiwan's
+    const VOICE_REGIONS = { zh: ['zh-cn', 'zh-tw'] }
+    // Android writes en_US for en-US
+    const tag = lang => (lang || '').replace('_', '-').toLowerCase()
+
     function populateVoiceList() {
       voices =
         typeof synth?.getVoices === 'function' ? synth.getVoices().slice() : []
@@ -2558,7 +2566,8 @@ const jsonLd = generateTextJsonLd(
         })
       }
 
-      // Determine preferred voice to select: text language first, then default voice, then browser lang
+      // Determine preferred voice to select: saved, then text language, then
+      // default voice, then browser lang
       const defaultVoice = voices.find(v => v.default)
       const textLang = rootMenuEl?.dataset?.textLang ?? ''
       const browserLang = (
@@ -2567,19 +2576,37 @@ const jsonLd = generateTextJsonLd(
         ''
       ).toString()
       const primaryBrowserLang = browserLang.split('-')[0]
-      let suitableVoiceName = null
+      // Saved by the prefs script, while the device still has it
+      const savedName = voiceSelect.dataset.saved
+      let suitableVoiceName = voices.some(v => v.name === savedName)
+        ? savedName
+        : null
 
-      // First try to match text language (prefer default voice if multiple matches)
-      if (textLang) {
+      // Then try to match text language. Voices go by the two-letter code
+      // where there is one, and a voice for the modern language reads the
+      // classical one, as zh-CN does Taisho Chinese. Within the language:
+      // 1. A voice in a language the browser asks for, in the reader's order
+      //    of preference (navigator.languages). So a UK reader gets en-GB, a
+      //    Brazilian reader pt-BR, and a Taiwanese reader zh-TW on Taisho
+      //    texts
+      // 2. The device's default voice, if it's in that language
+      // 3. The main region from VOICE_REGIONS, only Chinese for now
+      // 4. Any voice in the language
+      if (!suitableVoiceName && textLang) {
+        const speechLang = VOICE_LANGS[textLang] ?? textLang
         const textLangVoices = voices.filter(
-          v => v.lang === textLang || (v.lang && v.lang.startsWith(textLang))
+          v => tag(v.lang).split('-')[0] === speechLang
         )
-        if (textLangVoices.length > 0) {
-          const defaultInLang = textLangVoices.find(v => v.default)
-          suitableVoiceName = defaultInLang
-            ? defaultInLang.name
-            : textLangVoices[0].name
-        }
+        const inRegions = regions =>
+          regions
+            .map(r => textLangVoices.find(v => tag(v.lang) === r))
+            .find(Boolean)
+        const voice =
+          inRegions((navigator.languages ?? [browserLang]).map(tag)) ??
+          textLangVoices.find(v => v.default) ??
+          inRegions(VOICE_REGIONS[speechLang] ?? []) ??
+          textLangVoices[0]
+        suitableVoiceName = voice?.name ?? null
       }
 
       // Fall back to default voice
