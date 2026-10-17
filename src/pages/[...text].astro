@@ -1630,6 +1630,13 @@ const jsonLd = generateTextJsonLd(
   const viewsMenu = document.getElementById('views-menu')
   let anchor = null
 
+  // Not its box, which for a block starts half a line's leading above
+  function textTop(el) {
+    const range = document.createRange()
+    range.selectNodeContents(el)
+    return (range.getClientRects()[0] ?? el.getBoundingClientRect()).top
+  }
+
   // Has to run before the checkbox flips, as the old layout is gone after
   function rememberAnchor() {
     const texts = document.querySelectorAll('main .translation > .text')
@@ -1656,8 +1663,7 @@ const jsonLd = generateTextJsonLd(
         top = rect.top
       }
     }
-    if (top === Infinity) top = el.getBoundingClientRect().top
-    anchor = { el, top }
+    anchor = { el, top: textTop(el) }
   }
 
   function restoreAnchor() {
@@ -1665,8 +1671,7 @@ const jsonLd = generateTextJsonLd(
     const { el, top } = anchor
     // Not window.scrollBy, which after a change this big leaves Safari blank
     const correct = () => {
-      document.scrollingElement.scrollTop +=
-        el.getBoundingClientRect().top - top
+      document.scrollingElement.scrollTop += textTop(el) - top
     }
     correct()
     // Again next frame, after the browser's own correction
