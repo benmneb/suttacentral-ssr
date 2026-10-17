@@ -1765,6 +1765,19 @@ article,
     margin: 0 0.1rem 0 0;
     vertical-align: text-top;
 
+    /* Not the browser's smaller control size */
+    font-size: inherit;
+    position: relative;
+
+    /* A bigger tap target, without moving the text */
+    @media (pointer: coarse) {
+      &::after {
+        content: '';
+        position: absolute;
+        inset: -0.5rem -0.6rem;
+      }
+    }
+
     &:focus {
       background-color: var(--primary-color);
       color: var(--background-color);
