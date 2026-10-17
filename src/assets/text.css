@@ -78,23 +78,18 @@
   }
 }
 
-/* The checkbox reveals the SuttaCentral number in segmented texts, and the
-   references legacy texts carry inline - not the reference anchors added to
-   segmented texts, which exist only to be linked to and are revealed by
-   :target alone */
-&:has(#segmenter:checked)
-  .segment:not(
-    header .segment,
-    h2 .segment,
-    h3 .segment,
-    h4 .segment,
-    h5 .segment,
-    h6 .segment
-  )
-  .reference
-  > a:not(.ref),
-&:has(#segmenter:checked) a.ref:not(.reference a) {
-  display: initial;
+/* With no group picked, the checkbox shows them all */
+&:has(#segmenter:checked) {
+  &:not(:has(#segmenter-main:not(:checked)))
+    :is(.reference > a:not(.ref), a.ref.main),
+  &:not(:has(#segmenter-pts:not(:checked))) a.ref.pts,
+  &:not(:has(#segmenter-others:not(:checked))) a.ref.others,
+  &:not(:has(:is(#segmenter-main, #segmenter-pts, #segmenter-others):checked))
+    :is(.reference > a, a.ref) {
+    &:not(:is(header, h2, h3, h4, h5, h6) .reference > a) {
+      display: inline-block;
+    }
+  }
 }
 
 .illustration {
@@ -548,8 +543,17 @@ main:has(.segment) > :first-child {
           .reference {
             grid-column: 1;
             display: flex;
-            justify-content: end;
-            align-items: start;
+            flex-direction: column;
+            align-items: end;
+            gap: 0.2rem;
+
+            a.ref {
+              margin-right: 0;
+            }
+
+            a.ref:target {
+              order: -1;
+            }
           }
           .translation {
             grid-column: 2;
@@ -623,8 +627,17 @@ main:has(.segment) > :first-child {
           .reference {
             grid-column: 1;
             display: flex;
-            justify-content: end;
-            align-items: start;
+            flex-direction: column;
+            align-items: end;
+            gap: 0.2rem;
+
+            a.ref {
+              margin-right: 0;
+            }
+
+            a.ref:target {
+              order: -1;
+            }
           }
           .translation {
             grid-column: 2;
@@ -844,7 +857,14 @@ a.look-up {
   > li:has(#commenter-side),
 &:has(#rooter):not(:has(#rooter:checked))
   #views-menu
-  > li:is(:has(#rooter-side), :has(#rooter-first), :has(#rooter-look-up)) {
+  > li:is(:has(#rooter-side), :has(#rooter-first), :has(#rooter-look-up)),
+&:not(:has(#segmenter:checked))
+  #views-menu
+  > li:is(
+    :has(#segmenter-main),
+    :has(#segmenter-pts),
+    :has(#segmenter-others)
+  ) {
   visibility: hidden;
   height: 0;
   min-height: 0;
@@ -2056,7 +2076,7 @@ article,
   a.ref:target {
     /* A linked reference shows itself whatever the segments checkbox says, or
        there would be nothing to scroll to and nothing to see on arriving */
-    display: initial;
+    display: inline-block;
     background-color: var(--primary-color);
     color: var(--background-color);
 

@@ -10,7 +10,10 @@ import Layout from '~/layouts/Layout.astro'
 import { getViewPrefs } from '~/utils/cookies'
 import { generateTextJsonLd } from '~/utils/json-ld'
 import { getPreferredLanguage } from '~/utils/language'
-import { referenceEditionName } from '~/constants/reference-editions'
+import {
+  referenceEditionName,
+  referenceEditions,
+} from '~/constants/reference-editions'
 import {
   PARALLEL_TYPES,
   parallelTypeTitle,
@@ -437,6 +440,39 @@ const hasParallels = parallelRuns.length > 0
 const hasReferences =
   isSegmented || suttasData.translation.text.includes("class='ref")
 
+/** A reference's group in the menu, as .net's M and T keys have them */
+function referenceGroup(id: string) {
+  if (/^(sc|vns)/.test(id)) return 'main'
+  if (/^(pts|vnp)/.test(id)) return 'pts'
+  return 'others'
+}
+
+// Every reference this text has: ids in a segmented one, classes in a legacy
+const referenceIds: string[] = isSegmented
+  ? Object.values(bilaraData.reference_text ?? {}).flatMap(v =>
+      String(v)
+        .split(',')
+        .map(id => id.trim())
+        .filter(Boolean)
+    )
+  : [...suttasData.translation.text.matchAll(/class='ref ([^' ]+)/g)].map(
+      m => m[1]
+    )
+const referenceGroups = new Set<string>(referenceIds.map(referenceGroup))
+// Segmented texts always have their own number
+if (isSegmented) referenceGroups.add('main')
+// With only one group the References checkbox says it all
+const hasReferenceGroups = referenceGroups.size > 1
+
+// A line each, as the names have commas of their own
+const otherEditions = [
+  ...new Set(
+    referenceIds
+      .filter(id => referenceGroup(id) === 'others')
+      .map(id => referenceEditionName(id) ?? id.replace(/\d.*$/, ''))
+  ),
+].join('\n')
+
 // The segments a bracket starts or ends on, so it can be anchored to them
 const parallelAnchors = new Set(parallelRuns.flatMap(r => [r.start, r.end]))
 function anchorStyle(key: string) {
@@ -472,11 +508,7 @@ function tocLabel(text: string): string {
 /**
  * The reference span for a segment: the SuttaCentral number, then an anchor per
  * id in `reference_text` - "bj10.20, cck12.12, ms9M_53" and so on.
- *
- * Those stay hidden like the number does, but they give every reference an id
- * to land on, so a link like /mn2/en/sujato#bj10.20 works. A fragment never
- * reaches the server, so they all have to be here for CSS to reveal the one
- * that gets targeted.
+ * All of them, as a fragment never reaches the server
  */
 function renderReferences(key: string, ref: string) {
   const ids = (bilaraData.reference_text?.[key] ?? '')
@@ -490,7 +522,7 @@ function renderReferences(key: string, ref: string) {
         ${ids
           .map(
             (id: string) =>
-              `<a class="ref" id="${id}" href="#${id}" title="${referenceEditionName(id) ?? id}">${id}</a>`
+              `<a class="ref ${referenceGroup(id)}" id="${id}" href="#${id}" title="${referenceEditionName(id) ?? id}">${id}</a>`
           )
           .join('')}
       </span>`
@@ -676,7 +708,12 @@ ${renderIllustrations(key)}
 function getLegacyHTML() {
   if (isSegmented) return null
 
-  const htmlContent = suttasData?.translation.text.replace(/\n/g, '')
+  const htmlContent = suttasData?.translation.text
+    .replace(/\n/g, '')
+    .replace(
+      /class='ref ([^' ]+)/g,
+      (match: string, id: string) => `${match} ${referenceGroup(id)}`
+    )
   // Extract the last <footer>...</footer> (its the publication info)
   const footerParts = htmlContent.split('<footer')
   const lastFooterPart = footerParts[footerParts.length - 1]
@@ -1080,6 +1117,77 @@ const jsonLd = generateTextJsonLd(
                     type="checkbox"
                     id="segmenter"
                     checked={viewPrefs.segmenter ?? false}
+                    aria-controls={
+                      hasReferenceGroups
+                        ? ['main', 'pts', 'others']
+                            .filter(g => referenceGroups.has(g))
+                            .map(g => `segmenter-${g}`)
+                            .join(' ')
+                        : undefined
+                    }
+                  />
+                </li>
+              )
+            }
+            {
+              hasReferenceGroups && referenceGroups.has('main') && (
+                <li class="sub">
+                  <label for="segmenter-main" title="SuttaCentral">
+                    <span>
+                      {t(userLanguage, 'viewoption:referenceDisplayTypeMain')}
+                    </span>
+                    <kbd
+                      aria-hidden="true"
+                      title={t(userLanguage, 'viewoption:hotkeyToggle', {
+                        key: 'M',
+                      })}
+                    >
+                      M
+                    </kbd>
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="segmenter-main"
+                    title="SuttaCentral"
+                    checked={viewPrefs['segmenter-main'] ?? true}
+                  />
+                </li>
+              )
+            }
+            {
+              hasReferenceGroups && referenceGroups.has('pts') && (
+                <li class="sub">
+                  <label for="segmenter-pts" title={referenceEditions.pts}>
+                    <span>PTS</span>
+                    <kbd
+                      aria-hidden="true"
+                      title={t(userLanguage, 'viewoption:hotkeyToggle', {
+                        key: 'T',
+                      })}
+                    >
+                      T
+                    </kbd>
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="segmenter-pts"
+                    title={referenceEditions.pts}
+                    checked={viewPrefs['segmenter-pts'] ?? false}
+                  />
+                </li>
+              )
+            }
+            {
+              hasReferenceGroups && referenceGroups.has('others') && (
+                <li class="sub">
+                  <label for="segmenter-others" title={otherEditions}>
+                    <span>{t(userLanguage, 'viewoption:referenceOthers')}</span>
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="segmenter-others"
+                    title={otherEditions}
+                    checked={viewPrefs['segmenter-others'] ?? false}
                   />
                 </li>
               )
@@ -1425,6 +1533,9 @@ const jsonLd = generateTextJsonLd(
     'rooter-look-up',
     'rooter-side',
     'segmenter',
+    'segmenter-main',
+    'segmenter-pts',
+    'segmenter-others',
     'illustrator',
     'highlighter',
     'paralleler',
@@ -1613,6 +1724,12 @@ const jsonLd = generateTextJsonLd(
     s: ['positioner'],
   }
 
+  // One turned on turns on what it's under too, or the key would do nothing
+  const SUB_SETTINGS = {
+    m: 'segmenter-main',
+    t: 'segmenter-pts',
+  }
+
   const LISTEN_CONTROLS = {
     h: 'prev',
     j: 'playpause',
@@ -1679,6 +1796,31 @@ const jsonLd = generateTextJsonLd(
   viewsMenu?.addEventListener('keydown', rememberAnchor)
   viewsMenu?.addEventListener('change', restoreAnchor)
 
+  // References on always shows something
+  const segmenter = document.getElementById('segmenter')
+  const referenceGroups = [
+    'segmenter-main',
+    'segmenter-pts',
+    'segmenter-others',
+  ]
+    .map(id => document.getElementById(id))
+    .filter(el => el instanceof HTMLInputElement)
+
+  function setChecked(el: HTMLInputElement, checked: boolean) {
+    el.checked = checked
+    // Setting checked doesn't fire change, which saving prefs relies on
+    el.dispatchEvent(new Event('change', { bubbles: true }))
+  }
+
+  viewsMenu?.addEventListener('change', e => {
+    if (!(segmenter instanceof HTMLInputElement) || !referenceGroups.length)
+      return
+    if (!segmenter.checked || referenceGroups.some(el => el.checked)) return
+    if (e.target === segmenter) setChecked(referenceGroups[0], true)
+    else if (referenceGroups.includes(e.target as HTMLInputElement))
+      setChecked(segmenter, false)
+  })
+
   function cycle(ids) {
     const els = ids.map(id => document.getElementById(id)).filter(Boolean)
     if (!els.length) return
@@ -1694,9 +1836,23 @@ const jsonLd = generateTextJsonLd(
     })
   }
 
+  function toggleSub(id: string) {
+    const el = document.getElementById(id)
+    if (!(el instanceof HTMLInputElement)) return
+    const parent = document.querySelector(
+      `#views-menu input[aria-controls~="${id}"]`
+    )
+
+    rememberAnchor()
+    setChecked(el, !el.checked)
+    if (el.checked && parent instanceof HTMLInputElement && !parent.checked)
+      setChecked(parent, true)
+  }
+
   // Set here rather than in the markup so they're only announced when they work
   const shortcuts = [
     ...Object.entries(VIEW_SETTINGS).map(([key, ids]) => [key, ids[0]]),
+    ...Object.entries(SUB_SETTINGS),
     ...Object.entries(LISTEN_CONTROLS),
   ]
   for (const [key, id] of shortcuts) {
@@ -1724,6 +1880,7 @@ const jsonLd = generateTextJsonLd(
       return
     const key = e.key.toLowerCase()
     if (VIEW_SETTINGS[key]) cycle(VIEW_SETTINGS[key])
+    else if (SUB_SETTINGS[key]) toggleSub(SUB_SETTINGS[key])
     else if (LISTEN_CONTROLS[key]) {
       const el = document.getElementById(LISTEN_CONTROLS[key])
       // Checked before the click, as stop disables itself
