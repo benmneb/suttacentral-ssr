@@ -1,7 +1,7 @@
 @import url(./_variables.css);
 
 &:has(#commenter:checked) {
-  li[role='menuitem']:has(#commenter-inline) {
+  #views-menu > li:has(#commenter-inline) {
     display: flex;
   }
 
@@ -28,7 +28,7 @@
 
     /* can't use `var(--content-max-width)` in media queries :'( */
     @media only screen and (min-width: 600px) {
-      li[role='menuitem']:has(#commenter-side) {
+      #views-menu > li:has(#commenter-side) {
         display: flex;
       }
 
@@ -346,7 +346,7 @@ main:has(.segment) {
   }
 }
 @supports not (anchor-name: --a) {
-  #views-menu li[role='menuitem']:has(#paralleler) {
+  #views-menu > li:has(#paralleler) {
     display: none;
   }
 }
@@ -473,7 +473,7 @@ main:has(.segment) > :first-child {
   }
 }
 
-&:not(:has(#rooter)) li[role='menuitem']:has(#rooter-look-up) {
+&:not(:has(#rooter)) #views-menu > li:has(#rooter-look-up) {
   display: flex;
 }
 
@@ -493,8 +493,8 @@ main:has(.segment) > :first-child {
 }
 
 &:has(#rooter:checked) {
-  li[role='menuitem']:has(#rooter-first),
-  li[role='menuitem']:has(#rooter-look-up) {
+  #views-menu > li:has(#rooter-first),
+  #views-menu > li:has(#rooter-look-up) {
     display: flex;
   }
 
@@ -528,7 +528,7 @@ main:has(.segment) > :first-child {
 
   /* can't use `var(--content-max-width)` in media queries :'( */
   @media only screen and (min-width: 600px) {
-    li[role='menuitem']:has(#rooter-side) {
+    #views-menu > li:has(#rooter-side) {
       display: flex;
     }
 
@@ -862,19 +862,19 @@ a.look-up {
   }
 }
 
-#views-menu li[role='menuitem']:has(#commenter-inline),
-#views-menu li[role='menuitem']:has(#commenter-side) {
+#views-menu > li:has(#commenter-inline),
+#views-menu > li:has(#commenter-side) {
   display: none;
 }
 
 #listen-menu {
   max-width: 30ch;
 
-  li[role='menuitem'] {
+  > li:not(.notice) {
     display: none;
   }
 
-  &.scripted li[role='menuitem'] {
+  &.scripted > li:not(.notice) {
     display: flex;
   }
 
@@ -1529,9 +1529,10 @@ aside {
 
     /* With a mouse, a little room around rows that were only as tall as
        their text, and as tall as the bar's buttons. On touch they're taller
-       still, below. Not the listen controls, which have their own */
+       still, below. Not the listen controls, which have their own, nor the
+       notices and lines that are no row at all */
     @media not all and (pointer: coarse) {
-      ul li ul > li[role='menuitem']:not(.tts-controls),
+      ul li ul > li:not(.tts-controls):not(.notice):not(.separator),
       ul li ol > li {
         min-height: 1.75rem;
       }
@@ -1551,7 +1552,7 @@ aside {
       /* Between the notes, the root text, what else can be shown, and the
          bar's own setting. No margin, so the rows' own room is all there is
          either side, as at the top and bottom of the menu */
-      > li[role='separator'] {
+      > li.separator {
         display: block;
         width: auto;
         height: 1px;
@@ -1811,7 +1812,7 @@ aside {
       }
 
       > ul > li > button,
-      ul li ul > li[role='menuitem'],
+      ul li ul > li:not(.notice):not(.separator),
       ul li ol > li {
         min-height: 2.75rem;
       }

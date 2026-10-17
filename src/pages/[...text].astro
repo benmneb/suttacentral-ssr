@@ -776,7 +776,6 @@ const jsonLd = generateTextJsonLd(
           toc.length > 0 && (
             <li>
               <button
-                aria-haspopup="menu"
                 popovertarget="contents-menu"
                 tabindex="0"
                 aria-controls="contents-menu"
@@ -789,22 +788,16 @@ const jsonLd = generateTextJsonLd(
               <ol
                 class="dropdown"
                 popover
-                role="menu"
                 aria-labelledby="contents-button"
                 id="contents-menu"
                 style={tocStyle}
               >
                 {toc.map(heading => (
                   <li
-                    role="none"
                     data-level={heading.level}
                     data-title={heading.isTitle ? '' : undefined}
                   >
-                    <a
-                      role="menuitem"
-                      href={heading.href}
-                      set:html={heading.html}
-                    />
+                    <a href={heading.href} set:html={heading.html} />
                   </li>
                 ))}
               </ol>
@@ -825,7 +818,6 @@ const jsonLd = generateTextJsonLd(
         </li>
         <li>
           <button
-            aria-haspopup="menu"
             popovertarget="views-menu"
             tabindex="0"
             aria-controls="views-menu"
@@ -838,7 +830,6 @@ const jsonLd = generateTextJsonLd(
           <ul
             class="dropdown"
             popover
-            role="menu"
             aria-labelledby="views-button"
             id="views-menu"
           >
@@ -849,7 +840,7 @@ const jsonLd = generateTextJsonLd(
                   : bilaraData.comment_text) || {}
               ).length > 0 && (
                 <>
-                  <li role="menuitem">
+                  <li>
                     <label for="commenter">
                       <span>{t(userLanguage, 'viewoption:showComments')}</span>
                       <kbd
@@ -868,7 +859,7 @@ const jsonLd = generateTextJsonLd(
                       aria-controls="commenter-inline"
                     />
                   </li>
-                  <li role="menuitem" class="sub">
+                  <li class="sub">
                     <label for="commenter-inline">
                       <span>{t(userLanguage, 'viewoption:inline')}</span>
                     </label>
@@ -879,7 +870,7 @@ const jsonLd = generateTextJsonLd(
                       aria-controls="commenter-side"
                     />
                   </li>
-                  <li role="menuitem" class="sub">
+                  <li class="sub">
                     <label for="commenter-side">
                       <span>{t(userLanguage, 'viewoption:asSidenotes')}</span>
                     </label>
@@ -889,14 +880,14 @@ const jsonLd = generateTextJsonLd(
                       checked={viewPrefs['commenter-side'] ?? false}
                     />
                   </li>
-                  <li role="separator" />
+                  <li class="separator" aria-hidden="true" />
                 </>
               )
             }
             {
               isSegmented && !isRootText && (
                 <>
-                  <li role="menuitem">
+                  <li>
                     <label for="rooter">
                       <span>{t(userLanguage, 'viewoption:showRootText')}</span>
                       <kbd
@@ -919,7 +910,7 @@ const jsonLd = generateTextJsonLd(
                       }
                     />
                   </li>
-                  <li role="menuitem" class="sub">
+                  <li class="sub">
                     <label for="rooter-side">
                       <span>{t(userLanguage, 'viewoption:sideBySide')}</span>
                     </label>
@@ -929,7 +920,7 @@ const jsonLd = generateTextJsonLd(
                       checked={viewPrefs['rooter-side'] ?? false}
                     />
                   </li>
-                  <li role="menuitem" class="sub">
+                  <li class="sub">
                     <label for="rooter-first">
                       <span>{t(userLanguage, 'viewoption:rootFirst')}</span>
                       <kbd
@@ -948,7 +939,7 @@ const jsonLd = generateTextJsonLd(
                     />
                   </li>
                   {availableLangs && (
-                    <li role="menuitem" class="sub">
+                    <li class="sub">
                       <label for="rooter-look-up">
                         <span>{t(userLanguage, 'viewoption:wordLookup')}</span>
                         <kbd
@@ -969,14 +960,14 @@ const jsonLd = generateTextJsonLd(
                       />
                     </li>
                   )}
-                  <li role="separator" />
+                  <li class="separator" aria-hidden="true" />
                 </>
               )
             }
             {
               isSegmented && isRootText && availableLangs && (
                 <>
-                  <li role="menuitem">
+                  <li>
                     <label for="rooter-look-up">
                       <span>{t(userLanguage, 'viewoption:wordLookup')}</span>
                       <kbd
@@ -996,13 +987,13 @@ const jsonLd = generateTextJsonLd(
                       data-to={lookupTargetLang}
                     />
                   </li>
-                  <li role="separator" />
+                  <li class="separator" aria-hidden="true" />
                 </>
               )
             }
             {
               hasIllustrations && (
-                <li role="menuitem">
+                <li>
                   <label for="illustrator">
                     <span>
                       {toSentenceCase(
@@ -1028,7 +1019,7 @@ const jsonLd = generateTextJsonLd(
             }
             {
               hasHighlights && (
-                <li role="menuitem">
+                <li>
                   {/* The short label keeps the menu narrow, the title says
                       what it highlights - on the label for mouse hover (not
                       its span, which span[title] would give a help cursor),
@@ -1063,7 +1054,7 @@ const jsonLd = generateTextJsonLd(
             }
             {
               hasParallels && (
-                <li role="menuitem">
+                <li>
                   <label for="paralleler">
                     <span>{t(userLanguage, 'viewoption:showParallels')}</span>
                     <kbd
@@ -1085,7 +1076,7 @@ const jsonLd = generateTextJsonLd(
             }
             {
               hasReferences && (
-                <li role="menuitem">
+                <li>
                   <label for="segmenter">
                     <span>{t(userLanguage, 'viewoption:showSegments')}</span>
                     <kbd
@@ -1113,9 +1104,9 @@ const jsonLd = generateTextJsonLd(
               (hasIllustrations ||
                 hasHighlights ||
                 hasParallels ||
-                hasReferences) && <li role="separator" />
+                hasReferences) && <li class="separator" aria-hidden="true" />
             }
-            <li role="menuitem">
+            <li>
               <label for="positioner">
                 <span>{t(userLanguage, 'viewoption:pinMenu')}</span>
                 <kbd
@@ -1149,7 +1140,6 @@ const jsonLd = generateTextJsonLd(
         </li>
         <li>
           <button
-            aria-haspopup="menu"
             popovertarget="listen-menu"
             tabindex="0"
             aria-controls="listen-menu"
@@ -1162,7 +1152,6 @@ const jsonLd = generateTextJsonLd(
           <ul
             class="dropdown"
             popover
-            role="menu"
             aria-labelledby="listen-menu-button"
             id="listen-menu"
             data-label-play={t(userLanguage, 'viewoption:play')}
@@ -1170,16 +1159,16 @@ const jsonLd = generateTextJsonLd(
             data-label-default={t(userLanguage, 'viewoption:voiceDefault')}
             data-text-lang={language}
           >
-            <li>
+            <li class="notice">
               <noscript>
                 {t(userLanguage, 'viewoption:ttsNoscript')}
               </noscript>
             </li>
-            {/* No role="menuitem": the script un-hides all of those */}
-            <li id="no-voices" hidden>
+            {/* A notice, not a row: the script un-hides all of those */}
+            <li id="no-voices" class="notice" hidden>
               {t(userLanguage, 'viewoption:ttsNoVoices')}
             </li>
-            <li role="menuitem" class="tts-controls">
+            <li class="tts-controls">
               <button id="prev" type="button" disabled>
                 <span set:html={heroicon.backward} /><span
                   ><span>{t(userLanguage, 'viewoption:prev')}</span><kbd
@@ -1221,7 +1210,7 @@ const jsonLd = generateTextJsonLd(
                 >
               </button>
             </li>
-            <li role="menuitem">
+            <li>
               <label
                 for="voice-select"
                 data-also-a={t(userLanguage, 'viewoption:rate')}
@@ -1230,7 +1219,7 @@ const jsonLd = generateTextJsonLd(
               >
               <select id="voice-select"></select>
             </li>
-            <li role="menuitem">
+            <li>
               <label
                 for="rate"
                 data-also-a={t(userLanguage, 'viewoption:voiceLabel')}
@@ -1247,7 +1236,7 @@ const jsonLd = generateTextJsonLd(
               />
               <div id="rate-value">1.0</div>
             </li>
-            <li role="menuitem">
+            <li>
               <label
                 for="pitch"
                 data-also-a={t(userLanguage, 'viewoption:voiceLabel')}
@@ -1264,7 +1253,7 @@ const jsonLd = generateTextJsonLd(
               />
               <div id="pitch-value">1.0</div>
             </li>
-            <li role="menuitem">
+            <li>
               <label for="auto-scroll">
                 <span>{t(userLanguage, 'viewoption:autoScroll')}</span>
                 <kbd
