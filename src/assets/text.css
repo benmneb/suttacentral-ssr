@@ -1044,14 +1044,71 @@ input[type='range'] {
   }
 }
 
-[popover]#info::backdrop,
-[popover]#parallels::backdrop {
-  backdrop-filter: blur(3px);
+/* Not in the bar's lis, whose styles would reach a legacy text's info html */
+@supports (anchor-name: --a) and selector(:popover-open) {
+  [popover]:is(#info, #parallels) {
+    position-anchor: --aside-bar;
+    inset: calc(anchor(bottom) + var(--past-tts, 0px)) anchor(right) auto auto;
+    margin: 0;
+    /* Shown by hover, it's not in the top layer */
+    z-index: 2;
+    border-top-right-radius: 0;
+    overscroll-behavior: contain;
+    /* Its shadow is for the text below. Above, it would fall on the bar */
+    clip-path: inset(0 -2rem -2rem);
+  }
+
+  @media (hover: hover) {
+    aside:has(#info-button:hover) ~ main #info,
+    aside:has(#parallels-button:hover) ~ main #parallels,
+    [popover]:is(#info, #parallels):hover {
+      display: block;
+    }
+
+    aside:has(#info-button:focus:not(:focus-visible, :active))
+      ~ main
+      #info:not(:popover-open),
+    aside:has(#parallels-button:focus:not(:focus-visible, :active))
+      ~ main
+      #parallels:not(:popover-open) {
+      visibility: hidden;
+      transition: visibility 0s 0.1s;
+    }
+  }
+
+  /* Past the listen controls, which stay up on touch while playing */
+  @media (hover: none) {
+    body:has(#stop:enabled) :is(#info, #parallels) {
+      --past-tts: var(--tts-controls-height);
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    [popover]:is(#info, #parallels) {
+      left: anchor(left);
+      width: auto;
+      max-width: none;
+      border-top-left-radius: 0;
+    }
+
+    body:has(#positioner:checked) [popover]:is(#info, #parallels) {
+      inset: auto 0 calc(2.75rem + var(--past-tts, 0px));
+      border-radius: var(--rounding) var(--rounding) 0 0;
+      clip-path: inset(-2rem 0 0);
+    }
+  }
 }
 
-body:has([popover]#info:popover-open),
-body:has([popover]#parallels:popover-open) {
-  overflow: hidden;
+@supports not (anchor-name: --a) {
+  [popover]#info::backdrop,
+  [popover]#parallels::backdrop {
+    backdrop-filter: blur(3px);
+  }
+
+  body:has([popover]#info:popover-open),
+  body:has([popover]#parallels:popover-open) {
+    overflow: hidden;
+  }
 }
 
 /* A set height, so what opens from the bar can clear the controls */

@@ -790,8 +790,11 @@ const jsonLd = generateTextJsonLd(
         <li>
           <button
             popovertarget="info"
+            tabindex="0"
+            aria-controls="info"
             aria-label={t(userLanguage, 'viewoption:showPublicationInfo')}
             title={t(userLanguage, 'viewoption:showPublicationInfo')}
+            id="info-button"
           >
             <Fragment set:html={heroicon.informationCircleMicro} />
           </button>
@@ -1112,8 +1115,11 @@ const jsonLd = generateTextJsonLd(
         <li>
           <button
             popovertarget="parallels"
+            tabindex="0"
+            aria-controls="parallels"
             aria-label={t(userLanguage, 'viewoption:showParallelTexts')}
             title={t(userLanguage, 'viewoption:showParallelTexts')}
+            id="parallels-button"
           >
             <Fragment set:html={heroicon.arrowsRightLeftMicro} />
           </button>
