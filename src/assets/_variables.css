@@ -26,7 +26,8 @@
   --fg-alt-1: light-dark(#3c3836, #ebdbb2);
   --fg-alt-2: light-dark(#504945, #d5c4a1);
   --fg-alt-3: light-dark(#665c54, #bdae93);
-  --fg-alt-4: light-dark(#7c6f64, #a89984);
+  /* Off gruvbox's #7c6f64/#a89984 for 4.5:1 on tinted surfaces */
+  --fg-alt-4: light-dark(#6b5e54, #b0a08b);
 
   --red: light-dark(#9d0006, #fb4934);
   --green: light-dark(#79740e, #b8bb26);
@@ -35,7 +36,8 @@
   --purple: light-dark(#8f3f71, #d3869b);
   --aqua: light-dark(#427b58, #8ec07c);
   --gray: #928374;
-  --orange: light-dark(#af3a03, #fe8019);
+  /* Off gruvbox's #af3a03 for 4.5:1 on the footer */
+  --orange: light-dark(#ad3800, #fe8019);
   --brown: light-dark(#7c5c40, #d7995b);
 
   --red-dim: #cc2412;

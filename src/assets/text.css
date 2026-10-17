@@ -789,11 +789,7 @@ a.look-up {
 
     .grammar {
       font-style: italic;
-      opacity: 0.7;
-    }
-
-    .xr {
-      opacity: 0.7;
+      color: var(--text-color-secondary);
     }
   }
 
@@ -1314,7 +1310,6 @@ aside {
     li {
       display: block;
       position: relative;
-      color: var(--fg-alt-3);
       border-top-left-radius: var(--rounding);
       border-bottom-left-radius: var(--rounding);
 
@@ -1322,6 +1317,11 @@ aside {
         border-top-left-radius: var(--rounding);
         border-bottom-left-radius: var(--rounding);
       }
+    }
+
+    /* The bar's own, as it's under 4.5:1 on the menus' rows */
+    > ul > li {
+      color: var(--fg-alt-3);
     }
 
     /* rem, as the button's em is the browser's control font-size */
@@ -1772,12 +1772,11 @@ aside {
           background-color: unset;
         }
 
-        /* This is the number prefixing the title. Its digits all one width,
-           so the room measured for them fits */
+        /* This is the number prefixing the title */
         &::before {
           flex: none;
           text-align: right;
-          color: var(--text-color-secondary);
+          color: var(--headings-color);
           font-variant-numeric: tabular-nums;
         }
 
