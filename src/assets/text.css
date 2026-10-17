@@ -1681,9 +1681,12 @@ aside {
       }
     }
 
-    /* Big enough for a finger, whatever the screen size. The labels and
-       links fill their rows so all of it is a target */
     @media (pointer: coarse) {
+      > ul > li > button {
+        min-width: 2.75rem;
+        justify-content: center;
+      }
+
       > ul > li > button,
       ul li ul > li[role='menuitem'],
       ul li ol > li {
@@ -1694,6 +1697,11 @@ aside {
       #contents-menu a {
         align-self: stretch;
         align-items: center;
+      }
+
+      ul li ul > li > input[type='checkbox'] {
+        width: 1.125rem;
+        height: 1.125rem;
       }
     }
   }
