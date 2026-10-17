@@ -1452,6 +1452,34 @@ aside {
           overflow-y: auto;
         }
 
+        #listen-menu {
+          flex-direction: column;
+
+          > .tts-controls {
+            order: 1;
+          }
+
+          @supports selector(:popover-open) {
+            &:popover-open,
+            &:has(#stop:enabled, #stop.pressed) {
+              display: flex;
+            }
+
+            @media (hover: hover) {
+              li:hover > & {
+                display: flex;
+              }
+            }
+          }
+
+          @supports not selector(:popover-open) {
+            li:hover > &,
+            li:focus-within > & {
+              display: flex;
+            }
+          }
+        }
+
         /* Open, a menu is in the top layer, out of reach of the bar's filter */
         :is(#contents-menu, #views-menu, #listen-menu):popover-open {
           position: fixed;
