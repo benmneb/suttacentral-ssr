@@ -872,15 +872,39 @@ a.look-up {
     display: flex;
   }
 
-  /* On touch, the controls stay by the bar while there's something to
-     stop, so it can be paused or skipped with the menu closed. The rest comes
-     back while it's open, from the listen button */
-  @media (hover: none) {
+  /* The controls stay by the bar while there's something to stop, so it can
+     be paused or skipped with the menu closed. The rest comes back while it's
+     open, from the listen button, or with a mouse while it's pointed at. Only
+     with popovers, as without them nothing would hide it again. The rest is
+     still there, unseen and flat, so the controls keep the menu's width */
+  @supports selector(:popover-open) {
     &:has(#stop:enabled) {
       display: block;
+    }
 
-      &:not(:popover-open) > li:not(.tts-controls) {
-        display: none;
+    @media (hover: none) {
+      &:has(#stop:enabled):not(:popover-open) > li:not(.tts-controls) {
+        visibility: hidden;
+        height: 0;
+        min-height: 0;
+        overflow: hidden;
+      }
+    }
+
+    @media (hover: hover) {
+      li:not(:hover) > &:has(#stop:enabled):not(:popover-open),
+      li:has(> button:focus:not(:focus-visible, :active))
+        > &:has(#stop:enabled):not(:popover-open) {
+        > li:not(.tts-controls) {
+          visibility: hidden;
+          height: 0;
+          min-height: 0;
+          overflow: hidden;
+          transition-property: visibility, height, min-height;
+          transition-duration: 0s;
+          transition-delay: 0.1s;
+          transition-behavior: allow-discrete;
+        }
       }
     }
   }
@@ -1603,12 +1627,18 @@ aside {
       @media (hover: hover) {
         li:hover > .dropdown {
           display: block;
+          z-index: 1;
         }
 
         li:has(> button:focus:not(:focus-visible, :active))
           > .dropdown:not(:popover-open) {
           visibility: hidden;
           transition: visibility 0s 0.1s;
+        }
+
+        li:has(> button:focus:not(:focus-visible, :active))
+          > #listen-menu:has(#stop:enabled):not(:popover-open) {
+          visibility: visible;
         }
 
         li:hover > #contents-button:not(:focus:not(:focus-visible, :active)) {
