@@ -917,7 +917,6 @@ const jsonLd = generateTextJsonLd(
                       checked={viewPrefs['commenter-side'] ?? false}
                     />
                   </li>
-                  <li class="separator" aria-hidden="true" />
                 </>
               )
             }
@@ -997,7 +996,6 @@ const jsonLd = generateTextJsonLd(
                       />
                     </li>
                   )}
-                  <li class="separator" aria-hidden="true" />
                 </>
               )
             }
@@ -1024,7 +1022,6 @@ const jsonLd = generateTextJsonLd(
                       data-to={lookupTargetLang}
                     />
                   </li>
-                  <li class="separator" aria-hidden="true" />
                 </>
               )
             }
@@ -1191,16 +1188,6 @@ const jsonLd = generateTextJsonLd(
                   />
                 </li>
               )
-            }
-            {
-              /* Sets the bar's own setting apart. The groups above end in a
-                line of their own, so without these rows there's one already */
-            }
-            {
-              (hasIllustrations ||
-                hasHighlights ||
-                hasParallels ||
-                hasReferences) && <li class="separator" aria-hidden="true" />
             }
             <li>
               <label for="positioner">

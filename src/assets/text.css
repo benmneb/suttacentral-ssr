@@ -1616,12 +1616,8 @@ aside {
       }
     }
 
-    /* With a mouse, a little room around rows that were only as tall as
-       their text, and as tall as the bar's buttons. On touch they're taller
-       still, below. Not the listen controls, which have their own, nor the
-       notices and lines that are no row at all */
     @media not all and (pointer: coarse) {
-      ul li ul > li:not(.tts-controls):not(.notice):not(.separator),
+      ul li ul > li:not(.tts-controls):not(.notice),
       ul li ol > li {
         min-height: 1.75rem;
       }
@@ -1638,18 +1634,6 @@ aside {
 
       > li.sub-sub > label {
         padding-inline-start: 2.3rem;
-      }
-
-      /* Between the notes, the root text, what else can be shown, and the
-         bar's own setting. No margin, so the rows' own room is all there is
-         either side, as at the top and bottom of the menu */
-      > li.separator {
-        display: block;
-        width: auto;
-        height: 1px;
-        margin: 0 0.3rem;
-        padding: 0;
-        background: var(--bg-alt-3);
       }
     }
 
@@ -1908,7 +1892,7 @@ aside {
       }
 
       > ul > li > button,
-      ul li ul > li:not(.notice):not(.separator),
+      ul li ul > li:not(.notice),
       ul li ol > li {
         min-height: 2.75rem;
       }
