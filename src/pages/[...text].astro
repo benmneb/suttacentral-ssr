@@ -1736,7 +1736,12 @@ const jsonLd = generateTextJsonLd(
 </script>
 
 <script>
-  import { arrowLeft, arrowRight, bookOpen } from '~/constants/heroicons'
+  import {
+    arrowLeft,
+    arrowRight,
+    bookOpen,
+    xMarkMicro,
+  } from '~/constants/heroicons'
 
   /**
    * Word Look-Up Handler
@@ -1965,6 +1970,8 @@ const jsonLd = generateTextJsonLd(
       `<nav aria-label="Word definition navigation">` +
       `<button id="def-prev" aria-label="Previous word"${current <= 0 ? ' disabled' : ''}>${arrowLeft}</button>` +
       `<a href="/define/${word}" aria-label="Full definition for ${word}">${bookOpen}</a>` +
+      // A tap outside to close it would as likely land on another word
+      `<button id="def-close" aria-label="Close definition">${xMarkMicro}</button>` +
       `<button id="def-next" aria-label="Next word"${current >= words.length - 1 ? ' disabled' : ''}>${arrowRight}</button></nav>`
     popover.showPopover()
     // Scroll clicked word into view if the popover will cover it
@@ -1990,8 +1997,11 @@ const jsonLd = generateTextJsonLd(
   }
 
   popover?.addEventListener('click', e => {
-    const btn = (e.target as HTMLElement).closest('#def-prev, #def-next')
+    const btn = (e.target as HTMLElement).closest(
+      '#def-prev, #def-next, #def-close'
+    )
     if (!btn) return
+    if (btn.id === 'def-close') return popover.hidePopover()
     const next = current + (btn.id === 'def-prev' ? -1 : 1)
     if (next < 0 || next >= words.length) return
     words.forEach(w => w.classList.remove('active'))

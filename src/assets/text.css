@@ -830,6 +830,11 @@ a.look-up {
       border: none;
     }
 
+    #def-close {
+      flex: none;
+      border-right: 1px solid var(--bg-alt-3);
+    }
+
     a {
       border-left: 1px solid var(--bg-alt-3);
       border-right: 1px solid var(--bg-alt-3);
@@ -1167,6 +1172,12 @@ input[type='range'] {
     #definition[popover] {
       bottom: 2.75rem;
       clip-path: inset(-2rem 0 0);
+
+      @media (prefers-color-scheme: dark) {
+        nav {
+          border-bottom: 1px solid var(--bg-alt-3);
+        }
+      }
     }
 
     @media (hover: none) {
