@@ -150,6 +150,16 @@ body {
   backdrop-filter: blur(3px);
 }
 
+/* Not inherited, as some set pointer-events back to auto */
+body:has(> #search-modal:popover-open) > :not(#search-modal) {
+  &,
+  & *,
+  & *::before,
+  & *::after {
+    pointer-events: none !important;
+  }
+}
+
 ul li::marker,
 ol li::marker {
   color: var(--text-color-secondary);
