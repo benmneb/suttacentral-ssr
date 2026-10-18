@@ -5,6 +5,8 @@ import SearchForm from '~/components/search-form.astro'
 import TextMetaContent from '~/components/text-meta-content.astro'
 import { dictionaryTitles } from '~/constants/define'
 import { expansionData } from '~/constants/expansion'
+import * as heroicon from '~/constants/heroicons'
+import { siteMap } from '~/constants/static-pages'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getSearchLanguages, setSearchLanguages } from '~/utils/cookies'
@@ -76,6 +78,27 @@ if (query) {
   hasMore = searchData.total > page * limit
   hasPrevious = page > 1
 }
+
+function fold(text: string) {
+  return text.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().trim()
+}
+
+const foldedQuery = fold(query ?? '')
+const pageHits =
+  page === 1 && foldedQuery.length >= 3
+    ? siteMap
+        .map(({ label, pages }) => {
+          const group = t(userLanguage, label)
+          const groupMatches = fold(group).includes(foldedQuery)
+          return {
+            group,
+            pages: pages
+              .map(p => ({ href: p.href, text: t(userLanguage, p.label) }))
+              .filter(p => groupMatches || fold(p.text).includes(foldedQuery)),
+          }
+        })
+        .filter(({ pages }) => pages.length)
+    : []
 ---
 
 <Layout title={query || t(userLanguage, 'search:search')} noindex>
@@ -101,7 +124,9 @@ if (query) {
     {
       query && (
         <>
-          <section>
+          <section
+            class:list={[!!hits.length && query !== 'list authors' && 'split']}
+          >
             {query === 'list authors' ? (
               <ol>
                 {hits.map(hit => (
@@ -126,54 +151,42 @@ if (query) {
               </ol>
             ) : (
               <>
-                {!!hits.length && (
-                  <ol>
-                    {hits.map(hit => (
-                      <li>
-                        <hgroup>
-                          <h2>
-                            {hit.is_article ? (
-                              <a href={hit.url}>{hit.heading.title}</a>
-                            ) : (
-                              <RootTitle
-                                root={hit.root_name}
-                                translation={hit.name || hit.heading?.title}
-                                lang={hit.root_lang}
-                                href={hit.url}
-                              />
-                            )}
-                          </h2>
-                          <p>
-                            {[
-                              hit.acronym || expandUid(hit.uid, expansionData),
-                              hit.full_lang,
-                              hit.author,
-                            ]
-                              .filter(Boolean)
-                              .join(' ∙ ')}
-                          </p>
-                        </hgroup>
-                        {hit.highlight.content.map((excerpt: string) => (
-                          <span
-                            set:html={excerpt.replaceAll('target="_blank"', '')}
-                          />
-                        ))}
-                        {hit.all_reference
-                          ?.split(',')
-                          .filter(r => r.includes('pts-'))
-                          .map((ref: string, idx: number, arr: string[]) =>
-                            // prettier-ignore
-                            <span>
-                            <a href={`${hit.url}/en/sujato#${ref.trim()}`}>{ref}</a>
-                            {idx !== arr.length - 1 && '∙ '}
-                          </span>
-                          )}
+                {(!!pageHits.length ||
+                  (!!dictionaryHits.length && page === 1)) && (
+                  <ol class="featured-hits">
+                    {!!pageHits.length && (
+                      <li class="page-hits">
+                        <h2>{t(userLanguage, 'interface:sitePages')}</h2>
+                        <ul>
+                          {pageHits.map(({ group, pages }) => (
+                            <li>
+                              <span>{group}</span>
+                              <ul>
+                                {pages.map(({ href, text }) => (
+                                  <li>
+                                    <a href={href}>
+                                      {text}
+                                      {href.startsWith('https://') && (
+                                        <>
+                                          <Fragment
+                                            set:html={
+                                              heroicon.arrowTopRightOnSquareMicro
+                                            }
+                                          />
+                                          <span class="sr-only">
+                                            SuttaCentral.net
+                                          </span>
+                                        </>
+                                      )}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </li>
+                          ))}
+                        </ul>
                       </li>
-                    ))}
-                  </ol>
-                )}
-                {(!!dictionaryHits.length || !!suttaplexHits.length) && (
-                  <ol class="suttaplex-hits">
+                    )}
                     {!!dictionaryHits.length &&
                       page === 1 &&
                       dictionaryHits.map(hit => (
@@ -260,16 +273,65 @@ if (query) {
                           </p>
                         </li>
                       ))}
-                    {!!suttaplexHits.length &&
-                      suttaplexHits.map(entry => (
-                        <li>
-                          <TextMetaContent
-                            data={entry}
-                            userLanguage={userLanguage}
-                            headingLevel={2}
+                  </ol>
+                )}
+                {!!hits.length && (
+                  <ol class="text-hits">
+                    {hits.map(hit => (
+                      <li>
+                        <hgroup>
+                          <h2>
+                            {hit.is_article ? (
+                              <a href={hit.url}>{hit.heading.title}</a>
+                            ) : (
+                              <RootTitle
+                                root={hit.root_name}
+                                translation={hit.name || hit.heading?.title}
+                                lang={hit.root_lang}
+                                href={hit.url}
+                              />
+                            )}
+                          </h2>
+                          <p>
+                            {[
+                              hit.acronym || expandUid(hit.uid, expansionData),
+                              hit.full_lang,
+                              hit.author,
+                            ]
+                              .filter(Boolean)
+                              .join(' ∙ ')}
+                          </p>
+                        </hgroup>
+                        {hit.highlight.content.map((excerpt: string) => (
+                          <span
+                            set:html={excerpt.replaceAll('target="_blank"', '')}
                           />
-                        </li>
-                      ))}
+                        ))}
+                        {hit.all_reference
+                          ?.split(',')
+                          .filter(r => r.includes('pts-'))
+                          .map((ref: string, idx: number, arr: string[]) =>
+                            // prettier-ignore
+                            <span>
+                            <a href={`${hit.url}/en/sujato#${ref.trim()}`}>{ref}</a>
+                            {idx !== arr.length - 1 && '∙ '}
+                          </span>
+                          )}
+                      </li>
+                    ))}
+                  </ol>
+                )}
+                {!!suttaplexHits.length && (
+                  <ol class="suttaplex-hits">
+                    {suttaplexHits.map(entry => (
+                      <li>
+                        <TextMetaContent
+                          data={entry}
+                          userLanguage={userLanguage}
+                          headingLevel={2}
+                        />
+                      </li>
+                    ))}
                   </ol>
                 )}
               </>
@@ -317,9 +379,48 @@ if (query) {
 
     & > section {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1rem;
+      grid-template-columns: minmax(0, 1fr);
+      column-gap: 1rem;
       margin-top: 1rem;
+
+      @media (min-width: 672px) {
+        &.split {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-rows: auto 1fr;
+          grid-template-areas:
+            'texts featured'
+            'texts suttaplex';
+
+          .text-hits {
+            grid-area: texts;
+          }
+
+          .featured-hits {
+            grid-area: featured;
+          }
+
+          .suttaplex-hits {
+            grid-area: suttaplex;
+          }
+
+          .featured-hits ~ .suttaplex-hits {
+            margin-top: 0;
+          }
+
+          .featured-hits,
+          .suttaplex-hits {
+            padding-left: 3ch;
+          }
+        }
+      }
+
+      .featured-hits {
+        margin-bottom: 0;
+
+        & + .suttaplex-hits {
+          margin-top: 0;
+        }
+      }
 
       ol {
         min-width: 0;
@@ -331,10 +432,14 @@ if (query) {
           margin-top: 0;
         }
 
+        &.featured-hits,
         &.suttaplex-hits {
           list-style-type: none;
+          padding-left: 0;
+        }
 
-          & > li:not(.dictionary-hit) {
+        &.suttaplex-hits {
+          & > li {
             border: 1px solid;
             border-color: var(--bg-alt-1);
             border-radius: var(--rounding);
@@ -344,6 +449,63 @@ if (query) {
               margin-top: 1rem;
             }
           }
+        }
+      }
+
+      .page-hits {
+        border: 1px solid var(--bg-alt-3);
+        border-radius: var(--rounding);
+        padding: 1rem;
+        margin-bottom: 1rem;
+
+        h2 {
+          font-size: inherit;
+          color: var(--text-color-secondary);
+        }
+
+        ul {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+
+        & > ul > li {
+          display: flex;
+          align-items: baseline;
+        }
+
+        li > span {
+          flex-shrink: 0;
+          color: var(--text-color-secondary);
+
+          &::after {
+            content: '/';
+            content: '/' / '';
+            margin-inline: 0.5rem;
+            color: var(--gray);
+          }
+        }
+
+        ul ul {
+          display: flex;
+          flex-wrap: wrap;
+
+          li:not(:last-child)::after {
+            content: '∙';
+            content: '∙' / '';
+            margin-inline: 0.4rem;
+            color: var(--gray);
+          }
+        }
+
+        /* Flex drops the markup's spaces, so the underline stops at the words */
+        a {
+          display: inline-flex;
+          align-items: center;
+        }
+
+        a > :global(.icon) {
+          margin-inline-start: 0.25em;
         }
       }
 

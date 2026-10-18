@@ -1,4 +1,11 @@
 {
   "interface:articlePagination": "Article pagination",
-  "interface:noScript": "Please enable Javascript to use this feature."
+  "interface:noScript": "Please enable Javascript to use this feature.",
+  "interface:sitePages": "Site pages",
+  "interface:pagesExplore": "Explore",
+  "interface:pagesGuides": "Guides",
+  "interface:pagesEssays": "Essays",
+  "interface:pagesIndexes": "Indexes",
+  "interface:pagesReference": "Reference",
+  "interface:pagesAbout": "About"
 }

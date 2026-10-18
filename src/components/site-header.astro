@@ -54,18 +54,28 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
       }
     </ul>
   </nav>
-  {
-    !pathname.startsWith('/search') && (
-      <button
-        type="submit"
-        popovertarget="search-modal"
-        aria-label={t(userLanguage, 'search:search')}
-        title={t(userLanguage, 'header:searchShortcut')}
-      >
-        <Fragment set:html={heroicon.magnifyingGlassMicro} />
-      </button>
-    )
-  }
+  <div>
+    {
+      !pathname.startsWith('/search') && (
+        <button
+          type="submit"
+          popovertarget="search-modal"
+          aria-label={t(userLanguage, 'search:search')}
+          title={t(userLanguage, 'header:searchShortcut')}
+        >
+          <Fragment set:html={heroicon.magnifyingGlassMicro} />
+        </button>
+      )
+    }
+    <button
+      type="button"
+      popovertarget="site-pages"
+      aria-label={t(userLanguage, 'interface:sitePages')}
+      title={t(userLanguage, 'interface:sitePages')}
+    >
+      <Fragment set:html={heroicon.bars3Micro} />
+    </button>
+  </div>
 </header>
 
 <style>
@@ -120,12 +130,25 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
       }
     }
 
-    button[popovertarget='search-modal'] {
+    & > div {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      flex-shrink: 1000;
+      gap: 0.5rem;
+    }
+
+    button[popovertarget='site-pages'] {
+      anchor-name: --site-pages-button;
+    }
+
+    button[popovertarget] {
       cursor: pointer;
       background: none;
       border: none;
       display: flex;
       align-items: center;
+      color: var(--text-color);
 
       &:focus,
       &:hover {

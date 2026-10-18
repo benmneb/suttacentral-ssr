@@ -4,6 +4,7 @@ import '~/assets/global.css'
 import SearchForm from '~/components/search-form.astro'
 import SiteFooter from '~/components/site-footer.astro'
 import SiteHeader from '~/components/site-header.astro'
+import SitePages from '~/components/site-pages.astro'
 import { siteMetaData } from '~/constants/meta-data'
 import { getPreferredLanguage } from '~/utils/language'
 
@@ -106,6 +107,7 @@ const imageUrl = new URL(ogImage || '/og-image2.jpg', Astro.site).href
   <body>
     <SiteHeader breadcrumbs={breadcrumbs} />
     <slot />
+    <SitePages />
     <SiteFooter />
     {
       !pathname.startsWith('/search') && (
