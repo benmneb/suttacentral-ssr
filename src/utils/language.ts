@@ -1,4 +1,6 @@
 function normalizeLanguageCode(code: string): string {
+  // * means any language, which is what a request that names none arrives as
+  if (!code || code === '*') return 'en'
   // Handle SC data not matching ISO Accept-Language headers
   if (code === 'nb' || code === 'nn') return 'no' // generic Norsk codes
   if (code === 'ja') return 'jpn'
@@ -37,7 +39,8 @@ export function getPreferredLocale(
 ): string {
   if (!acceptLanguageHeader) return 'en-US'
 
-  return acceptLanguageHeader.split(',')[0].split(';')[0].trim()
+  const locale = acceptLanguageHeader.split(',')[0].split(';')[0].trim()
+  return !locale || locale === '*' ? 'en-US' : locale
 }
 
 export function getLanguageName(
