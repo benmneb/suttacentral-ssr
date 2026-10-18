@@ -1656,8 +1656,10 @@ aside {
       }
     }
 
-    /* Where the rate and pitch rows show their value. The row's text colour,
-       as the bar's is under 3:1 on the menu */
+    #listen-menu > li:has(> #voice-info-button) {
+      padding-right: 0;
+    }
+
     #voice-info-button {
       /* height: 100% can't stretch here */
       height: auto;
@@ -1668,6 +1670,7 @@ aside {
       padding: 0;
       border-radius: var(--rounding);
 
+      /* The bar's colour is under 3:1 on the menu */
       &:not(:hover):not(:focus) {
         color: inherit;
       }
@@ -2108,6 +2111,19 @@ article,
     /* Not the browser's smaller control size */
     font-size: inherit;
     position: relative;
+    isolation: isolate;
+
+    /* Centred on the glyph, which sits 0.15-0.19em above the box's middle */
+    &::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      left: calc(50% - 0.35em);
+      top: calc(50% - 0.52em);
+      width: 0.7em;
+      height: 0.7em;
+      border-radius: var(--rounding);
+    }
 
     /* A bigger tap target, without moving the text */
     @media (pointer: coarse) {
@@ -2118,17 +2134,23 @@ article,
       }
     }
 
-    &:focus {
-      background-color: var(--primary-color);
+    &:is(:focus, [aria-expanded='true']) {
       color: var(--background-color);
+
+      &::before {
+        background-color: var(--primary-color);
+      }
     }
 
     &.variant-btn {
       color: var(--variant-btn-color);
 
-      &:focus {
-        background-color: var(--variant-btn-color);
+      &:is(:focus, [aria-expanded='true']) {
         color: var(--background-color);
+
+        &::before {
+          background-color: var(--variant-btn-color);
+        }
       }
     }
   }

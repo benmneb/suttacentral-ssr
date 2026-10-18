@@ -2046,6 +2046,30 @@ const jsonLd = generateTextJsonLd(
 </script>
 
 <script>
+  /**
+   * Note Button State
+   *
+   * Safari doesn't focus a button on click, so :focus alone never lit it.
+   */
+  'use strict'
+
+  document.addEventListener(
+    'toggle',
+    e => {
+      const note = e.target as HTMLElement
+      if (!note.matches?.('main > article[popover]')) return
+      document
+        .querySelector(`button[popovertarget="${CSS.escape(note.id)}"]`)
+        ?.setAttribute(
+          'aria-expanded',
+          String((e as ToggleEvent).newState === 'open')
+        )
+    },
+    true
+  )
+</script>
+
+<script>
   import {
     arrowLeft,
     arrowRight,
