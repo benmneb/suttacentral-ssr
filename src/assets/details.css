@@ -12,6 +12,8 @@ details {
     }
 
     &::marker {
+      color: var(--text-color-secondary);
+
       /* Same as var(--serif-font) but without the emojis, so Safari doesn't make it an emoji when closed */
       font-family:
         Iowan Old Style,
