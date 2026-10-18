@@ -12,6 +12,11 @@ table {
       &:first-child {
         font-weight: bold;
       }
+
+      /* Not break-word, which leaves a cell's min-content as it is */
+      &:not(:first-child) {
+        overflow-wrap: anywhere;
+      }
     }
   }
 

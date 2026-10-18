@@ -115,6 +115,7 @@ body {
     padding: 0 1rem;
     max-width: var(--content-max-width);
     width: var(--width-minus-padding);
+    overflow-wrap: break-word;
   }
 
   &:has([popover]#search-modal:popover-open),

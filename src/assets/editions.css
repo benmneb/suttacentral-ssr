@@ -151,7 +151,7 @@ body main:has(article) {
   }
 
   @media (max-width: 600px) {
-    main > article > section {
+    > article > section {
       grid-template-columns: 1fr;
 
       article figure {

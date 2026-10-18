@@ -8,6 +8,7 @@ main {
     display: inline-flex;
     flex-direction: column;
     text-decoration: none;
+    overflow-wrap: anywhere;
   }
 
   dfn:not(h1 dfn) {
@@ -28,6 +29,18 @@ main {
     > li > a:first-of-type {
       font-size: larger;
       margin: 1rem 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .first {
+      padding-left: 0;
+    }
+
+    .third,
+    .fourth,
+    .fifth {
+      padding-left: 1.25rem;
     }
   }
 }
