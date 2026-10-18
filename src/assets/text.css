@@ -1635,24 +1635,85 @@ aside {
       > li.sub-sub > label {
         padding-inline-start: 2.3rem;
       }
+
+      > li.pressed {
+        animation: key-press 0.3s ease-out;
+      }
     }
 
-    /* A key on every row was a column of boxes beside the checkboxes, so
-       only the row pointed at or focused shows its own. Still there, unseen,
-       so the menu doesn't change width. The listen controls keep theirs, part
-       of each button's label */
+    /* Flat rather than hidden, so the menu doesn't change width */
     :is(#views-menu, #listen-menu) > li:not(.tts-controls) {
       kbd {
         opacity: 0;
       }
 
-      &:is(:hover, :focus-within) kbd {
+      &:is(:hover, :focus-within, .toasted) kbd {
         opacity: 1;
       }
     }
 
     .dropdown:popover-open {
       display: block;
+    }
+
+    /* Flat rather than hidden, so the menu keeps its width */
+    #views-menu.toast {
+      display: block;
+      z-index: 1;
+    }
+
+    @supports selector(:popover-open) {
+      @media (hover: none) {
+        #views-menu.toast:not(:popover-open) > li:not(.toasted) {
+          visibility: hidden;
+          height: 0;
+          min-height: 0;
+          overflow: hidden;
+        }
+      }
+
+      @media (hover: hover) {
+        li:not(:hover)
+          > #views-menu.toast:not(:popover-open)
+          > li:not(.toasted) {
+          visibility: hidden;
+          height: 0;
+          min-height: 0;
+          overflow: hidden;
+        }
+      }
+    }
+
+    @supports not selector(:popover-open) {
+      li:not(:hover):not(:focus-within) > #views-menu.toast > li:not(.toasted) {
+        visibility: hidden;
+        height: 0;
+        min-height: 0;
+        overflow: hidden;
+      }
+    }
+
+    /* .detached is set by the script when the bar is out of sight */
+    @supports selector(:popover-open) {
+      #views-menu.toast.detached:not(:popover-open) {
+        position: fixed;
+        top: 0;
+        right: 0;
+
+        @supports (anchor-name: --a) {
+          @media not all and (max-width: 600px) {
+            right: anchor(right);
+          }
+        }
+      }
+    }
+
+    @supports not selector(:popover-open) {
+      #views-menu.toast.detached {
+        position: fixed;
+        top: 0;
+        right: 0;
+      }
     }
 
     @supports selector(:popover-open) {

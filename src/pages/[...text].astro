@@ -1684,16 +1684,8 @@ const jsonLd = generateTextJsonLd(
   /**
    * View Settings and Listen Hotkeys
    *
-   * Toggles view settings from the keyboard. Keys with more than one setting
-   * step through them, turning each on in order and then all off again.
-   * Listen keys click their control, which does nothing while it's disabled.
-   * A button that was enabled flashes, so the key is seen to have worked.
-   * The key hints are only shown when a fine pointer suggests a keyboard.
-   *
-   * Also keeps the reading position when a view setting changes, by key or
-   * by click. Sidenotes rebuild each segment's layout, which loses the
-   * browser's own scroll anchor, so the segment at the top of the screen is
-   * put back where it was.
+   * Toggles view settings from the keyboard, and keeps the reading position
+   * when a view setting changes.
    * Unlike accounting for this with notes view, this layout shift fix
    * is not possible in CSS without a big refactor, so it's handled here.
    */
@@ -1808,9 +1800,30 @@ const jsonLd = generateTextJsonLd(
       setChecked(segmenter, false)
   })
 
-  function cycle(ids) {
-    const els = ids.map(id => document.getElementById(id)).filter(Boolean)
-    if (!els.length) return
+  function parentOf(id: string) {
+    return document.querySelector(`#views-menu input[aria-controls~="${id}"]`)
+  }
+
+  function hasRoom(el: HTMLElement) {
+    const li = el.closest('li')
+    return !!li && getComputedStyle(li).display !== 'none'
+  }
+
+  function isShown(el: HTMLElement) {
+    const parent = parentOf(el.id)
+    return (
+      hasRoom(el) && !(parent instanceof HTMLInputElement && !parent.checked)
+    )
+  }
+
+  function cycle(ids: string[]) {
+    const els = ids
+      .map(id => document.getElementById(id))
+      .filter(
+        (el): el is HTMLInputElement =>
+          el instanceof HTMLInputElement && hasRoom(el)
+      )
+    if (!els.length || !isShown(els[0])) return
 
     rememberAnchor()
     const level = els.findIndex(el => !el.checked)
@@ -1825,16 +1838,84 @@ const jsonLd = generateTextJsonLd(
 
   function toggleSub(id: string) {
     const el = document.getElementById(id)
-    if (!(el instanceof HTMLInputElement)) return
-    const parent = document.querySelector(
-      `#views-menu input[aria-controls~="${id}"]`
-    )
+    if (!(el instanceof HTMLInputElement) || !hasRoom(el)) return
+    const parent = parentOf(id)
 
     rememberAnchor()
     setChecked(el, !el.checked)
     if (el.checked && parent instanceof HTMLInputElement && !parent.checked)
       setChecked(parent, true)
   }
+
+  const viewsButton = document.getElementById('views-button')
+  const ttsControls = document.querySelector('#listen-menu > .tts-controls')
+  let rowsTimer: ReturnType<typeof setTimeout> | undefined
+
+  function checkedStates() {
+    const inputs = viewsMenu?.querySelectorAll('input') ?? []
+    return new Map([...inputs].map(el => [el, el.checked]))
+  }
+
+  function clearShownRows() {
+    removeEventListener('scroll', placeRows)
+    viewsMenu?.classList.remove('toast')
+    viewsMenu?.style.removeProperty('--past-tts')
+    for (const li of viewsMenu?.querySelectorAll(':scope > li.toasted') ?? [])
+      li.classList.remove('toasted', 'pressed')
+  }
+
+  function placeRows() {
+    if (!viewsMenu || !viewsButton) return
+    const { top, bottom } = viewsButton.getBoundingClientRect()
+    viewsMenu.classList.toggle(
+      'detached',
+      bottom < 0 || top > document.documentElement.clientHeight
+    )
+  }
+
+  function showChanges(ids: string[], before: Map<HTMLInputElement, boolean>) {
+    if (!viewsMenu) return
+    const changed = new Set(
+      [...before].filter(([el, was]) => el.checked !== was).map(([el]) => el)
+    )
+    if (!changed.size) return
+    for (const el of changed) {
+      if (!el.checked) continue
+      for (const id of el.getAttribute('aria-controls')?.split(' ') ?? []) {
+        const sub = document.getElementById(id)
+        if (sub instanceof HTMLInputElement && sub.checked) changed.add(sub)
+      }
+    }
+
+    const shown = new Set<Element | null>()
+    for (const el of [
+      ...ids.map(id => document.getElementById(id)),
+      ...changed,
+    ])
+      if (el) shown.add(el).add(parentOf(el.id))
+
+    clearShownRows()
+    for (const el of shown) {
+      const li = el?.closest('li')
+      if (li?.parentElement !== viewsMenu) continue
+      li.classList.add('toasted')
+      if (changed.has(el as HTMLInputElement)) flashPressed(li)
+    }
+    // Measured, as with a mouse the controls have no set height
+    if (ttsControls instanceof HTMLElement && ttsControls.offsetHeight)
+      viewsMenu.style.setProperty('--past-tts', `${ttsControls.offsetHeight}px`)
+    placeRows()
+    addEventListener('scroll', placeRows, { passive: true })
+    viewsMenu.classList.add('toast')
+    clearTimeout(rowsTimer)
+    rowsTimer = setTimeout(clearShownRows, 1500)
+  }
+
+  // Not on cancel, which comes after a quick second press put it back on
+  viewsMenu?.addEventListener('animationend', e => {
+    if (e.animationName === 'key-press' && e.target instanceof HTMLElement)
+      e.target.classList.remove('pressed')
+  })
 
   // Set here rather than in the markup so they're only announced when they work
   const shortcuts = [
@@ -1866,9 +1947,12 @@ const jsonLd = generateTextJsonLd(
     )
       return
     const key = e.key.toLowerCase()
-    if (VIEW_SETTINGS[key]) cycle(VIEW_SETTINGS[key])
-    else if (SUB_SETTINGS[key]) toggleSub(SUB_SETTINGS[key])
-    else if (LISTEN_CONTROLS[key]) {
+    if (VIEW_SETTINGS[key] || SUB_SETTINGS[key]) {
+      const before = checkedStates()
+      if (VIEW_SETTINGS[key]) cycle(VIEW_SETTINGS[key])
+      else toggleSub(SUB_SETTINGS[key])
+      showChanges(VIEW_SETTINGS[key] ?? [SUB_SETTINGS[key]], before)
+    } else if (LISTEN_CONTROLS[key]) {
       const el = document.getElementById(LISTEN_CONTROLS[key])
       // Checked before the click, as stop disables itself
       const flash = el instanceof HTMLButtonElement && !el.disabled
