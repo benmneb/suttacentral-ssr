@@ -96,6 +96,8 @@ class SCMap extends HTMLElement {
     // Initialize Leaflet map
     this.map = L.map(container, {
       scrollWheelZoom: false,
+      // Whole steps round fitBounds down, leaving up to half the map empty
+      zoomSnap: 0.25,
     })
 
     // Add tile layer
@@ -272,7 +274,11 @@ class SCMap extends HTMLElement {
       // Fit to all features
       const layers = Object.values(this.idToLayer)
       if (layers.length > 0) {
-        this.map.fitBounds(L.featureGroup(layers).getBounds())
+        // Top room for the name that pops up above the cursor
+        this.map.fitBounds(L.featureGroup(layers).getBounds(), {
+          paddingTopLeft: [16, 80],
+          paddingBottomRight: [16, 16],
+        })
       }
     }
   }

@@ -72,6 +72,7 @@ function getLayerLabel(layerName: string): string {
               class="image-home"
               src="https://suttacentral.net/img/static-pages/jambudipa_map.jpg"
               width="1476"
+              height="1034"
             />
           </picture>
           <figcaption set:html={t(userLanguage, 'map:3')} />
@@ -95,8 +96,11 @@ function getLayerLabel(layerName: string): string {
             const layerFeatures = features
               .filter(f => f.properties?.layer === layerName)
               .sort((a, b) =>
+                // Numeric, so the journeys' 10) comes after 9), not 1)
                 (a.properties?.name || '').localeCompare(
-                  b.properties?.name || ''
+                  b.properties?.name || '',
+                  undefined,
+                  { numeric: true }
                 )
               )
 

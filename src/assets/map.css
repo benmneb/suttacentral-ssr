@@ -1,5 +1,30 @@
 article {
   max-width: 100%;
+
+  h1,
+  h2:not(#places-index-heading) {
+    text-align: center;
+  }
+}
+
+/* 100vw counts a classic scrollbar, so each gutter loses half of one */
+section > figure,
+sc-map {
+  width: calc(100vw - 2rem);
+  margin-inline: calc(50% - 50vw + 1rem);
+}
+
+section > figure img {
+  height: auto;
+  max-height: 100vh;
+  max-height: 100svh;
+  object-fit: contain;
+}
+
+section > figure figcaption {
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+  padding-inline: 1rem;
 }
 
 sc-map {
@@ -40,4 +65,14 @@ section ul svg {
   height: 1em;
   vertical-align: middle;
   margin-right: 0.2em;
+}
+
+section details > ul {
+  columns: 2 12rem;
+  column-gap: 2rem;
+
+  li {
+    break-inside: avoid;
+    color: var(--text-color-secondary);
+  }
 }
