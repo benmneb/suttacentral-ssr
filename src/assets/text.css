@@ -951,6 +951,11 @@ a.look-up {
   background-color: var(--tts-highlight-background-color);
 }
 
+::highlight(tts-word) {
+  color: var(--tts-highlight-text-color);
+  background-color: var(--tts-word-background-color);
+}
+
 .tts-clickable {
   cursor: pointer;
 

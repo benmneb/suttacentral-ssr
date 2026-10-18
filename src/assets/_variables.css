@@ -68,6 +68,7 @@
   --shadow-color: light-dark(var(--gray-dim), var(--bg-hard));
   --tts-highlight-text-color: var(--headings-color);
   --tts-highlight-background-color: light-dark(var(--bg), var(--bg-alt-1));
+  --tts-word-background-color: light-dark(var(--bg-alt-1), var(--bg-alt-2));
   --tts-hover-background-color: light-dark(
     var(--background-color-secondary),
     var(--bg-alt-1)
