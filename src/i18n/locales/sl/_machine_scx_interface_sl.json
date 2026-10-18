@@ -1,4 +1,13 @@
 {
   "interface:articlePagination": "Številčenje strani člankov",
-  "interface:noScript": "Za uporabo te funkcije omogočite JavaScript."
+  "interface:noScript": "Za uporabo te funkcije omogočite JavaScript.",
+  "interface:sitePages": "Strani spletnega mesta",
+  "interface:pagesExplore": "Raziskuj",
+  "interface:pagesGuides": "Vodniki",
+  "interface:pagesEssays": "Eseji",
+  "interface:pagesIndexes": "Kazala",
+  "interface:pagesReference": "Priročnik",
+  "interface:pagesAbout": "O projektu",
+  "interface:furtherReading": "Nadaljnje branje",
+  "interface:suttaCentralEdition": "Izdaja SuttaCentral, na voljo v tiskani obliki in v več digitalnih oblikah za branje brez povezave"
 }

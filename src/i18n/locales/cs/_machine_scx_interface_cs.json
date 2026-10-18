@@ -1,4 +1,13 @@
 {
   "interface:articlePagination": "Stránkování článků",
-  "interface:noScript": "Pro použití této funkce prosím povolte JavaScript."
+  "interface:noScript": "Pro použití této funkce prosím povolte JavaScript.",
+  "interface:sitePages": "Stránky webu",
+  "interface:pagesExplore": "Prozkoumat",
+  "interface:pagesGuides": "Průvodci",
+  "interface:pagesEssays": "Eseje",
+  "interface:pagesIndexes": "Rejstříky",
+  "interface:pagesReference": "Reference",
+  "interface:pagesAbout": "O projektu",
+  "interface:furtherReading": "Další četba",
+  "interface:suttaCentralEdition": "Edice SuttaCentral dostupná v tištěné podobě a v několika digitálních formátech pro čtení offline"
 }

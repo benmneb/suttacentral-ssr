@@ -1,4 +1,13 @@
 {
   "interface:articlePagination": "लेख पृष्ठांकन",
-  "interface:noScript": "इस सुविधा का उपयोग करने के लिए कृपया JavaScript सक्षम करें।"
+  "interface:noScript": "इस सुविधा का उपयोग करने के लिए कृपया JavaScript सक्षम करें।",
+  "interface:sitePages": "साइट के पृष्ठ",
+  "interface:pagesExplore": "अन्वेषण",
+  "interface:pagesGuides": "मार्गदर्शिकाएँ",
+  "interface:pagesEssays": "निबंध",
+  "interface:pagesIndexes": "अनुक्रमणिकाएँ",
+  "interface:pagesReference": "संदर्भ",
+  "interface:pagesAbout": "हमारे बारे में",
+  "interface:furtherReading": "अतिरिक्त पठन",
+  "interface:suttaCentralEdition": "SuttaCentral संस्करण, मुद्रित रूप में और ऑफ़लाइन पढ़ने के लिए कई डिजिटल प्रारूपों में उपलब्ध"
 }

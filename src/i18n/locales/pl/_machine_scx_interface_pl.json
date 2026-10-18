@@ -1,4 +1,13 @@
 {
   "interface:articlePagination": "Paginacja artykułów",
-  "interface:noScript": "Proszę włączyć JavaScript, aby korzystać z tej funkcji."
+  "interface:noScript": "Proszę włączyć JavaScript, aby korzystać z tej funkcji.",
+  "interface:sitePages": "Strony witryny",
+  "interface:pagesExplore": "Odkrywaj",
+  "interface:pagesGuides": "Przewodniki",
+  "interface:pagesEssays": "Eseje",
+  "interface:pagesIndexes": "Indeksy",
+  "interface:pagesReference": "Materiały pomocnicze",
+  "interface:pagesAbout": "O nas",
+  "interface:furtherReading": "Dalsza lektura",
+  "interface:suttaCentralEdition": "Wydanie SuttaCentral dostępne w druku i w kilku formatach cyfrowych do czytania offline"
 }

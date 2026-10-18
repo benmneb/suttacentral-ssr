@@ -1,4 +1,13 @@
 {
   "interface:articlePagination": "記事ページネーション",
-  "interface:noScript": "この機能を使用するにはJavaScriptを有効にしてください。"
+  "interface:noScript": "この機能を使用するにはJavaScriptを有効にしてください。",
+  "interface:sitePages": "サイトのページ",
+  "interface:pagesExplore": "探索",
+  "interface:pagesGuides": "ガイド",
+  "interface:pagesEssays": "論考",
+  "interface:pagesIndexes": "索引",
+  "interface:pagesReference": "参考資料",
+  "interface:pagesAbout": "このサイトについて",
+  "interface:furtherReading": "関連資料",
+  "interface:suttaCentralEdition": "印刷版と、オフラインで読める複数のデジタル形式で提供されている SuttaCentral 版"
 }

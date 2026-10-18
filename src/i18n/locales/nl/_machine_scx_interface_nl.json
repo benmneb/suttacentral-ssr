@@ -1,4 +1,13 @@
 {
   "interface:articlePagination": "Artikelpaginering",
-  "interface:noScript": "Schakel JavaScript in om deze functie te gebruiken."
+  "interface:noScript": "Schakel JavaScript in om deze functie te gebruiken.",
+  "interface:sitePages": "Sitepagina's",
+  "interface:pagesExplore": "Ontdekken",
+  "interface:pagesGuides": "Gidsen",
+  "interface:pagesEssays": "Essays",
+  "interface:pagesIndexes": "Indexen",
+  "interface:pagesReference": "Naslag",
+  "interface:pagesAbout": "Over",
+  "interface:furtherReading": "Verder lezen",
+  "interface:suttaCentralEdition": "Een SuttaCentral-editie, verkrijgbaar in druk en in meerdere digitale formaten om offline te lezen"
 }

@@ -1,4 +1,13 @@
 {
   "interface:articlePagination": "ලිපි පිටු අංකනය",
-  "interface:noScript": "මෙම විශේෂාංගය භාවිතා කිරීමට කරුණාකර JavaScript සක්‍රීය කරන්න."
+  "interface:noScript": "මෙම විශේෂාංගය භාවිතා කිරීමට කරුණාකර JavaScript සක්‍රීය කරන්න.",
+  "interface:sitePages": "අඩවියේ පිටු",
+  "interface:pagesExplore": "ගවේෂණය",
+  "interface:pagesGuides": "මාර්ගෝපදේශ",
+  "interface:pagesEssays": "රචනා",
+  "interface:pagesIndexes": "සූචි",
+  "interface:pagesReference": "යොමු",
+  "interface:pagesAbout": "අප ගැන",
+  "interface:furtherReading": "වැඩිදුර කියවීම",
+  "interface:suttaCentralEdition": "මුද්‍රිත ආකාරයෙන් සහ නොබැඳි කියවීම සඳහා ඩිජිටල් ආකෘති කිහිපයකින් ලබා ගත හැකි SuttaCentral සංස්කරණයක්"
 }

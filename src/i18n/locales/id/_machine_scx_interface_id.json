@@ -1,4 +1,13 @@
 {
   "interface:articlePagination": "Paginasi artikel",
-  "interface:noScript": "Harap aktifkan JavaScript untuk menggunakan fitur ini."
+  "interface:noScript": "Harap aktifkan JavaScript untuk menggunakan fitur ini.",
+  "interface:sitePages": "Halaman situs",
+  "interface:pagesExplore": "Jelajahi",
+  "interface:pagesGuides": "Panduan",
+  "interface:pagesEssays": "Esai",
+  "interface:pagesIndexes": "Indeks",
+  "interface:pagesReference": "Referensi",
+  "interface:pagesAbout": "Tentang",
+  "interface:furtherReading": "Bacaan lanjutan",
+  "interface:suttaCentralEdition": "Edisi SuttaCentral yang tersedia dalam versi cetak dan berbagai format digital untuk dibaca secara luring"
 }

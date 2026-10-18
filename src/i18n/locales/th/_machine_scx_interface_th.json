@@ -1,4 +1,13 @@
 {
   "interface:articlePagination": "การแบ่งหน้าบทความ",
-  "interface:noScript": "กรุณาเปิดใช้งาน JavaScript เพื่อใช้คุณสมบัตินี้"
+  "interface:noScript": "กรุณาเปิดใช้งาน JavaScript เพื่อใช้คุณสมบัตินี้",
+  "interface:sitePages": "หน้าของเว็บไซต์",
+  "interface:pagesExplore": "สำรวจ",
+  "interface:pagesGuides": "คู่มือ",
+  "interface:pagesEssays": "บทความ",
+  "interface:pagesIndexes": "ดัชนี",
+  "interface:pagesReference": "ข้อมูลอ้างอิง",
+  "interface:pagesAbout": "เกี่ยวกับ",
+  "interface:furtherReading": "อ่านเพิ่มเติม",
+  "interface:suttaCentralEdition": "ฉบับ SuttaCentral ที่มีทั้งฉบับพิมพ์และรูปแบบดิจิทัลหลายรูปแบบสำหรับอ่านแบบออฟไลน์"
 }

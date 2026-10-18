@@ -1,4 +1,13 @@
 {
   "interface:articlePagination": "ಲೇಖನ ಪುಟಾಂಕಣ",
-  "interface:noScript": "ಈ ವೈಶಿಷ್ಟ್ಯವನ್ನು ಬಳಸಲು ದಯವಿಟ್ಟು JavaScript ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ."
+  "interface:noScript": "ಈ ವೈಶಿಷ್ಟ್ಯವನ್ನು ಬಳಸಲು ದಯವಿಟ್ಟು JavaScript ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ.",
+  "interface:sitePages": "ಸೈಟ್ ಪುಟಗಳು",
+  "interface:pagesExplore": "ಅನ್ವೇಷಿಸಿ",
+  "interface:pagesGuides": "ಮಾರ್ಗದರ್ಶಿಗಳು",
+  "interface:pagesEssays": "ಪ್ರಬಂಧಗಳು",
+  "interface:pagesIndexes": "ಸೂಚಿಗಳು",
+  "interface:pagesReference": "ಉಲ್ಲೇಖ",
+  "interface:pagesAbout": "ನಮ್ಮ ಬಗ್ಗೆ",
+  "interface:furtherReading": "ಹೆಚ್ಚಿನ ಓದು",
+  "interface:suttaCentralEdition": "ಮುದ್ರಿತ ರೂಪದಲ್ಲಿ ಮತ್ತು ಆಫ್‌ಲೈನ್ ಓದುವಿಕೆಗಾಗಿ ಹಲವು ಡಿಜಿಟಲ್ ಸ್ವರೂಪಗಳಲ್ಲಿ ಲಭ್ಯವಿರುವ SuttaCentral ಆವೃತ್ತಿ"
 }

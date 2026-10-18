@@ -1,4 +1,13 @@
 {
   "interface:articlePagination": "文章分页",
-  "interface:noScript": "请启用 JavaScript 以使用此功能。"
+  "interface:noScript": "请启用 JavaScript 以使用此功能。",
+  "interface:sitePages": "网站页面",
+  "interface:pagesExplore": "探索",
+  "interface:pagesGuides": "指南",
+  "interface:pagesEssays": "文章",
+  "interface:pagesIndexes": "索引",
+  "interface:pagesReference": "参考",
+  "interface:pagesAbout": "关于",
+  "interface:furtherReading": "延伸阅读",
+  "interface:suttaCentralEdition": "SuttaCentral 版本，提供印刷版及多种可离线阅读的数字格式"
 }

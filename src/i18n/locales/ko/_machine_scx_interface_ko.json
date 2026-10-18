@@ -1,4 +1,13 @@
 {
   "interface:articlePagination": "기사 페이지 매김",
-  "interface:noScript": "이 기능을 사용하려면 JavaScript를 활성화해 주세요."
+  "interface:noScript": "이 기능을 사용하려면 JavaScript를 활성화해 주세요.",
+  "interface:sitePages": "사이트 페이지",
+  "interface:pagesExplore": "둘러보기",
+  "interface:pagesGuides": "안내서",
+  "interface:pagesEssays": "에세이",
+  "interface:pagesIndexes": "색인",
+  "interface:pagesReference": "참고 자료",
+  "interface:pagesAbout": "소개",
+  "interface:furtherReading": "더 읽을거리",
+  "interface:suttaCentralEdition": "인쇄본과 오프라인에서 읽을 수 있는 여러 디지털 형식으로 제공되는 SuttaCentral 판본"
 }

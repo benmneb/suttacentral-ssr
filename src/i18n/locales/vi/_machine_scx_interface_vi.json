@@ -1,4 +1,13 @@
 {
   "interface:articlePagination": "Phân trang bài viết",
-  "interface:noScript": "Vui lòng bật JavaScript để sử dụng tính năng này."
+  "interface:noScript": "Vui lòng bật JavaScript để sử dụng tính năng này.",
+  "interface:sitePages": "Các trang của trang web",
+  "interface:pagesExplore": "Khám phá",
+  "interface:pagesGuides": "Hướng dẫn",
+  "interface:pagesEssays": "Tiểu luận",
+  "interface:pagesIndexes": "Chỉ mục",
+  "interface:pagesReference": "Tham khảo",
+  "interface:pagesAbout": "Giới thiệu",
+  "interface:furtherReading": "Đọc thêm",
+  "interface:suttaCentralEdition": "Một ấn bản SuttaCentral có bản in và nhiều định dạng kỹ thuật số để đọc ngoại tuyến"
 }

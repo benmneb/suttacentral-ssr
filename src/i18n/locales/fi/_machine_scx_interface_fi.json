@@ -1,4 +1,13 @@
 {
   "interface:articlePagination": "Artikkelisivutus",
-  "interface:noScript": "Ota JavaScript käyttöön käyttääksesi tätä ominaisuutta."
+  "interface:noScript": "Ota JavaScript käyttöön käyttääksesi tätä ominaisuutta.",
+  "interface:sitePages": "Sivuston sivut",
+  "interface:pagesExplore": "Tutustu",
+  "interface:pagesGuides": "Oppaat",
+  "interface:pagesEssays": "Esseet",
+  "interface:pagesIndexes": "Hakemistot",
+  "interface:pagesReference": "Viitetiedot",
+  "interface:pagesAbout": "Tietoa",
+  "interface:furtherReading": "Lisälukemista",
+  "interface:suttaCentralEdition": "SuttaCentral-laitos, saatavilla painettuna ja useissa digitaalisissa muodoissa offline-lukemista varten"
 }
