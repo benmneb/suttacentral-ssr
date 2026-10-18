@@ -203,6 +203,16 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
 
       > :global(fieldset) {
         width: 100%;
+        margin: 0;
+        border: 1px solid var(--bg-alt-4);
+        border-radius: var(--rounding);
+        padding: 1rem;
+
+        > :global(legend) {
+          margin: 0;
+          padding: 0 0.5rem;
+          color: var(--text-color-secondary);
+        }
       }
 
       /* Apart, as Astro mangles a selector list with :global in it */
@@ -215,15 +225,7 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
       }
 
       > :global(fieldset#search-filters) {
-        border: 1px solid var(--bg-alt-4);
-        border-radius: var(--rounding);
-        padding: 1rem;
         color: var(--text-color);
-
-        :global(legend) {
-          margin: 0;
-          padding: 0 0.5rem;
-        }
       }
     }
   }
