@@ -1,6 +1,6 @@
 ---
-import '~/assets/numbering.css'
 import RelatedPages from '~/components/related-pages.astro'
+import * as heroicon from '~/constants/heroicons'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getPreferredLanguage } from '~/utils/language'
@@ -17,33 +17,80 @@ const crumbsData = [{ title: t(userLanguage, 'interface:offline') }]
   <main>
     <article>
       <h1>{title}</h1>
+      <h2>SuttaCentral</h2>
       <ul>
         <li>
-          SuttaCentral
-          <ul>
-            <li>
-              <a href="https://suttacentral.net/offline">PWA </a>
-            </li>
-            <li>
-              <a href="/editions">
-                Editions (books, ePubs, PDFs, HTML files etc)
-              </a>
-            </li>
-          </ul>
+          <a href="https://suttacentral.net/offline">
+            <Fragment set:html={heroicon.devicePhoneMobileMicro} />
+            Web app (PWA)
+            <Fragment set:html={heroicon.arrowTopRightOnSquareMicro} />
+            <span class="sr-only">SuttaCentral.net</span>
+          </a>
+          <p>
+            Install SuttaCentral.net as an app and keep the texts you choose for
+            reading offline. Needs JavaScript and an up to date browser, and can
+            be unreliable to install.
+          </p>
         </li>
         <li>
-          SuttaCentral Express
-          <ul>
-            <li>
-              <a
-                href="https://codeberg.org/benmneb/suttacentral-static/releases/latest"
-              >
-                Archives and native apps
-              </a>
-            </li>
-          </ul>
+          <a href="/editions">
+            <Fragment set:html={heroicon.bookOpen} />
+            Editions
+          </a>
+          <p>
+            Whole books of translations, as ePub, PDF or HTML files, or in
+            print.
+          </p>
+        </li>
+      </ul>
+      <h2>SuttaCentral Express</h2>
+      <ul>
+        <li>
+          <a
+            href="https://codeberg.org/benmneb/suttacentral-static/releases/latest"
+          >
+            <Fragment set:html={heroicon.archiveBoxArrowDownMicro} />
+            Archives and native apps
+            <Fragment set:html={heroicon.arrowTopRightOnSquareMicro} />
+            <span class="sr-only">Codeberg</span>
+          </a>
+          <p>
+            This whole site as plain HTML to download, which works on any
+            computer or smartphone, plus apps to install.
+          </p>
         </li>
       </ul>
     </article>
   </main>
 </Layout>
+
+<style>
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li + li {
+    margin-top: 1rem;
+  }
+
+  /* Flex drops the markup's spaces, so the underline stops at the words */
+  a {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  a > :global(.icon:first-child) {
+    margin-inline-end: 0.375rem;
+  }
+
+  a > :global(.icon:not(:first-child)) {
+    margin-inline-start: 0.25em;
+  }
+
+  p {
+    margin: 0;
+    padding-inline-start: calc(1em + 0.375rem);
+    color: var(--text-color-secondary);
+  }
+</style>
