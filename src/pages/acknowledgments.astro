@@ -708,3 +708,23 @@ const crumbsData = [{ title }]
     </article>
   </main>
 </Layout>
+
+<style>
+  /* :global, as the parser adds the tbody */
+  @media (max-width: 30em) {
+    table,
+    table > :global(tbody),
+    tr,
+    td {
+      display: block;
+    }
+
+    td:first-child {
+      padding-bottom: 0;
+    }
+
+    td:not(:first-child) {
+      padding-top: 0.25em;
+    }
+  }
+</style>
