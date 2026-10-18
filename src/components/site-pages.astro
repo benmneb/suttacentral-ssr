@@ -1,6 +1,6 @@
 ---
 import * as heroicon from '~/constants/heroicons'
-import { siteMap } from '~/constants/static-pages'
+import { pageIcons, siteMap } from '~/constants/static-pages'
 import { t } from '~/i18n'
 import { getPreferredLanguage } from '~/utils/language'
 
@@ -8,36 +8,6 @@ const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = getPreferredLanguage(acceptLanguage)
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '')
-
-/** Each page's icon, as .net's more menu has, by its path */
-const icons: Record<string, string> = {
-  '/introduction': heroicon.lightBulbMicro,
-  '/start': heroicon.flagMicro,
-  'https://suttacentral.net/donations': heroicon.heartMicro,
-  '/map': heroicon.mapMicro,
-  '/offline': heroicon.boltMicro,
-  '/editions': heroicon.bookOpen,
-  '/general-guide-sujato': heroicon.academicCapMicro,
-  '/dn-guide-sujato': heroicon.academicCapMicro,
-  '/mn-guide-sujato': heroicon.academicCapMicro,
-  '/sn-guide-sujato': heroicon.academicCapMicro,
-  '/an-guide-sujato': heroicon.academicCapMicro,
-  '/discourses-guide-sujato': heroicon.documentTextMicro,
-  '/vinaya-guide-brahmali': heroicon.documentTextMicro,
-  '/abhidhamma-guide-sujato': heroicon.documentTextMicro,
-  '/pali-tipitaka': heroicon.documentTextMicro,
-  '/subjects': heroicon.tagMicro,
-  '/similes': heroicon.sparklesMicro,
-  '/names': heroicon.identificationMicro,
-  '/terminology': heroicon.chatBubbleBottomCenterTextMicro,
-  '/languages': heroicon.languageMicro,
-  '/numbering': heroicon.numberedListMicro,
-  '/abbreviations': heroicon.scissorsMicro,
-  '/methodology': heroicon.beakerMicro,
-  '/acknowledgments': heroicon.usersMicro,
-  '/licensing': heroicon.scaleMicro,
-  '/about': heroicon.informationCircleMicro,
-}
 ---
 
 <nav
@@ -54,14 +24,14 @@ const icons: Record<string, string> = {
             currentPath === href ? (
               <li>
                 <span aria-current="page">
-                  <Fragment set:html={icons[href]} />
+                  <Fragment set:html={pageIcons[href]} />
                   {t(userLanguage, label)}
                 </span>
               </li>
             ) : href.startsWith('https://') ? (
               <li>
                 <a href={href}>
-                  <Fragment set:html={icons[href]} />
+                  <Fragment set:html={pageIcons[href]} />
                   {t(userLanguage, label)}
                   <Fragment set:html={heroicon.arrowTopRightOnSquareMicro} />
                   <span class="sr-only">SuttaCentral.net</span>
@@ -70,7 +40,7 @@ const icons: Record<string, string> = {
             ) : (
               <li>
                 <a href={href}>
-                  <Fragment set:html={icons[href]} />
+                  <Fragment set:html={pageIcons[href]} />
                   {t(userLanguage, label)}
                 </a>
               </li>

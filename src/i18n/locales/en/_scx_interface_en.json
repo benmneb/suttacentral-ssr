@@ -7,5 +7,7 @@
   "interface:pagesEssays": "Essays",
   "interface:pagesIndexes": "Indexes",
   "interface:pagesReference": "Reference",
-  "interface:pagesAbout": "About"
+  "interface:pagesAbout": "About",
+  "interface:furtherReading": "Further reading",
+  "interface:suttaCentralEdition": "A SuttaCentral Edition available in print and multiple digital formats for offline reading"
 }

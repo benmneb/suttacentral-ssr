@@ -1,7 +1,9 @@
 ---
+import FurtherReading from '~/components/further-reading.astro'
 import TextMetaContent from '~/components/text-meta-content.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
+import { fetchEditions } from '~/utils/editions'
 import { generateChapterJsonLd, generateTextMetaJsonLd } from '~/utils/json-ld'
 import { getPreferredLanguage } from '~/utils/language'
 import {
@@ -64,9 +66,10 @@ if (
   return Astro.redirect(ownCrumb.url, 302)
 }
 
-let [suttaplexData, siblings] = await Promise.all([
+let [suttaplexData, siblings, editions] = await Promise.all([
   suttaplexPromise.then(r => r.json()),
   fetchSiblings(),
+  fetchEditions([lowerChapter], userLanguage),
 ])
 let isIndividualRangeSutta = false
 
@@ -143,7 +146,7 @@ const jsonLd =
   <main>
     <ol>
       {
-        (isPatimokkha ? [suttaplexData[0]] : suttaplexData).map(entry => (
+        (isPatimokkha ? [suttaplexData[0]] : suttaplexData).map((entry, i) => (
           <li
             class={
               (suttaplexData.length > 1 && entry.type === 'leaf') ||
@@ -160,6 +163,13 @@ const jsonLd =
               lazyParallels={isList}
               parallelsId={isList ? undefined : 'parallels'}
             />
+            {i === 0 && (
+              <FurtherReading
+                uid={lowerChapter}
+                edition={editions.get(lowerChapter!)}
+                userLanguage={userLanguage}
+              />
+            )}
           </li>
         ))
       }

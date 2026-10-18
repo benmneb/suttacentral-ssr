@@ -1,3 +1,5 @@
+import * as heroicon from '~/constants/heroicons'
+
 /** A static page's path and the translation key of its link text */
 export interface StaticPage {
   href: string
@@ -84,4 +86,35 @@ export const pitakaGuides: Record<string, StaticPage[]> = {
     { href: '/an-guide-sujato', label: 'an-guide-sujato' },
     { href: '/an-introduction-bodhi', label: 'an-introduction-bodhi' },
   ],
+}
+
+/** Each page's icon by its path, as in .net's more menu, for any link to it */
+export const pageIcons: Record<string, string> = {
+  '/introduction': heroicon.lightBulbMicro,
+  '/start': heroicon.flagMicro,
+  'https://suttacentral.net/donations': heroicon.heartMicro,
+  '/map': heroicon.mapMicro,
+  '/offline': heroicon.boltMicro,
+  '/editions': heroicon.bookOpen,
+  '/general-guide-sujato': heroicon.academicCapMicro,
+  '/dn-guide-sujato': heroicon.academicCapMicro,
+  '/mn-guide-sujato': heroicon.academicCapMicro,
+  '/sn-guide-sujato': heroicon.academicCapMicro,
+  '/an-guide-sujato': heroicon.academicCapMicro,
+  '/an-introduction-bodhi': heroicon.academicCapMicro,
+  '/discourses-guide-sujato': heroicon.documentTextMicro,
+  '/vinaya-guide-brahmali': heroicon.documentTextMicro,
+  '/abhidhamma-guide-sujato': heroicon.documentTextMicro,
+  '/pali-tipitaka': heroicon.documentTextMicro,
+  '/subjects': heroicon.tagMicro,
+  '/similes': heroicon.sparklesMicro,
+  '/names': heroicon.identificationMicro,
+  '/terminology': heroicon.chatBubbleBottomCenterTextMicro,
+  '/languages': heroicon.languageMicro,
+  '/numbering': heroicon.numberedListMicro,
+  '/abbreviations': heroicon.scissorsMicro,
+  '/methodology': heroicon.beakerMicro,
+  '/acknowledgments': heroicon.usersMicro,
+  '/licensing': heroicon.scaleMicro,
+  '/about': heroicon.informationCircleMicro,
 }
