@@ -1968,13 +1968,18 @@ const jsonLd = generateTextJsonLd(
     el.classList.add('pressed')
   }
 
-  // Off once done, as the menu showing again would play it again, and a
-  // pressed stop keeps the controls up
+  // A cancel comes after a quick second press has already started it over
   for (const id of Object.values(LISTEN_CONTROLS)) {
     for (const type of ['animationend', 'animationcancel'] as const) {
       document.getElementById(id)?.addEventListener(type, e => {
-        if (e.animationName === 'key-press')
-          (e.currentTarget as HTMLElement).classList.remove('pressed')
+        const el = e.currentTarget as HTMLElement
+        if (e.animationName !== 'key-press') return
+        const running = el
+          .getAnimations?.()
+          .some(
+            a => a instanceof CSSAnimation && a.animationName === 'key-press'
+          )
+        if (!running) el.classList.remove('pressed')
       })
     }
   }
