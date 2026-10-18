@@ -9,5 +9,6 @@
   "interface:pagesReference": "Nachschlagen",
   "interface:pagesAbout": "Über uns",
   "interface:furtherReading": "Weiterführende Lektüre",
-  "interface:suttaCentralEdition": "Eine SuttaCentral-Edition, gedruckt und in mehreren digitalen Formaten zum Offline-Lesen erhältlich"
+  "interface:suttaCentralEdition": "Eine SuttaCentral-Edition, gedruckt und in mehreren digitalen Formaten zum Offline-Lesen erhältlich",
+  "interface:translationCount": "Übersetzungen ({language}): {count}"
 }

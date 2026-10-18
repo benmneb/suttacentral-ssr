@@ -9,5 +9,6 @@
   "interface:pagesReference": "参考",
   "interface:pagesAbout": "关于",
   "interface:furtherReading": "延伸阅读",
-  "interface:suttaCentralEdition": "SuttaCentral 版本，提供印刷版及多种可离线阅读的数字格式"
+  "interface:suttaCentralEdition": "SuttaCentral 版本，提供印刷版及多种可离线阅读的数字格式",
+  "interface:translationCount": "翻译（{language}）：{count}"
 }

@@ -61,7 +61,7 @@ const linkText = t(userLanguage, 'viewoption:parallelsOf', {
       <ul>
         <li>
           <a class="with-icon" href={`/${entry.uid}#parallels`}>
-            {linkText}
+            <span>{linkText}</span>
             <Fragment set:html={heroicon.arrowRight} />
           </a>
         </li>

@@ -9,5 +9,6 @@
   "interface:pagesReference": "Priročnik",
   "interface:pagesAbout": "O projektu",
   "interface:furtherReading": "Nadaljnje branje",
-  "interface:suttaCentralEdition": "Izdaja SuttaCentral, na voljo v tiskani obliki in v več digitalnih oblikah za branje brez povezave"
+  "interface:suttaCentralEdition": "Izdaja SuttaCentral, na voljo v tiskani obliki in v več digitalnih oblikah za branje brez povezave",
+  "interface:translationCount": "Prevodi ({language}): {count}"
 }

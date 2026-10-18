@@ -9,5 +9,6 @@
   "interface:pagesReference": "संदर्भ",
   "interface:pagesAbout": "आमच्याबद्दल",
   "interface:furtherReading": "पुढील वाचन",
-  "interface:suttaCentralEdition": "छापील स्वरूपात आणि ऑफलाइन वाचनासाठी अनेक डिजिटल स्वरूपांमध्ये उपलब्ध असलेली SuttaCentral आवृत्ती"
+  "interface:suttaCentralEdition": "छापील स्वरूपात आणि ऑफलाइन वाचनासाठी अनेक डिजिटल स्वरूपांमध्ये उपलब्ध असलेली SuttaCentral आवृत्ती",
+  "interface:translationCount": "भाषांतरे ({language}): {count}"
 }

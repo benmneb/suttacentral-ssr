@@ -9,5 +9,6 @@
   "interface:pagesReference": "Reference",
   "interface:pagesAbout": "O projektu",
   "interface:furtherReading": "Další četba",
-  "interface:suttaCentralEdition": "Edice SuttaCentral dostupná v tištěné podobě a v několika digitálních formátech pro čtení offline"
+  "interface:suttaCentralEdition": "Edice SuttaCentral dostupná v tištěné podobě a v několika digitálních formátech pro čtení offline",
+  "interface:translationCount": "Překlady ({language}): {count}"
 }

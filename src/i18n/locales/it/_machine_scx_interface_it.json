@@ -9,5 +9,6 @@
   "interface:pagesReference": "Riferimenti",
   "interface:pagesAbout": "Informazioni",
   "interface:furtherReading": "Letture di approfondimento",
-  "interface:suttaCentralEdition": "Un'edizione SuttaCentral disponibile in versione cartacea e in diversi formati digitali per la lettura offline"
+  "interface:suttaCentralEdition": "Un'edizione SuttaCentral disponibile in versione cartacea e in diversi formati digitali per la lettura offline",
+  "interface:translationCount": "Traduzioni ({language}): {count}"
 }

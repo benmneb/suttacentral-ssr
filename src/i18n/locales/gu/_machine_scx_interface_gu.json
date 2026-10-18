@@ -9,5 +9,6 @@
   "interface:pagesReference": "સંદર્ભ",
   "interface:pagesAbout": "અમારા વિશે",
   "interface:furtherReading": "વધુ વાંચન",
-  "interface:suttaCentralEdition": "SuttaCentral આવૃત્તિ, મુદ્રિત સ્વરૂપે અને ઑફલાઇન વાંચન માટે અનેક ડિજિટલ ફોર્મેટમાં ઉપલબ્ધ"
+  "interface:suttaCentralEdition": "SuttaCentral આવૃત્તિ, મુદ્રિત સ્વરૂપે અને ઑફલાઇન વાંચન માટે અનેક ડિજિટલ ફોર્મેટમાં ઉપલબ્ધ",
+  "interface:translationCount": "અનુવાદો ({language}): {count}"
 }

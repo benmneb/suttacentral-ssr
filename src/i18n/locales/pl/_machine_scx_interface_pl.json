@@ -9,5 +9,6 @@
   "interface:pagesReference": "Materiały pomocnicze",
   "interface:pagesAbout": "O nas",
   "interface:furtherReading": "Dalsza lektura",
-  "interface:suttaCentralEdition": "Wydanie SuttaCentral dostępne w druku i w kilku formatach cyfrowych do czytania offline"
+  "interface:suttaCentralEdition": "Wydanie SuttaCentral dostępne w druku i w kilku formatach cyfrowych do czytania offline",
+  "interface:translationCount": "Tłumaczenia ({language}): {count}"
 }

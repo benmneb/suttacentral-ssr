@@ -283,8 +283,10 @@ const pageHits =
                           </dl>
                           <p>
                             <a class="with-icon" href={hit.url}>
-                              {t(userLanguage, 'search:all')}{' '}
-                              {t(userLanguage, 'search:dictionaries')}
+                              <span>
+                                {t(userLanguage, 'search:all')}{' '}
+                                {t(userLanguage, 'search:dictionaries')}
+                              </span>
                               <Fragment set:html={heroicon.arrowRight} />
                             </a>
                           </p>
@@ -366,7 +368,7 @@ const pageHits =
                   )}
                   <button class="with-icon" type="submit">
                     <Fragment set:html={heroicon.arrowLeft} />
-                    {t(userLanguage, 'interface:previous')}
+                    <span>{t(userLanguage, 'interface:previous')}</span>
                   </button>
                 </form>
               )}
@@ -380,7 +382,7 @@ const pageHits =
                     <input type="hidden" name="matchpartial" value="true" />
                   )}
                   <button class="with-icon" type="submit">
-                    {t(userLanguage, 'interface:next')}
+                    <span>{t(userLanguage, 'interface:next')}</span>
                     <Fragment set:html={heroicon.arrowRight} />
                   </button>
                 </form>
@@ -510,6 +512,12 @@ const pageHits =
         ul ul {
           display: flex;
           flex-wrap: wrap;
+
+          /* Flex, so the space after the link is not set before the ∙ */
+          li {
+            display: flex;
+            align-items: baseline;
+          }
 
           li:not(:last-child)::after {
             content: '∙';

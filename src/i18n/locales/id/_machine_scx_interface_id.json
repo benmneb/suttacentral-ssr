@@ -9,5 +9,6 @@
   "interface:pagesReference": "Referensi",
   "interface:pagesAbout": "Tentang",
   "interface:furtherReading": "Bacaan lanjutan",
-  "interface:suttaCentralEdition": "Edisi SuttaCentral yang tersedia dalam versi cetak dan berbagai format digital untuk dibaca secara luring"
+  "interface:suttaCentralEdition": "Edisi SuttaCentral yang tersedia dalam versi cetak dan berbagai format digital untuk dibaca secara luring",
+  "interface:translationCount": "Terjemahan ({language}): {count}"
 }

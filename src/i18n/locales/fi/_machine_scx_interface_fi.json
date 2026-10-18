@@ -9,5 +9,6 @@
   "interface:pagesReference": "Viitetiedot",
   "interface:pagesAbout": "Tietoa",
   "interface:furtherReading": "Lisälukemista",
-  "interface:suttaCentralEdition": "SuttaCentral-laitos, saatavilla painettuna ja useissa digitaalisissa muodoissa offline-lukemista varten"
+  "interface:suttaCentralEdition": "SuttaCentral-laitos, saatavilla painettuna ja useissa digitaalisissa muodoissa offline-lukemista varten",
+  "interface:translationCount": "Käännökset ({language}): {count}"
 }

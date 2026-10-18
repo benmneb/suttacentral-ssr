@@ -9,5 +9,6 @@
   "interface:pagesReference": "Tham khảo",
   "interface:pagesAbout": "Giới thiệu",
   "interface:furtherReading": "Đọc thêm",
-  "interface:suttaCentralEdition": "Một ấn bản SuttaCentral có bản in và nhiều định dạng kỹ thuật số để đọc ngoại tuyến"
+  "interface:suttaCentralEdition": "Một ấn bản SuttaCentral có bản in và nhiều định dạng kỹ thuật số để đọc ngoại tuyến",
+  "interface:translationCount": "Bản dịch ({language}): {count}"
 }

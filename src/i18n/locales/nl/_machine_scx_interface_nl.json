@@ -9,5 +9,6 @@
   "interface:pagesReference": "Naslag",
   "interface:pagesAbout": "Over",
   "interface:furtherReading": "Verder lezen",
-  "interface:suttaCentralEdition": "Een SuttaCentral-editie, verkrijgbaar in druk en in meerdere digitale formaten om offline te lezen"
+  "interface:suttaCentralEdition": "Een SuttaCentral-editie, verkrijgbaar in druk en in meerdere digitale formaten om offline te lezen",
+  "interface:translationCount": "Vertalingen ({language}): {count}"
 }

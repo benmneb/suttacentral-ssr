@@ -9,5 +9,6 @@
   "interface:pagesReference": "Références",
   "interface:pagesAbout": "À propos",
   "interface:furtherReading": "Lectures complémentaires",
-  "interface:suttaCentralEdition": "Une édition SuttaCentral disponible en version imprimée et en plusieurs formats numériques pour une lecture hors ligne"
+  "interface:suttaCentralEdition": "Une édition SuttaCentral disponible en version imprimée et en plusieurs formats numériques pour une lecture hors ligne",
+  "interface:translationCount": "Traductions ({language}) : {count}"
 }

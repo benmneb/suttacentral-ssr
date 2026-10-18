@@ -9,5 +9,6 @@
   "interface:pagesReference": "Справка",
   "interface:pagesAbout": "О сайте",
   "interface:furtherReading": "Дополнительное чтение",
-  "interface:suttaCentralEdition": "Издание SuttaCentral, доступное в печатном виде и в нескольких цифровых форматах для чтения офлайн"
+  "interface:suttaCentralEdition": "Издание SuttaCentral, доступное в печатном виде и в нескольких цифровых форматах для чтения офлайн",
+  "interface:translationCount": "Переводы ({language}): {count}"
 }

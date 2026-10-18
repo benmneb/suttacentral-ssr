@@ -9,5 +9,6 @@
   "interface:pagesReference": "Referanse",
   "interface:pagesAbout": "Om",
   "interface:furtherReading": "Videre lesning",
-  "interface:suttaCentralEdition": "En SuttaCentral-utgave tilgjengelig på trykk og i flere digitale formater for lesing uten nett"
+  "interface:suttaCentralEdition": "En SuttaCentral-utgave tilgjengelig på trykk og i flere digitale formater for lesing uten nett",
+  "interface:translationCount": "Oversettelser ({language}): {count}"
 }

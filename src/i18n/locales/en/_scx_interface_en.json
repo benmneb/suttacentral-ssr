@@ -9,5 +9,6 @@
   "interface:pagesReference": "Reference",
   "interface:pagesAbout": "About",
   "interface:furtherReading": "Further reading",
-  "interface:suttaCentralEdition": "A SuttaCentral Edition available in print and multiple digital formats for offline reading"
+  "interface:suttaCentralEdition": "A SuttaCentral Edition available in print and multiple digital formats for offline reading",
+  "interface:translationCount": "{language} translations: {count}"
 }

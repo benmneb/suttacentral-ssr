@@ -9,5 +9,6 @@
   "interface:pagesReference": "ကိုးကားချက်များ",
   "interface:pagesAbout": "အကြောင်း",
   "interface:furtherReading": "ထပ်မံဖတ်ရှုရန်",
-  "interface:suttaCentralEdition": "ပုံနှိပ်စာအုပ်နှင့် အော့ဖ်လိုင်းဖတ်ရှုနိုင်သော ဒစ်ဂျစ်တယ်ပုံစံများစွာဖြင့် ရရှိနိုင်သော SuttaCentral ထုတ်ဝေမှု"
+  "interface:suttaCentralEdition": "ပုံနှိပ်စာအုပ်နှင့် အော့ဖ်လိုင်းဖတ်ရှုနိုင်သော ဒစ်ဂျစ်တယ်ပုံစံများစွာဖြင့် ရရှိနိုင်သော SuttaCentral ထုတ်ဝေမှု",
+  "interface:translationCount": "ဘာသာပြန်များ ({language}): {count}"
 }

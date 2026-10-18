@@ -50,8 +50,17 @@ const volpages = [
   ),
 ]
 
-const alignedHTML = `<span title="${t(userLanguage, 'suttaplex:aligned')}: ${t(userLanguage, 'suttaplex:alignedDescription')}" role="icon">${heroicon.link}</span>`
-const annotatedHTML = `<span title="${t(userLanguage, 'suttaplex:annotated')}: ${t(userLanguage, 'suttaplex:annotatedDescription')}" role="icon">${heroicon.pencilSquare}</span>`
+function iconHTML(label: string, icon: string) {
+  return `<span title="${label}" role="img" aria-label="${label}">${icon}</span>`
+}
+const alignedHTML = iconHTML(
+  `${t(userLanguage, 'suttaplex:aligned')}: ${t(userLanguage, 'suttaplex:alignedDescription')}`,
+  heroicon.link
+)
+const annotatedHTML = iconHTML(
+  `${t(userLanguage, 'suttaplex:annotated')}: ${t(userLanguage, 'suttaplex:annotatedDescription')}`,
+  heroicon.pencilSquare
+)
 
 function translationHref(translation) {
   const uid =
@@ -97,7 +106,7 @@ function printIconsHTML(translation) {
           {entry.acronym.trim()}
           {volpages.map(v => (
             <span class="volpages">
-              <span>∙</span>
+              <span aria-hidden="true">∙</span>
               <span title={t(userLanguage, 'suttaplex:volumeAndPage')}>
                 {v}
               </span>

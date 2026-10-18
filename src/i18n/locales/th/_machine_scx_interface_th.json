@@ -9,5 +9,6 @@
   "interface:pagesReference": "ข้อมูลอ้างอิง",
   "interface:pagesAbout": "เกี่ยวกับ",
   "interface:furtherReading": "อ่านเพิ่มเติม",
-  "interface:suttaCentralEdition": "ฉบับ SuttaCentral ที่มีทั้งฉบับพิมพ์และรูปแบบดิจิทัลหลายรูปแบบสำหรับอ่านแบบออฟไลน์"
+  "interface:suttaCentralEdition": "ฉบับ SuttaCentral ที่มีทั้งฉบับพิมพ์และรูปแบบดิจิทัลหลายรูปแบบสำหรับอ่านแบบออฟไลน์",
+  "interface:translationCount": "คำแปล ({language}): {count}"
 }
