@@ -282,9 +282,10 @@ const pageHits =
                             )}
                           </dl>
                           <p>
-                            <a href={hit.url}>
+                            <a class="with-icon" href={hit.url}>
                               {t(userLanguage, 'search:all')}{' '}
-                              {t(userLanguage, 'search:dictionaries')} →
+                              {t(userLanguage, 'search:dictionaries')}
+                              <Fragment set:html={heroicon.arrowRight} />
                             </a>
                           </p>
                         </li>
@@ -363,8 +364,9 @@ const pageHits =
                   {matchPartial && (
                     <input type="hidden" name="matchpartial" value="true" />
                   )}
-                  <button type="submit">
-                    ← {t(userLanguage, 'interface:previous')}
+                  <button class="with-icon" type="submit">
+                    <Fragment set:html={heroicon.arrowLeft} />
+                    {t(userLanguage, 'interface:previous')}
                   </button>
                 </form>
               )}
@@ -377,8 +379,9 @@ const pageHits =
                   {matchPartial && (
                     <input type="hidden" name="matchpartial" value="true" />
                   )}
-                  <button type="submit">
-                    {t(userLanguage, 'interface:next')} →
+                  <button class="with-icon" type="submit">
+                    {t(userLanguage, 'interface:next')}
+                    <Fragment set:html={heroicon.arrowRight} />
                   </button>
                 </form>
               )}

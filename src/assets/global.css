@@ -42,6 +42,20 @@ button {
   }
 }
 
+/* Flex drops the markup's spaces, so the underline stops at the words */
+.with-icon {
+  display: inline-flex;
+  align-items: center;
+
+  > .icon:not(:first-child) {
+    margin-inline-start: 0.25em;
+  }
+
+  > .icon:not(:last-child) {
+    margin-inline-end: 0.25em;
+  }
+}
+
 h1 {
   text-wrap: balance;
 }

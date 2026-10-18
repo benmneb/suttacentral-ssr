@@ -157,8 +157,10 @@ if (term) {
           >
         </form>
         <p>
-          <a href="/terminology">{t(userLanguage, 'interface:terminology')} →</a
-          >
+          <a class="with-icon" href="/terminology">
+            {t(userLanguage, 'interface:terminology')}
+            <Fragment set:html={heroicon.arrowRight} />
+          </a>
         </p>
         {
           !!adjacentData?.[0].length && !!dictionaryData.length && (

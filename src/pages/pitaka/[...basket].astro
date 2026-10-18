@@ -1,6 +1,7 @@
 ---
 import FurtherReading from '~/components/further-reading.astro'
 import RootTitle from '~/components/root-title.astro'
+import * as heroicon from '~/constants/heroicons'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { fetchEditions } from '~/utils/editions'
@@ -74,10 +75,7 @@ function cardDetails(child: any) {
   const translated =
     child.yellow_brick_road &&
     `${numberFormat.format(child.yellow_brick_road_count)} ${userLanguageName}`
-  const languages = [child.root_lang_name, translated]
-    .filter(Boolean)
-    .join('\u2002→\u2002')
-  return [child.child_range, languages].filter(Boolean).join('  ∙  ')
+  return { range: child.child_range, root: child.root_lang_name, translated }
 }
 ---
 
@@ -99,8 +97,9 @@ function cardDetails(child: any) {
     {
       shortcutsData?.[0]?.shortcuts?.includes(uid) && (
         <p>
-          <a href={`/${uid}`}>
-            {t(userLanguage, 'interface:shortcutToFullList')} →
+          <a class="with-icon" href={`/${uid}`}>
+            {t(userLanguage, 'interface:shortcutToFullList')}
+            <Fragment set:html={heroicon.arrowRight} />
           </a>
         </p>
       )
@@ -112,34 +111,50 @@ function cardDetails(child: any) {
     />
     <ol>
       {
-        menuData.children.map(child => (
-          <li>
-            <hgroup>
-              <h2>
-                <RootTitle
-                  root={child.root_name}
-                  translation={child.translated_name}
-                  lang={child.root_lang_iso}
-                  href={child._scx_href ?? `${menuData.uid}/${child.uid}`}
-                />
-              </h2>
-              {!!cardDetails(child) && <p>{cardDetails(child)}</p>}
-            </hgroup>
-            {!!child.blurb && <p set:html={child.blurb} />}
-            {shortcutsData?.[0]?.shortcuts?.includes(child.uid) && (
-              <p>
-                <a href={`/${child.uid}`}>
-                  {t(userLanguage, 'interface:shortcutToFullList')} →
-                </a>
-              </p>
-            )}
-            <FurtherReading
-              uid={child.uid}
-              edition={editions.get(child.uid)}
-              userLanguage={userLanguage}
-            />
-          </li>
-        ))
+        menuData.children.map(child => {
+          const { range, root, translated } = cardDetails(child)
+          return (
+            <li>
+              <hgroup>
+                <h2>
+                  <RootTitle
+                    root={child.root_name}
+                    translation={child.translated_name}
+                    lang={child.root_lang_iso}
+                    href={child._scx_href ?? `${menuData.uid}/${child.uid}`}
+                  />
+                </h2>
+                {(!!range || !!root || !!translated) && (
+                  <p class="card-details">
+                    {!!range && <span class="range">{range}</span>}
+                    {!!root && <span>{root}</span>}
+                    {!!root && !!translated && (
+                      <>
+                        <Fragment set:html={heroicon.arrowRight} />
+                        <span class="sr-only">→</span>
+                      </>
+                    )}
+                    {!!translated && <span>{translated}</span>}
+                  </p>
+                )}
+              </hgroup>
+              {!!child.blurb && <p set:html={child.blurb} />}
+              {shortcutsData?.[0]?.shortcuts?.includes(child.uid) && (
+                <p>
+                  <a class="with-icon" href={`/${child.uid}`}>
+                    {t(userLanguage, 'interface:shortcutToFullList')}
+                    <Fragment set:html={heroicon.arrowRight} />
+                  </a>
+                </p>
+              )}
+              <FurtherReading
+                uid={child.uid}
+                edition={editions.get(child.uid)}
+                userLanguage={userLanguage}
+              />
+            </li>
+          )
+        })
       }
     </ol>
   </main>
@@ -158,8 +173,22 @@ function cardDetails(child: any) {
     p {
       margin-top: 0;
       color: var(--text-color-secondary);
-      /* Keeps the wider gaps around the ∙ */
-      white-space: pre-wrap;
+    }
+  }
+
+  .card-details {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    .range:not(:last-child)::after {
+      content: '∙';
+      content: '∙' / '';
+      margin-inline: 0.5em;
+    }
+
+    > :global(.icon) {
+      margin-inline: 0.5em;
     }
   }
 </style>
