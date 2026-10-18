@@ -46,3 +46,22 @@ dt {
   padding: 1em 2em;
   border-radius: var(--rounding);
 }
+
+/* 11rem past the 600px column, plus a classic scrollbar */
+@media (min-width: 1024px) {
+  nav.contents {
+    float: right;
+    position: sticky;
+    top: 1rem;
+    width: 9rem;
+    margin-right: -11rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+
+    .entry-list {
+      gap: 0.25rem 0.75rem;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
