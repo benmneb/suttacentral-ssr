@@ -99,12 +99,13 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '')
   }
 
   ul {
-    list-style: none;
     margin: 0;
     padding: 0;
   }
 
+  /* On the items, as text.css gives list items in a section bullets back */
   li {
+    list-style: none;
     padding: 0.125rem 0;
     overflow-wrap: anywhere;
   }
