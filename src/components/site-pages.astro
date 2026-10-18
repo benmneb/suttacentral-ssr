@@ -8,6 +8,36 @@ const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = getPreferredLanguage(acceptLanguage)
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '')
+
+/** Each page's icon, as .net's more menu has, by its path */
+const icons: Record<string, string> = {
+  '/introduction': heroicon.lightBulbMicro,
+  '/start': heroicon.flagMicro,
+  'https://suttacentral.net/donations': heroicon.heartMicro,
+  '/map': heroicon.mapMicro,
+  '/offline': heroicon.boltMicro,
+  '/editions': heroicon.bookOpen,
+  '/general-guide-sujato': heroicon.academicCapMicro,
+  '/dn-guide-sujato': heroicon.academicCapMicro,
+  '/mn-guide-sujato': heroicon.academicCapMicro,
+  '/sn-guide-sujato': heroicon.academicCapMicro,
+  '/an-guide-sujato': heroicon.academicCapMicro,
+  '/discourses-guide-sujato': heroicon.documentTextMicro,
+  '/vinaya-guide-brahmali': heroicon.documentTextMicro,
+  '/abhidhamma-guide-sujato': heroicon.documentTextMicro,
+  '/pali-tipitaka': heroicon.documentTextMicro,
+  '/subjects': heroicon.tagMicro,
+  '/similes': heroicon.sparklesMicro,
+  '/names': heroicon.identificationMicro,
+  '/terminology': heroicon.chatBubbleBottomCenterTextMicro,
+  '/languages': heroicon.languageMicro,
+  '/numbering': heroicon.numberedListMicro,
+  '/abbreviations': heroicon.scissorsMicro,
+  '/methodology': heroicon.beakerMicro,
+  '/acknowledgments': heroicon.usersMicro,
+  '/licensing': heroicon.scaleMicro,
+  '/about': heroicon.informationCircleMicro,
+}
 ---
 
 <nav
@@ -23,11 +53,15 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '')
           {pages.map(({ href, label }) =>
             currentPath === href ? (
               <li>
-                <span aria-current="page">{t(userLanguage, label)}</span>
+                <span aria-current="page">
+                  <Fragment set:html={icons[href]} />
+                  {t(userLanguage, label)}
+                </span>
               </li>
             ) : href.startsWith('https://') ? (
               <li>
                 <a href={href}>
+                  <Fragment set:html={icons[href]} />
                   {t(userLanguage, label)}
                   <Fragment set:html={heroicon.arrowTopRightOnSquareMicro} />
                   <span class="sr-only">SuttaCentral.net</span>
@@ -35,7 +69,10 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '')
               </li>
             ) : (
               <li>
-                <a href={href}>{t(userLanguage, label)}</a>
+                <a href={href}>
+                  <Fragment set:html={icons[href]} />
+                  {t(userLanguage, label)}
+                </a>
               </li>
             )
           )}
@@ -47,20 +84,17 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '')
 
 <style>
   /* Keep these styles inline so they're scoped */
-  /* Dropped from the menu button at the top right, wide enough for three
-     columns of groups. Border box, so its padding stays inside the gutters
-     on a phone. Its height fits its content and its rows start at the top:
-     Safari otherwise grows the popover, then stretches the rows to fill it,
-     leaving space under each group */
+  /* fit-content, else Safari stretches the rows to fill the popover */
   nav {
-    grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(9.75rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(9.75rem, 100%), 1fr));
     align-content: start;
     gap: 1rem;
     height: fit-content;
     box-sizing: border-box;
     inset: 2.75rem 1rem auto auto;
     margin: 0;
-    max-width: min(30rem, 100vw - 2rem);
+    max-width: min(34rem, 100vw - 2rem);
 
     section {
       height: fit-content;
@@ -104,15 +138,25 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '')
 
   li {
     padding: 0.125rem 0;
+    overflow-wrap: anywhere;
   }
 
   /* Flex drops the markup's spaces, so the underline stops at the words */
-  a {
+  a,
+  [aria-current='page'] {
     display: inline-flex;
     align-items: center;
   }
 
-  a > :global(.icon) {
+  a > :global(.icon:first-child),
+  [aria-current='page'] > :global(.icon:first-child) {
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: calc((1lh - 1em) / 2);
+    margin-inline-end: 0.375rem;
+  }
+
+  a > :global(.icon:not(:first-child)) {
     margin-inline-start: 0.25em;
   }
 
