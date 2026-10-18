@@ -62,3 +62,16 @@ pnpm sync-i18n
 To skip syncing a file that's intentionally modified locally, comment it out in the `FILE_BASES` array at the top of [scripts/sync-i18n.ts](scripts/sync-i18n.ts).
 
 The script applies `TRANSFORMATIONS` to all fetched data before comparing or writing — these normalize intentional local differences so they don't appear as changes on every sync.
+
+The interface language is `Astro.locals.userLanguage`, set once per request in [src/middleware.ts](src/middleware.ts): `?lang=` if it names a language in `src/i18n/locales/`, otherwise the first `Accept-Language`. Read it from there rather than calling `getPreferredLanguage` again.
+
+---
+
+## View Settings & Redirect Links
+
+.net links carry the reader's view settings in the query, e.g. `/mn1/en/sujato?lang=en&layout=sidebyside&reference=main/pts&notes=asterisk&highlight=true&script=latin`. They're honoured here too, so a shared .net link (or one redirected here from .net) opens as it was sent. As on .net, they apply to that page only and are never saved over the reader's own settings. Internal links are built from paths alone, so the next page is back to the reader's settings and language. That's on purpose: the feature is for links, not for browsing.
+
+- [`src/utils/url-prefs.ts`](src/utils/url-prefs.ts) maps `layout`, `notes`, `highlight` and `reference` onto the `viewPrefs` checkboxes. The values are .net's, from `_setTextViewState` in its `sc-text-bilara.js`. `script` has no equivalent here, and invalid values are ignored.
+- The text page merges these over the cookie before rendering, so it works without JS. Each checkbox a param set is marked `data-from-url="<param>"`, so the prefs script neither saves it nor puts the cookie's value back over it.
+- When the reader changes one of those checkboxes, the whole param becomes theirs: every checkbox it set is saved, and the param is removed from the address with `history.replaceState`, so a reload shows what they chose.
+- `<link rel="canonical">` drops the query, so settings links aren't separate pages. `og:url` keeps it, so shared links keep their settings.

@@ -4,12 +4,10 @@ import '~/assets/matter.css'
 import { collectionURL } from '~/constants/edition'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
-import { getPreferredLanguage } from '~/utils/language'
 import { toSentenceCase } from '~/utils/strings'
 
 const [uid, lang, author, matter] = Astro.params.book?.split('/') || []
-const acceptLanguage = Astro.request.headers.get('accept-language')
-const userLanguage = getPreferredLanguage(acceptLanguage)
+const userLanguage = Astro.locals.userLanguage
 
 if (!uid || !lang || !author) {
   return Astro.redirect('/editions')

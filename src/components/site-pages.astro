@@ -2,10 +2,8 @@
 import * as heroicon from '~/constants/heroicons'
 import { pageIcons, siteMap } from '~/constants/static-pages'
 import { t } from '~/i18n'
-import { getPreferredLanguage } from '~/utils/language'
 
-const acceptLanguage = Astro.request.headers.get('accept-language')
-const userLanguage = getPreferredLanguage(acceptLanguage)
+const userLanguage = Astro.locals.userLanguage
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '')
 ---

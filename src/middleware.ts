@@ -1,7 +1,7 @@
 // src/middleware.ts
 import { defineMiddleware } from 'astro:middleware'
 import { ISO_CODES, PITAKA_BASKETS } from '~/constants/iso-codes'
-import { loadLocale } from '~/i18n'
+import { hasLocale, loadLocale } from '~/i18n'
 import { getPreferredLanguage } from '~/utils/language'
 
 // Paths .net moved, so old links and bookmarks still land somewhere
@@ -53,6 +53,13 @@ function redirectTarget(path: string): string | null {
 export const onRequest = defineMiddleware(async (context, next) => {
   const startTime = performance.now()
 
+  // First, so even an error page has the ?lang= language
+  const langParam = context.url.searchParams.get('lang')?.toLowerCase()
+  context.locals.userLanguage =
+    langParam && hasLocale(langParam)
+      ? langParam
+      : getPreferredLanguage(context.request.headers.get('accept-language'))
+
   // Astro ignores trailing slashes, so the matching below does too
   const path = context.url.pathname.replace(/(.)\/$/, '$1')
   const target = redirectTarget(path)
@@ -71,10 +78,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
   // Pages translate as they render, so have the strings ready. English is
   // what `t` falls back to. The API has nothing to translate
   if (!path.startsWith('/api/')) {
-    const acceptLanguage = context.request.headers.get('accept-language')
     await Promise.all([
       loadLocale('en'),
-      loadLocale(getPreferredLanguage(acceptLanguage)),
+      loadLocale(context.locals.userLanguage),
     ])
   }
 

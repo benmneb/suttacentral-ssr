@@ -4,7 +4,6 @@ import { dictionaryTitles } from '~/constants/define'
 import * as heroicon from '~/constants/heroicons'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
-import { getPreferredLanguage } from '~/utils/language'
 
 // Handle form submissions: /define/?term=X → /define/X
 const queryTerm = Astro.url.searchParams.get('term')
@@ -13,8 +12,7 @@ if (queryTerm) {
 }
 
 const { term } = Astro.params
-const acceptLanguage = Astro.request.headers.get('accept-language')
-const userLanguage = getPreferredLanguage(acceptLanguage)
+const userLanguage = Astro.locals.userLanguage
 
 let dictionaryData = []
 let similarData = [[]]

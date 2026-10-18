@@ -1,14 +1,12 @@
 ---
 import ParallelSegments from '~/components/parallel-segments.astro'
-import { getPreferredLanguage } from '~/utils/language'
 import { parallelSegments } from '~/utils/parallels'
 
 // Just the list, for lazy-parallels to fetch into a card
 export const partial = true
 
 const { uid } = Astro.params
-const acceptLanguage = Astro.request.headers.get('accept-language')
-const userLanguage = getPreferredLanguage(acceptLanguage)
+const userLanguage = Astro.locals.userLanguage
 
 const lowerUid = uid?.toLowerCase()
 

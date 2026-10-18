@@ -3,5 +3,7 @@
 declare namespace App {
   interface Locals {
     renderTime: string
+    /** The interface language: ?lang= if it has translations, else Accept-Language */
+    userLanguage: string
   }
 }

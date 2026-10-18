@@ -50,6 +50,11 @@ for (const path of sortedPaths) {
 
 const loading = new Map<string, Promise<void>>()
 
+/** Whether there are translations for a locale, so it can be asked for */
+export function hasLocale(locale: string): boolean {
+  return Object.hasOwn(localePaths, locale)
+}
+
 /**
  * Loads a locale's translations, once per worker instance, so `t` can use them.
  * Unknown locales are ignored, and `t` falls back to English for them.
@@ -79,7 +84,7 @@ export function loadLocale(locale: string): Promise<void> {
  * @returns {string} The translated string, or the key itself if translation is not found.
  *
  * @example
- * const userLanguage = getPreferredLanguage(Astro.request.headers.get('accept-language'));
+ * const userLanguage = Astro.locals.userLanguage;
  * t(userLanguage, 'home:1');
  *
  *  * @example

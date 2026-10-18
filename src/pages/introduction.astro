@@ -3,10 +3,8 @@ import '~/assets/figure.css'
 import RelatedPages from '~/components/related-pages.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
-import { getPreferredLanguage } from '~/utils/language'
 
-const acceptLanguage = Astro.request.headers.get('accept-language')
-const userLanguage = getPreferredLanguage(acceptLanguage)
+const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'introduction:1')
 const crumbsData = [{ title }]

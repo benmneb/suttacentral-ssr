@@ -9,7 +9,6 @@ import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getViewPrefs } from '~/utils/cookies'
 import { generateTextJsonLd } from '~/utils/json-ld'
-import { getPreferredLanguage } from '~/utils/language'
 import {
   referenceEditionName,
   referenceEditions,
@@ -26,11 +25,18 @@ import {
   toSentenceCase,
   uidIsInRange,
 } from '~/utils/strings'
+import { getUrlViewPrefs } from '~/utils/url-prefs'
 
 const { text } = Astro.params
-const viewPrefs = getViewPrefs(Astro.cookies)
-const acceptLanguage = Astro.request.headers.get('accept-language')
-const userLanguage = getPreferredLanguage(acceptLanguage)
+// A .net link's settings win over the reader's for this page only
+const { prefs: urlPrefs, sources: urlSources } = getUrlViewPrefs(
+  Astro.url.searchParams
+)
+const viewPrefs = { ...getViewPrefs(Astro.cookies), ...urlPrefs }
+// So the prefs script leaves a setting the link chose out of the cookie
+const fromUrl = (id: string) =>
+  id in urlSources ? { 'data-from-url': urlSources[id] } : {}
+const userLanguage = Astro.locals.userLanguage
 
 const parts = text!.split('/') // will be a string like "dn1/en/sujato"
 if (parts.length !== 3) {
@@ -55,7 +61,9 @@ if (!suttasData.root_text && !suttasData.translation) {
     )
     const data = await response.json()
     if (data.root_text || data.translation) {
-      return Astro.redirect(`/${lowerAcronym}/${language}/${author}`)
+      return Astro.redirect(
+        `/${lowerAcronym}/${language}/${author}${Astro.url.search}`
+      )
     }
   }
 
@@ -65,7 +73,10 @@ if (!suttasData.root_text && !suttasData.translation) {
   // second, which is what tells them apart. A fallen leaf has nothing but its
   // suttaplex page, where .net sends these too; the rest take the 404 below
   if (suttasData.suttaplex?.uid) {
-    return Astro.redirect(`/${suttasData.suttaplex.uid}`, 301)
+    return Astro.redirect(
+      `/${suttasData.suttaplex.uid}${Astro.url.search}`,
+      301
+    )
   }
 
   Astro.response.status = 404
@@ -892,6 +903,7 @@ const jsonLd = generateTextJsonLd(
                     <input
                       type="checkbox"
                       id="commenter"
+                      {...fromUrl('commenter')}
                       checked={viewPrefs.commenter ?? true}
                       aria-controls="commenter-inline"
                     />
@@ -903,6 +915,7 @@ const jsonLd = generateTextJsonLd(
                     <input
                       type="checkbox"
                       id="commenter-inline"
+                      {...fromUrl('commenter-inline')}
                       checked={viewPrefs['commenter-inline'] ?? false}
                       aria-controls="commenter-side"
                     />
@@ -914,6 +927,7 @@ const jsonLd = generateTextJsonLd(
                     <input
                       type="checkbox"
                       id="commenter-side"
+                      {...fromUrl('commenter-side')}
                       checked={viewPrefs['commenter-side'] ?? false}
                     />
                   </li>
@@ -938,6 +952,7 @@ const jsonLd = generateTextJsonLd(
                     <input
                       type="checkbox"
                       id="rooter"
+                      {...fromUrl('rooter')}
                       checked={viewPrefs.rooter ?? false}
                       aria-controls={
                         availableLangs
@@ -953,6 +968,7 @@ const jsonLd = generateTextJsonLd(
                     <input
                       type="checkbox"
                       id="rooter-side"
+                      {...fromUrl('rooter-side')}
                       checked={viewPrefs['rooter-side'] ?? false}
                     />
                   </li>
@@ -1068,6 +1084,7 @@ const jsonLd = generateTextJsonLd(
                   <input
                     type="checkbox"
                     id="highlighter"
+                    {...fromUrl('highlighter')}
                     title={t(userLanguage, 'viewoption:showHighlighting')}
                     checked={viewPrefs.highlighter ?? false}
                   />
@@ -1113,6 +1130,7 @@ const jsonLd = generateTextJsonLd(
                   <input
                     type="checkbox"
                     id="segmenter"
+                    {...fromUrl('segmenter')}
                     checked={viewPrefs.segmenter ?? false}
                     aria-controls={
                       hasReferenceGroups
@@ -1145,6 +1163,7 @@ const jsonLd = generateTextJsonLd(
                   <input
                     type="checkbox"
                     id="segmenter-main"
+                    {...fromUrl('segmenter-main')}
                     title="SuttaCentral"
                     checked={viewPrefs['segmenter-main'] ?? true}
                   />
@@ -1168,6 +1187,7 @@ const jsonLd = generateTextJsonLd(
                   <input
                     type="checkbox"
                     id="segmenter-pts"
+                    {...fromUrl('segmenter-pts')}
                     title={referenceEditions.pts}
                     checked={viewPrefs['segmenter-pts'] ?? false}
                   />
@@ -1183,6 +1203,7 @@ const jsonLd = generateTextJsonLd(
                   <input
                     type="checkbox"
                     id="segmenter-others"
+                    {...fromUrl('segmenter-others')}
                     title={otherEditions}
                     checked={viewPrefs['segmenter-others'] ?? false}
                   />
@@ -1610,14 +1631,15 @@ const jsonLd = generateTextJsonLd(
   }
 
   /**
-   * Save current state of elements found on this page.
+   * Save current state of elements found on this page, but not those a
+   * link's query chose
    */
   function save() {
     const prefs = getCookiePrefs()
 
     IDS.forEach(id => {
       const el = document.getElementById(id)
-      if (!el) return
+      if (!el || 'fromUrl' in el.dataset) return
 
       if (el instanceof HTMLInputElement && el.type === 'checkbox') {
         prefs[id] = el.checked
@@ -1634,14 +1656,15 @@ const jsonLd = generateTextJsonLd(
   }
 
   /**
-   * Applies saved cookie prefs to all elements, overriding any stale server-rendered HTML
+   * Applies saved cookie prefs to all elements, overriding any stale server-rendered HTML.
+   * Except ones a link's query chose, which stand over the cookie on this page
    */
   function applyPrefs() {
     const prefs = getCookiePrefs()
     IDS.forEach(id => {
       if (!(id in prefs)) return
       const el = document.getElementById(id)
-      if (!el) return
+      if (!el || 'fromUrl' in el.dataset) return
       if (el instanceof HTMLInputElement && el.type === 'checkbox') {
         el.checked = Boolean(prefs[id])
       } else if (el instanceof HTMLInputElement && el.type === 'range') {
@@ -1651,11 +1674,25 @@ const jsonLd = generateTextJsonLd(
     applyVoice(prefs)
   }
 
+  /** A setting the link chose that the reader changes is theirs now */
+  function claimFromUrl(param) {
+    if (!param) return
+    document
+      .querySelectorAll<HTMLElement>(`[data-from-url="${param}"]`)
+      .forEach(el => delete el.dataset.fromUrl)
+    const url = new URL(location.href)
+    url.searchParams.delete(param)
+    history.replaceState(history.state, '', url)
+  }
+
   // Save immediately on any preference change via event delegation
   document.addEventListener('change', e => {
     if (!(e.target instanceof HTMLElement)) return
     if (e.target.id === 'voice-select') saveVoice()
-    else if (IDS.includes(e.target.id)) save()
+    else if (IDS.includes(e.target.id)) {
+      claimFromUrl(e.target.dataset.fromUrl)
+      save()
+    }
   })
   document.addEventListener('input', e => {
     if (

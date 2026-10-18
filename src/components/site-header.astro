@@ -1,13 +1,11 @@
 ---
 import * as heroicon from '~/constants/heroicons'
 import { t } from '~/i18n'
-import { getPreferredLanguage } from '~/utils/language'
 
 const { breadcrumbs } = Astro.props
 const pathname = Astro.url.pathname
 
-const acceptLanguage = Astro.request.headers.get('accept-language')
-const userLanguage = getPreferredLanguage(acceptLanguage)
+const userLanguage = Astro.locals.userLanguage
 
 function localiseTitle(title: string): string {
   if (!title) return ''

@@ -3,7 +3,6 @@ import SearchFilterContent from '~/components/search-filter-content.astro'
 import SearchOptionsContent from '~/components/search-options-content.astro'
 import * as heroicon from '~/constants/heroicons'
 import { t } from '~/i18n'
-import { getPreferredLanguage } from '~/utils/language'
 
 interface Props {
   matchPartial?: boolean
@@ -21,8 +20,7 @@ const {
 const pathname = Astro.url.pathname
 const isSearchPage = pathname.startsWith('/search')
 
-const acceptLanguage = Astro.request.headers.get('accept-language')
-const userLanguage = getPreferredLanguage(acceptLanguage)
+const userLanguage = Astro.locals.userLanguage
 ---
 
 <form action="/search" method="get" role="search">

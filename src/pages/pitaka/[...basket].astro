@@ -5,13 +5,12 @@ import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { fetchEditions } from '~/utils/editions'
 import { generatePitakaJsonLd } from '~/utils/json-ld'
-import { getLanguageName, getPreferredLanguage } from '~/utils/language'
+import { getLanguageName } from '~/utils/language'
 
 const { pathname } = Astro.url
 const uid = pathname?.split('/').pop()?.toLowerCase()
 
-const acceptLanguage = Astro.request.headers.get('accept-language')
-const userLanguage = getPreferredLanguage(acceptLanguage)
+const userLanguage = Astro.locals.userLanguage
 
 const menuResponse = await fetch(
   `https://suttacentral.net/api/menu/${uid}?language=${userLanguage}`

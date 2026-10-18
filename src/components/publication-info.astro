@@ -1,12 +1,10 @@
 ---
 import { t } from '~/i18n'
-import { getPreferredLanguage } from '~/utils/language'
 
 const { entry } = Astro.props
 const data = entry[0]
 
-const acceptLanguage = Astro.request.headers.get('accept-language')
-const userLanguage = getPreferredLanguage(acceptLanguage)
+const userLanguage = Astro.locals.userLanguage
 ---
 
 <article id="info" popover>

@@ -11,15 +11,12 @@ import { siteMap } from '~/constants/static-pages'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getSearchLanguages, setSearchLanguages } from '~/utils/cookies'
-import {
-  getAllPreferredLanguages,
-  getPreferredLanguage,
-} from '~/utils/language'
+import { getAllPreferredLanguages } from '~/utils/language'
 import { expandUid } from '~/utils/strings'
 
 const { searchParams } = Astro.url
 const acceptLanguage = Astro.request.headers.get('accept-language')
-const userLanguage = getPreferredLanguage(acceptLanguage)
+const userLanguage = Astro.locals.userLanguage
 
 const langResponse = await fetch(
   'https://suttacentral.net/api/languages?all=true'

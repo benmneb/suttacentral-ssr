@@ -6,11 +6,9 @@ import SiteFooter from '~/components/site-footer.astro'
 import SiteHeader from '~/components/site-header.astro'
 import SitePages from '~/components/site-pages.astro'
 import { siteMetaData } from '~/constants/meta-data'
-import { getPreferredLanguage } from '~/utils/language'
 
 const pathname = Astro.url.pathname
-const acceptLanguage = Astro.request.headers.get('accept-language')
-const userLanguage = getPreferredLanguage(acceptLanguage)
+const userLanguage = Astro.locals.userLanguage
 interface Props {
   title?: string
   description?: string
@@ -39,7 +37,9 @@ const pageTitle = title
   ? `${title} @ ${siteMetaData.title}`
   : siteMetaData.title
 const pageDescription = description || siteMetaData.description
-const canonicalUrl = canonical || Astro.url.href
+// Without the query, which only holds settings or a search
+const canonicalUrl = canonical || Astro.url.origin + Astro.url.pathname
+const shareUrl = canonical || Astro.url.href
 const imageUrl = new URL(ogImage || '/og-image2.jpg', Astro.site).href
 ---
 
@@ -75,7 +75,7 @@ const imageUrl = new URL(ogImage || '/og-image2.jpg', Astro.site).href
     <title>{pageTitle}</title>
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
-    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:url" content={shareUrl} />
     <meta property="og:site_name" content={siteMetaData.title} />
     <meta property="og:type" content={ogType || 'website'} />
     <meta property="og:locale" content={userLanguage} />
