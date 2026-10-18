@@ -28,10 +28,15 @@
   "viewoption:showVariantReading": "Variantenlesung für Segment {ref} anzeigen",
   "viewoption:stop": "Stopp",
   "viewoption:ttsNoVoices": "Keine Stimmen gefunden. „Anhören“ liest mit den auf Ihrem Gerät installierten Text-zu-Sprache-Stimmen vor - fügen Sie in den Sprachausgabe-Einstellungen Ihres Systems eine Stimme hinzu und laden Sie die Seite dann neu.",
-  "viewoption:ttsNoscript": "Bitte aktivieren Sie JavaScript, um diesen Text anzuhören. Es funktioniert vollständig lokal in Ihrem Browser über die SpeechSynthesis API, auch offline.",
+  "viewoption:ttsNoscript": "Bitte aktivieren Sie JavaScript, um diesen Text anzuhören. Er wird in Ihrem Browser mit den eigenen Stimmen Ihres Geräts über die SpeechSynthesis API vorgelesen, und die meisten davon funktionieren auch offline.",
   "viewoption:ttsSettings": "Text-zu-Sprache-Einstellungen",
   "viewoption:variant": "Variante:",
   "viewoption:voiceDefault": "STANDARD",
+  "viewoption:voiceInfo": "Über die Stimmen",
+  "viewoption:voiceInfoBetter": "Bessere Stimmen gibt es oft kostenlos zum Herunterladen in den Sprachausgabe- oder Bedienungshilfen-Einstellungen Ihres Systems. Laden Sie die Seite danach neu.",
+  "viewoption:voiceInfoOnline": "Mit {online} markierte Stimmen senden den Text an das Unternehmen, das sie anbietet, etwa Google oder Microsoft. Die übrigen lesen ihn auf Ihrem Gerät vor.",
+  "viewoption:voiceInfoSource": "Diese Stimmen stammen alle von Ihrem Gerät und Browser. Diese Website kann sie weder hinzufügen noch ändern.",
   "viewoption:voiceLabel": "Stimme",
+  "viewoption:voiceOnline": "ONLINE",
   "viewoption:wordLookup": "Wortsuche"
 }

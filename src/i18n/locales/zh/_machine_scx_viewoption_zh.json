@@ -28,10 +28,15 @@
   "viewoption:showVariantReading": "显示片段{ref}的异读",
   "viewoption:stop": "停止",
   "viewoption:ttsNoVoices": "未找到语音。“收听”使用您设备上安装的文字转语音语音朗读 - 请在系统的语音设置中添加语音，然后重新加载页面。",
-  "viewoption:ttsNoscript": "请启用javascript以收听此文本。它通过SpeechSynthesis API在您的浏览器中100%本地运行，包括离线时。",
+  "viewoption:ttsNoscript": "请启用javascript以收听此文本。它通过SpeechSynthesis API，在浏览器中用您设备自带的语音朗读，其中大多数语音可离线使用。",
   "viewoption:ttsSettings": "文本转语音设置",
   "viewoption:variant": "异读：",
   "viewoption:voiceDefault": "默认",
+  "viewoption:voiceInfo": "关于语音",
+  "viewoption:voiceInfoBetter": "更好的语音通常可以在系统的语音或辅助功能设置中免费下载。添加后请重新加载页面。",
+  "viewoption:voiceInfoOnline": "标有“{online}”的语音会将文本发送给提供该语音的公司，例如Google或Microsoft。其余语音则在您的设备上朗读。",
+  "viewoption:voiceInfoSource": "这些语音全部来自您的设备和浏览器。本网站无法添加或更改它们。",
   "viewoption:voiceLabel": "语音",
+  "viewoption:voiceOnline": "在线",
   "viewoption:wordLookup": "词语查询"
 }

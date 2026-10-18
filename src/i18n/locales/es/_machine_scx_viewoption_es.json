@@ -28,10 +28,15 @@
   "viewoption:showVariantReading": "Mostrar lectura variante para el segmento {ref}",
   "viewoption:stop": "Detener",
   "viewoption:ttsNoVoices": "No se han encontrado voces. «Escuchar» lee en voz alta con las voces de texto a voz instaladas en su dispositivo - añada una voz en la configuración de voz de su sistema y luego recargue la página.",
-  "viewoption:ttsNoscript": "Habilite javascript para escuchar este texto. Funciona 100% localmente en su navegador a través de la API SpeechSynthesis, incluso sin conexión.",
+  "viewoption:ttsNoscript": "Habilite javascript para escuchar este texto. Se lee en voz alta en su navegador con las propias voces de su dispositivo, a través de la API SpeechSynthesis, y la mayoría funcionan sin conexión.",
   "viewoption:ttsSettings": "Configuración de texto a voz",
   "viewoption:variant": "Variante:",
   "viewoption:voiceDefault": "PREDETERMINADO",
+  "viewoption:voiceInfo": "Acerca de las voces",
+  "viewoption:voiceInfoBetter": "A menudo se pueden descargar gratis voces mejores en la configuración de voz o de accesibilidad de su sistema. Recargue la página después de añadirlas.",
+  "viewoption:voiceInfoOnline": "Las voces marcadas como {online} envían el texto a la empresa que las crea, como Google o Microsoft. Las demás lo leen en su dispositivo.",
+  "viewoption:voiceInfoSource": "Todas estas voces provienen de su dispositivo y su navegador. Este sitio no puede añadirlas ni cambiarlas.",
   "viewoption:voiceLabel": "Voz",
+  "viewoption:voiceOnline": "EN LÍNEA",
   "viewoption:wordLookup": "Búsqueda de palabras"
 }

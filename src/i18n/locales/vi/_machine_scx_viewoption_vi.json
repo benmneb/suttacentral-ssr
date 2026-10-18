@@ -28,10 +28,15 @@
   "viewoption:showVariantReading": "Hiển thị dị bản cho đoạn {ref}",
   "viewoption:stop": "Dừng",
   "viewoption:ttsNoVoices": "Không tìm thấy giọng nói nào. “Nghe” đọc to bằng các giọng chuyển văn bản thành giọng nói được cài đặt trên thiết bị của bạn - hãy thêm một giọng nói trong cài đặt giọng nói của hệ thống, rồi tải lại trang.",
-  "viewoption:ttsNoscript": "Vui lòng bật javascript để nghe văn bản này. Nó hoạt động 100% cục bộ trong trình duyệt của bạn thông qua API SpeechSynthesis, kể cả khi ngoại tuyến.",
+  "viewoption:ttsNoscript": "Vui lòng bật javascript để nghe văn bản này. Văn bản được đọc to trong trình duyệt bằng chính các giọng của thiết bị bạn, thông qua API SpeechSynthesis, và hầu hết các giọng đều hoạt động khi ngoại tuyến.",
   "viewoption:ttsSettings": "Cài đặt chuyển văn bản thành giọng nói",
   "viewoption:variant": "Dị bản:",
   "viewoption:voiceDefault": "MẶC ĐỊNH",
+  "viewoption:voiceInfo": "Về giọng nói",
+  "viewoption:voiceInfoBetter": "Các giọng tốt hơn thường có thể tải xuống miễn phí trong cài đặt giọng nói hoặc trợ năng của hệ thống. Hãy tải lại trang sau khi thêm.",
+  "viewoption:voiceInfoOnline": "Các giọng được đánh dấu {online} sẽ gửi văn bản đến công ty tạo ra chúng, như Google hoặc Microsoft. Các giọng còn lại đọc ngay trên thiết bị của bạn.",
+  "viewoption:voiceInfoSource": "Tất cả các giọng này đều đến từ thiết bị và trình duyệt của bạn. Trang web này không thể thêm hay thay đổi chúng.",
   "viewoption:voiceLabel": "Giọng",
+  "viewoption:voiceOnline": "TRỰC TUYẾN",
   "viewoption:wordLookup": "Tra cứu từ"
 }

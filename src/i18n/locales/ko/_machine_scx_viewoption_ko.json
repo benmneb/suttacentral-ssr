@@ -28,10 +28,15 @@
   "viewoption:showVariantReading": "세그먼트 {ref}에 대한 이독 표시",
   "viewoption:stop": "정지",
   "viewoption:ttsNoVoices": "음성을 찾을 수 없습니다. “듣기”는 기기에 설치된 텍스트 음성 변환 음성으로 읽어 줍니다 - 시스템의 음성 설정에서 음성을 추가한 다음 페이지를 새로 고치세요.",
-  "viewoption:ttsNoscript": "이 텍스트를 들으려면 자바스크립트를 활성화하세요. SpeechSynthesis API를 통해 브라우저에서 100% 로컬로 작동하며, 오프라인에서도 사용 가능합니다.",
+  "viewoption:ttsNoscript": "이 텍스트를 들으려면 자바스크립트를 활성화하세요. SpeechSynthesis API를 통해 기기에 있는 음성으로 브라우저에서 읽어 주며, 대부분의 음성은 오프라인에서도 작동합니다.",
   "viewoption:ttsSettings": "텍스트 음성 변환 설정",
   "viewoption:variant": "이독:",
   "viewoption:voiceDefault": "기본값",
+  "viewoption:voiceInfo": "음성 정보",
+  "viewoption:voiceInfoBetter": "더 나은 음성은 시스템의 음성 또는 접근성 설정에서 무료로 다운로드할 수 있는 경우가 많습니다. 추가한 후 페이지를 새로 고치세요.",
+  "viewoption:voiceInfoOnline": "{online} 표시가 있는 음성은 Google이나 Microsoft 같은 제공 회사로 텍스트를 보냅니다. 나머지 음성은 기기에서 직접 읽습니다.",
+  "viewoption:voiceInfoSource": "이 음성들은 모두 기기와 브라우저에서 제공됩니다. 이 사이트에서는 음성을 추가하거나 변경할 수 없습니다.",
   "viewoption:voiceLabel": "음성",
+  "viewoption:voiceOnline": "온라인",
   "viewoption:wordLookup": "단어 검색"
 }

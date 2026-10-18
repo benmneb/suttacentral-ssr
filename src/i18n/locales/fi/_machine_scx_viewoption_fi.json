@@ -28,10 +28,15 @@
   "viewoption:showVariantReading": "Näytä varianttilukutapa segmentille {ref}",
   "viewoption:stop": "Pysäytä",
   "viewoption:ttsNoVoices": "Ääniä ei löytynyt. ”Kuuntele” lukee ääneen laitteellesi asennetuilla puhesynteesiäänillä - lisää ääni järjestelmäsi puheasetuksista ja lataa sivu sitten uudelleen.",
-  "viewoption:ttsNoscript": "Ota javascript käyttöön kuunnellaksesi tätä tekstiä. Se toimii 100% paikallisesti selaimessasi SpeechSynthesis API:n kautta, myös offline-tilassa.",
+  "viewoption:ttsNoscript": "Ota javascript käyttöön kuunnellaksesi tätä tekstiä. Teksti luetaan ääneen selaimessasi laitteesi omilla äänillä SpeechSynthesis API:n kautta, ja useimmat niistä toimivat myös offline-tilassa.",
   "viewoption:ttsSettings": "Tekstistä puheeksi -asetukset",
   "viewoption:variant": "Variantti:",
   "viewoption:voiceDefault": "OLETUS",
+  "viewoption:voiceInfo": "Tietoa äänistä",
+  "viewoption:voiceInfoBetter": "Parempia ääniä voi usein ladata ilmaiseksi järjestelmäsi puhe- tai saavutettavuusasetuksista. Lataa sivu uudelleen lisäämisen jälkeen.",
+  "viewoption:voiceInfoOnline": "Merkinnällä {online} varustetut äänet lähettävät tekstin ne tehneelle yritykselle, kuten Googlelle tai Microsoftille. Muut lukevat sen laitteellasi.",
+  "viewoption:voiceInfoSource": "Kaikki nämä äänet tulevat laitteestasi ja selaimestasi. Tämä sivusto ei voi lisätä tai muuttaa niitä.",
   "viewoption:voiceLabel": "Ääni",
+  "viewoption:voiceOnline": "VERKOSSA",
   "viewoption:wordLookup": "Sanan haku"
 }

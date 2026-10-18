@@ -28,10 +28,15 @@
   "viewoption:showVariantReading": "แสดงการอ่านที่แตกต่างสำหรับส่วน {ref}",
   "viewoption:stop": "หยุด",
   "viewoption:ttsNoVoices": "ไม่พบเสียง “ฟัง” จะอ่านออกเสียงด้วยเสียงข้อความเป็นคำพูดที่ติดตั้งอยู่ในอุปกรณ์ของคุณ - เพิ่มเสียงในการตั้งค่าเสียงพูดของระบบ แล้วโหลดหน้านี้ใหม่",
-  "viewoption:ttsNoscript": "กรุณาเปิดใช้งาน javascript เพื่อฟังข้อความนี้ มันทำงาน 100% ในเครื่องของคุณผ่าน SpeechSynthesis API รวมถึงเมื่อออฟไลน์",
+  "viewoption:ttsNoscript": "กรุณาเปิดใช้งาน javascript เพื่อฟังข้อความนี้ ระบบจะอ่านออกเสียงในเบราว์เซอร์ด้วยเสียงของอุปกรณ์คุณเองผ่าน SpeechSynthesis API และเสียงส่วนใหญ่ใช้งานได้แม้ออฟไลน์",
   "viewoption:ttsSettings": "การตั้งค่าการแปลงข้อความเป็นเสียง",
   "viewoption:variant": "ตัวแปร:",
   "viewoption:voiceDefault": "ค่าเริ่มต้น",
+  "viewoption:voiceInfo": "เกี่ยวกับเสียง",
+  "viewoption:voiceInfoBetter": "เสียงที่ดีกว่ามักดาวน์โหลดได้ฟรีในการตั้งค่าเสียงพูดหรือการช่วยการเข้าถึงของระบบ เมื่อเพิ่มแล้วให้โหลดหน้านี้ใหม่",
+  "viewoption:voiceInfoOnline": "เสียงที่มีเครื่องหมาย {online} จะส่งข้อความไปยังบริษัทผู้สร้างเสียงนั้น เช่น Google หรือ Microsoft ส่วนเสียงอื่นจะอ่านบนอุปกรณ์ของคุณ",
+  "viewoption:voiceInfoSource": "เสียงเหล่านี้ทั้งหมดมาจากอุปกรณ์และเบราว์เซอร์ของคุณ เว็บไซต์นี้ไม่สามารถเพิ่มหรือเปลี่ยนเสียงได้",
   "viewoption:voiceLabel": "เสียง",
+  "viewoption:voiceOnline": "ออนไลน์",
   "viewoption:wordLookup": "การค้นหาคำ"
 }

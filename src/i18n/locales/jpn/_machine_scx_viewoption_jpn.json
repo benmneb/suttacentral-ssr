@@ -28,10 +28,15 @@
   "viewoption:showVariantReading": "セグメント{ref}の異読を表示",
   "viewoption:stop": "停止",
   "viewoption:ttsNoVoices": "音声が見つかりません。「聴く」はお使いのデバイスにインストールされた音声合成の音声で読み上げます。システムの音声設定で音声を追加してから、ページを再読み込みしてください。",
-  "viewoption:ttsNoscript": "このテキストを聴くにはjavascriptを有効にしてください。SpeechSynthesis APIを介してブラウザ内で100%ローカルに動作し、オフラインでも使用できます。",
+  "viewoption:ttsNoscript": "このテキストを聴くにはjavascriptを有効にしてください。SpeechSynthesis APIを介して、お使いのデバイスに備わった音声でブラウザ内で読み上げます。ほとんどの音声はオフラインでも使用できます。",
   "viewoption:ttsSettings": "テキスト読み上げ設定",
   "viewoption:variant": "異読：",
   "viewoption:voiceDefault": "デフォルト",
+  "viewoption:voiceInfo": "音声について",
+  "viewoption:voiceInfoBetter": "より良い音声は、多くの場合、システムの音声設定やアクセシビリティ設定から無料でダウンロードできます。追加した後、ページを再読み込みしてください。",
+  "viewoption:voiceInfoOnline": "{online}と表示された音声は、テキストをGoogleやMicrosoftなど音声の提供元の企業に送信します。それ以外の音声は、お使いのデバイス上で読み上げます。",
+  "viewoption:voiceInfoSource": "これらの音声はすべて、お使いのデバイスとブラウザに由来します。このサイトで追加や変更はできません。",
   "viewoption:voiceLabel": "音声",
+  "viewoption:voiceOnline": "オンライン",
   "viewoption:wordLookup": "単語検索"
 }

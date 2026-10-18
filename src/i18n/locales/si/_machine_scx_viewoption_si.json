@@ -28,10 +28,15 @@
   "viewoption:showVariantReading": "{ref} ඛණ්ඩය සඳහා විකල්ප පාඨය පෙන්වන්න",
   "viewoption:stop": "නවත්වන්න",
   "viewoption:ttsNoVoices": "හඬ හමු නොවීය. “සවන් දෙන්න” ඔබේ උපාංගයේ ස්ථාපනය කර ඇති පෙළ-සිට-කථන හඬවලින් හඬ නඟා කියවයි - ඔබේ පද්ධතියේ කථන සැකසුම්වල හඬක් එක් කර, පසුව පිටුව නැවත පූරණය කරන්න.",
-  "viewoption:ttsNoscript": "මෙම පාඨය සවන් දීමට කරුණාකර javascript සක්‍රීය කරන්න. එය SpeechSynthesis API හරහා ඔබේ බ්‍රවුසරයේ 100% දේශීයව ක්‍රියා කරයි, offline වුවද.",
+  "viewoption:ttsNoscript": "මෙම පාඨය සවන් දීමට කරුණාකර javascript සක්‍රීය කරන්න. එය SpeechSynthesis API හරහා ඔබේ උපාංගයේම හඬවලින් ඔබේ බ්‍රවුසරයේ හඬ නඟා කියවන අතර, ඒවායින් බොහොමයක් offline ද ක්‍රියා කරයි.",
   "viewoption:ttsSettings": "පෙළ-සිට-කථාව සැකසුම්",
   "viewoption:variant": "විකල්පය:",
   "viewoption:voiceDefault": "පෙරනිමි",
+  "viewoption:voiceInfo": "හඬ ගැන",
+  "viewoption:voiceInfoBetter": "වඩා හොඳ හඬ බොහෝ විට ඔබේ පද්ධතියේ කථන හෝ ප්‍රවේශ්‍යතා සැකසුම්වලින් නොමිලේ බාගත කළ හැක. එක් කළ පසු පිටුව නැවත පූරණය කරන්න.",
+  "viewoption:voiceInfoOnline": "{online} ලෙස සලකුණු කළ හඬ, පෙළ Google හෝ Microsoft වැනි ඒවා සාදන සමාගමට යවයි. ඉතිරි හඬ එය ඔබේ උපාංගයේම කියවයි.",
+  "viewoption:voiceInfoSource": "මෙම හඬ සියල්ල ඔබේ උපාංගයෙන් සහ බ්‍රවුසරයෙන් පැමිණේ. මෙම අඩවියට ඒවා එක් කිරීමට හෝ වෙනස් කිරීමට නොහැක.",
   "viewoption:voiceLabel": "හඬ",
+  "viewoption:voiceOnline": "මාර්ගගත",
   "viewoption:wordLookup": "වචන සෙවීම"
 }

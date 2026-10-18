@@ -28,10 +28,15 @@
   "viewoption:showVariantReading": "Toon variantlezing voor segment {ref}",
   "viewoption:stop": "Stoppen",
   "viewoption:ttsNoVoices": "Geen stemmen gevonden. ‘Luisteren’ leest voor met de tekst-naar-spraakstemmen die op uw apparaat zijn geïnstalleerd - voeg een stem toe in de spraakinstellingen van uw systeem en laad de pagina opnieuw.",
-  "viewoption:ttsNoscript": "Schakel javascript in om naar deze tekst te luisteren. Het werkt 100% lokaal in uw browser via de SpeechSynthesis API, ook offline.",
+  "viewoption:ttsNoscript": "Schakel javascript in om naar deze tekst te luisteren. Hij wordt in uw browser voorgelezen met de eigen stemmen van uw apparaat, via de SpeechSynthesis API, en de meeste daarvan werken ook offline.",
   "viewoption:ttsSettings": "Tekst-naar-spraak instellingen",
   "viewoption:variant": "Variant:",
   "viewoption:voiceDefault": "STANDAARD",
+  "viewoption:voiceInfo": "Over de stemmen",
+  "viewoption:voiceInfoBetter": "Betere stemmen zijn vaak gratis te downloaden in de spraak- of toegankelijkheidsinstellingen van uw systeem. Laad de pagina daarna opnieuw.",
+  "viewoption:voiceInfoOnline": "Stemmen met {online} sturen de tekst naar het bedrijf dat ze maakt, zoals Google of Microsoft. De overige lezen hem voor op uw apparaat.",
+  "viewoption:voiceInfoSource": "Al deze stemmen komen van uw apparaat en browser. Deze site kan ze niet toevoegen of wijzigen.",
   "viewoption:voiceLabel": "Stem",
+  "viewoption:voiceOnline": "ONLINE",
   "viewoption:wordLookup": "Woord opzoeken"
 }

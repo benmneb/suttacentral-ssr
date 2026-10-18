@@ -28,10 +28,15 @@
   "viewoption:showVariantReading": "Show variant reading for segment {ref}",
   "viewoption:stop": "Stop",
   "viewoption:ttsNoVoices": "No voices found. Listen reads aloud with the text-to-speech voices installed on your device - add a voice in your system's speech settings, then reload the page.",
-  "viewoption:ttsNoscript": "Please enable javascript to listen to this text. It works 100% locally in your browser via the SpeechSynthesis API, including while offline.",
+  "viewoption:ttsNoscript": "Please enable javascript to listen to this text. It reads aloud in your browser with your device's own voices, via the SpeechSynthesis API, and most of them work offline.",
   "viewoption:ttsSettings": "Text to speech settings",
   "viewoption:variant": "Variant:",
   "viewoption:voiceDefault": "DEFAULT",
+  "viewoption:voiceInfo": "About voices",
+  "viewoption:voiceInfoBetter": "Better ones are often a free download in your system's speech or accessibility settings. Reload the page after adding.",
+  "viewoption:voiceInfoOnline": "Voices marked {online} send the text to the company that makes them, such as Google or Microsoft. The rest read it on your device.",
+  "viewoption:voiceInfoSource": "These voices all come from your device and browser. This site can't add or change them.",
   "viewoption:voiceLabel": "Voice",
+  "viewoption:voiceOnline": "ONLINE",
   "viewoption:wordLookup": "Word lookup"
 }

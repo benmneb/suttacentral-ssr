@@ -28,10 +28,15 @@
   "viewoption:showVariantReading": "Prikaži različico besedila za segment {ref}",
   "viewoption:stop": "Ustavi",
   "viewoption:ttsNoVoices": "Ni najdenih glasov. »Poslušaj« bere na glas z glasovi za sintezo govora, nameščenimi v vaši napravi - dodajte glas v nastavitvah govora svojega sistema in nato znova naložite stran.",
-  "viewoption:ttsNoscript": "Omogočite javascript za poslušanje tega besedila. Deluje 100% lokalno v vašem brskalniku prek vmesnika SpeechSynthesis API, tudi brez povezave.",
+  "viewoption:ttsNoscript": "Omogočite javascript za poslušanje tega besedila. Bere se na glas v vašem brskalniku z lastnimi glasovi vaše naprave prek vmesnika SpeechSynthesis API, večina od njih pa deluje tudi brez povezave.",
   "viewoption:ttsSettings": "Nastavitve pretvorbe besedila v govor",
   "viewoption:variant": "Različica:",
   "viewoption:voiceDefault": "PRIVZETO",
+  "viewoption:voiceInfo": "O glasovih",
+  "viewoption:voiceInfoBetter": "Boljše glasove lahko pogosto brezplačno prenesete v nastavitvah govora ali dostopnosti svojega sistema. Po dodajanju znova naložite stran.",
+  "viewoption:voiceInfoOnline": "Glasovi z oznako {online} pošiljajo besedilo podjetju, ki jih izdeluje, na primer Googlu ali Microsoftu. Drugi ga berejo v vaši napravi.",
+  "viewoption:voiceInfoSource": "Vsi ti glasovi prihajajo iz vaše naprave in brskalnika. Ta spletna stran jih ne more dodati ali spremeniti.",
   "viewoption:voiceLabel": "Glas",
+  "viewoption:voiceOnline": "SPLETNO",
   "viewoption:wordLookup": "Iskanje besed"
 }

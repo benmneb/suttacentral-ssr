@@ -28,10 +28,15 @@
   "viewoption:showVariantReading": "Afficher la lecture variante pour le segment {ref}",
   "viewoption:stop": "Arrêter",
   "viewoption:ttsNoVoices": "Aucune voix trouvée. « Écouter » lit à voix haute avec les voix de synthèse vocale installées sur votre appareil - ajoutez une voix dans les paramètres de synthèse vocale de votre système, puis rechargez la page.",
-  "viewoption:ttsNoscript": "Veuillez activer JavaScript pour écouter ce texte. Cela fonctionne entièrement localement dans votre navigateur via l'API SpeechSynthesis, y compris hors ligne.",
+  "viewoption:ttsNoscript": "Veuillez activer JavaScript pour écouter ce texte. Il est lu à voix haute dans votre navigateur avec les voix de votre appareil, via l'API SpeechSynthesis, et la plupart fonctionnent hors ligne.",
   "viewoption:ttsSettings": "Paramètres de synthèse vocale",
   "viewoption:variant": "Variante :",
   "viewoption:voiceDefault": "PAR DÉFAUT",
+  "viewoption:voiceInfo": "À propos des voix",
+  "viewoption:voiceInfoBetter": "De meilleures voix sont souvent téléchargeables gratuitement dans les paramètres de synthèse vocale ou d'accessibilité de votre système. Rechargez ensuite la page.",
+  "viewoption:voiceInfoOnline": "Les voix marquées {online} envoient le texte à l'entreprise qui les fournit, comme Google ou Microsoft. Les autres le lisent sur votre appareil.",
+  "viewoption:voiceInfoSource": "Toutes ces voix proviennent de votre appareil et de votre navigateur. Ce site ne peut ni en ajouter ni les modifier.",
   "viewoption:voiceLabel": "Voix",
+  "viewoption:voiceOnline": "EN LIGNE",
   "viewoption:wordLookup": "Recherche de mots"
 }
