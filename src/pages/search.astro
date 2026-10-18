@@ -61,23 +61,36 @@ let hasMore = false
 let hasPrevious = false
 let searchData = { total: 0 }
 
+let searchFailed = false
+
+// The API fails some queries, eg "greed AND desire"
 if (query) {
-  const searchResponse = await fetch(
-    `https://suttacentral.net/api/search/instant?limit=${limit}&offset=${offset}&query=${query}&language=${userLanguage}&restrict=all&matchpartial=${matchPartial}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(languageArray),
+  try {
+    const searchResponse = await fetch(
+      `https://suttacentral.net/api/search/instant?limit=${limit}&offset=${offset}&query=${encodeURIComponent(query)}&language=${userLanguage}&restrict=all&matchpartial=${matchPartial}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(languageArray),
+      }
+    )
+    if (!searchResponse.ok) {
+      throw new Error(`Search API returned ${searchResponse.status}`)
     }
-  )
-  searchData = await searchResponse.json()
+    searchData = await searchResponse.json()
 
-  hits = searchData.hits.filter(h => h.category !== 'dictionary')
-  dictionaryHits = searchData.hits.filter(h => h.category === 'dictionary')
-  suttaplexHits = searchData.suttaplex.slice(offset / 2, (page * limit) / 2)
+    hits = searchData.hits.filter(h => h.category !== 'dictionary')
+    dictionaryHits = searchData.hits.filter(h => h.category === 'dictionary')
+    suttaplexHits = searchData.suttaplex.slice(offset / 2, (page * limit) / 2)
 
-  hasMore = searchData.total > page * limit
-  hasPrevious = page > 1
+    hasMore = searchData.total > page * limit
+    hasPrevious = page > 1
+  } catch (e) {
+    console.error(`Search failed for "${query}":`, e)
+    searchFailed = true
+    searchData = { total: 0 }
+    hits = dictionaryHits = suttaplexHits = []
+  }
 }
 
 function fold(text: string) {
@@ -107,13 +120,18 @@ const pageHits =
     <hgroup>
       <h1>{t(userLanguage, 'search:search')}</h1>
       {
-        query && (
-          <p>
-            {searchData.total.toLocaleString()}
-            {t(userLanguage, 'search:resultsFor')}
-            <b>{query}</b>
-          </p>
-        )
+        query &&
+          (searchFailed ? (
+            <p>
+              {t(userLanguage, 'search:failedFor')} <b>{query}</b>
+            </p>
+          ) : (
+            <p>
+              {searchData.total.toLocaleString()}
+              {t(userLanguage, 'search:resultsFor')}
+              <b>{query}</b>
+            </p>
+          ))
       }
     </hgroup>
     <SearchForm
@@ -123,7 +141,7 @@ const pageHits =
       languageArray={languageArray}
     />
     {
-      query && (
+      query && !searchFailed && (
         <>
           <section
             class:list={[!!hits.length && query !== 'list authors' && 'split']}
