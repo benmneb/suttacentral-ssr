@@ -118,8 +118,7 @@ body {
     overflow-wrap: break-word;
   }
 
-  &:has([popover]#search-modal:popover-open),
-  &:has([popover]#search-filters-modal:popover-open) {
+  &:has([popover]#search-modal:popover-open) {
     overflow: hidden;
   }
 }
@@ -137,17 +136,12 @@ body {
   overflow-y: scroll;
 }
 
-[popover]#search-modal,
-[popover]#search-filters-modal {
-  max-width: calc(min(600px, 100vw) - 2rem);
-}
-
 [popover]#search-modal {
+  max-width: calc(min(600px, 100vw) - 2rem);
   padding: 0;
 }
 
-[popover]#search-modal::backdrop,
-[popover]#search-filters-modal::backdrop {
+[popover]#search-modal::backdrop {
   backdrop-filter: blur(3px);
 }
 

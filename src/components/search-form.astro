@@ -61,27 +61,46 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
             checked={matchPartial}
           />
         </label>
+        {/* Owned by no form, so not sent with the search */}
+        <input
+          type="radio"
+          name="search-panel"
+          id="panel-none"
+          form="search-panels"
+          class="sr-only"
+          aria-label={t(userLanguage, 'bottomsheet:close')}
+          checked
+        />
         {pathname !== '/search-filter' && (
           <>
             <input
-              type="button"
+              type="radio"
+              name="search-panel"
               id="filter-toggle"
+              form="search-panels"
               class="sr-only"
-              popovertarget="search-filters-modal"
             />
-            <label
-              for="filter-toggle"
-              class="filter-toggle-label"
-              aria-label={t(userLanguage, 'interface:searchFilter')}
-            >
+            <label for="filter-toggle" class="panel-toggle">
+              <Fragment set:html={heroicon.informationCircle} />
+              <span class="sr-only">
+                {t(userLanguage, 'interface:searchFilter')}
+              </span>
+            </label>
+            <label for="panel-none" class="panel-toggle panel-close">
               <Fragment set:html={heroicon.informationCircle} />
             </label>
           </>
         )}
         {pathname !== '/search-options' && (
           <>
-            <input type="checkbox" id="language-toggle" class="sr-only" />
-            <label for="language-toggle" class="language-toggle-label">
+            <input
+              type="radio"
+              name="search-panel"
+              id="language-toggle"
+              form="search-panels"
+              class="sr-only"
+            />
+            <label for="language-toggle" class="panel-toggle">
               <Fragment set:html={heroicon.globeAlt} />
               {!!languageArray?.length && (
                 <span> ({languageArray.length})</span>
@@ -90,21 +109,20 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
                 {t(userLanguage, 'interface:languages')}
               </span>
             </label>
+            <label for="panel-none" class="panel-toggle panel-close">
+              <Fragment set:html={heroicon.globeAlt} />
+              {!!languageArray?.length && (
+                <span> ({languageArray.length})</span>
+              )}
+            </label>
           </>
         )}
+        {pathname !== '/search-filter' && <SearchFilterContent />}
         <SearchOptionsContent />
       </fieldset>
     )
   }
 </form>
-
-{
-  isSearchPage && pathname !== '/search-filter' && (
-    <section id="search-filters-modal" popover>
-      <SearchFilterContent />
-    </section>
-  )
-}
 
 <style>
   form {
@@ -163,8 +181,7 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
       gap: 0.5rem;
       color: var(--text-color-secondary);
 
-      .filter-toggle-label,
-      .language-toggle-label {
+      .panel-toggle {
         cursor: pointer;
 
         &:hover {
@@ -173,16 +190,40 @@ const userLanguage = getPreferredLanguage(acceptLanguage)
         }
       }
 
+      .panel-close {
+        color: var(--primary-color);
+      }
+
+      #filter-toggle:checked + label,
+      #filter-toggle:not(:checked) + label + .panel-close,
+      #language-toggle:checked + label,
+      #language-toggle:not(:checked) + label + .panel-close {
+        display: none;
+      }
+
       > :global(fieldset) {
         width: 100%;
       }
 
-      &:has(#language-toggle) > :global(fieldset#search-options) {
+      /* Apart, as Astro mangles a selector list with :global in it */
+      #filter-toggle:not(:checked) ~ :global(fieldset#search-filters) {
         display: none;
       }
 
-      &:has(#language-toggle:checked) > :global(fieldset#search-options) {
-        display: block;
+      #language-toggle:not(:checked) ~ :global(fieldset#search-options) {
+        display: none;
+      }
+
+      > :global(fieldset#search-filters) {
+        border: 1px solid var(--bg-alt-4);
+        border-radius: var(--rounding);
+        padding: 1rem;
+        color: var(--text-color);
+
+        :global(legend) {
+          margin: 0;
+          padding: 0 0.5rem;
+        }
       }
     }
   }
