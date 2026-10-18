@@ -1,0 +1,35 @@
+---
+// For a page of cards with lazyParallels, eg a list page or search results
+---
+
+<script>
+  document.documentElement.dataset.parallelsFetch = ''
+  const loading = new WeakSet<HTMLDetailsElement>()
+
+  async function loadParallels(details: HTMLDetailsElement) {
+    loading.add(details)
+    delete details.dataset.parallelsFailed
+    try {
+      const response = await fetch(`/parallels/${details.dataset.parallels}`)
+      if (!response.ok) throw new Error(`${response.status}`)
+      const html = await response.text()
+      const list = document.createRange().createContextualFragment(html)
+      details.querySelector(':scope > ul')?.replaceWith(list)
+      delete details.dataset.parallels
+    } catch {
+      details.dataset.parallelsFailed = ''
+    } finally {
+      loading.delete(details)
+    }
+  }
+
+  for (const details of document.querySelectorAll<HTMLDetailsElement>(
+    'details[data-parallels]'
+  )) {
+    details.addEventListener('toggle', () => {
+      if (details.open && details.dataset.parallels && !loading.has(details)) {
+        loadParallels(details)
+      }
+    })
+  }
+</script>

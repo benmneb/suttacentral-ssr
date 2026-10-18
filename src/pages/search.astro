@@ -1,5 +1,6 @@
 ---
 import '~/assets/search.css'
+import LazyParallels from '~/components/lazy-parallels.astro'
 import RootTitle from '~/components/root-title.astro'
 import SearchForm from '~/components/search-form.astro'
 import TextMetaContent from '~/components/text-meta-content.astro'
@@ -329,6 +330,7 @@ const pageHits =
                           data={entry}
                           userLanguage={userLanguage}
                           headingLevel={2}
+                          lazyParallels
                         />
                       </li>
                     ))}
@@ -371,6 +373,7 @@ const pageHits =
       )
     }
   </main>
+  {!!suttaplexHits.length && <LazyParallels />}
 </Layout>
 
 <style>

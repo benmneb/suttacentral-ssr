@@ -56,8 +56,7 @@ details {
   cursor: help;
 }
 
-/* With JS, a list card's parallels are fetched into it when opened, and its
-link to them shows only if that fails. See [chapter].astro */
+/* See lazy-parallels.astro */
 :root[data-parallels-fetch]
   details[data-parallels]:not([data-parallels-failed])
   > ul {
