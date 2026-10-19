@@ -33,9 +33,8 @@
   "viewoption:variant": "异读：",
   "viewoption:voiceDefault": "默认",
   "viewoption:voiceInfo": "关于语音",
-  "viewoption:voiceInfoBetter": "更好的语音通常可以在系统的语音或辅助功能设置中免费下载。添加后请重新加载页面。",
   "viewoption:voiceInfoOnline": "标有“{online}”的语音会将文本发送给提供该语音的公司，例如Google或Microsoft。其余语音则在您的设备上朗读。",
-  "viewoption:voiceInfoSource": "这些语音全部来自您的设备和浏览器。本网站无法添加或更改它们。",
+  "viewoption:voiceInfoSource": "这些语音全部来自您的设备和浏览器。更高质量的语音通常可以在系统的语音或辅助功能设置中免费下载。添加新语音后，记得重新加载页面。",
   "viewoption:voiceLabel": "语音",
   "viewoption:voiceOnline": "在线",
   "viewoption:wordLookup": "词语查询"

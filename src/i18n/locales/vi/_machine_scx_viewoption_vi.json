@@ -33,9 +33,8 @@
   "viewoption:variant": "Dị bản:",
   "viewoption:voiceDefault": "MẶC ĐỊNH",
   "viewoption:voiceInfo": "Về giọng nói",
-  "viewoption:voiceInfoBetter": "Các giọng tốt hơn thường có thể tải xuống miễn phí trong cài đặt giọng nói hoặc trợ năng của hệ thống. Hãy tải lại trang sau khi thêm.",
   "viewoption:voiceInfoOnline": "Các giọng được đánh dấu {online} sẽ gửi văn bản đến công ty tạo ra chúng, như Google hoặc Microsoft. Các giọng còn lại đọc ngay trên thiết bị của bạn.",
-  "viewoption:voiceInfoSource": "Tất cả các giọng này đều đến từ thiết bị và trình duyệt của bạn. Trang web này không thể thêm hay thay đổi chúng.",
+  "viewoption:voiceInfoSource": "Tất cả các giọng này đều đến từ thiết bị và trình duyệt của bạn. Các giọng chất lượng cao hơn thường có thể tải xuống miễn phí trong cài đặt giọng nói hoặc trợ năng của hệ thống. Nhớ tải lại trang sau khi thêm giọng mới.",
   "viewoption:voiceLabel": "Giọng",
   "viewoption:voiceOnline": "TRỰC TUYẾN",
   "viewoption:wordLookup": "Tra cứu từ"

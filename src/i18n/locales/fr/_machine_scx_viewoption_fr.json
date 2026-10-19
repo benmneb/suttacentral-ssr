@@ -33,9 +33,8 @@
   "viewoption:variant": "Variante :",
   "viewoption:voiceDefault": "PAR DÉFAUT",
   "viewoption:voiceInfo": "À propos des voix",
-  "viewoption:voiceInfoBetter": "De meilleures voix sont souvent téléchargeables gratuitement dans les paramètres de synthèse vocale ou d'accessibilité de votre système. Rechargez ensuite la page.",
   "viewoption:voiceInfoOnline": "Les voix marquées {online} envoient le texte à l'entreprise qui les fournit, comme Google ou Microsoft. Les autres le lisent sur votre appareil.",
-  "viewoption:voiceInfoSource": "Toutes ces voix proviennent de votre appareil et de votre navigateur. Ce site ne peut ni en ajouter ni les modifier.",
+  "viewoption:voiceInfoSource": "Toutes ces voix proviennent de votre appareil et de votre navigateur. Des voix de meilleure qualité sont généralement téléchargeables gratuitement dans les paramètres de synthèse vocale ou d'accessibilité de votre système. Pensez à recharger la page après en avoir ajouté de nouvelles.",
   "viewoption:voiceLabel": "Voix",
   "viewoption:voiceOnline": "EN LIGNE",
   "viewoption:wordLookup": "Recherche de mots"

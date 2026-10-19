@@ -33,9 +33,8 @@
   "viewoption:variant": "Različica:",
   "viewoption:voiceDefault": "PRIVZETO",
   "viewoption:voiceInfo": "O glasovih",
-  "viewoption:voiceInfoBetter": "Boljše glasove lahko pogosto brezplačno prenesete v nastavitvah govora ali dostopnosti svojega sistema. Po dodajanju znova naložite stran.",
   "viewoption:voiceInfoOnline": "Glasovi z oznako {online} pošiljajo besedilo podjetju, ki jih izdeluje, na primer Googlu ali Microsoftu. Drugi ga berejo v vaši napravi.",
-  "viewoption:voiceInfoSource": "Vsi ti glasovi prihajajo iz vaše naprave in brskalnika. Ta spletna stran jih ne more dodati ali spremeniti.",
+  "viewoption:voiceInfoSource": "Vsi ti glasovi prihajajo iz vaše naprave in brskalnika. Kakovostnejše glasove lahko običajno brezplačno prenesete v nastavitvah govora ali dostopnosti svojega sistema. Ko dodate nove, ne pozabite znova naložiti strani.",
   "viewoption:voiceLabel": "Glas",
   "viewoption:voiceOnline": "SPLETNO",
   "viewoption:wordLookup": "Iskanje besed"

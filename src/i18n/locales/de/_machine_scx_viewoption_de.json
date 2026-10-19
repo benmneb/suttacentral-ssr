@@ -33,9 +33,8 @@
   "viewoption:variant": "Variante:",
   "viewoption:voiceDefault": "STANDARD",
   "viewoption:voiceInfo": "Über die Stimmen",
-  "viewoption:voiceInfoBetter": "Bessere Stimmen gibt es oft kostenlos zum Herunterladen in den Sprachausgabe- oder Bedienungshilfen-Einstellungen Ihres Systems. Laden Sie die Seite danach neu.",
   "viewoption:voiceInfoOnline": "Mit {online} markierte Stimmen senden den Text an das Unternehmen, das sie anbietet, etwa Google oder Microsoft. Die übrigen lesen ihn auf Ihrem Gerät vor.",
-  "viewoption:voiceInfoSource": "Diese Stimmen stammen alle von Ihrem Gerät und Browser. Diese Website kann sie weder hinzufügen noch ändern.",
+  "viewoption:voiceInfoSource": "Diese Stimmen stammen alle von Ihrem Gerät und Browser. Hochwertigere Stimmen gibt es meist kostenlos zum Herunterladen in den Sprachausgabe- oder Bedienungshilfen-Einstellungen Ihres Systems. Denken Sie daran, die Seite neu zu laden, nachdem Sie neue hinzugefügt haben.",
   "viewoption:voiceLabel": "Stimme",
   "viewoption:voiceOnline": "ONLINE",
   "viewoption:wordLookup": "Wortsuche"

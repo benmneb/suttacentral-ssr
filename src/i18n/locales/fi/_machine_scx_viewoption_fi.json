@@ -33,9 +33,8 @@
   "viewoption:variant": "Variantti:",
   "viewoption:voiceDefault": "OLETUS",
   "viewoption:voiceInfo": "Tietoa äänistä",
-  "viewoption:voiceInfoBetter": "Parempia ääniä voi usein ladata ilmaiseksi järjestelmäsi puhe- tai saavutettavuusasetuksista. Lataa sivu uudelleen lisäämisen jälkeen.",
   "viewoption:voiceInfoOnline": "Merkinnällä {online} varustetut äänet lähettävät tekstin ne tehneelle yritykselle, kuten Googlelle tai Microsoftille. Muut lukevat sen laitteellasi.",
-  "viewoption:voiceInfoSource": "Kaikki nämä äänet tulevat laitteestasi ja selaimestasi. Tämä sivusto ei voi lisätä tai muuttaa niitä.",
+  "viewoption:voiceInfoSource": "Kaikki nämä äänet tulevat laitteestasi ja selaimestasi. Laadukkaampia ääniä voi yleensä ladata ilmaiseksi järjestelmäsi puhe- tai saavutettavuusasetuksista. Muista ladata sivu uudelleen, kun olet lisännyt uusia.",
   "viewoption:voiceLabel": "Ääni",
   "viewoption:voiceOnline": "VERKOSSA",
   "viewoption:wordLookup": "Sanan haku"

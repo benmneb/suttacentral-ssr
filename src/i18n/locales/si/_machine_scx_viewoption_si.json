@@ -33,9 +33,8 @@
   "viewoption:variant": "විකල්පය:",
   "viewoption:voiceDefault": "පෙරනිමි",
   "viewoption:voiceInfo": "හඬ ගැන",
-  "viewoption:voiceInfoBetter": "වඩා හොඳ හඬ බොහෝ විට ඔබේ පද්ධතියේ කථන හෝ ප්‍රවේශ්‍යතා සැකසුම්වලින් නොමිලේ බාගත කළ හැක. එක් කළ පසු පිටුව නැවත පූරණය කරන්න.",
   "viewoption:voiceInfoOnline": "{online} ලෙස සලකුණු කළ හඬ, පෙළ Google හෝ Microsoft වැනි ඒවා සාදන සමාගමට යවයි. ඉතිරි හඬ එය ඔබේ උපාංගයේම කියවයි.",
-  "viewoption:voiceInfoSource": "මෙම හඬ සියල්ල ඔබේ උපාංගයෙන් සහ බ්‍රවුසරයෙන් පැමිණේ. මෙම අඩවියට ඒවා එක් කිරීමට හෝ වෙනස් කිරීමට නොහැක.",
+  "viewoption:voiceInfoSource": "මෙම හඬ සියල්ල ඔබේ උපාංගයෙන් සහ බ්‍රවුසරයෙන් පැමිණේ. උසස් ගුණාත්මක හඬ සාමාන්‍යයෙන් ඔබේ පද්ධතියේ කථන හෝ ප්‍රවේශ්‍යතා සැකසුම්වලින් නොමිලේ බාගත කළ හැක. නව හඬ එක් කළ පසු පිටුව නැවත පූරණය කිරීමට අමතක නොකරන්න.",
   "viewoption:voiceLabel": "හඬ",
   "viewoption:voiceOnline": "මාර්ගගත",
   "viewoption:wordLookup": "වචන සෙවීම"

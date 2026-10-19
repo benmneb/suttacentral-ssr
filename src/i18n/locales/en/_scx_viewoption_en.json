@@ -33,9 +33,8 @@
   "viewoption:variant": "Variant:",
   "viewoption:voiceDefault": "DEFAULT",
   "viewoption:voiceInfo": "About voices",
-  "viewoption:voiceInfoBetter": "Better ones are often a free download in your system's speech or accessibility settings. Reload the page after adding.",
   "viewoption:voiceInfoOnline": "Voices marked {online} send the text to the company that makes them, such as Google or Microsoft. The rest read it on your device.",
-  "viewoption:voiceInfoSource": "These voices all come from your device and browser. This site can't add or change them.",
+  "viewoption:voiceInfoSource": "These voices all come from your device and browser. Higher quality voices are usually a free download in your system's speech or accessibility settings. Remember to reload the page after adding new ones.",
   "viewoption:voiceLabel": "Voice",
   "viewoption:voiceOnline": "ONLINE",
   "viewoption:wordLookup": "Word lookup"

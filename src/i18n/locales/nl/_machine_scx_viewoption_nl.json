@@ -33,9 +33,8 @@
   "viewoption:variant": "Variant:",
   "viewoption:voiceDefault": "STANDAARD",
   "viewoption:voiceInfo": "Over de stemmen",
-  "viewoption:voiceInfoBetter": "Betere stemmen zijn vaak gratis te downloaden in de spraak- of toegankelijkheidsinstellingen van uw systeem. Laad de pagina daarna opnieuw.",
   "viewoption:voiceInfoOnline": "Stemmen met {online} sturen de tekst naar het bedrijf dat ze maakt, zoals Google of Microsoft. De overige lezen hem voor op uw apparaat.",
-  "viewoption:voiceInfoSource": "Al deze stemmen komen van uw apparaat en browser. Deze site kan ze niet toevoegen of wijzigen.",
+  "viewoption:voiceInfoSource": "Al deze stemmen komen van uw apparaat en browser. Stemmen van hogere kwaliteit zijn meestal gratis te downloaden in de spraak- of toegankelijkheidsinstellingen van uw systeem. Vergeet niet de pagina opnieuw te laden nadat u nieuwe hebt toegevoegd.",
   "viewoption:voiceLabel": "Stem",
   "viewoption:voiceOnline": "ONLINE",
   "viewoption:wordLookup": "Woord opzoeken"

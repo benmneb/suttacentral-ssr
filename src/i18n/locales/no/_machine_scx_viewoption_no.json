@@ -33,9 +33,8 @@
   "viewoption:variant": "Variant:",
   "viewoption:voiceDefault": "STANDARD",
   "viewoption:voiceInfo": "Om stemmene",
-  "viewoption:voiceInfoBetter": "Bedre stemmer kan ofte lastes ned gratis i tale- eller tilgjengelighetsinnstillingene på systemet ditt. Last inn siden på nytt etterpå.",
   "viewoption:voiceInfoOnline": "Stemmer merket {online} sender teksten til selskapet som lager dem, for eksempel Google eller Microsoft. De andre leser den på enheten din.",
-  "viewoption:voiceInfoSource": "Alle disse stemmene kommer fra enheten og nettleseren din. Dette nettstedet kan ikke legge til eller endre dem.",
+  "viewoption:voiceInfoSource": "Alle disse stemmene kommer fra enheten og nettleseren din. Stemmer av høyere kvalitet kan som regel lastes ned gratis i tale- eller tilgjengelighetsinnstillingene på systemet ditt. Husk å laste inn siden på nytt når du har lagt til nye.",
   "viewoption:voiceLabel": "Stemme",
   "viewoption:voiceOnline": "ONLINE",
   "viewoption:wordLookup": "Ordoppslag"

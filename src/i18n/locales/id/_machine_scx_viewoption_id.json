@@ -33,9 +33,8 @@
   "viewoption:variant": "Varian:",
   "viewoption:voiceDefault": "DEFAULT",
   "viewoption:voiceInfo": "Tentang suara",
-  "viewoption:voiceInfoBetter": "Suara yang lebih baik sering kali dapat diunduh gratis di pengaturan ucapan atau aksesibilitas sistem Anda. Muat ulang halaman setelah menambahkannya.",
   "viewoption:voiceInfoOnline": "Suara bertanda {online} mengirim teks ke perusahaan pembuatnya, seperti Google atau Microsoft. Suara lainnya membacanya di perangkat Anda.",
-  "viewoption:voiceInfoSource": "Semua suara ini berasal dari perangkat dan browser Anda. Situs ini tidak dapat menambah atau mengubahnya.",
+  "viewoption:voiceInfoSource": "Semua suara ini berasal dari perangkat dan browser Anda. Suara berkualitas lebih tinggi biasanya dapat diunduh gratis di pengaturan ucapan atau aksesibilitas sistem Anda. Jangan lupa muat ulang halaman setelah menambahkan suara baru.",
   "viewoption:voiceLabel": "Suara",
   "viewoption:voiceOnline": "ONLINE",
   "viewoption:wordLookup": "Pencarian kata"

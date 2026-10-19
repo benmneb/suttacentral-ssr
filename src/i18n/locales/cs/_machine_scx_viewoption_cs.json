@@ -33,9 +33,8 @@
   "viewoption:variant": "Varianta:",
   "viewoption:voiceDefault": "VÝCHOZÍ",
   "viewoption:voiceInfo": "O hlasech",
-  "viewoption:voiceInfoBetter": "Lepší hlasy bývají zdarma ke stažení v nastavení řeči nebo zpřístupnění vašeho systému. Po přidání stránku znovu načtěte.",
   "viewoption:voiceInfoOnline": "Hlasy označené {online} posílají text společnosti, která je vytváří, například Googlu nebo Microsoftu. Ostatní ho čtou přímo ve vašem zařízení.",
-  "viewoption:voiceInfoSource": "Všechny tyto hlasy pocházejí z vašeho zařízení a prohlížeče. Tento web je nemůže přidat ani změnit.",
+  "viewoption:voiceInfoSource": "Všechny tyto hlasy pocházejí z vašeho zařízení a prohlížeče. Kvalitnější hlasy jsou obvykle zdarma ke stažení v nastavení řeči nebo zpřístupnění vašeho systému. Po přidání nových nezapomeňte stránku znovu načíst.",
   "viewoption:voiceLabel": "Hlas",
   "viewoption:voiceOnline": "ONLINE",
   "viewoption:wordLookup": "Vyhledávání slov"

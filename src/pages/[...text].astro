@@ -1392,7 +1392,6 @@ const jsonLd = generateTextJsonLd(
             </li>
             <li id="voice-info" class="voice-info" hidden>
               <p>{t(userLanguage, 'viewoption:voiceInfoSource')}</p>
-              <p>{t(userLanguage, 'viewoption:voiceInfoBetter')}</p>
               {/* Unhidden by the script for an online voice */}
               <p id="voice-info-online" hidden>
                 {
@@ -3448,7 +3447,7 @@ const jsonLd = generateTextJsonLd(
     controlsEl?.addEventListener('click', closeMenuOnTouch)
 
     // The controls sit outside the open menu, so a tap there light dismisses it
-    // This disables that behaviour and cant be done in CSS
+    // This disables that behaviour and can't be done in CSS
     let keepOpen = false
     controlsEl?.addEventListener('pointerdown', () => {
       keepOpen = matchMedia('(hover: none)').matches

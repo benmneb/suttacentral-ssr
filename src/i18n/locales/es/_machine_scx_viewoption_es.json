@@ -33,9 +33,8 @@
   "viewoption:variant": "Variante:",
   "viewoption:voiceDefault": "PREDETERMINADO",
   "viewoption:voiceInfo": "Acerca de las voces",
-  "viewoption:voiceInfoBetter": "A menudo se pueden descargar gratis voces mejores en la configuración de voz o de accesibilidad de su sistema. Recargue la página después de añadirlas.",
   "viewoption:voiceInfoOnline": "Las voces marcadas como {online} envían el texto a la empresa que las crea, como Google o Microsoft. Las demás lo leen en su dispositivo.",
-  "viewoption:voiceInfoSource": "Todas estas voces provienen de su dispositivo y su navegador. Este sitio no puede añadirlas ni cambiarlas.",
+  "viewoption:voiceInfoSource": "Todas estas voces provienen de su dispositivo y su navegador. Las voces de mayor calidad suelen poder descargarse gratis en la configuración de voz o de accesibilidad de su sistema. Recuerde recargar la página después de añadir otras nuevas.",
   "viewoption:voiceLabel": "Voz",
   "viewoption:voiceOnline": "EN LÍNEA",
   "viewoption:wordLookup": "Búsqueda de palabras"
