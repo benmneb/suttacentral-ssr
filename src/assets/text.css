@@ -1177,6 +1177,8 @@ input[type='range'] {
 
     body:has(#positioner:checked) [popover]:is(#info, #parallels) {
       inset: auto 0 calc(2.75rem + var(--past-tts, 0px));
+      /* As the bar's menus, less the padding */
+      max-height: calc(100dvh - 7.75rem - var(--past-tts, 0px));
       border-radius: var(--rounding) var(--rounding) 0 0;
       box-shadow: 0 0.3rem 1rem var(--shadow-color);
       clip-path: inset(-2rem 0 0);
@@ -1487,9 +1489,11 @@ aside {
           }
         }
 
+        /* 3rem short of the top, to leave a strip to tap to close */
+        #contents-menu,
         #views-menu,
         #listen-menu {
-          max-height: calc(100dvh - 2.75rem - var(--past-tts, 0px));
+          max-height: calc(100dvh - 5.75rem - var(--past-tts, 0px));
           overflow-y: auto;
         }
 
@@ -2056,6 +2060,40 @@ aside {
         width: 1.125rem;
         height: 1.125rem;
       }
+    }
+  }
+}
+
+@media not all and (max-width: 600px) {
+  aside fieldset :is(#views-menu, #listen-menu) {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+}
+
+/* Not in Safari, which scrolls the page under a position-area box instead of the box */
+@supports (position-area: bottom) and selector(:popover-open) and
+  (not (font: -apple-system-body)) {
+  @media not all and (max-width: 600px) {
+    aside
+      fieldset
+      :is(#contents-menu, #views-menu, #listen-menu):not(.detached),
+    [popover]:is(#info, #parallels) {
+      position: fixed;
+      inset: auto;
+      position-area: bottom span-left;
+      margin-top: var(--past-tts, 0px);
+      /* position-area makes 100% the room under the anchor */
+      max-height: calc(100% - var(--past-tts, 0px) - 0.5rem);
+    }
+
+    aside fieldset #contents-menu {
+      min-width: anchor-size(width);
+    }
+
+    /* Less their padding, as max-height is the content box's */
+    [popover]:is(#info, #parallels) {
+      max-height: calc(100% - var(--past-tts, 0px) - 2.5rem);
     }
   }
 }
