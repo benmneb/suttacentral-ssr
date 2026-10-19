@@ -53,6 +53,7 @@
 
   --offwhite: #faf9f6;
   --offerwhite: #f8f6f2;
+  --offwhite-dim: #f0ede6;
 
   /* Use these: */
   --background-color: light-dark(var(--offwhite), var(--bg));

@@ -1105,6 +1105,12 @@ input[type='range'] {
   }
 }
 
+@media only screen and (max-width: 600px) {
+  [popover]:is(#info, #parallels) {
+    background-color: light-dark(var(--offwhite-dim), var(--bg-alt-1));
+  }
+}
+
 /* Not in the bar's lis, whose styles would reach a legacy text's info html */
 @supports (anchor-name: --a) and selector(:popover-open) {
   [popover]:is(#info, #parallels) {
