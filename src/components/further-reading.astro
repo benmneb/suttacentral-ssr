@@ -64,10 +64,15 @@ const guides = (uid && pitakaGuides[uid]) || []
   }
 
   a {
+    display: inline-flex;
+    align-items: center;
     margin-inline-start: calc(-1em - 0.375rem);
   }
 
   a > :global(.icon) {
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: calc((1lh - 1em) / 2);
     margin-inline-end: 0.375rem;
   }
 

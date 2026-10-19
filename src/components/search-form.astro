@@ -128,7 +128,7 @@ const userLanguage = Astro.locals.userLanguage
     flex-direction: column;
     gap: 0.5rem;
 
-    fieldset:first-of-type {
+    > fieldset:first-of-type {
       display: flex;
       flex: 1;
       margin: 0;
@@ -170,7 +170,7 @@ const userLanguage = Astro.locals.userLanguage
       cursor: pointer;
     }
 
-    fieldset:nth-of-type(2) {
+    > fieldset:nth-of-type(2) {
       border: none;
       padding: 0;
       display: flex;
