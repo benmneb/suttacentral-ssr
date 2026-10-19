@@ -1160,13 +1160,6 @@ input[type='range'] {
     }
   }
 
-  /* Past the listen controls, which stay up on touch while playing */
-  @media (hover: none) {
-    body:has(#stop:enabled) :is(#info, #parallels) {
-      --past-tts: var(--tts-controls-height);
-    }
-  }
-
   @media only screen and (max-width: 600px) {
     [popover]:is(#info, #parallels) {
       left: anchor(left);
@@ -1174,11 +1167,26 @@ input[type='range'] {
       max-width: none;
       border-top-left-radius: 0;
     }
+  }
+}
 
+@supports selector(:popover-open) {
+  /* Show past the listen controls, which stay up on touch while playing */
+  @media (hover: none) {
+    body:has(#stop:enabled) :is(#info, #parallels) {
+      --past-tts: var(--tts-controls-height);
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
     body:has(#positioner:checked) [popover]:is(#info, #parallels) {
       inset: auto 0 calc(2.75rem + var(--past-tts, 0px));
+      width: auto;
+      max-width: none;
+      margin: 0;
       /* As the bar's menus, less the padding */
       max-height: calc(100dvh - 7.75rem - var(--past-tts, 0px));
+      overscroll-behavior: contain;
       border-radius: var(--rounding) var(--rounding) 0 0;
       box-shadow: 0 0.3rem 1rem var(--shadow-color);
       clip-path: inset(-2rem 0 0);
@@ -1195,6 +1203,18 @@ input[type='range'] {
   body:has([popover]#info:popover-open),
   body:has([popover]#parallels:popover-open) {
     overflow: hidden;
+  }
+
+  @media only screen and (max-width: 600px) {
+    body:has(#positioner:checked) {
+      [popover]:is(#info, #parallels)::backdrop {
+        backdrop-filter: none;
+      }
+
+      &:has([popover]:is(#info, #parallels):popover-open) {
+        overflow: visible;
+      }
+    }
   }
 }
 
