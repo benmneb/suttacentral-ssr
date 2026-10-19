@@ -1037,8 +1037,11 @@ input[type='range'] {
 #listen-menu li:has(> #voice-select, > input[type='range']) label {
   width: auto;
   flex: none;
+}
+
+#listen-menu li:has(> #voice-select, > input[type='range']) label > span {
+  display: flex;
   flex-direction: column;
-  align-items: stretch;
 
   &::before,
   &::after {
@@ -1051,6 +1054,19 @@ input[type='range'] {
   &::after {
     content: attr(data-also-b);
   }
+}
+
+:is(#views-menu, #listen-menu) label .icon {
+  color: var(--text-color-secondary);
+  margin-right: 0.2rem;
+}
+
+:is(#views-menu, #listen-menu) > li:is(:hover, :focus-within) > label .icon {
+  color: var(--text-color);
+}
+
+:is(#views-menu, #listen-menu) > li:has(> input:checked) > label .icon {
+  color: var(--primary-color);
 }
 
 #voice-select,
@@ -1642,13 +1658,15 @@ aside {
       }
     }
 
+    /* Align under the parent's text:
+       add up its padding, icon, icon margin and span gap */
     #views-menu {
       > li.sub > label {
-        padding-inline-start: 1.3rem;
+        padding-inline-start: calc(0.5rem + 1.25em);
       }
 
       > li.sub-sub > label {
-        padding-inline-start: 2.3rem;
+        padding-inline-start: calc(0.7rem + 2.5em);
       }
 
       > li.pressed {

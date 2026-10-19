@@ -890,7 +890,12 @@ const jsonLd = generateTextJsonLd(
                 <>
                   <li>
                     <label for="commenter">
-                      <span>{t(userLanguage, 'viewoption:comments')}</span>
+                      <span class="with-icon">
+                        <Fragment
+                          set:html={heroicon.chatBubbleBottomCenterTextMicro}
+                        />
+                        <span>{t(userLanguage, 'viewoption:comments')}</span>
+                      </span>
                       <kbd
                         aria-hidden="true"
                         title={t(userLanguage, 'viewoption:hotkeyCycle', {
@@ -910,7 +915,10 @@ const jsonLd = generateTextJsonLd(
                   </li>
                   <li class="sub">
                     <label for="commenter-inline">
-                      <span>{t(userLanguage, 'viewoption:inline')}</span>
+                      <span class="with-icon">
+                        <Fragment set:html={heroicon.bars3BottomLeftMicro} />
+                        <span>{t(userLanguage, 'viewoption:inline')}</span>
+                      </span>
                     </label>
                     <input
                       type="checkbox"
@@ -922,7 +930,10 @@ const jsonLd = generateTextJsonLd(
                   </li>
                   <li class="sub sub-sub">
                     <label for="commenter-side">
-                      <span>{t(userLanguage, 'viewoption:marginNotes')}</span>
+                      <span class="with-icon">
+                        <Fragment set:html={heroicon.bars3BottomRightMicro} />
+                        <span>{t(userLanguage, 'viewoption:marginNotes')}</span>
+                      </span>
                     </label>
                     <input
                       type="checkbox"
@@ -939,7 +950,10 @@ const jsonLd = generateTextJsonLd(
                 <>
                   <li>
                     <label for="rooter">
-                      <span>{t(userLanguage, 'viewoption:rootText')}</span>
+                      <span class="with-icon">
+                        <Fragment set:html={heroicon.languageMicro} />
+                        <span>{t(userLanguage, 'viewoption:rootText')}</span>
+                      </span>
                       <kbd
                         aria-hidden="true"
                         title={t(userLanguage, 'viewoption:hotkeyCycle', {
@@ -963,7 +977,10 @@ const jsonLd = generateTextJsonLd(
                   </li>
                   <li class="sub">
                     <label for="rooter-side">
-                      <span>{t(userLanguage, 'viewoption:sideBySide')}</span>
+                      <span class="with-icon">
+                        <Fragment set:html={heroicon.viewColumnsMicro} />
+                        <span>{t(userLanguage, 'viewoption:sideBySide')}</span>
+                      </span>
                     </label>
                     <input
                       type="checkbox"
@@ -974,7 +991,10 @@ const jsonLd = generateTextJsonLd(
                   </li>
                   <li class="sub">
                     <label for="rooter-first">
-                      <span>{t(userLanguage, 'viewoption:rootFirst')}</span>
+                      <span class="with-icon">
+                        <Fragment set:html={heroicon.arrowsUpDownMicro} />
+                        <span>{t(userLanguage, 'viewoption:rootFirst')}</span>
+                      </span>
                       <kbd
                         aria-hidden="true"
                         title={t(userLanguage, 'viewoption:hotkeyToggle', {
@@ -993,7 +1013,12 @@ const jsonLd = generateTextJsonLd(
                   {availableLangs && (
                     <li class="sub">
                       <label for="rooter-look-up">
-                        <span>{t(userLanguage, 'viewoption:wordLookup')}</span>
+                        <span class="with-icon">
+                          <Fragment set:html={heroicon.bookOpen} />
+                          <span>
+                            {t(userLanguage, 'viewoption:wordLookup')}
+                          </span>
+                        </span>
                         <kbd
                           aria-hidden="true"
                           title={t(userLanguage, 'viewoption:hotkeyToggle', {
@@ -1020,7 +1045,10 @@ const jsonLd = generateTextJsonLd(
                 <>
                   <li>
                     <label for="rooter-look-up">
-                      <span>{t(userLanguage, 'viewoption:wordLookup')}</span>
+                      <span class="with-icon">
+                        <Fragment set:html={heroicon.bookOpen} />
+                        <span>{t(userLanguage, 'viewoption:wordLookup')}</span>
+                      </span>
                       <kbd
                         aria-hidden="true"
                         title={t(userLanguage, 'viewoption:hotkeyToggle', {
@@ -1045,7 +1073,10 @@ const jsonLd = generateTextJsonLd(
               hasIllustrations && (
                 <li>
                   <label for="illustrator">
-                    <span>{t(userLanguage, 'viewoption:illustrations')}</span>
+                    <span class="with-icon">
+                      <Fragment set:html={heroicon.photoMicro} />
+                      <span>{t(userLanguage, 'viewoption:illustrations')}</span>
+                    </span>
                     <kbd
                       aria-hidden="true"
                       title={t(userLanguage, 'viewoption:hotkeyToggle', {
@@ -1071,7 +1102,10 @@ const jsonLd = generateTextJsonLd(
                     for="highlighter"
                     title={t(userLanguage, 'viewoption:showHighlighting')}
                   >
-                    <span>{t(userLanguage, 'viewoption:highlighting')}</span>
+                    <span class="with-icon">
+                      <Fragment set:html={heroicon.paintBrushMicro} />
+                      <span>{t(userLanguage, 'viewoption:highlighting')}</span>
+                    </span>
                     <kbd
                       aria-hidden="true"
                       title={t(userLanguage, 'viewoption:hotkeyToggle', {
@@ -1095,7 +1129,10 @@ const jsonLd = generateTextJsonLd(
               hasParallels && (
                 <li>
                   <label for="paralleler">
-                    <span>{t(userLanguage, 'viewoption:parallels')}</span>
+                    <span class="with-icon">
+                      <Fragment set:html={heroicon.arrowsRightLeftMicro} />
+                      <span>{t(userLanguage, 'viewoption:parallels')}</span>
+                    </span>
                     <kbd
                       aria-hidden="true"
                       title={t(userLanguage, 'viewoption:hotkeyToggle', {
@@ -1117,7 +1154,10 @@ const jsonLd = generateTextJsonLd(
               hasReferences && (
                 <li>
                   <label for="segmenter">
-                    <span>{t(userLanguage, 'viewoption:segments')}</span>
+                    <span class="with-icon">
+                      <Fragment set:html={heroicon.hashtagMicro} />
+                      <span>{t(userLanguage, 'viewoption:segments')}</span>
+                    </span>
                     <kbd
                       aria-hidden="true"
                       title={t(userLanguage, 'viewoption:hotkeyToggle', {
@@ -1148,8 +1188,11 @@ const jsonLd = generateTextJsonLd(
               hasReferenceGroups && referenceGroups.has('main') && (
                 <li class="sub">
                   <label for="segmenter-main" title="SuttaCentral">
-                    <span>
-                      {t(userLanguage, 'viewoption:referenceDisplayTypeMain')}
+                    <span class="with-icon">
+                      <Fragment set:html={heroicon.bookmarkMicro} />
+                      <span>
+                        {t(userLanguage, 'viewoption:referenceDisplayTypeMain')}
+                      </span>
                     </span>
                     <kbd
                       aria-hidden="true"
@@ -1174,7 +1217,10 @@ const jsonLd = generateTextJsonLd(
               hasReferenceGroups && referenceGroups.has('pts') && (
                 <li class="sub">
                   <label for="segmenter-pts" title={referenceEditions.pts}>
-                    <span>PTS</span>
+                    <span class="with-icon">
+                      <Fragment set:html={heroicon.documentMicro} />
+                      <span>PTS</span>
+                    </span>
                     <kbd
                       aria-hidden="true"
                       title={t(userLanguage, 'viewoption:hotkeyToggle', {
@@ -1198,7 +1244,12 @@ const jsonLd = generateTextJsonLd(
               hasReferenceGroups && referenceGroups.has('others') && (
                 <li class="sub">
                   <label for="segmenter-others" title={otherEditions}>
-                    <span>{t(userLanguage, 'viewoption:referenceOthers')}</span>
+                    <span class="with-icon">
+                      <Fragment set:html={heroicon.rectangleStackMicro} />
+                      <span>
+                        {t(userLanguage, 'viewoption:referenceOthers')}
+                      </span>
+                    </span>
                   </label>
                   <input
                     type="checkbox"
@@ -1212,7 +1263,10 @@ const jsonLd = generateTextJsonLd(
             }
             <li>
               <label for="positioner">
-                <span>{t(userLanguage, 'viewoption:pinMenu')}</span>
+                <span class="with-icon">
+                  <Fragment set:html={heroicon.mapPinMicro} />
+                  <span>{t(userLanguage, 'viewoption:pinMenu')}</span>
+                </span>
                 <kbd
                   aria-hidden="true"
                   title={t(userLanguage, 'viewoption:hotkeyToggle', {
@@ -1316,12 +1370,14 @@ const jsonLd = generateTextJsonLd(
               </button>
             </li>
             <li>
-              <label
-                for="voice-select"
-                data-also-a={t(userLanguage, 'viewoption:rate')}
-                data-also-b={t(userLanguage, 'viewoption:pitch')}
-                >{t(userLanguage, 'viewoption:voiceLabel')}</label
-              >
+              <label for="voice-select" class="with-icon">
+                <Fragment set:html={heroicon.microphoneMicro} />
+                <span
+                  data-also-a={t(userLanguage, 'viewoption:rate')}
+                  data-also-b={t(userLanguage, 'viewoption:pitch')}
+                  >{t(userLanguage, 'viewoption:voiceLabel')}</span
+                >
+              </label>
               <select id="voice-select"></select>
               <button
                 id="voice-info-button"
@@ -1347,12 +1403,14 @@ const jsonLd = generateTextJsonLd(
               </p>
             </li>
             <li>
-              <label
-                for="rate"
-                data-also-a={t(userLanguage, 'viewoption:voiceLabel')}
-                data-also-b={t(userLanguage, 'viewoption:pitch')}
-                >{t(userLanguage, 'viewoption:rate')}</label
-              >
+              <label for="rate" class="with-icon">
+                <Fragment set:html={heroicon.clockMicro} />
+                <span
+                  data-also-a={t(userLanguage, 'viewoption:voiceLabel')}
+                  data-also-b={t(userLanguage, 'viewoption:pitch')}
+                  >{t(userLanguage, 'viewoption:rate')}</span
+                >
+              </label>
               <input
                 type="range"
                 min="0.5"
@@ -1364,12 +1422,14 @@ const jsonLd = generateTextJsonLd(
               <div id="rate-value">1.0</div>
             </li>
             <li>
-              <label
-                for="pitch"
-                data-also-a={t(userLanguage, 'viewoption:voiceLabel')}
-                data-also-b={t(userLanguage, 'viewoption:rate')}
-                >{t(userLanguage, 'viewoption:pitch')}</label
-              >
+              <label for="pitch" class="with-icon">
+                <Fragment set:html={heroicon.musicalNoteMicro} />
+                <span
+                  data-also-a={t(userLanguage, 'viewoption:voiceLabel')}
+                  data-also-b={t(userLanguage, 'viewoption:rate')}
+                  >{t(userLanguage, 'viewoption:pitch')}</span
+                >
+              </label>
               <input
                 type="range"
                 min="0"
@@ -1382,7 +1442,10 @@ const jsonLd = generateTextJsonLd(
             </li>
             <li>
               <label for="auto-scroll">
-                <span>{t(userLanguage, 'viewoption:autoScroll')}</span>
+                <span class="with-icon">
+                  <Fragment set:html={heroicon.chevronDoubleDownMicro} />
+                  <span>{t(userLanguage, 'viewoption:autoScroll')}</span>
+                </span>
                 <kbd
                   aria-hidden="true"
                   title={t(userLanguage, 'viewoption:hotkeyToggle', {
