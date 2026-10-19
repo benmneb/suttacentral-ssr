@@ -1815,6 +1815,9 @@ aside {
         right: 0;
 
         @supports (anchor-name: --a) {
+          /* Firefox otherwise scrolls it out of sight with its anchor */
+          position-visibility: always;
+
           @media not all and (max-width: 600px) {
             right: anchor(right);
           }
