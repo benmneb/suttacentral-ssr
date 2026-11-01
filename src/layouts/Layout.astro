@@ -6,6 +6,7 @@ import SiteFooter from '~/components/site-footer.astro'
 import SiteHeader from '~/components/site-header.astro'
 import SitePages from '~/components/site-pages.astro'
 import { siteMetaData } from '~/constants/meta-data'
+import { t } from '~/i18n'
 
 const pathname = Astro.url.pathname
 const userLanguage = Astro.locals.userLanguage
@@ -41,6 +42,10 @@ const pageDescription = description || siteMetaData.description
 const canonicalUrl = canonical || Astro.url.origin + Astro.url.pathname
 const shareUrl = canonical || Astro.url.href
 const imageUrl = new URL(ogImage || '/og-image2.jpg', Astro.site).href
+// Here, not in icons.css, as the alt text is in the reader's language
+const externalLinkAlt = JSON.stringify(
+  ` (${t(userLanguage, 'interface:externalLink')})`
+)
 ---
 
 <!doctype html>
@@ -97,6 +102,10 @@ const imageUrl = new URL(ogImage || '/og-image2.jpg', Astro.site).href
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={imageUrl} />
+    <style
+      is:inline
+      set:html={`:is(main, aside, #site-pages) a[href^='http']::after { content: '' / ${externalLinkAlt}; }`}
+    ></style>
     {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
     <script
       is:inline
@@ -105,8 +114,7 @@ const imageUrl = new URL(ogImage || '/og-image2.jpg', Astro.site).href
       data-website-id="1e65129e-1d78-4a78-a6d2-a339152f9a1d"
       data-domains="suttacentral.now,www.suttacentral.now"
       data-exclude-search="true"
-      data-exclude-hash="true"
-    ></script>
+      data-exclude-hash="true"></script>
   </head>
   <body>
     <SiteHeader breadcrumbs={breadcrumbs} />

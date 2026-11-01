@@ -1,5 +1,4 @@
 ---
-import Icon from '~/components/icon.astro'
 import { staticPages, type StaticPageCategory } from '~/constants/static-pages'
 import { t } from '~/i18n'
 
@@ -23,12 +22,6 @@ const currentPath = currentHref ?? Astro.url.pathname.replace(/\/$/, '')
           <li>
             {currentPath === href ? (
               <span aria-current="page">{t(userLanguage, label)}</span>
-            ) : href.startsWith('https://') ? (
-              <a href={href}>
-                {t(userLanguage, label)}
-                <Icon name="arrowTopRightOnSquare" />
-                <span class="sr-only">SuttaCentral.net</span>
-              </a>
             ) : (
               <a href={href}>{t(userLanguage, label)}</a>
             )}
@@ -84,10 +77,6 @@ const currentPath = currentHref ?? Astro.url.pathname.replace(/\/$/, '')
             display: flex;
 
             align-items: center;
-
-            > :global(.icon) {
-              margin-inline-start: 0.25em;
-            }
           }
         }
       }

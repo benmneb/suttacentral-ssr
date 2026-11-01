@@ -1,5 +1,4 @@
 ---
-import Icon from '~/components/icon.astro'
 import { pageIcons, siteMap } from '~/constants/static-pages'
 import { t } from '~/i18n'
 
@@ -25,15 +24,6 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '')
                   <Fragment set:html={pageIcons[href]} />
                   {t(userLanguage, label)}
                 </span>
-              </li>
-            ) : href.startsWith('https://') ? (
-              <li>
-                <a href={href}>
-                  <Fragment set:html={pageIcons[href]} />
-                  {t(userLanguage, label)}
-                  <Icon name="arrowTopRightOnSquare" />
-                  <span class="sr-only">SuttaCentral.net</span>
-                </a>
               </li>
             ) : (
               <li>
@@ -123,10 +113,6 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '')
     align-self: flex-start;
     margin-top: calc((1lh - 1em) / 2);
     margin-inline-end: 0.375rem;
-  }
-
-  a > :global(.icon:not(:first-child)) {
-    margin-inline-start: 0.25em;
   }
 
   [aria-current='page'] {

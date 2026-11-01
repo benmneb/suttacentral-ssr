@@ -6,7 +6,6 @@ export type IconName =
   | 'arrowRight'
   | 'arrowsRightLeft'
   | 'arrowsUpDown'
-  | 'arrowTopRightOnSquare'
   | 'backward'
   | 'bars'
   | 'beaker'

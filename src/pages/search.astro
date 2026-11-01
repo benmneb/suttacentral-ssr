@@ -180,17 +180,7 @@ const pageHits =
                               <ul>
                                 {pages.map(({ href, text }) => (
                                   <li>
-                                    <a href={href}>
-                                      {text}
-                                      {href.startsWith('https://') && (
-                                        <>
-                                          <Icon name="arrowTopRightOnSquare" />
-                                          <span class="sr-only">
-                                            SuttaCentral.net
-                                          </span>
-                                        </>
-                                      )}
-                                    </a>
+                                    <a href={href}>{text}</a>
                                   </li>
                                 ))}
                               </ul>
@@ -527,10 +517,6 @@ const pageHits =
         a {
           display: inline-flex;
           align-items: center;
-        }
-
-        a > :global(.icon) {
-          margin-inline-start: 0.25em;
         }
       }
 
