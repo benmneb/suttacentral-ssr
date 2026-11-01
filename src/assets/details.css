@@ -9,6 +9,11 @@ details {
     &:hover,
     &:active {
       background-color: var(--details-summary-hover-background);
+
+      @media (forced-colors: active) {
+        outline: 2px solid Highlight;
+        outline-offset: -2px;
+      }
     }
 
     &::marker {

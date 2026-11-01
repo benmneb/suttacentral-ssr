@@ -1,0 +1,12 @@
+---
+import { icon, type IconName } from '~/constants/heroicons'
+
+interface Props {
+  name: IconName
+  mini?: boolean
+}
+
+const { name, mini } = Astro.props
+---
+
+<Fragment set:html={icon(name, mini ? 'mini' : undefined)} />

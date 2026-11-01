@@ -3,7 +3,7 @@ import '~/assets/details.css'
 import '~/assets/text-meta-content.css'
 import Heading, { type HeadingProps } from '~/components/heading.astro'
 import RootTitle from '~/components/root-title.astro'
-import * as heroicon from '~/constants/heroicons'
+import { icon } from '~/constants/heroicons'
 import { t } from '~/i18n'
 import {
   formatVolpages,
@@ -55,11 +55,11 @@ function iconHTML(label: string, icon: string) {
 }
 const alignedHTML = iconHTML(
   `${t(userLanguage, 'suttaplex:aligned')}: ${t(userLanguage, 'suttaplex:alignedDescription')}`,
-  heroicon.link
+  icon('link')
 )
 const annotatedHTML = iconHTML(
   `${t(userLanguage, 'suttaplex:annotated')}: ${t(userLanguage, 'suttaplex:annotatedDescription')}`,
-  heroicon.pencilSquare
+  icon('pencilSquare')
 )
 
 function translationHref(translation) {

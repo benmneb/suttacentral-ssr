@@ -68,8 +68,8 @@
   --variant-btn-color: var(--blue);
   --shadow-color: light-dark(var(--gray-dim), var(--bg-hard));
   --tts-highlight-text-color: var(--headings-color);
-  --tts-highlight-background-color: light-dark(var(--bg), var(--bg-alt-1));
-  --tts-word-background-color: light-dark(var(--bg-alt-1), var(--bg-alt-2));
+  --tts-highlight-background-color: var(--bg-alt-1);
+  --tts-word-background-color: var(--bg-alt-2);
   --tts-hover-background-color: light-dark(
     var(--background-color-secondary),
     var(--bg-alt-1)
@@ -80,4 +80,24 @@
   );
   --comments-background-color: light-dark(var(--offerwhite), var(--bg-hard));
   --comments-border-color: light-dark(var(--bg-soft), var(--bg-hard));
+}
+
+/* 7:1 on --bg-alt-1, the nearest surface text sits on to its colour, for WCAG AAA */
+@media (prefers-contrast: more) {
+  :root {
+    --fg-alt-2: light-dark(#49433f, #d8c9a9);
+    --fg-alt-3: light-dark(#4b433d, #d3c9b6);
+    --fg-alt-4: light-dark(#4c423b, #d2c9bd);
+
+    --red: light-dark(#8f0005, #fdbab2);
+    --green: light-dark(#494608, #ced12a);
+    --yellow: light-dark(#5e3d0a, #fac23e);
+    --blue: light-dark(#054b58, #bccec7);
+    --purple: light-dark(#6b2f54, #e8c0cb);
+    --aqua: light-dark(#284b36, #b1d4a5);
+    --gray: light-dark(#4b433b, #cfc9c2);
+    --orange: light-dark(#7c2800, #febd87);
+    --orange-alt: #7a2903;
+    --brown: light-dark(#56402d, #e8c4a0);
+  }
 }

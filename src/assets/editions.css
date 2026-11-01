@@ -105,29 +105,6 @@ body main:has(article) {
           & > p {
             margin: 0;
           }
-
-          a {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: var(--primary-color);
-            color: var(--background-color);
-            text-decoration: none;
-            border-radius: var(--rounding);
-            font-weight: 500;
-
-            &:hover {
-              background-color: var(--primary-color-alt);
-            }
-
-            &:visited {
-              background-color: var(--primary-color);
-              color: var(--background-color);
-
-              &:hover {
-                background-color: var(--primary-color-alt);
-              }
-            }
-          }
         }
 
         figure {

@@ -202,7 +202,7 @@ body main:has(article) {
         }
       }
 
-      table td:first-child:not(:only-child) svg {
+      table td:first-child:not(:only-child) .icon {
         display: none;
       }
     }

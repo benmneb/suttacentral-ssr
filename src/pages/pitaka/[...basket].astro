@@ -1,7 +1,7 @@
 ---
 import FurtherReading from '~/components/further-reading.astro'
 import RootTitle from '~/components/root-title.astro'
-import * as heroicon from '~/constants/heroicons'
+import Icon from '~/components/icon.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { fetchEditions } from '~/utils/editions'
@@ -109,7 +109,7 @@ function cardDetails(child: any) {
         <p>
           <a class="with-icon" href={`/${uid}`}>
             <span>{t(userLanguage, 'interface:shortcutToFullList')}</span>
-            <Fragment set:html={heroicon.arrowRight} />
+            <Icon name="arrowRight" />
           </a>
         </p>
       )
@@ -138,9 +138,7 @@ function cardDetails(child: any) {
                   <p class="card-details">
                     {!!range && <span class="range">{range}</span>}
                     {!!root && <span>{root}</span>}
-                    {!!root && !!translated && (
-                      <Fragment set:html={heroicon.arrowRight} />
-                    )}
+                    {!!root && !!translated && <Icon name="arrowRight" />}
                     {!!translated && (
                       <>
                         <span aria-hidden="true">{translated}</span>
@@ -157,7 +155,7 @@ function cardDetails(child: any) {
                     <span>
                       {t(userLanguage, 'interface:shortcutToFullList')}
                     </span>
-                    <Fragment set:html={heroicon.arrowRight} />
+                    <Icon name="arrowRight" />
                   </a>
                 </p>
               )}

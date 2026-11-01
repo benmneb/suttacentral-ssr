@@ -1,7 +1,7 @@
 ---
 import '~/assets/define.css'
 import { dictionaryTitles } from '~/constants/define'
-import * as heroicon from '~/constants/heroicons'
+import Icon from '~/components/icon.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 
@@ -152,14 +152,13 @@ if (term) {
           />
           <button
             aria-label={t(userLanguage, 'dictionary:define')}
-            type="submit"
-            ><Fragment set:html={heroicon.magnifyingGlass} /></button
+            type="submit"><Icon name="magnifyingGlass" mini /></button
           >
         </form>
         <p>
           <a class="with-icon" href="/terminology">
             <span>{t(userLanguage, 'interface:terminology')}</span>
-            <Fragment set:html={heroicon.arrowRight} />
+            <Icon name="arrowRight" />
           </a>
         </p>
         {
@@ -251,10 +250,13 @@ if (term) {
     border: 1px solid;
     padding: 0.4rem;
     border-radius: var(--rounding);
-    border-color: var(--bg-alt-4);
+    border-color: var(--text-color-secondary);
 
     &:focus-within {
       border-color: inherit;
+      /* The browser's own ring, the first line where -webkit-focus-ring-color is unknown */
+      outline: 1px auto;
+      outline: auto 1px -webkit-focus-ring-color;
     }
 
     input {

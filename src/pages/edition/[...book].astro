@@ -2,7 +2,7 @@
 import '~/assets/edition.css'
 import '~/assets/matter.css'
 import { collectionURL } from '~/constants/edition'
-import * as heroicon from '~/constants/heroicons'
+import Icon from '~/components/icon.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { toSentenceCase } from '~/utils/strings'
@@ -325,7 +325,7 @@ if (matter) {
                         <span>HTML</span>
                         <small class="with-icon">
                           <span>(right click</span>
-                          <Fragment set:html={heroicon.arrowRight} />
+                          <Icon name="arrowRight" />
                           <span>save)</span>
                         </small>
                       </span>

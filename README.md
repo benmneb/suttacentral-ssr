@@ -61,4 +61,4 @@ Donated to the public domain via [CC0](https://creativecommons.org/publicdomain/
 
 Favicon via [thesunshade](https://github.com/thesunshade/citation-helper)
 
-[UI icons](src/constants/heroicons.ts) from [Heroicons](https://heroicons.com) by Tailwind Labs, MIT licensed
+[UI icons](src/assets/icons.css) via [Heroicons](https://heroicons.com) by Tailwind Labs, MIT licensed

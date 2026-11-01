@@ -1,5 +1,5 @@
 ---
-import * as heroicon from '~/constants/heroicons'
+import Icon from '~/components/icon.astro'
 import { pageIcons, siteMap } from '~/constants/static-pages'
 import { t } from '~/i18n'
 
@@ -31,7 +31,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '')
                 <a href={href}>
                   <Fragment set:html={pageIcons[href]} />
                   {t(userLanguage, label)}
-                  <Fragment set:html={heroicon.arrowTopRightOnSquareMicro} />
+                  <Icon name="arrowTopRightOnSquare" />
                   <span class="sr-only">SuttaCentral.net</span>
                 </a>
               </li>

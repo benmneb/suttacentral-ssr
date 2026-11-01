@@ -1,9 +1,11 @@
 ---
 import '~/assets/text.css'
+import '~/assets/text-icons.css'
 import ParallelList from '~/components/parallel-list.astro'
 import PublicationInfo from '~/components/publication-info.astro'
 import TextMetaContent from '~/components/text-meta-content.astro'
-import * as heroicon from '~/constants/heroicons'
+import Icon from '~/components/icon.astro'
+import { icon } from '~/constants/heroicons'
 import { AVAILABLE_LOOKUPS } from '~/constants/lookup'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
@@ -831,7 +833,7 @@ const jsonLd = generateTextJsonLd(
                 title={t(userLanguage, 'interface:tableOfContent')}
                 id="contents-button"
               >
-                <Fragment set:html={heroicon.numberedListMicro} />
+                <Icon name="numberedList" />
               </button>
               <ol
                 class="dropdown"
@@ -861,7 +863,7 @@ const jsonLd = generateTextJsonLd(
             title={t(userLanguage, 'viewoption:showPublicationInfo')}
             id="info-button"
           >
-            <Fragment set:html={heroicon.informationCircleMicro} />
+            <Icon name="informationCircle" />
           </button>
         </li>
         <li>
@@ -873,7 +875,7 @@ const jsonLd = generateTextJsonLd(
             title={t(userLanguage, 'interface:textSettings')}
             id="views-button"
           >
-            <Fragment set:html={heroicon.eyeMicro} />
+            <Icon name="eye" />
           </button>
           <ul
             class="dropdown"
@@ -892,7 +894,7 @@ const jsonLd = generateTextJsonLd(
                     <label for="commenter">
                       <span class="with-icon">
                         <Fragment
-                          set:html={heroicon.chatBubbleBottomCenterTextMicro}
+                          set:html={icon('chatBubbleBottomCenterText')}
                         />
                         <span>{t(userLanguage, 'viewoption:comments')}</span>
                       </span>
@@ -916,7 +918,7 @@ const jsonLd = generateTextJsonLd(
                   <li class="sub">
                     <label for="commenter-inline">
                       <span class="with-icon">
-                        <Fragment set:html={heroicon.bars3BottomLeftMicro} />
+                        <Icon name="bars3BottomLeft" />
                         <span>{t(userLanguage, 'viewoption:inline')}</span>
                       </span>
                     </label>
@@ -931,7 +933,7 @@ const jsonLd = generateTextJsonLd(
                   <li class="sub sub-sub">
                     <label for="commenter-side">
                       <span class="with-icon">
-                        <Fragment set:html={heroicon.bars3BottomRightMicro} />
+                        <Icon name="bars3BottomRight" />
                         <span>{t(userLanguage, 'viewoption:marginNotes')}</span>
                       </span>
                     </label>
@@ -951,7 +953,7 @@ const jsonLd = generateTextJsonLd(
                   <li>
                     <label for="rooter">
                       <span class="with-icon">
-                        <Fragment set:html={heroicon.languageMicro} />
+                        <Icon name="language" />
                         <span>{t(userLanguage, 'viewoption:rootText')}</span>
                       </span>
                       <kbd
@@ -978,7 +980,7 @@ const jsonLd = generateTextJsonLd(
                   <li class="sub">
                     <label for="rooter-side">
                       <span class="with-icon">
-                        <Fragment set:html={heroicon.viewColumnsMicro} />
+                        <Icon name="viewColumns" />
                         <span>{t(userLanguage, 'viewoption:sideBySide')}</span>
                       </span>
                     </label>
@@ -992,7 +994,7 @@ const jsonLd = generateTextJsonLd(
                   <li class="sub">
                     <label for="rooter-first">
                       <span class="with-icon">
-                        <Fragment set:html={heroicon.arrowsUpDownMicro} />
+                        <Icon name="arrowsUpDown" />
                         <span>{t(userLanguage, 'viewoption:rootFirst')}</span>
                       </span>
                       <kbd
@@ -1014,7 +1016,7 @@ const jsonLd = generateTextJsonLd(
                     <li class="sub">
                       <label for="rooter-look-up">
                         <span class="with-icon">
-                          <Fragment set:html={heroicon.bookOpen} />
+                          <Icon name="bookOpen" />
                           <span>
                             {t(userLanguage, 'viewoption:wordLookup')}
                           </span>
@@ -1046,7 +1048,7 @@ const jsonLd = generateTextJsonLd(
                   <li>
                     <label for="rooter-look-up">
                       <span class="with-icon">
-                        <Fragment set:html={heroicon.bookOpen} />
+                        <Icon name="bookOpen" />
                         <span>{t(userLanguage, 'viewoption:wordLookup')}</span>
                       </span>
                       <kbd
@@ -1074,7 +1076,7 @@ const jsonLd = generateTextJsonLd(
                 <li>
                   <label for="illustrator">
                     <span class="with-icon">
-                      <Fragment set:html={heroicon.photoMicro} />
+                      <Icon name="photo" />
                       <span>{t(userLanguage, 'viewoption:illustrations')}</span>
                     </span>
                     <kbd
@@ -1103,7 +1105,7 @@ const jsonLd = generateTextJsonLd(
                     title={t(userLanguage, 'viewoption:showHighlighting')}
                   >
                     <span class="with-icon">
-                      <Fragment set:html={heroicon.paintBrushMicro} />
+                      <Icon name="paintBrush" />
                       <span>{t(userLanguage, 'viewoption:highlighting')}</span>
                     </span>
                     <kbd
@@ -1130,7 +1132,7 @@ const jsonLd = generateTextJsonLd(
                 <li>
                   <label for="paralleler">
                     <span class="with-icon">
-                      <Fragment set:html={heroicon.arrowsRightLeftMicro} />
+                      <Icon name="arrowsRightLeft" />
                       <span>{t(userLanguage, 'viewoption:parallels')}</span>
                     </span>
                     <kbd
@@ -1155,7 +1157,7 @@ const jsonLd = generateTextJsonLd(
                 <li>
                   <label for="segmenter">
                     <span class="with-icon">
-                      <Fragment set:html={heroicon.hashtagMicro} />
+                      <Icon name="hashtag" />
                       <span>{t(userLanguage, 'viewoption:segments')}</span>
                     </span>
                     <kbd
@@ -1189,7 +1191,7 @@ const jsonLd = generateTextJsonLd(
                 <li class="sub">
                   <label for="segmenter-main" title="SuttaCentral">
                     <span class="with-icon">
-                      <Fragment set:html={heroicon.bookmarkMicro} />
+                      <Icon name="bookmark" />
                       <span>
                         {t(userLanguage, 'viewoption:referenceDisplayTypeMain')}
                       </span>
@@ -1218,7 +1220,7 @@ const jsonLd = generateTextJsonLd(
                 <li class="sub">
                   <label for="segmenter-pts" title={referenceEditions.pts}>
                     <span class="with-icon">
-                      <Fragment set:html={heroicon.documentMicro} />
+                      <Icon name="document" />
                       <span>PTS</span>
                     </span>
                     <kbd
@@ -1245,7 +1247,7 @@ const jsonLd = generateTextJsonLd(
                 <li class="sub">
                   <label for="segmenter-others" title={otherEditions}>
                     <span class="with-icon">
-                      <Fragment set:html={heroicon.rectangleStackMicro} />
+                      <Icon name="rectangleStack" />
                       <span>
                         {t(userLanguage, 'viewoption:referenceOthers')}
                       </span>
@@ -1264,7 +1266,7 @@ const jsonLd = generateTextJsonLd(
             <li>
               <label for="positioner">
                 <span class="with-icon">
-                  <Fragment set:html={heroicon.mapPinMicro} />
+                  <Icon name="mapPin" />
                   <span>{t(userLanguage, 'viewoption:pinMenu')}</span>
                 </span>
                 <kbd
@@ -1293,7 +1295,7 @@ const jsonLd = generateTextJsonLd(
             title={t(userLanguage, 'viewoption:showParallelTexts')}
             id="parallels-button"
           >
-            <Fragment set:html={heroicon.arrowsRightLeftMicro} />
+            <Icon name="arrowsRightLeft" />
           </button>
         </li>
         <li>
@@ -1305,7 +1307,7 @@ const jsonLd = generateTextJsonLd(
             title={t(userLanguage, 'viewoption:ttsSettings')}
             id="listen-menu-button"
           >
-            <Fragment set:html={heroicon.speakerWaveMicro} />
+            <Icon name="speakerWave" />
           </button>
           <ul
             class="dropdown"
@@ -1329,7 +1331,7 @@ const jsonLd = generateTextJsonLd(
             </li>
             <li class="tts-controls">
               <button id="prev" type="button" disabled>
-                <span set:html={heroicon.backward} /><span
+                <span set:html={icon('backward', 'mini')} /><span
                   ><span>{t(userLanguage, 'viewoption:prev')}</span><kbd
                     aria-hidden="true"
                     title={t(userLanguage, 'viewoption:hotkeyPress', {
@@ -1339,7 +1341,7 @@ const jsonLd = generateTextJsonLd(
                 >
               </button>
               <button id="playpause" type="button">
-                <span set:html={heroicon.play} /><span
+                <span set:html={icon('play', 'mini')} /><span
                   ><span>{t(userLanguage, 'viewoption:play')}</span><kbd
                     aria-hidden="true"
                     title={t(userLanguage, 'viewoption:hotkeyPress', {
@@ -1349,7 +1351,7 @@ const jsonLd = generateTextJsonLd(
                 >
               </button>
               <button id="stop" type="button" disabled>
-                <span set:html={heroicon.stop} /><span
+                <span set:html={icon('stop', 'mini')} /><span
                   ><span>{t(userLanguage, 'viewoption:stop')}</span><kbd
                     aria-hidden="true"
                     title={t(userLanguage, 'viewoption:hotkeyPress', {
@@ -1359,7 +1361,7 @@ const jsonLd = generateTextJsonLd(
                 >
               </button>
               <button id="next" type="button" disabled>
-                <span set:html={heroicon.forward} /><span
+                <span set:html={icon('forward', 'mini')} /><span
                   ><span>{t(userLanguage, 'viewoption:next')}</span><kbd
                     aria-hidden="true"
                     title={t(userLanguage, 'viewoption:hotkeyPress', {
@@ -1371,7 +1373,7 @@ const jsonLd = generateTextJsonLd(
             </li>
             <li>
               <label for="voice-select" class="with-icon">
-                <Fragment set:html={heroicon.microphoneMicro} />
+                <Icon name="microphone" />
                 <span
                   data-also-a={t(userLanguage, 'viewoption:rate')}
                   data-also-b={t(userLanguage, 'viewoption:pitch')}
@@ -1387,7 +1389,7 @@ const jsonLd = generateTextJsonLd(
                 aria-label={t(userLanguage, 'viewoption:voiceInfo')}
                 title={t(userLanguage, 'viewoption:voiceInfo')}
               >
-                <Fragment set:html={heroicon.informationCircleMicro} />
+                <Icon name="informationCircle" />
               </button>
             </li>
             <li id="voice-info" class="voice-info" hidden>
@@ -1403,7 +1405,7 @@ const jsonLd = generateTextJsonLd(
             </li>
             <li>
               <label for="rate" class="with-icon">
-                <Fragment set:html={heroicon.clockMicro} />
+                <Icon name="clock" />
                 <span
                   data-also-a={t(userLanguage, 'viewoption:voiceLabel')}
                   data-also-b={t(userLanguage, 'viewoption:pitch')}
@@ -1422,7 +1424,7 @@ const jsonLd = generateTextJsonLd(
             </li>
             <li>
               <label for="pitch" class="with-icon">
-                <Fragment set:html={heroicon.musicalNoteMicro} />
+                <Icon name="musicalNote" />
                 <span
                   data-also-a={t(userLanguage, 'viewoption:voiceLabel')}
                   data-also-b={t(userLanguage, 'viewoption:rate')}
@@ -1442,7 +1444,7 @@ const jsonLd = generateTextJsonLd(
             <li>
               <label for="auto-scroll">
                 <span class="with-icon">
-                  <Fragment set:html={heroicon.chevronDoubleDownMicro} />
+                  <Icon name="chevronDoubleDown" />
                   <span>{t(userLanguage, 'viewoption:autoScroll')}</span>
                 </span>
                 <kbd
@@ -1468,7 +1470,7 @@ const jsonLd = generateTextJsonLd(
             aria-label={t(userLanguage, 'search:search')}
             title={t(userLanguage, 'header:searchShortcut')}
           >
-            <Fragment set:html={heroicon.magnifyingGlassMicro} />
+            <Icon name="magnifyingGlass" />
           </button>
         </li>
       </ul>
@@ -2132,12 +2134,7 @@ const jsonLd = generateTextJsonLd(
 </script>
 
 <script>
-  import {
-    arrowLeft,
-    arrowRight,
-    bookOpen,
-    xMarkMicro,
-  } from '~/constants/heroicons'
+  import { icon } from '~/constants/heroicons'
 
   /**
    * Word Look-Up Handler
@@ -2306,7 +2303,7 @@ const jsonLd = generateTextJsonLd(
       if (!entries) return
       items = entries.map(e => {
         const defs = Array.isArray(e.entry.d) ? e.entry.d.join('; ') : e.entry.d
-        return `<b>${e.term}</b>${e.entry.p ? ` (${e.entry.p})` : ''} ${defs} <a href="/define/${e.term}" aria-label="Full definition for ${e.term}">${bookOpen}</a>`
+        return `<b>${e.term}</b>${e.entry.p ? ` (${e.entry.p})` : ''} ${defs} <a href="/define/${e.term}" aria-label="Full definition for ${e.term}">${icon('bookOpen')}</a>`
       })
     } else {
       // Pali: each word maps to an array of decomposed matches
@@ -2337,7 +2334,7 @@ const jsonLd = generateTextJsonLd(
           items.push(`<dl><dd>${dd}</dd></dl>`)
         } else {
           items.push(
-            `<dl><dt><dfn>${match.base} <a href="/define/${match.base}" aria-label="Full definition for ${match.base}">${bookOpen}</a></dfn></dt><dd>${dd}</dd></dl>`
+            `<dl><dt><dfn>${match.base} <a href="/define/${match.base}" aria-label="Full definition for ${match.base}">${icon('bookOpen')}</a></dfn></dt><dd>${dd}</dd></dl>`
           )
         }
       }
@@ -2364,11 +2361,11 @@ const jsonLd = generateTextJsonLd(
     popover.innerHTML =
       `<section aria-busy="true"><dfn>${word}</dfn></section>` +
       `<nav aria-label="Word definition navigation">` +
-      `<button id="def-prev" aria-label="Previous word"${current <= 0 ? ' disabled' : ''}>${arrowLeft}</button>` +
-      `<a href="/define/${word}" aria-label="Full definition for ${word}">${bookOpen}</a>` +
+      `<button id="def-prev" aria-label="Previous word"${current <= 0 ? ' disabled' : ''}>${icon('arrowLeft')}</button>` +
+      `<a href="/define/${word}" aria-label="Full definition for ${word}">${icon('bookOpen')}</a>` +
       // A tap outside to close it would as likely land on another word
-      `<button id="def-close" aria-label="Close definition">${xMarkMicro}</button>` +
-      `<button id="def-next" aria-label="Next word"${current >= words.length - 1 ? ' disabled' : ''}>${arrowRight}</button></nav>`
+      `<button id="def-close" aria-label="Close definition">${icon('xMark')}</button>` +
+      `<button id="def-next" aria-label="Next word"${current >= words.length - 1 ? ' disabled' : ''}>${icon('arrowRight')}</button></nav>`
     popover.showPopover()
     // Scroll clicked word into view if the popover will cover it
     const rect = words[current]?.getBoundingClientRect()
@@ -2413,7 +2410,7 @@ const jsonLd = generateTextJsonLd(
 </script>
 
 <script>
-  import { pause, play } from '~/constants/heroicons'
+  import { icon } from '~/constants/heroicons'
 
   /**
    * Text-to-Speech Player
@@ -2450,9 +2447,9 @@ const jsonLd = generateTextJsonLd(
   const HIGHLIGHT_NAME = 'tts-current'
   const HOVER_HIGHLIGHT_NAME = 'tts-hover'
   const WORD_HIGHLIGHT_NAME = 'tts-word'
-  const ICON_PLAY = play
-  const ICON_PAUSE = pause
-  const ICON_RESUME = play
+  const ICON_PLAY = icon('play', 'mini')
+  const ICON_PAUSE = icon('pause', 'mini')
+  const ICON_RESUME = icon('play', 'mini')
 
   const synth = window.speechSynthesis
 

@@ -1,7 +1,7 @@
 ---
 import SearchFilterContent from '~/components/search-filter-content.astro'
 import SearchOptionsContent from '~/components/search-options-content.astro'
-import * as heroicon from '~/constants/heroicons'
+import Icon from '~/components/icon.astro'
 import { t } from '~/i18n'
 
 interface Props {
@@ -41,7 +41,7 @@ const userLanguage = Astro.locals.userLanguage
       value={query}
     />
     <button aria-label={t(userLanguage, 'search:search')} type="submit"
-      ><Fragment set:html={heroicon.magnifyingGlass} /></button
+      ><Icon name="magnifyingGlass" mini /></button
     >
   </fieldset>
   {
@@ -79,13 +79,13 @@ const userLanguage = Astro.locals.userLanguage
               class="sr-only"
             />
             <label for="filter-toggle" class="panel-toggle">
-              <Fragment set:html={heroicon.informationCircle} />
+              <Icon name="informationCircle" mini />
               <span class="sr-only">
                 {t(userLanguage, 'interface:searchFilter')}
               </span>
             </label>
             <label for="panel-none" class="panel-toggle panel-close">
-              <Fragment set:html={heroicon.informationCircle} />
+              <Icon name="informationCircle" mini />
             </label>
           </>
         )}
@@ -99,7 +99,7 @@ const userLanguage = Astro.locals.userLanguage
               class="sr-only"
             />
             <label for="language-toggle" class="panel-toggle">
-              <Fragment set:html={heroicon.globeAlt} />
+              <Icon name="globeAlt" mini />
               {!!languageArray?.length && (
                 <span> ({languageArray.length})</span>
               )}
@@ -108,7 +108,7 @@ const userLanguage = Astro.locals.userLanguage
               </span>
             </label>
             <label for="panel-none" class="panel-toggle panel-close">
-              <Fragment set:html={heroicon.globeAlt} />
+              <Icon name="globeAlt" mini />
               {!!languageArray?.length && (
                 <span> ({languageArray.length})</span>
               )}
@@ -135,10 +135,13 @@ const userLanguage = Astro.locals.userLanguage
       padding: 0.4rem;
       border: 1px solid;
       border-radius: var(--rounding);
-      border-color: var(--bg-alt-4);
+      border-color: var(--text-color-secondary);
 
       &:focus-within {
         border-color: inherit;
+        /* The browser's own ring, the first line where -webkit-focus-ring-color is unknown */
+        outline: 1px auto;
+        outline: auto 1px -webkit-focus-ring-color;
       }
 
       input {

@@ -1,5 +1,6 @@
 ---
-import * as heroicon from '~/constants/heroicons'
+import Icon from '~/components/icon.astro'
+import { icon } from '~/constants/heroicons'
 import { pageIcons, pitakaGuides } from '~/constants/static-pages'
 import { t } from '~/i18n'
 import type { EditionLink } from '~/utils/editions'
@@ -24,7 +25,7 @@ const guides = (uid && pitakaGuides[uid]) || []
       {guides.map(({ href, label }) => (
         <li>
           <a href={href}>
-            <Fragment set:html={pageIcons[href] ?? heroicon.academicCapMicro} />
+            <Fragment set:html={pageIcons[href] ?? icon('academicCap')} />
             <cite>{t(userLanguage, `${label}:1`)}</cite>
           </a>
           <span>{t(userLanguage, `${label}:2`)}</span>
@@ -33,7 +34,7 @@ const guides = (uid && pitakaGuides[uid]) || []
       {edition && (
         <li>
           <a href={edition.href}>
-            <Fragment set:html={heroicon.bookOpen} />
+            <Icon name="bookOpen" />
             <cite>{edition.title}</cite>
           </a>
           <span>{edition.creator}</span>

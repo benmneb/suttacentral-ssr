@@ -6,7 +6,7 @@ import SearchForm from '~/components/search-form.astro'
 import TextMetaContent from '~/components/text-meta-content.astro'
 import { dictionaryTitles } from '~/constants/define'
 import { expansionData } from '~/constants/expansion'
-import * as heroicon from '~/constants/heroicons'
+import Icon from '~/components/icon.astro'
 import { siteMap } from '~/constants/static-pages'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
@@ -184,11 +184,7 @@ const pageHits =
                                       {text}
                                       {href.startsWith('https://') && (
                                         <>
-                                          <Fragment
-                                            set:html={
-                                              heroicon.arrowTopRightOnSquareMicro
-                                            }
-                                          />
+                                          <Icon name="arrowTopRightOnSquare" />
                                           <span class="sr-only">
                                             SuttaCentral.net
                                           </span>
@@ -287,7 +283,7 @@ const pageHits =
                                 {t(userLanguage, 'search:all')}{' '}
                                 {t(userLanguage, 'search:dictionaries')}
                               </span>
-                              <Fragment set:html={heroicon.arrowRight} />
+                              <Icon name="arrowRight" />
                             </a>
                           </p>
                         </li>
@@ -367,7 +363,7 @@ const pageHits =
                     <input type="hidden" name="matchpartial" value="true" />
                   )}
                   <button class="with-icon" type="submit">
-                    <Fragment set:html={heroicon.arrowLeft} />
+                    <Icon name="arrowLeft" />
                     <span>{t(userLanguage, 'interface:previous')}</span>
                   </button>
                 </form>
@@ -383,7 +379,7 @@ const pageHits =
                   )}
                   <button class="with-icon" type="submit">
                     <span>{t(userLanguage, 'interface:next')}</span>
-                    <Fragment set:html={heroicon.arrowRight} />
+                    <Icon name="arrowRight" />
                   </button>
                 </form>
               )}

@@ -1,5 +1,5 @@
 ---
-import * as heroicon from '~/constants/heroicons'
+import Icon from '~/components/icon.astro'
 import { t } from '~/i18n'
 
 const { breadcrumbs } = Astro.props
@@ -29,12 +29,12 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
         {
           pathname === '/' ? (
             <span>
-              <Fragment set:html={heroicon.homeMicro} />
+              <Icon name="home" />
               <span class="sr-only">{t(userLanguage, 'interface:home')}</span>
             </span>
           ) : (
             <a href="/" aria-label={t(userLanguage, 'interface:home')}>
-              <Fragment set:html={heroicon.homeMicro} />
+              <Icon name="home" />
               <span class="sr-only">{t(userLanguage, 'interface:home')}</span>
             </a>
           )
@@ -56,22 +56,24 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
     {
       !pathname.startsWith('/search') && (
         <button
+          class="icon-button"
           type="submit"
           popovertarget="search-modal"
           aria-label={t(userLanguage, 'search:search')}
           title={t(userLanguage, 'header:searchShortcut')}
         >
-          <Fragment set:html={heroicon.magnifyingGlassMicro} />
+          <Icon name="magnifyingGlass" />
         </button>
       )
     }
     <button
+      class="icon-button"
       type="button"
       popovertarget="site-pages"
       aria-label={t(userLanguage, 'interface:sitePages')}
       title={t(userLanguage, 'interface:sitePages')}
     >
-      <Fragment set:html={heroicon.bars3Micro} />
+      <Icon name="bars3" />
     </button>
   </div>
 </header>
@@ -86,7 +88,7 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
     view-timeline-name: --site-header;
 
     /* rem, as the button's em is the browser's control font-size */
-    & :global(.icon.micro) {
+    & :global(.icon:not(.mini)) {
       inline-size: 1rem;
       block-size: 1rem;
     }
@@ -146,26 +148,8 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
       anchor-name: --site-pages-button;
     }
 
-    button[popovertarget] {
-      cursor: pointer;
-      background: none;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-color);
-      padding: 0.375rem;
+    > div > .icon-button {
       margin-block: -0.3125rem;
-      border-radius: var(--rounding);
-
-      &:focus,
-      &:hover {
-        background-color: var(--primary-color);
-
-        > :global(.icon) {
-          color: var(--background-color);
-        }
-      }
     }
   }
 </style>

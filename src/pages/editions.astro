@@ -109,6 +109,7 @@ function getBlurb(textUid: string): string | undefined {
                 </hgroup>
                 <p>{edition.publication.creator_name}</p>
                 <a
+                  class="button"
                   href={`/edition/${edition.publication.text_uid}/${edition.publication.translation_lang_iso}/${edition.publication.creator_uid}`}
                 >
                   Get this book

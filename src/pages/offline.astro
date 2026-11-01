@@ -1,6 +1,7 @@
 ---
+import '~/assets/offline-icons.css'
 import RelatedPages from '~/components/related-pages.astro'
-import * as heroicon from '~/constants/heroicons'
+import Icon from '~/components/icon.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 
@@ -19,9 +20,9 @@ const crumbsData = [{ title: t(userLanguage, 'interface:offline') }]
       <ul>
         <li>
           <a href="https://suttacentral.net/offline">
-            <Fragment set:html={heroicon.devicePhoneMobileMicro} />
+            <Icon name="devicePhoneMobile" />
             Web app (PWA)
-            <Fragment set:html={heroicon.arrowTopRightOnSquareMicro} />
+            <Icon name="arrowTopRightOnSquare" />
             <span class="sr-only">SuttaCentral.net</span>
           </a>
           <p>
@@ -32,7 +33,7 @@ const crumbsData = [{ title: t(userLanguage, 'interface:offline') }]
         </li>
         <li>
           <a href="/editions">
-            <Fragment set:html={heroicon.bookOpen} />
+            <Icon name="bookOpen" />
             Editions
           </a>
           <p>
@@ -47,9 +48,9 @@ const crumbsData = [{ title: t(userLanguage, 'interface:offline') }]
           <a
             href="https://codeberg.org/benmneb/suttacentral-static/releases/latest"
           >
-            <Fragment set:html={heroicon.archiveBoxArrowDownMicro} />
+            <Icon name="archiveBoxArrowDown" />
             Archives and native apps
-            <Fragment set:html={heroicon.arrowTopRightOnSquareMicro} />
+            <Icon name="arrowTopRightOnSquare" />
             <span class="sr-only">Codeberg</span>
           </a>
           <p>

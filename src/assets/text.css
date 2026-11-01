@@ -366,6 +366,19 @@ main:has(.segment) > :first-child {
     --parallel-color: var(--orange);
   }
 
+  /* Drawn by gradients, which forced colours drop */
+  @media (forced-colors: active) {
+    &,
+    &[data-type] {
+      --parallel-color: LinkText;
+    }
+
+    &::before,
+    &::after {
+      forced-color-adjust: none;
+    }
+  }
+
   &::before {
     --tick: max(4px, var(--parallel-step) - 2px);
     content: '';
@@ -405,8 +418,14 @@ main:has(.segment) > :first-child {
   }
 
   &:focus-visible::before {
-    outline: 2px solid var(--primary-color);
+    /* The browser's own ring, the first line where -webkit-focus-ring-color is unknown */
+    outline: 1px auto;
+    outline: auto 1px -webkit-focus-ring-color;
     outline-offset: 1px;
+
+    @media (forced-colors: active) {
+      outline-color: Highlight;
+    }
   }
 
   &::after {
@@ -610,6 +629,10 @@ main:has(.segment) > :first-child {
     .translation {
       order: 2;
       color: var(--fg-alt-4);
+
+      @media (forced-colors: active) {
+        color: GrayText;
+      }
     }
   }
 }
@@ -839,6 +862,11 @@ a.look-up {
 
       &:hover:not(:disabled) {
         background-color: var(--details-summary-hover-background);
+
+        @media (forced-colors: active) {
+          outline: 2px solid Highlight;
+          outline-offset: -2px;
+        }
       }
 
       &:disabled {
@@ -974,6 +1002,36 @@ a.look-up {
   background-color: var(--tts-hover-background-color);
 }
 
+/* System colours, as forced colours override any others */
+@media (forced-colors: active) {
+  .tts-clickable:not(.tts-sentences):hover {
+    color: HighlightText;
+    background-color: Highlight;
+  }
+
+  ::highlight(tts-hover) {
+    color: HighlightText;
+    background-color: Highlight;
+  }
+
+  /* After the hover, so the one being read keeps its Mark */
+  .tts-highlight,
+  .tts-highlight.tts-clickable:hover {
+    color: MarkText;
+    background-color: Mark;
+  }
+
+  ::highlight(tts-current) {
+    color: MarkText;
+    background-color: Mark;
+  }
+
+  ::highlight(tts-word) {
+    color: HighlightText;
+    background-color: Highlight;
+  }
+}
+
 .tts-controls {
   display: flex;
   min-height: 3rem;
@@ -1090,6 +1148,11 @@ input[type='range'] {
     &:hover,
     &:active {
       background-color: var(--details-summary-hover-background);
+
+      @media (forced-colors: active) {
+        outline: 2px solid Highlight;
+        outline-offset: -2px;
+      }
     }
   }
 }
@@ -1329,6 +1392,11 @@ aside {
     pointer-events: auto;
     anchor-name: --aside-bar;
 
+    /* Forced colours paint it as the page, so it needs an edge over the text */
+    @media (forced-colors: active) {
+      border: 1px solid;
+    }
+
     /* This has to happen here and not on the button */
     &:has(#contents-menu:popover-open) {
       border-bottom-left-radius: 0;
@@ -1367,6 +1435,13 @@ aside {
         background-color: var(--primary-color);
         color: var(--background-color);
       }
+
+      @media (forced-colors: active) {
+        &:is(:hover, :focus-visible):not([disabled]) {
+          outline: 2px solid Highlight;
+          outline-offset: -2px;
+        }
+      }
     }
 
     ul {
@@ -1394,7 +1469,7 @@ aside {
     }
 
     /* rem, as the button's em is the browser's control font-size */
-    > ul > li > button > .icon.micro {
+    > ul > li > button > .icon:not(.mini) {
       inline-size: 1rem;
       block-size: 1rem;
     }
@@ -1433,7 +1508,7 @@ aside {
       border-radius: var(--rounding);
       padding: 0 0.2rem;
       color: var(--text-color);
-      font-size: xx-small;
+      font-size: x-small;
       cursor: pointer;
       margin: 0 0 0 0.2rem;
       background-color: var(--background-color-secondary);
@@ -1629,6 +1704,10 @@ aside {
       color: var(--text-color);
       border-radius: var(--rounding);
       border-top-right-radius: unset;
+
+      @media (forced-colors: active) {
+        border: 1px solid;
+      }
     }
 
     ul li ul,
@@ -1655,6 +1734,13 @@ aside {
           &:last-of-type {
             border-bottom-left-radius: var(--rounding);
             border-bottom-right-radius: var(--rounding);
+          }
+
+          @media (forced-colors: active) {
+            &:not(.voice-info, .tts-controls) {
+              outline: 2px solid Highlight;
+              outline-offset: -2px;
+            }
           }
         }
 
@@ -1723,7 +1809,7 @@ aside {
         color: inherit;
       }
 
-      .icon.micro {
+      .icon:not(.mini) {
         inline-size: 1rem;
         block-size: 1rem;
       }
@@ -1864,6 +1950,11 @@ aside {
       li:has(> .dropdown:popover-open) > button {
         background-color: var(--primary-color);
         color: var(--background-color);
+
+        @media (forced-colors: active) {
+          outline: 2px solid Highlight;
+          outline-offset: -2px;
+        }
       }
 
       li:has(> .dropdown:not(:popover-open))
@@ -2227,6 +2318,16 @@ article,
       }
     }
 
+    &:focus-visible {
+      outline: none;
+
+      &::before {
+        outline: 1px auto;
+        outline: auto 1px -webkit-focus-ring-color;
+        outline-offset: 1px;
+      }
+    }
+
     &.variant-btn {
       color: var(--variant-btn-color);
 
@@ -2236,6 +2337,22 @@ article,
         &::before {
           background-color: var(--variant-btn-color);
         }
+      }
+    }
+
+    /* Or forced colours give it the text's colour */
+    @media (forced-colors: active) {
+      &,
+      &.variant-btn,
+      &:is(:focus, [aria-expanded='true']),
+      &.variant-btn:is(:focus, [aria-expanded='true']) {
+        color: LinkText;
+      }
+
+      &:is(:focus, [aria-expanded='true'])::before {
+        background: none;
+        outline: 2px solid Highlight;
+        outline-offset: 1px;
       }
     }
   }
@@ -2259,6 +2376,11 @@ article,
       display: none;
       color: var(--fg-alt-4);
       /* word-break: break-all; */
+
+      /* Or forced colours give it the translation's colour */
+      @media (forced-colors: active) {
+        color: GrayText;
+      }
     }
 
     .reference {
@@ -2271,6 +2393,7 @@ article,
         color: var(--fg-alt-4);
         font-size: 0.7rem;
         font-weight: initial;
+        box-shadow: none;
 
         &:hover {
           background-color: var(--bg-soft);
@@ -2301,6 +2424,11 @@ article,
 
     &:hover {
       color: unset;
+    }
+
+    @media (forced-colors: active) {
+      outline: 2px solid Highlight;
+      outline-offset: -2px;
     }
   }
 
