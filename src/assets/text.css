@@ -237,6 +237,11 @@
     letter-spacing: 0.05em;
   }
 
+  /* In the rule's own <p>, so no heading or paragraph margin sets it apart */
+  .rule:not(.patimokkha *):has(.segment)::before {
+    margin-bottom: 1rem;
+  }
+
   :is(.nidana, .padabhajaniya, .cakka, .anapatti) > :is(h2, h3, h4):first-child,
   .vinaya-vinita > .uddana:first-child > .uddana-intro:first-child {
     color: color-mix(in srgb, var(--mark-color) 75%, var(--headings-color));
