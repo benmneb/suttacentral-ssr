@@ -2,7 +2,7 @@
 [![Codeberg mirror](<https://img.shields.io/badge/-Codeberg_(mirror)-4793cc.svg?logo=codeberg&logoColor=white>)](https://codeberg.org/benmneb/suttacentral-ssr)
 [![GitHub mirror](<https://img.shields.io/badge/-GitHub_(mirror)-010409.svg?logo=github>)](https://github.com/benmneb/suttacentral-ssr)
 
-# [SuttaCentral.now](https://suttacentral.now) [![builds.sr.ht status](https://builds.sr.ht/~benmneb/suttacentral-ssr.svg?search=refs/heads/main)](https://builds.sr.ht/~benmneb/suttacentral-ssr?search=refs/heads/main)
+# [SuttaCentral.now](https://suttacentral.now) [![builds.sr.ht status](https://builds.sr.ht/~benmneb/suttacentral-ssr.svg?search=refs/heads/main)](https://builds.sr.ht/~benmneb/suttacentral-ssr?search=refs/heads/main) [![WCAG 2.2: AA target](https://img.shields.io/badge/WCAG_2.2-AA_target-green?style=flat)](ACCESSIBILITY.md)
 
 ## A fast and minimal alternative frontend for [SuttaCentral.net](https://suttacentral.net)
 

@@ -25,8 +25,13 @@ const userLanguage = Astro.locals.userLanguage
       >
     </li>
     <li>
+      <a href={siteMetaData.accessibility}
+        >{t(userLanguage, 'footer:accessibility')}</a
+      >
+    </li>
+    <li>
       <a href={siteMetaData.suggestions}
-        >{t(userLanguage, 'footer:ideasAndBugs')}</a
+        >{t(userLanguage, 'footer:sendFeedback')}</a
       >
     </li>
   </ul>
