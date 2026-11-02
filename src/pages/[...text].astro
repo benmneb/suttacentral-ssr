@@ -530,7 +530,7 @@ function renderReferences(key: string, ref: string) {
     .filter(Boolean)
 
   return `
-      <span class="reference" id="${ref}">
+      <span class="reference" id="${ref}" hidden>
         <a href="#${ref}" title="${t(userLanguage, 'text:segmentNumber')}">${ref}</a>
         ${ids
           .map(
@@ -598,7 +598,7 @@ ${renderReferences(key, ref)}
           comment
             ? `
         <button class="variant-btn" popovertarget="comment-${key}" style="anchor-name: --note${commentNote}" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">*</button>
-        <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">
+        <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}" hidden>
           ${t(userLanguage, 'viewoption:variant')} ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
         </span>
         `
@@ -656,7 +656,7 @@ ${renderReferences(key, ref)}
           comment
             ? `
         <button popovertarget="comment-${key}" style="anchor-name: --note${commentNote}" aria-label="${t(userLanguage, 'viewoption:showFootnote', { author: suttasData.translation.author, ref: key })}">*</button>
-        <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showFootnote', { author: suttasData.translation.author, ref: key })}">
+        <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showFootnote', { author: suttasData.translation.author, ref: key })}" hidden>
           ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
         </span>
         `
@@ -669,7 +669,7 @@ ${renderReferences(key, ref)}
       ${
         rootText
           ? `
-      <span class="root" lang="${suttasData.suttaplex.root_lang}" translate="no">
+      <span class="root" lang="${suttasData.suttaplex.root_lang}" translate="no" hidden>
         <span class="text">
           ${
             rootLang === 'lzh'
@@ -684,7 +684,7 @@ ${renderReferences(key, ref)}
           variant
             ? `
       <button class="variant-btn" popovertarget="variant-${key}" style="anchor-name: --note${variantNote}" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">*</button>
-      <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">
+      <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}" hidden>
         ${t(userLanguage, 'viewoption:variant')} ${variant.replace(/https:\/\/suttacentral\.net/g, '')}
       </span>
       `
@@ -1991,6 +1991,23 @@ const jsonLd = generateTextJsonLd(
   viewsMenu?.addEventListener('pointerdown', rememberAnchor)
   viewsMenu?.addEventListener('keydown', rememberAnchor)
   viewsMenu?.addEventListener('change', restoreAnchor)
+
+  // Reader views go by the hidden attribute, not CSS
+  const rooter = document.getElementById('rooter')
+  let rootsShown = false
+
+  function syncRoots() {
+    if (!(rooter instanceof HTMLInputElement) || rooter.checked === rootsShown)
+      return
+    rootsShown = rooter.checked
+    for (const root of document.querySelectorAll<HTMLElement>(
+      '.segment > .root'
+    ))
+      root.hidden = !rootsShown
+  }
+
+  syncRoots()
+  viewsMenu?.addEventListener('change', syncRoots)
 
   // References on always shows something
   const segmenter = document.getElementById('segmenter')
