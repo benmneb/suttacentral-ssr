@@ -1563,10 +1563,14 @@ const jsonLd = generateTextJsonLd(
       {
         suttasData.translation?.previous?.uid ? (
           <>
-            <span>{t(userLanguage, 'interface:previous')}</span>
+            <span id="pagination-prev" aria-hidden="true">
+              {t(userLanguage, 'interface:previous')}
+            </span>
             <a
               href={`/${suttasData.translation.previous.uid}/${suttasData.translation.previous.lang}/${suttasData.translation.previous.author_uid}`}
+              id="pagination-prev-link"
               rel="prev"
+              aria-labelledby="pagination-prev pagination-prev-link"
             >
               {softHyphenateTitle(suttasData.translation.previous?.name ?? '')}
             </a>
@@ -1574,8 +1578,15 @@ const jsonLd = generateTextJsonLd(
         ) : (
           rangePrev && (
             <>
-              <span>{t(userLanguage, 'interface:previous')}</span>
-              <a href={`/${rangePrev}/${language}/${authorUid}`} rel="prev">
+              <span id="pagination-prev" aria-hidden="true">
+                {t(userLanguage, 'interface:previous')}
+              </span>
+              <a
+                href={`/${rangePrev}/${language}/${authorUid}`}
+                id="pagination-prev-link"
+                rel="prev"
+                aria-labelledby="pagination-prev pagination-prev-link"
+              >
                 {rangeUidToAcronym(rangePrev)}
               </a>
             </>
@@ -1587,10 +1598,14 @@ const jsonLd = generateTextJsonLd(
       {
         suttasData.translation?.next?.uid ? (
           <>
-            <span>{t(userLanguage, 'interface:next')}</span>
+            <span id="pagination-next" aria-hidden="true">
+              {t(userLanguage, 'interface:next')}
+            </span>
             <a
               href={`/${suttasData.translation.next.uid}/${suttasData.translation.next.lang}/${suttasData.translation.next.author_uid}`}
+              id="pagination-next-link"
               rel="next"
+              aria-labelledby="pagination-next pagination-next-link"
             >
               {softHyphenateTitle(suttasData.translation.next?.name ?? '')}
             </a>
@@ -1598,8 +1613,15 @@ const jsonLd = generateTextJsonLd(
         ) : (
           rangeNext && (
             <>
-              <span>{t(userLanguage, 'interface:next')}</span>
-              <a href={`/${rangeNext}/${language}/${authorUid}`} rel="next">
+              <span id="pagination-next" aria-hidden="true">
+                {t(userLanguage, 'interface:next')}
+              </span>
+              <a
+                href={`/${rangeNext}/${language}/${authorUid}`}
+                id="pagination-next-link"
+                rel="next"
+                aria-labelledby="pagination-next pagination-next-link"
+              >
                 {rangeUidToAcronym(rangeNext)}
               </a>
             </>

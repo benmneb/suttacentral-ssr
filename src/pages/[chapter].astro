@@ -201,8 +201,15 @@ const jsonLd =
       {
         previous?.uid && (
           <>
-            <span>{t(userLanguage, 'interface:previous')}</span>
-            <a href={`/${previous.uid}`} rel="prev">
+            <span id="pagination-prev" aria-hidden="true">
+              {t(userLanguage, 'interface:previous')}
+            </span>
+            <a
+              href={`/${previous.uid}`}
+              id="pagination-prev-link"
+              rel="prev"
+              aria-labelledby="pagination-prev pagination-prev-link"
+            >
               {softHyphenateTitle(previous.name)}
             </a>
           </>
@@ -213,8 +220,15 @@ const jsonLd =
       {
         next?.uid && (
           <>
-            <span>{t(userLanguage, 'interface:next')}</span>
-            <a href={`/${next.uid}`} rel="next">
+            <span id="pagination-next" aria-hidden="true">
+              {t(userLanguage, 'interface:next')}
+            </span>
+            <a
+              href={`/${next.uid}`}
+              id="pagination-next-link"
+              rel="next"
+              aria-labelledby="pagination-next pagination-next-link"
+            >
               {softHyphenateTitle(next.name)}
             </a>
           </>
