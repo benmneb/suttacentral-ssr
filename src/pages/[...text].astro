@@ -1801,6 +1801,17 @@ const jsonLd = generateTextJsonLd(
    */
   function applyPrefs() {
     const prefs = getCookiePrefs()
+
+    // Off unless chosen without popovers, where notes show inline
+    const commenter = document.getElementById('commenter')
+    if (
+      commenter instanceof HTMLInputElement &&
+      !('popover' in HTMLElement.prototype) &&
+      !('commenter' in prefs) &&
+      !('fromUrl' in commenter.dataset)
+    )
+      commenter.checked = false
+
     IDS.forEach(id => {
       if (!(id in prefs)) return
       const el = document.getElementById(id)
@@ -2398,6 +2409,8 @@ const jsonLd = generateTextJsonLd(
       'a.look-up'
     )
     if (!link) return
+    // Without popovers to show it in, the link's /define page as without JS
+    if (lookupToggle?.checked && !('popover' in HTMLElement.prototype)) return
     e.preventDefault() // never navigate while JS is live
     // The links still hit-test with the toggle off, because of data-lookup-js
     if (!lookupToggle?.checked) return
