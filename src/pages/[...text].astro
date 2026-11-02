@@ -2074,10 +2074,18 @@ const jsonLd = generateTextJsonLd(
 
   function clearShownRows() {
     removeEventListener('scroll', placeRows)
-    viewsMenu?.classList.remove('toast')
     viewsMenu?.style.removeProperty('--past-tts')
-    for (const li of viewsMenu?.querySelectorAll(':scope > li.toasted') ?? [])
-      li.classList.remove('toasted', 'pressed')
+    for (const menu of [viewsMenu, listenMenu]) {
+      menu?.classList.remove('toast')
+      for (const li of menu?.querySelectorAll(':scope > li.toasted') ?? [])
+        li.classList.remove('toasted', 'pressed')
+    }
+  }
+
+  function toast(menu: HTMLElement) {
+    menu.classList.add('toast')
+    clearTimeout(rowsTimer)
+    rowsTimer = setTimeout(clearShownRows, 1500)
   }
 
   function placeRows() {
@@ -2089,6 +2097,8 @@ const jsonLd = generateTextJsonLd(
     )
   }
 
+  // Like .net's toast: the menu comes up for a moment with just the rows a key
+  // changed, and those under them
   function showChanges(ids: string[], before: Map<HTMLInputElement, boolean>) {
     if (!viewsMenu) return
     const changed = new Set(
@@ -2123,9 +2133,7 @@ const jsonLd = generateTextJsonLd(
       viewsMenu.style.setProperty('--past-tts', `${ttsControls.offsetHeight}px`)
     placeRows()
     addEventListener('scroll', placeRows, { passive: true })
-    viewsMenu.classList.add('toast')
-    clearTimeout(rowsTimer)
-    rowsTimer = setTimeout(clearShownRows, 1500)
+    toast(viewsMenu)
   }
 
   // What a key changed, for screen readers, as the toast only shows it
@@ -2143,11 +2151,23 @@ const jsonLd = generateTextJsonLd(
       .join(', ')
   }
 
+  function showListenRow(el: HTMLElement) {
+    const li = el.closest('li')
+    if (!listenMenu || li?.parentElement !== listenMenu) return
+    clearShownRows()
+    li.classList.add('toasted')
+    flashPressed(li)
+    toast(listenMenu)
+  }
+
   // Not on cancel, which comes after a quick second press put it back on
-  viewsMenu?.addEventListener('animationend', e => {
-    if (e.animationName === 'key-press' && e.target instanceof HTMLElement)
-      e.target.classList.remove('pressed')
-  })
+  for (const menu of [viewsMenu, listenMenu]) {
+    menu?.addEventListener('animationend', e => {
+      if (e.animationName !== 'key-press') return
+      if (e.target instanceof HTMLElement && e.target.parentElement === menu)
+        e.target.classList.remove('pressed')
+    })
+  }
 
   const shortcutter = document.getElementById('shortcutter')
   // Shown now, as the keys do nothing without JS
@@ -2201,6 +2221,13 @@ const jsonLd = generateTextJsonLd(
       showChanges(VIEW_SETTINGS[key] ?? [SUB_SETTINGS[key]], before)
     } else if (LISTEN_CONTROLS[key]) {
       const el = document.getElementById(LISTEN_CONTROLS[key])
+      if (el instanceof HTMLInputElement) {
+        if (!hasRoom(el)) return
+        el.click()
+        showListenRow(el)
+        announce([el])
+        return
+      }
       // Checked before the click, as stop disables itself
       const flash = el instanceof HTMLButtonElement && !el.disabled
       el?.click()
@@ -2575,6 +2602,7 @@ const jsonLd = generateTextJsonLd(
   const ICON_RESUME = icon('play', 'mini')
 
   const synth = window.speechSynthesis
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
 
   // The Custom Highlight API draws a range without touching the DOM. Without
   // it the whole element a sentence is in gets the class instead
@@ -3091,7 +3119,7 @@ const jsonLd = generateTextJsonLd(
       const rect = range?.height ? range : el.getBoundingClientRect()
       window.scrollBy({
         top: rect.top + rect.height / 2 - readingMiddle(),
-        behavior: 'smooth',
+        behavior: reducedMotion.matches ? 'auto' : 'smooth',
       })
     }
 
@@ -3565,6 +3593,12 @@ const jsonLd = generateTextJsonLd(
     if (stopBtn) stopBtn.addEventListener('click', stopSession)
     const controlsEl = rootMenuEl.querySelector('.tts-controls')
     controlsEl?.addEventListener('click', closeMenuOnTouch)
+
+    if (menuButton && 'IntersectionObserver' in window) {
+      new IntersectionObserver(([entry]) =>
+        rootMenuEl.classList.toggle('detached', !entry.isIntersecting)
+      ).observe(menuButton)
+    }
 
     // The controls sit outside the open menu, so a tap there light dismisses it
     // This disables that behaviour and can't be done in CSS
