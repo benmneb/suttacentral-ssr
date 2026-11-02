@@ -26,6 +26,10 @@ hgroup:has(p) {
   > span[title] {
     display: inline-block;
   }
+
+  .icon {
+    margin-inline-end: 0.25em;
+  }
 }
 
 .leaf-node {
