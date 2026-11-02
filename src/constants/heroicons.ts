@@ -15,6 +15,7 @@ export type IconName =
   | 'chatBubbleBottomCenterText'
   | 'chevronDoubleDown'
   | 'clock'
+  | 'commandLine'
   | 'devicePhoneMobile'
   | 'document'
   | 'documentText'

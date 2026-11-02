@@ -1263,6 +1263,23 @@ const jsonLd = generateTextJsonLd(
                 </li>
               )
             }
+            <li hidden>
+              <label
+                for="shortcutter"
+                title={t(userLanguage, 'viewoption:hotkeysTitle')}
+              >
+                <span class="with-icon">
+                  <Icon name="commandLine" />
+                  <span>{t(userLanguage, 'viewoption:hotkeys')}</span>
+                </span>
+              </label>
+              <input
+                type="checkbox"
+                id="shortcutter"
+                title={t(userLanguage, 'viewoption:hotkeysTitle')}
+                checked={viewPrefs.shortcutter ?? true}
+              />
+            </li>
             <li>
               <label for="positioner">
                 <span class="with-icon">
@@ -1476,6 +1493,14 @@ const jsonLd = generateTextJsonLd(
           </button>
         </li>
       </ul>
+      <p
+        id="views-status"
+        class="sr-only"
+        role="status"
+        data-on={t(userLanguage, 'viewoption:settingOn')}
+        data-off={t(userLanguage, 'viewoption:settingOff')}
+      >
+      </p>
     </fieldset>
   </aside>
   <main
@@ -1662,6 +1687,7 @@ const jsonLd = generateTextJsonLd(
     'highlighter',
     'paralleler',
     'positioner',
+    'shortcutter',
     'rate',
     'pitch',
     'auto-scroll',
@@ -1835,10 +1861,11 @@ const jsonLd = generateTextJsonLd(
   /**
    * View Settings and Listen Hotkeys
    *
-   * Toggles view settings from the keyboard, and keeps the reading position
-   * when a view setting changes.
+   * Toggles view settings from the keyboard, unless that's turned off, and
+   * keeps the reading position when a view setting changes.
    * Unlike accounting for this with notes view, this layout shift fix
    * is not possible in CSS without a big refactor, so it's handled here.
+   * Also lets Esc hide the menus and panels hovering shows.
    */
   'use strict'
 
@@ -1869,6 +1896,45 @@ const jsonLd = generateTextJsonLd(
   }
 
   const viewsMenu = document.getElementById('views-menu')
+
+  // Esc hides what hovering shows (see text.css), until the pointer moves off it
+  const dismissed = new Set<HTMLElement>()
+  const bar = viewsMenu?.closest('fieldset')
+  const panels = ['info', 'parallels']
+    .map(id => document.getElementById(id))
+    .filter((el): el is HTMLElement => !!el)
+  const invoker = (el: HTMLElement) =>
+    el.id
+      ? document.querySelector(`[popovertarget="${CSS.escape(el.id)}"]`)
+      : null
+
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return
+    const hovered = [
+      ...(bar?.querySelectorAll<HTMLElement>(
+        ':scope > ul > li:is(:hover, :focus-within)'
+      ) ?? []),
+      ...panels.filter(
+        panel => panel.matches(':hover') || invoker(panel)?.matches(':hover')
+      ),
+    ]
+    for (const el of hovered) {
+      el.classList.add('dismissed')
+      dismissed.add(el)
+    }
+  })
+
+  for (const type of ['pointerover', 'focusin'] as const) {
+    document.addEventListener(type, e => {
+      const target = e.target as Node
+      for (const el of dismissed) {
+        if (el.contains(target) || invoker(el)?.contains(target)) continue
+        el.classList.remove('dismissed')
+        dismissed.delete(el)
+      }
+    })
+  }
+
   let anchor = null
 
   // Not its box, which for a block starts half a line's leading above
@@ -1967,6 +2033,7 @@ const jsonLd = generateTextJsonLd(
     )
   }
 
+  // Each press turns on the next in order, then all off
   function cycle(ids: string[]) {
     const els = ids
       .map(id => document.getElementById(id))
@@ -1980,10 +2047,7 @@ const jsonLd = generateTextJsonLd(
     const level = els.findIndex(el => !el.checked)
     const next = ((level === -1 ? els.length : level) + 1) % (els.length + 1)
     els.forEach((el, i) => {
-      if (el.checked === i < next) return
-      el.checked = i < next
-      // Setting checked doesn't fire change, which saving prefs relies on
-      el.dispatchEvent(new Event('change', { bubbles: true }))
+      if (el.checked !== i < next) setChecked(el, i < next)
     })
   }
 
@@ -1999,7 +2063,8 @@ const jsonLd = generateTextJsonLd(
   }
 
   const viewsButton = document.getElementById('views-button')
-  const ttsControls = document.querySelector('#listen-menu > .tts-controls')
+  const listenMenu = document.getElementById('listen-menu')
+  const ttsControls = listenMenu?.querySelector(':scope > .tts-controls')
   let rowsTimer: ReturnType<typeof setTimeout> | undefined
 
   function checkedStates() {
@@ -2030,6 +2095,7 @@ const jsonLd = generateTextJsonLd(
       [...before].filter(([el, was]) => el.checked !== was).map(([el]) => el)
     )
     if (!changed.size) return
+    announce([...changed])
     for (const el of changed) {
       if (!el.checked) continue
       for (const id of el.getAttribute('aria-controls')?.split(' ') ?? []) {
@@ -2062,31 +2128,61 @@ const jsonLd = generateTextJsonLd(
     rowsTimer = setTimeout(clearShownRows, 1500)
   }
 
+  // What a key changed, for screen readers, as the toast only shows it
+  const status = document.getElementById('views-status')
+  function announce(els: HTMLInputElement[]) {
+    if (!status) return
+    status.textContent = els
+      .map(el => {
+        const name =
+          el.labels?.[0]?.querySelector('.with-icon')?.textContent?.trim() ??
+          el.id
+        const said = el.checked ? status.dataset.on : status.dataset.off
+        return said?.replace('{name}', name) ?? name
+      })
+      .join(', ')
+  }
+
   // Not on cancel, which comes after a quick second press put it back on
   viewsMenu?.addEventListener('animationend', e => {
     if (e.animationName === 'key-press' && e.target instanceof HTMLElement)
       e.target.classList.remove('pressed')
   })
 
-  // Set here rather than in the markup so they're only announced when they work
+  const shortcutter = document.getElementById('shortcutter')
+  // Shown now, as the keys do nothing without JS
+  const shortcutterRow = shortcutter?.closest('li')
+  if (shortcutterRow) shortcutterRow.hidden = false
+  const shortcutsOn = () =>
+    !(shortcutter instanceof HTMLInputElement) || shortcutter.checked
+  // A fine pointer is the best guess as to whether there's a keyboard too, as
+  // in text.css
+  const finePointer = matchMedia('(any-pointer: fine)')
+
   const shortcuts = [
     ...Object.entries(VIEW_SETTINGS).map(([key, ids]) => [key, ids[0]]),
     ...Object.entries(SUB_SETTINGS),
     ...Object.entries(LISTEN_CONTROLS),
   ]
-  for (const [key, id] of shortcuts) {
-    document
-      .getElementById(id)
-      ?.setAttribute('aria-keyshortcuts', key.toUpperCase())
+
+  // Set here rather than in the markup so they're only announced when they work
+  function syncShortcuts() {
+    const on = shortcutsOn() && finePointer.matches
+    for (const [key, id] of shortcuts) {
+      const el = document.getElementById(id)
+      if (on) el?.setAttribute('aria-keyshortcuts', key.toUpperCase())
+      else el?.removeAttribute('aria-keyshortcuts')
+    }
+    for (const menu of [viewsMenu, listenMenu])
+      menu?.classList.toggle('hotkeys-off', !shortcutsOn())
   }
 
-  if (matchMedia('(any-pointer: fine)').matches) {
-    for (const id of ['views-menu', 'listen-menu']) {
-      document.getElementById(id)?.classList.add('hotkeys')
-    }
-  }
+  syncShortcuts()
+  shortcutter?.addEventListener('change', syncShortcuts)
+  finePointer.addEventListener('change', syncShortcuts)
 
   document.addEventListener('keydown', e => {
+    if (!shortcutsOn() || !finePointer.matches) return
     if (e.ctrlKey || e.metaKey || e.altKey) return
     const target = e.target
     if (

@@ -933,7 +933,8 @@ a.look-up {
     }
 
     @media (hover: hover) {
-      li:not(:hover) > &:has(#stop:enabled, #stop.pressed):not(:popover-open),
+      li:is(:not(:hover), .dismissed)
+        > &:has(#stop:enabled, #stop.pressed):not(:popover-open),
       li:has(> button:focus:not(:focus-visible, :active))
         > &:has(#stop:enabled, #stop.pressed):not(:popover-open) {
         > li:not(.tts-controls) {
@@ -1189,9 +1190,9 @@ input[type='range'] {
   }
 
   @media (hover: hover) {
-    aside:has(#info-button:hover) ~ main #info,
-    aside:has(#parallels-button:hover) ~ main #parallels,
-    [popover]:is(#info, #parallels):hover {
+    aside:has(#info-button:hover) ~ main #info:not(.dismissed),
+    aside:has(#parallels-button:hover) ~ main #parallels:not(.dismissed),
+    [popover]:is(#info, #parallels):not(.dismissed):hover {
       display: block;
     }
 
@@ -1327,8 +1328,11 @@ input[type='range'] {
     --tts-controls-height: 2.75rem;
   }
 
-  :root:has(#listen-menu.hotkeys) {
-    --tts-controls-height: 3.5rem;
+  /* Taller for the keys' hints */
+  @media (any-pointer: fine) {
+    :root {
+      --tts-controls-height: 3.5rem;
+    }
   }
 
   .tts-controls {
@@ -1405,7 +1409,8 @@ aside {
     @supports selector(:popover-open) {
       @media (hover: hover) {
         &:has(
-          li:hover > #contents-button:not(:focus:not(:focus-visible, :active))
+          li:hover:not(.dismissed)
+            > #contents-button:not(:focus:not(:focus-visible, :active))
         ) {
           border-bottom-left-radius: 0;
         }
@@ -1413,7 +1418,7 @@ aside {
     }
 
     @supports not selector(:popover-open) {
-      &:has(li:hover > #contents-menu, li:focus-within > #contents-menu) {
+      &:has(li:is(:hover, :focus-within):not(.dismissed) > #contents-menu) {
         border-bottom-left-radius: 0;
       }
     }
@@ -1501,8 +1506,8 @@ aside {
       }
     }
 
+    /* Only with a fine pointer, as the keys only work with one */
     kbd {
-      /* This is unhidden in JS when there's a keyboard */
       display: none;
       border: 1px solid var(--shadow-color);
       border-radius: var(--rounding);
@@ -1516,8 +1521,13 @@ aside {
         0 1px 1px rgb(0 0 0 / 0.2),
         0 1px 0 0 rgb(255 255 255 / 0.1) inset;
 
-      .hotkeys & {
+      @media (any-pointer: fine) {
         display: inline;
+      }
+
+      /* Unseen rather than gone, so the menus keep their size */
+      .hotkeys-off & {
+        visibility: hidden;
       }
     }
 
@@ -1622,15 +1632,14 @@ aside {
             }
 
             @media (hover: hover) {
-              li:hover > & {
+              li:hover:not(.dismissed) > & {
                 display: flex;
               }
             }
           }
 
           @supports not selector(:popover-open) {
-            li:hover > &,
-            li:focus-within > & {
+            li:is(:hover, :focus-within):not(.dismissed) > & {
               display: flex;
             }
           }
@@ -1837,7 +1846,8 @@ aside {
     }
 
     /* Shown by the rows' display, so hidden needs saying again */
-    #listen-menu.scripted > li.voice-info[hidden] {
+    #listen-menu.scripted > li.voice-info[hidden],
+    #views-menu > li[hidden] {
       display: none;
     }
 
@@ -1922,7 +1932,8 @@ aside {
     @supports selector(:popover-open) {
       /* Safari focuses a clicked button only with a tabindex, on release */
       @media (hover: hover) {
-        li:hover > .dropdown {
+        /* .dismissed is set by Esc, in the view settings script */
+        li:hover:not(.dismissed) > .dropdown {
           display: block;
           z-index: 1;
         }
@@ -1938,7 +1949,8 @@ aside {
           visibility: visible;
         }
 
-        li:hover > #contents-button:not(:focus:not(:focus-visible, :active)) {
+        li:hover:not(.dismissed)
+          > #contents-button:not(:focus:not(:focus-visible, :active)) {
           border-bottom-left-radius: 0;
         }
       }
@@ -1974,8 +1986,7 @@ aside {
     }
 
     @supports not selector(:popover-open) {
-      li:hover > .dropdown,
-      li:focus-within > .dropdown {
+      li:is(:hover, :focus-within):not(.dismissed) > .dropdown {
         display: block;
       }
 
@@ -1985,8 +1996,7 @@ aside {
       }
 
       #contents-button {
-        li:hover > &,
-        li:focus-within > & {
+        li:is(:hover, :focus-within):not(.dismissed) > & {
           border-bottom-left-radius: 0;
         }
       }
@@ -2181,6 +2191,12 @@ aside {
         height: 1.125rem;
       }
     }
+  }
+}
+
+@media not all and (any-pointer: fine) {
+  #views-menu > li:has(#shortcutter) {
+    display: none;
   }
 }
 
