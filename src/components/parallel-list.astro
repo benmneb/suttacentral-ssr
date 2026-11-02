@@ -1,4 +1,5 @@
 ---
+import { langTag } from '~/utils/language'
 import { getHashFragment, parallelTypeTitle } from '~/utils/parallels'
 import { formatVolpages } from '~/utils/strings'
 
@@ -35,7 +36,7 @@ const { parallels, userLanguage, typeTitles = true } = Astro.props
           {hasTranslations ? (
             <a
               href={`/${parallel.to.uid}/${firstTrans.lang}/${firstTrans.author_uid}${getHashFragment(parallel.to.to)}`}
-              hreflang={firstTrans.lang}
+              hreflang={langTag(firstTrans.lang)}
             >
               {displayTitle}
             </a>

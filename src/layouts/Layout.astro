@@ -7,6 +7,7 @@ import SiteHeader from '~/components/site-header.astro'
 import SitePages from '~/components/site-pages.astro'
 import { siteMetaData } from '~/constants/meta-data'
 import { t } from '~/i18n'
+import { langTag } from '~/utils/language'
 
 const pathname = Astro.url.pathname
 const userLanguage = Astro.locals.userLanguage
@@ -49,7 +50,7 @@ const externalLinkAlt = JSON.stringify(
 ---
 
 <!doctype html>
-<html lang={userLanguage}>
+<html lang={langTag(userLanguage)}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -83,7 +84,7 @@ const externalLinkAlt = JSON.stringify(
     <meta property="og:url" content={shareUrl} />
     <meta property="og:site_name" content={siteMetaData.title} />
     <meta property="og:type" content={ogType || 'website'} />
-    <meta property="og:locale" content={userLanguage} />
+    <meta property="og:locale" content={langTag(userLanguage)} />
     <meta property="og:image" content={imageUrl} />
     {
       Object.entries(ogData)

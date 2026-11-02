@@ -1,4 +1,5 @@
 import { siteMetaData } from '~/constants/meta-data'
+import { langTag } from '~/utils/language'
 
 interface Breadcrumb {
   url?: string
@@ -199,7 +200,7 @@ export function generateChapterJsonLd(
             workTranslation: child.translations.map((translation: any) => ({
               '@type': 'CreativeWork',
               name: `${child.original_title || child.root_name} - ${translation.author || translation.author_uid}`,
-              inLanguage: translation.lang,
+              inLanguage: langTag(translation.lang),
               translator: {
                 '@type': 'Person',
                 name: translation.author || translation.author_uid,
@@ -275,7 +276,7 @@ export function generateTextMetaJsonLd(
             inLanguage: {
               '@type': 'Language',
               name: translation.lang_name || translation.lang,
-              alternateName: translation.lang,
+              alternateName: langTag(translation.lang),
             },
             url: `${origin}/${entry.uid}/${translation.lang}/${translation.author_uid}`,
             sameAs: [
@@ -449,7 +450,7 @@ export function generateTextJsonLd(
       inLanguage: {
         '@type': 'Language',
         name: translation?.lang_name || translation?.lang,
-        alternateName: translation?.lang,
+        alternateName: translation?.lang && langTag(translation.lang),
       },
       genre: isRootText ? 'Root Text' : 'Translation',
       ...(translation?.author && {
@@ -466,7 +467,7 @@ export function generateTextJsonLd(
         translationOfWork: {
           '@type': 'CreativeWork',
           name: entry.root_name || entry.original_title,
-          inLanguage: entry.root_lang,
+          inLanguage: langTag(entry.root_lang),
           about: {
             '@type': 'Thing',
             name: 'Buddhist Teaching',

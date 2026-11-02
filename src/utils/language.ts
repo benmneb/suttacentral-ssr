@@ -57,3 +57,24 @@ export function getLanguageName(
     return locale
   }
 }
+
+// Not .net's own codes, as BCP 47 takes the two-letter one where there is one
+const LANG_TAGS: Record<string, string> = {
+  pli: 'pi',
+  san: 'sa',
+  jpn: 'ja',
+  kan: 'kn',
+  uig: 'ug',
+  // `sld` is Sissala, and Saarländisch has no subtag of its own
+  sld: 'de',
+}
+
+/** A SuttaCentral language code as a BCP 47 tag, eg "pli" as "pi" */
+export function langTag(code: string): string {
+  return LANG_TAGS[code] ?? code
+}
+
+/** The `lang` and `hreflang` attributes in the API's own HTML as BCP 47 tags */
+export function langTagsIn(html: string): string {
+  return html.replace(/(?<=\s(?:href)?lang=['"])[a-z]{3}(?=['"])/g, langTag)
+}

@@ -2415,7 +2415,7 @@ article,
 :where(main > p) {
   overflow-wrap: break-word;
 
-  [lang='pli'] {
+  [lang='pi'] {
     overflow-wrap: anywhere;
   }
 
