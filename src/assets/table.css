@@ -1,27 +1,45 @@
 table {
-  margin: 2em auto 1em;
+  margin: 1rem auto;
   border-collapse: collapse;
 
   tr {
     vertical-align: middle;
+  }
 
-    td {
-      padding: 0.6667em;
-      vertical-align: text-top;
+  :is(th, td) {
+    padding: 0.6667em;
+    vertical-align: text-top;
+  }
 
-      &:first-child {
-        font-weight: bold;
-      }
+  th[scope='row'] {
+    text-align: start;
+  }
 
-      /* Not break-word, which leaves a cell's min-content as it is */
-      &:not(:first-child) {
-        overflow-wrap: anywhere;
-      }
-    }
+  /* Not break-word, which leaves a cell's min-content as it is */
+  td {
+    overflow-wrap: anywhere;
   }
 
   caption {
     font-weight: 600;
     padding: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  table,
+  tbody,
+  tr,
+  th,
+  td {
+    display: block;
+  }
+
+  table th {
+    padding-bottom: 0;
+  }
+
+  table td {
+    padding-top: 0.25em;
   }
 }

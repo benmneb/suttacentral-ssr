@@ -77,21 +77,22 @@ body main:has(article) {
 
       td {
         vertical-align: middle;
+      }
 
-        &:first-child:not(:only-child) {
-          font-weight: 500;
-          vertical-align: top;
+      th {
+        font-weight: 500;
+        vertical-align: top;
+        text-align: start;
 
-          > span {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
+        > span {
+          display: flex;
+          align-items: center;
+          gap: 0.3rem;
 
-            small {
-              font-weight: normal;
-              font-size: 0.8rem;
-              color: var(--text-color-secondary);
-            }
+          small {
+            font-weight: normal;
+            font-size: 0.8rem;
+            color: var(--text-color-secondary);
           }
         }
       }
@@ -208,7 +209,7 @@ body main:has(article) {
         }
       }
 
-      table td:first-child:not(:only-child) .icon {
+      table th .icon {
         display: none;
       }
     }

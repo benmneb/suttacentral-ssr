@@ -282,11 +282,11 @@ if (matter) {
                     ) => (
                       <tr>
                         {idx === 0 && (
-                          <td rowspan={arr.length}>
+                          <th scope="row" rowspan={arr.length}>
                             <span>
                               <span>Paperback</span>
                             </span>
-                          </td>
+                          </th>
                         )}
                         <td>
                           <a href={vol.volume_lulu_url} rel="external">
@@ -300,7 +300,7 @@ if (matter) {
                   )}
                 {epubFile && (
                   <tr>
-                    <td>EPUB</td>
+                    <th scope="row">EPUB</th>
                     <td>
                       <a href={epubFile.download_url} download>
                         Download
@@ -310,7 +310,7 @@ if (matter) {
                 )}
                 {pdfFile && (
                   <tr>
-                    <td>PDF</td>
+                    <th scope="row">PDF</th>
                     <td>
                       <a href={pdfFile.download_url} download>
                         Download
@@ -320,7 +320,7 @@ if (matter) {
                 )}
                 {htmlFile && (
                   <tr>
-                    <td>
+                    <th scope="row">
                       <span>
                         <span>HTML</span>
                         <small class="with-icon">
@@ -329,7 +329,7 @@ if (matter) {
                           <span>save)</span>
                         </small>
                       </span>
-                    </td>
+                    </th>
                     <td>
                       <a href={htmlFile.download_url} download>
                         Download
@@ -339,7 +339,7 @@ if (matter) {
                 )}
                 {texFile && (
                   <tr>
-                    <td>LaTeX</td>
+                    <th scope="row">LaTeX</th>
                     <td>
                       <a href={texFile.download_url} download>
                         Download
@@ -348,7 +348,7 @@ if (matter) {
                   </tr>
                 )}
                 <tr>
-                  <td>Web</td>
+                  <th scope="row">Web</th>
                   <td>
                     <a href={collectionURL.get(uid) || `/${uid}`}>
                       Read on SuttaCentral

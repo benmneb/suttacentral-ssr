@@ -36,36 +36,42 @@ const title = t(userLanguage, 'abbreviations:1')
       <table class="abbrTable">
         <caption>{t(userLanguage, 'abbreviations:9')}</caption>
         {
-          textsData.map(abbr => (
-            <tr>
-              <td set:html={abbr.acronym} />
-              <td set:html={abbr.name} />
-            </tr>
-          ))
+          textsData
+            .filter(abbr => abbr.acronym)
+            .map(abbr => (
+              <tr>
+                <th scope="row" set:html={abbr.acronym} />
+                <td set:html={abbr.name} />
+              </tr>
+            ))
         }
       </table>
 
       <table class="abbrTable">
         <caption>Edition Abbreviations</caption>
         {
-          editionsData.map(abbr => (
-            <tr>
-              <td set:html={abbr.acronym} />
-              <td set:html={abbr.name} />
-            </tr>
-          ))
+          editionsData
+            .filter(abbr => abbr.acronym)
+            .map(abbr => (
+              <tr>
+                <th scope="row" set:html={abbr.acronym} />
+                <td set:html={abbr.name} />
+              </tr>
+            ))
         }
       </table>
 
       <table class="abbrTable">
         <caption>School Abbreviations</caption>
         {
-          schoolsData.map(abbr => (
-            <tr>
-              <td set:html={abbr.acronym} />
-              <td set:html={abbr.name} />
-            </tr>
-          ))
+          schoolsData
+            .filter(abbr => abbr.acronym)
+            .map(abbr => (
+              <tr>
+                <th scope="row" set:html={abbr.acronym} />
+                <td set:html={abbr.name} />
+              </tr>
+            ))
         }
       </table>
     </article>
