@@ -13,2092 +13,2439 @@ const title = t(userLanguage, 'palitipitaka:palitipitaka')
   <RelatedPages category="indexes" />
   <main id="main">
     <article>
-      <ul class="horizontal first">
+      <h1>
+        <i lang="pi">Pāḷi Tipiṭaka</i>
+        <span set:html={t(userLanguage, 'palitipitaka:palitipitaka')} />
+      </h1>
+      <ul class="tipitaka-tree">
         <li>
-          <h1>
-            <i lang="pi">Pāḷi Tipiṭaka</i>
-            <span set:html={t(userLanguage, 'palitipitaka:palitipitaka')} />
-          </h1>
-          <ul class="horizontal second">
+          <details>
+            <summary>
+              <span class="sr-only" lang="pi">Vinayapiṭaka</span>
+            </summary>
+          </details>
+          <span class="tipitaka-label">
+            <a href="/pli-tv-vi">
+              <i lang="pi">Vinayapiṭaka</i>
+            </a>
+            <span set:html={t(userLanguage, 'palitipitaka:vinayapitaka')} />
+          </span>
+          <ul>
             <li>
-              <a href="/pli-tv-vi">
-                <i lang="pi">Vinayapiṭaka</i>
-                <span set:html={t(userLanguage, 'palitipitaka:vinayapitaka')} />
-              </a>
-              <ul class="horizontal third">
-                <li>
-                  <a href="/pli-tv-vi">
-                    <i lang="pi">Suttavibhaṅga</i>
-                    <span
-                      set:html={t(userLanguage, 'vinayapitaka:suttavibhanga')}
-                    />
-                  </a>
-                  <ul class="vertical fourth">
-                    <li>
-                      <a href="/pli-tv-bu-vb">
-                        <i lang="pi">Bhikkhuvibhaṅga</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'suttavibhanga:bhikkhuvibhanga'
-                          )}
-                        />
-                      </a>
-                      <ul class="vertical fifth">
-                        <li>
-                          <a href="/pli-tv-bu-vb-pj">
-                            <i lang="pi">Pārājika</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'bhikkhuvibhanga:parajika'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-bu-vb-ss">
-                            <i lang="pi">Saṅghādisesa</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'bhikkhuvibhanga:sanghadisesa'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-bu-vb-ay">
-                            <i lang="pi">Aniyata</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'bhikkhuvibhanga:aniyata'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-bu-vb-np">
-                            <i lang="pi">Nissaggiya Pācittiya</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'bhikkhuvibhanga:nissaggiyaPacittiya'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-bu-vb-pc">
-                            <i lang="pi">Pācittiya</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'bhikkhuvibhanga:pacittiya'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-bu-vb-pd">
-                            <i lang="pi">Pāṭidesanīya</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'bhikkhuvibhanga:patidesaniya'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-bu-vb-sk">
-                            <i lang="pi">Sekhiya</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'bhikkhuvibhanga:sekhiya'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-bu-vb-as">
-                            <i lang="pi">Adhikaraṇasamatha</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'bhikkhuvibhanga:adhikaranasamatha'
-                              )}
-                            />
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-bi-vb">
-                        <i lang="pi">Bhikkhunīvibhaṅga</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'suttavibhanga:bhikkhunivibhanga'
-                          )}
-                        />
-                      </a>
-                      <ul class="vertical fifth">
-                        <li>
-                          <a href="/pli-tv-bi-vb-pj">
-                            <i lang="pi">Pārājika</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'bhikkhunivibhanga:parajika'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-bi-vb-ss">
-                            <i lang="pi">Saṅghādisesa</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'bhikkhunivibhanga:sanghadisesa'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-bi-vb-np">
-                            <i lang="pi">Nissaggiya Pācittiya</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'bhikkhunivibhanga:nissaggiyaPacittiya'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-bi-vb-pc">
-                            <i lang="pi">Pācittiya</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'bhikkhunivibhanga:pacittiya'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-bi-vb-pd">
-                            <i lang="pi">Pāṭidesanīya</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'bhikkhunivibhanga:patidesaniya'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-bi-vb-sk">
-                            <i lang="pi">Sekhiya</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'bhikkhunivibhanga:sekhiya'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-bi-vb-as">
-                            <i lang="pi">Adhikaraṇasamatha</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'bhikkhunivibhanga:adhikaranasamatha'
-                              )}
-                            />
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="/pli-tv-kd">
-                    <i lang="pi">Khandhaka</i>
-                    <span
-                      set:html={t(userLanguage, 'vinayapitaka:khandhaka')}
-                    />
-                  </a>
-                  <ul class="vertical fourth">
-                    <li>
-                      <a href="/">
-                        <i lang="pi">Mahāvagga</i>
-                        <span
-                          set:html={t(userLanguage, 'vinayapitaka:mahavagga')}
-                        />
-                      </a>
-                      <ul class="vertical fifth">
-                        <li>
-                          <a href="/pli-tv-kd1">
-                            <i lang="pi">Mahākhandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavagga:mahakhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd2">
-                            <i lang="pi">Uposathak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavagga:uposathakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd3">
-                            <i lang="pi">Vassūpanāyikak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavagga:vassupanayikakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd4">
-                            <i lang="pi">Pavāraṇāk­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavagga:pavaranakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd5">
-                            <i lang="pi">Cammak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavagga:cammakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd6">
-                            <i lang="pi">Bhesajjak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavagga:bhesajjakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd7">
-                            <i lang="pi">Kathinak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavagga:kathinakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd8">
-                            <i lang="pi">Cīvarak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavagga:civarakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd9">
-                            <i lang="pi">Campeyyak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavagga:campeyyakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd10">
-                            <i lang="pi">Kosambakak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavagga:kosambakakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="/">
-                        <i lang="pi">Cūḷavagga</i>
-                        <span
-                          set:html={t(userLanguage, 'vinayapitaka:culavagga')}
-                        />
-                      </a>
-                      <ul class="vertical fifth">
-                        <li>
-                          <a href="/pli-tv-kd11">
-                            <i lang="pi">Kammak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'culavagga:kammakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd12">
-                            <i lang="pi">Pārivāsikak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'culavagga:parivasikakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd13">
-                            <i lang="pi">Samuccayak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'culavagga:samuccayakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd14">
-                            <i lang="pi">Samathak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'culavagga:samathakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd15">
-                            <i lang="pi">Khuddakavatthuk­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'culavagga:khuddakavatthukkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd16">
-                            <i lang="pi">Senāsanak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'culavagga:senasanakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd17">
-                            <i lang="pi">Saṁghabhedakak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'culavagga:samghabhedakakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd18">
-                            <i lang="pi">Vattak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'culavagga:vattakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd19">
-                            <i lang="pi">Pātimokkhaṭṭhapanak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'culavagga:patimokkhatthapanakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd20">
-                            <i lang="pi">Bhikkhunik­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'culavagga:bhikkhunikkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd21">
-                            <i lang="pi">Pañcasatikak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'culavagga:pancasatikakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/pli-tv-kd22">
-                            <i lang="pi">Sattasatikak­khandhaka</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'culavagga:sattasatikakkhandhaka'
-                              )}
-                            />
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="/pli-tv-pvr">
-                    <i lang="pi">Parivāra</i>
-                    <span set:html={t(userLanguage, 'vinayapitaka:parivara')} />
-                  </a>
-                  <ul class="vertical fourth">
-                    <li>
-                      <a href="/pli-tv-pvr1.1">
-                        <i lang="pi">Katthapaññattivāra</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'parivara:katthapannattivara1'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr2.1">
-                        <i lang="pi">Katthapaññattivāra</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'parivara:katthapannattivara2'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr3">
-                        <i lang="pi">Samuṭṭhānasīsasaṅkhepa</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'parivara:samutthanasisasankhepa'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr4">
-                        <i lang="pi">Antarapeyyāla</i>
-                        <span
-                          set:html={t(userLanguage, 'parivara:antarapeyyala')}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr5">
-                        <i lang="pi">Samathabheda</i>
-                        <span
-                          set:html={t(userLanguage, 'parivara:samathabheda')}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr6">
-                        <i lang="pi">Khandhakapucchāvāra</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'parivara:khandhakapucchavara'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr7">
-                        <i lang="pi">Ekuttarikanaya</i>
-                        <span
-                          set:html={t(userLanguage, 'parivara:ekuttarikanaya')}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr8">
-                        <i lang="pi">Uposathādipucchāvissajjanā</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'parivara:uposathadipucchavissajjana'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr9">
-                        <i lang="pi">Atthavasapakaraṇa</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'parivara:atthavasapakarana'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr10">
-                        <i lang="pi">Gāthāsaṅgaṇika</i>
-                        <span
-                          set:html={t(userLanguage, 'parivara:gathasanganika')}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr11">
-                        <i lang="pi">Adhikaraṇabheda</i>
-                        <span
-                          set:html={t(userLanguage, 'parivara:adhikaranabheda')}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr12">
-                        <i lang="pi">Codanādipucchāvissajjanā</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'parivara:codanadipucchavissajjana'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr13">
-                        <i lang="pi">Codanākaṇḍa</i>
-                        <span
-                          set:html={t(userLanguage, 'parivara:codanakanda')}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr14">
-                        <i lang="pi">Anuvijjakassapaṭipatti</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'parivara:anuvijjakassapatipatti'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr15">
-                        <i lang="pi">Mahāsaṅgāma</i>
-                        <span
-                          set:html={t(userLanguage, 'parivara:mahasangama')}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr16">
-                        <i lang="pi">Kathinabheda</i>
-                        <span
-                          set:html={t(userLanguage, 'parivara:kathinabheda')}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr17">
-                        <i lang="pi">Upālipañcaka</i>
-                        <span
-                          set:html={t(userLanguage, 'parivara:upalipajncaka')}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr18">
-                        <i lang="pi">Atthāpattisamuṭṭhāna</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'parivara:atthapattisamutthana'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr19">
-                        <i lang="pi">Dutiyagāthāsaṅgaṇika</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'parivara:dutiyagathasanganik'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr20">
-                        <i lang="pi">Sedamocanagāthā</i>
-                        <span
-                          set:html={t(userLanguage, 'parivara:sedamocanagatha')}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pli-tv-pvr21">
-                        <i lang="pi">Pañcavagga</i>
-                        <span
-                          set:html={t(userLanguage, 'parivara:pajncavagga')}
-                        />
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="/sutta">
-                <i lang="pi">Suttapiṭaka</i>
-                <span set:html={t(userLanguage, 'palitipitaka:suttapitaka')} />
-              </a>
-              <ul class="horizontal third">
-                <li>
-                  <a href="/dn">
-                    <i lang="pi">Dīghanikāya</i>
-                    <span
-                      set:html={t(userLanguage, 'suttapitaka:dighanikaya')}
-                    />
-                  </a>
-                  <ul class="vertical fourth">
-                    <li>
-                      <a href="/dn-silakkhandhavagga">
-                        <i lang="pi">Sīlakkhandhavagga</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'dighanikaya:silakkhandhavagga'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/dn-mahavagga">
-                        <i lang="pi">Mahāvagga</i>
-                        <span
-                          set:html={t(userLanguage, 'dighanikaya:mahavagga')}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/dn-pathikavagga">
-                        <i lang="pi">Pāthikavagga</i>
-                        <span
-                          set:html={t(userLanguage, 'dighanikaya:pathikavagga')}
-                        />
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="/mn">
-                    <i lang="pi">Majjhimanikāya</i>
-                    <span
-                      set:html={t(userLanguage, 'suttapitaka:majjhimanikaya')}
-                    />
-                  </a>
-                  <ul class="vertical fourth">
-                    <li>
-                      <a href="/mn-mulapannasa">
-                        <i lang="pi">Mūlapaṇṇāsa</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'majjhimanikaya:mulapannasa'
-                          )}
-                        />
-                      </a>
-                      <ul class="vertical fifth">
-                        <li>
-                          <a href="/mn-mulapariyayavagga">
-                            <i lang="pi">Mūlapariyāyavagga</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mulapannasa:mulapariyayavagga'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/mn-sihanadavagga">
-                            <i lang="pi">Sīhanādavagga</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mulapannasa:sihanadavagga'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/mn-opammavagga">
-                            <i lang="pi">Opammavagga</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mulapannasa:opammavagga'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/mn-mahayamakavagga">
-                            <i lang="pi">Mahāyamakavagga</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mulapannasa:mahayamakavagg'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/mn-culayamakavagga">
-                            <i lang="pi">Cūḷayamakavagga</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mulapannasa:culayamakavagga'
-                              )}
-                            />
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="/mn-majjhimapannasa">
-                        <i lang="pi">Majjhimapaṇṇāsa</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'majjhimanikaya:majjhimapannasa'
-                          )}
-                        />
-                      </a>
-                      <ul class="vertical fifth">
-                        <li>
-                          <a href="/mn-gahapativagga">
-                            <i lang="pi">Gahapativagga</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'majjhimapannasa:gahapativagga'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/mn-bhikkhuvagga">
-                            <i lang="pi">Bhikkhuvagga</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'majjhimapannasa:bhikkhuvagga'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/mn-paribbajakavagga">
-                            <i lang="pi">Paribbājakavagga</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'majjhimapannasa:paribbajakavagga'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/mn-rajavagga">
-                            <i lang="pi">Rājavagga</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'majjhimapannasa:rajavagga'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/mn-brahmanavagga">
-                            <i lang="pi">Brāhmaṇavagga</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'majjhimapannasa:brahmanavagga'
-                              )}
-                            />
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="/mn-uparipannasa">
-                        <i lang="pi">Uparipaṇṇāsa</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'majjhimanikaya:uparipannasa'
-                          )}
-                        />
-                      </a>
-                      <ul class="vertical fifth">
-                        <li>
-                          <a href="/mn-devadahavagga">
-                            <i lang="pi">Devadahavagga</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'uparipannasa:devadahavagga'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/mn-anupadavagga">
-                            <i lang="pi">Anupadavagga</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'uparipannasa:anupadavagga'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/mn-sunnatavagga">
-                            <i lang="pi">Suññatavagga</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'uparipannasa:sujnjnatavagga'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/mn-vibhangavagga">
-                            <i lang="pi">Vibhaṅgavagga</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'uparipannasa:vibhangavagga'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/mn-salayatanavagga">
-                            <i lang="pi">Saḷāyatanavagga</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'uparipannasa:salayatanavagga'
-                              )}
-                            />
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="/pitaka/sutta/linked/sn">
-                    <i lang="pi">Saṁyuttanikāya</i>
-                    <span
-                      set:html={t(userLanguage, 'suttapitaka:samyuttanikaya')}
-                    />
-                  </a>
-                  <ul class="vertical fourth">
-                    <li>
-                      <a href="/sn-sagathavaggasamyutta">
-                        <i lang="pi">Sagāthāvaggasaṁyutta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'samyuttanikaya:sagathavaggasamyutta'
-                          )}
-                        />
-                      </a>
-                      <ul class="vertical fifth samyutta">
-                        <li>
-                          <a href="/sn1">
-                            <i lang="pi">Devatāsaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'sagathavaggasamyutta:devatasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn2">
-                            <i lang="pi">Devaputtasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'sagathavaggasamyutta:devaputtasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn3">
-                            <i lang="pi">Kosalasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'sagathavaggasamyutta:kosalasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn4">
-                            <i lang="pi">Mārasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'sagathavaggasamyutta:marasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn5">
-                            <i lang="pi">Bhikkhunīsaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'sagathavaggasamyutta:bhikkhunisamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn6">
-                            <i lang="pi">Brahmasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'sagathavaggasamyutta:brahmasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn7">
-                            <i lang="pi">Brāhmaṇasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'sagathavaggasamyutta:brahmanasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn8">
-                            <i lang="pi">Vaṅgīsasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'sagathavaggasamyutta:vangisasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn9">
-                            <i lang="pi">Vanasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'sagathavaggasamyutta:vanasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn10">
-                            <i lang="pi">Yakkhasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'sagathavaggasamyutta:yakkhasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn11">
-                            <i lang="pi">Sakkasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'sagathavaggasamyutta:sakkasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="/sn-nidanavaggasamyutta">
-                        <i lang="pi">Nidānavaggasaṁyutta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'samyuttanikaya:nidanavaggasamyutta'
-                          )}
-                        />
-                      </a>
-                      <ul class="vertical fifth samyutta">
-                        <li>
-                          <a href="/sn12">
-                            <i lang="pi">Nidānasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'nidanavaggasamyutta:nidanasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn13">
-                            <i lang="pi">Abhisamayasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'nidanavaggasamyutta:abhisamayasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn14">
-                            <i lang="pi">Dhātusaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'nidanavaggasamyutta:dhatusamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn15">
-                            <i lang="pi">Anamataggasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'nidanavaggasamyutta:anamataggasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn16">
-                            <i lang="pi">Kassapasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'nidanavaggasamyutta:kassapasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn17">
-                            <i lang="pi">Lābhasakkārasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'nidanavaggasamyutta:labhasakkarasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn18">
-                            <i lang="pi">Rāhulasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'nidanavaggasamyutta:rahulasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn19">
-                            <i lang="pi">Lakkhaṇasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'nidanavaggasamyutta:lakkhanasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn20">
-                            <i lang="pi">Opammasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'nidanavaggasamyutta:opammasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn21">
-                            <i lang="pi">Bhikkhusaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'nidanavaggasamyutta:bhikkhusamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="/sn-khandhavaggasamyutta">
-                        <i lang="pi">Khandhavaggasaṁyutta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'samyuttanikaya:khandhavaggasamyutta'
-                          )}
-                        />
-                      </a>
-                      <ul class="vertical fifth samyutta">
-                        <li>
-                          <a href="/sn22">
-                            <i lang="pi">Khandhasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'khandhavaggasamyutta:khandhasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn23">
-                            <i lang="pi">Rādhasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'khandhavaggasamyutta:radhasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn24">
-                            <i lang="pi">Diṭṭhisaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'khandhavaggasamyutta:ditthisamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn25">
-                            <i lang="pi">Okkantasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'khandhavaggasamyutta:okkantasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn26">
-                            <i lang="pi">Uppādasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'khandhavaggasamyutta:uppadasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn27">
-                            <i lang="pi">Kilesasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'khandhavaggasamyutta:kilesasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn28">
-                            <i lang="pi">Sāriputtasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'khandhavaggasamyutta:sariputtasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn29">
-                            <i lang="pi">Nāgasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'khandhavaggasamyutta:nagasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn30">
-                            <i lang="pi">Supaṇṇasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'khandhavaggasamyutta:supannasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn31">
-                            <i lang="pi">Gandhabbakāyasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'khandhavaggasamyutta:gandhabbakayasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn32">
-                            <i lang="pi">Valāhakasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'khandhavaggasamyutta:valahakasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn33">
-                            <i lang="pi">Vacchagottasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'khandhavaggasamyutta:vacchagottasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn34">
-                            <i lang="pi">Jhānasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'khandhavaggasamyutta:jhanasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a
-                        href="/sn-salayatanavaggasamyutta"
-                        style="height:5.2rem"
-                      >
-                        <i lang="pi">Saḷāyatanavaggasaṁyutta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'samyuttanikaya:salayatanavaggasamyutta'
-                          )}
-                        />
-                      </a>
-                      <ul class="vertical fifth samyutta">
-                        <li>
-                          <a href="/sn35">
-                            <i lang="pi">Saḷāyatanasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'salayatanavaggasamyutta:salayatanasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn36">
-                            <i lang="pi">Vedanāsaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'salayatanavaggasamyutta:vedanasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn37">
-                            <i lang="pi">Mātugāmasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'salayatanavaggasamyutta:matugamasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn38">
-                            <i lang="pi">Jambukhādakasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'salayatanavaggasamyutta:jambukhadakasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn39">
-                            <i lang="pi">Sāmaṇḍakasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'salayatanavaggasamyutta:samandakasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn40">
-                            <i lang="pi">Moggallānasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'salayatanavaggasamyutta:moggallanasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn41">
-                            <i lang="pi">Cittasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'salayatanavaggasamyutta:cittasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn42">
-                            <i lang="pi">Gāmaṇisaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'salayatanavaggasamyutta:gamanisamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn43">
-                            <i lang="pi">Asaṅkhatasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'salayatanavaggasamyutta:asankhatasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn44">
-                            <i lang="pi">Abyākatasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'salayatanavaggasamyutta:abyakatasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="/sn-mahavaggasamyutta">
-                        <i lang="pi">Mahāvaggasaṁyutta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'samyuttanikaya:mahavaggasamyutta'
-                          )}
-                        />
-                      </a>
-                      <ul class="vertical fifth samyutta">
-                        <li>
-                          <a href="/sn45">
-                            <i lang="pi">Maggasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavaggasamyutta:maggasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn46">
-                            <i lang="pi">Bojjhaṅgasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavaggasamyutta:bojjhangasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn47">
-                            <i lang="pi">Satipaṭṭhānasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavaggasamyutta:satipatthanasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn48">
-                            <i lang="pi">Indriyasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavaggasamyutta:indriyasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn49">
-                            <i lang="pi">Sammappadhānasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavaggasamyutta:sammappadhanasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn50">
-                            <i lang="pi">Balasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavaggasamyutta:balasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn51">
-                            <i lang="pi">Iddhipādasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavaggasamyutta:iddhipadasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn52">
-                            <i lang="pi">Anuruddhasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavaggasamyutta:anuruddhasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn53">
-                            <i lang="pi">Jhānasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavaggasamyutta:jhanasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn54">
-                            <i lang="pi">Ānāpānasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavaggasamyutta:anapanasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn55">
-                            <i lang="pi">Sotāpattisaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavaggasamyutta:sotapattisamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                        <li>
-                          <a href="/sn56">
-                            <i lang="pi">Saccasaṁyutta</i>
-                            <span
-                              set:html={t(
-                                userLanguage,
-                                'mahavaggasamyutta:saccasamyutta'
-                              )}
-                            />
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="/pitaka/sutta/numbered/an">
-                    <i lang="pi">Aṅguttaranikāya</i>
-                    <span
-                      set:html={t(userLanguage, 'suttapitaka:anguttaranikaya')}
-                    />
-                  </a>
-                  <ul class="vertical fourth">
-                    <li>
-                      <a href="/an1">
-                        <i lang="pi">Ekakanipāta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'anguttaranikaya:ekakanipata'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/an2">
-                        <i lang="pi">Dukanipāta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'anguttaranikaya:dukanipata'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/an3">
-                        <i lang="pi">Tikanipāta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'anguttaranikaya:tikanipata'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/an4">
-                        <i lang="pi">Catukkanipāta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'anguttaranikaya:catukkanipata'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/an5">
-                        <i lang="pi">Pañcakanipāta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'anguttaranikaya:pajncakanipata'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/an6">
-                        <i lang="pi">Chakkanipāta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'anguttaranikaya:chakkanipata'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/an7">
-                        <i lang="pi">Sattakanipāta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'anguttaranikaya:sattakanipata'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/an8">
-                        <i lang="pi">Aṭṭhakanipāta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'anguttaranikaya:atthakanipata'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/an9">
-                        <i lang="pi">Navakanipāta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'anguttaranikaya:navakanipata'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/an10">
-                        <i lang="pi">Dasakanipāta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'anguttaranikaya:dasakanipata'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/an11">
-                        <i lang="pi">Ekādasakanipāta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'anguttaranikaya:ekadasakanipata'
-                          )}
-                        />
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="/kn">
-                    <i lang="pi">Khuddakanikāya</i>
-                    <span
-                      set:html={t(userLanguage, 'suttapitaka:khuddakanikaya')}
-                    />
-                  </a>
-                  <ul class="vertical fourth">
-                    <li>
-                      <a href="/kp">
-                        <i lang="pi">Khuddakapāṭha</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:khuddakapatha'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/dhp">
-                        <i lang="pi">Dhammapada</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:dhammapada'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/ud">
-                        <i lang="pi">Udāna</i>
-                        <span
-                          set:html={t(userLanguage, 'khuddakanikaya:udana')}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/iti">
-                        <i lang="pi">Itivuttaka</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:itivuttaka'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/snp">
-                        <i lang="pi">Suttanipāta</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:suttanipata'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/vv">
-                        <i lang="pi">Vimānavatthu</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:vimanavatthu'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pv">
-                        <i lang="pi">Petavatthu</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:petavatthu'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/thag">
-                        <i lang="pi">Theragāthā</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:theragatha'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/thig">
-                        <i lang="pi">Therīgāthā</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:therigatha'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/tha-ap">
-                        <i lang="pi">Therāpadāna</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:therapadana'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/thi-ap">
-                        <i lang="pi">Therīapadāna</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:theriapadana'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/bv">
-                        <i lang="pi">Buddhavaṁsa</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:buddhavamsa'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/cp">
-                        <i lang="pi">Cariyāpiṭaka</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:cariyapitaka'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/ja">
-                        <i lang="pi">Jātaka</i>
-                        <span
-                          set:html={t(userLanguage, 'khuddakanikaya:jataka')}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/mnd">
-                        <i lang="pi">Mahāniddesa</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:mahaniddesa'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/cnd">
-                        <i lang="pi">Cūḷaniddesa</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:culaniddesa'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/ps">
-                        <i lang="pi">Paṭisambhidāmagga</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:patisambhidamagga'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/ne">
-                        <i lang="pi">Netti</i>
-                        <span
-                          set:html={t(userLanguage, 'khuddakanikaya:netti')}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/pe">
-                        <i lang="pi">Peṭakopadesa</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:petakopadesa'
-                          )}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/mil">
-                        <i lang="pi">Milindapañha</i>
-                        <span
-                          set:html={t(
-                            userLanguage,
-                            'khuddakanikaya:milindapajnha'
-                          )}
-                        />
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="/pli-tv-ab">
-                <i lang="pi">Abhidhammapiṭaka</i>
+              <details>
+                <summary>
+                  <span class="sr-only" lang="pi">Suttavibhaṅga</span>
+                </summary>
+              </details>
+              <span class="tipitaka-label">
+                <a href="/pli-tv-vi">
+                  <i lang="pi">Suttavibhaṅga</i>
+                </a>
                 <span
-                  set:html={t(userLanguage, 'palitipitaka:abhidhammaPitaka')}
+                  set:html={t(userLanguage, 'vinayapitaka:suttavibhanga')}
                 />
-              </a>
-              <ul class="horizontal third">
+              </span>
+              <ul>
                 <li>
-                  <ul class="vertical fourth abhidhamma">
+                  <details>
+                    <summary>
+                      <span class="sr-only" lang="pi">Bhikkhuvibhaṅga</span>
+                    </summary>
+                  </details>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-bu-vb">
+                      <i lang="pi">Bhikkhuvibhaṅga</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'suttavibhanga:bhikkhuvibhanga'
+                      )}
+                    />
+                  </span>
+                  <ul>
                     <li>
-                      <a href="/ds">
-                        <i lang="pi">Dhammasaṅgaṇī</i>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-bu-vb-pj">
+                          <i lang="pi">Pārājika</i>
+                        </a>
+                        <span
+                          set:html={t(userLanguage, 'bhikkhuvibhanga:parajika')}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-bu-vb-ss">
+                          <i lang="pi">Saṅghādisesa</i>
+                        </a>
                         <span
                           set:html={t(
                             userLanguage,
-                            'abhidhammaPitaka:dhammasangani'
+                            'bhikkhuvibhanga:sanghadisesa'
                           )}
                         />
-                      </a>
+                      </span>
                     </li>
                     <li>
-                      <a href="/vb">
-                        <i lang="pi">Vibhaṅga</i>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-bu-vb-ay">
+                          <i lang="pi">Aniyata</i>
+                        </a>
+                        <span
+                          set:html={t(userLanguage, 'bhikkhuvibhanga:aniyata')}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-bu-vb-np">
+                          <i lang="pi">Nissaggiya Pācittiya</i>
+                        </a>
                         <span
                           set:html={t(
                             userLanguage,
-                            'abhidhammaPitaka:vibhanga'
+                            'bhikkhuvibhanga:nissaggiyaPacittiya'
                           )}
                         />
-                      </a>
+                      </span>
                     </li>
                     <li>
-                      <a href="/dt">
-                        <i lang="pi">Dhātukathā</i>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-bu-vb-pc">
+                          <i lang="pi">Pācittiya</i>
+                        </a>
                         <span
                           set:html={t(
                             userLanguage,
-                            'abhidhammaPitaka:dhatukatha'
+                            'bhikkhuvibhanga:pacittiya'
                           )}
                         />
-                      </a>
+                      </span>
                     </li>
                     <li>
-                      <a href="/pp">
-                        <i lang="pi">Puggalapaññatti</i>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-bu-vb-pd">
+                          <i lang="pi">Pāṭidesanīya</i>
+                        </a>
                         <span
                           set:html={t(
                             userLanguage,
-                            'abhidhammaPitaka:puggalapajnjnatti'
+                            'bhikkhuvibhanga:patidesaniya'
                           )}
                         />
-                      </a>
+                      </span>
                     </li>
                     <li>
-                      <a href="/kv">
-                        <i lang="pi">Kathāvatthu</i>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-bu-vb-sk">
+                          <i lang="pi">Sekhiya</i>
+                        </a>
+                        <span
+                          set:html={t(userLanguage, 'bhikkhuvibhanga:sekhiya')}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-bu-vb-as">
+                          <i lang="pi">Adhikaraṇasamatha</i>
+                        </a>
                         <span
                           set:html={t(
                             userLanguage,
-                            'abhidhammaPitaka:kathavatthu'
+                            'bhikkhuvibhanga:adhikaranasamatha'
                           )}
                         />
-                      </a>
+                      </span>
                     </li>
+                  </ul>
+                </li>
+                <li>
+                  <details>
+                    <summary>
+                      <span class="sr-only" lang="pi">Bhikkhunīvibhaṅga</span>
+                    </summary>
+                  </details>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-bi-vb">
+                      <i lang="pi">Bhikkhunīvibhaṅga</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'suttavibhanga:bhikkhunivibhanga'
+                      )}
+                    />
+                  </span>
+                  <ul>
                     <li>
-                      <a href="/ya">
-                        <i lang="pi">Yamaka</i>
-                        <span
-                          set:html={t(userLanguage, 'abhidhammaPitaka:yamaka')}
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="/patthana">
-                        <i lang="pi">Paṭṭhāna</i>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-bi-vb-pj">
+                          <i lang="pi">Pārājika</i>
+                        </a>
                         <span
                           set:html={t(
                             userLanguage,
-                            'abhidhammaPitaka:patthana'
+                            'bhikkhunivibhanga:parajika'
                           )}
                         />
-                      </a>
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-bi-vb-ss">
+                          <i lang="pi">Saṅghādisesa</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'bhikkhunivibhanga:sanghadisesa'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-bi-vb-np">
+                          <i lang="pi">Nissaggiya Pācittiya</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'bhikkhunivibhanga:nissaggiyaPacittiya'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-bi-vb-pc">
+                          <i lang="pi">Pācittiya</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'bhikkhunivibhanga:pacittiya'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-bi-vb-pd">
+                          <i lang="pi">Pāṭidesanīya</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'bhikkhunivibhanga:patidesaniya'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-bi-vb-sk">
+                          <i lang="pi">Sekhiya</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'bhikkhunivibhanga:sekhiya'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-bi-vb-as">
+                          <i lang="pi">Adhikaraṇasamatha</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'bhikkhunivibhanga:adhikaranasamatha'
+                          )}
+                        />
+                      </span>
                     </li>
                   </ul>
                 </li>
               </ul>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <span class="sr-only" lang="pi">Khandhaka</span>
+                </summary>
+              </details>
+              <span class="tipitaka-label">
+                <a href="/pli-tv-kd">
+                  <i lang="pi">Khandhaka</i>
+                </a>
+                <span set:html={t(userLanguage, 'vinayapitaka:khandhaka')} />
+              </span>
+              <ul>
+                <li>
+                  <details>
+                    <summary>
+                      <span class="sr-only" lang="pi">Mahāvagga</span>
+                    </summary>
+                  </details>
+                  <span class="tipitaka-label">
+                    <a href="/">
+                      <i lang="pi">Mahāvagga</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'vinayapitaka:mahavagga')}
+                    />
+                  </span>
+                  <ul>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd1">
+                          <i lang="pi">Mahākhandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(userLanguage, 'mahavagga:mahakhandhaka')}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd2">
+                          <i lang="pi">Uposathak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavagga:uposathakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd3">
+                          <i lang="pi">Vassūpanāyikak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavagga:vassupanayikakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd4">
+                          <i lang="pi">Pavāraṇāk­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavagga:pavaranakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd5">
+                          <i lang="pi">Cammak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavagga:cammakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd6">
+                          <i lang="pi">Bhesajjak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavagga:bhesajjakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd7">
+                          <i lang="pi">Kathinak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavagga:kathinakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd8">
+                          <i lang="pi">Cīvarak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavagga:civarakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd9">
+                          <i lang="pi">Campeyyak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavagga:campeyyakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd10">
+                          <i lang="pi">Kosambakak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavagga:kosambakakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <details>
+                    <summary>
+                      <span class="sr-only" lang="pi">Cūḷavagga</span>
+                    </summary>
+                  </details>
+                  <span class="tipitaka-label">
+                    <a href="/">
+                      <i lang="pi">Cūḷavagga</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'vinayapitaka:culavagga')}
+                    />
+                  </span>
+                  <ul>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd11">
+                          <i lang="pi">Kammak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'culavagga:kammakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd12">
+                          <i lang="pi">Pārivāsikak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'culavagga:parivasikakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd13">
+                          <i lang="pi">Samuccayak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'culavagga:samuccayakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd14">
+                          <i lang="pi">Samathak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'culavagga:samathakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd15">
+                          <i lang="pi">Khuddakavatthuk­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'culavagga:khuddakavatthukkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd16">
+                          <i lang="pi">Senāsanak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'culavagga:senasanakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd17">
+                          <i lang="pi">Saṁghabhedakak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'culavagga:samghabhedakakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd18">
+                          <i lang="pi">Vattak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'culavagga:vattakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd19">
+                          <i lang="pi">Pātimokkhaṭṭhapanak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'culavagga:patimokkhatthapanakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd20">
+                          <i lang="pi">Bhikkhunik­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'culavagga:bhikkhunikkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd21">
+                          <i lang="pi">Pañcasatikak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'culavagga:pancasatikakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/pli-tv-kd22">
+                          <i lang="pi">Sattasatikak­khandhaka</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'culavagga:sattasatikakkhandhaka'
+                          )}
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <span class="sr-only" lang="pi">Parivāra</span>
+                </summary>
+              </details>
+              <span class="tipitaka-label">
+                <a href="/pli-tv-pvr">
+                  <i lang="pi">Parivāra</i>
+                </a>
+                <span set:html={t(userLanguage, 'vinayapitaka:parivara')} />
+              </span>
+              <ul>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr1.1">
+                      <i lang="pi">Katthapaññattivāra</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'parivara:katthapannattivara1')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr2.1">
+                      <i lang="pi">Katthapaññattivāra</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'parivara:katthapannattivara2')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr3">
+                      <i lang="pi">Samuṭṭhānasīsasaṅkhepa</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'parivara:samutthanasisasankhepa'
+                      )}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr4">
+                      <i lang="pi">Antarapeyyāla</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'parivara:antarapeyyala')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr5">
+                      <i lang="pi">Samathabheda</i>
+                    </a>
+                    <span set:html={t(userLanguage, 'parivara:samathabheda')} />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr6">
+                      <i lang="pi">Khandhakapucchāvāra</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'parivara:khandhakapucchavara')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr7">
+                      <i lang="pi">Ekuttarikanaya</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'parivara:ekuttarikanaya')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr8">
+                      <i lang="pi">Uposathādipucchāvissajjanā</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'parivara:uposathadipucchavissajjana'
+                      )}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr9">
+                      <i lang="pi">Atthavasapakaraṇa</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'parivara:atthavasapakarana')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr10">
+                      <i lang="pi">Gāthāsaṅgaṇika</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'parivara:gathasanganika')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr11">
+                      <i lang="pi">Adhikaraṇabheda</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'parivara:adhikaranabheda')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr12">
+                      <i lang="pi">Codanādipucchāvissajjanā</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'parivara:codanadipucchavissajjana'
+                      )}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr13">
+                      <i lang="pi">Codanākaṇḍa</i>
+                    </a>
+                    <span set:html={t(userLanguage, 'parivara:codanakanda')} />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr14">
+                      <i lang="pi">Anuvijjakassapaṭipatti</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'parivara:anuvijjakassapatipatti'
+                      )}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr15">
+                      <i lang="pi">Mahāsaṅgāma</i>
+                    </a>
+                    <span set:html={t(userLanguage, 'parivara:mahasangama')} />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr16">
+                      <i lang="pi">Kathinabheda</i>
+                    </a>
+                    <span set:html={t(userLanguage, 'parivara:kathinabheda')} />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr17">
+                      <i lang="pi">Upālipañcaka</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'parivara:upalipajncaka')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr18">
+                      <i lang="pi">Atthāpattisamuṭṭhāna</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'parivara:atthapattisamutthana'
+                      )}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr19">
+                      <i lang="pi">Dutiyagāthāsaṅgaṇika</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'parivara:dutiyagathasanganik')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr20">
+                      <i lang="pi">Sedamocanagāthā</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'parivara:sedamocanagatha')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pli-tv-pvr21">
+                      <i lang="pi">Pañcavagga</i>
+                    </a>
+                    <span set:html={t(userLanguage, 'parivara:pajncavagga')} />
+                  </span>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <details>
+            <summary>
+              <span class="sr-only" lang="pi">Suttapiṭaka</span>
+            </summary>
+          </details>
+          <span class="tipitaka-label">
+            <a href="/sutta">
+              <i lang="pi">Suttapiṭaka</i>
+            </a>
+            <span set:html={t(userLanguage, 'palitipitaka:suttapitaka')} />
+          </span>
+          <ul>
+            <li>
+              <details>
+                <summary>
+                  <span class="sr-only" lang="pi">Dīghanikāya</span>
+                </summary>
+              </details>
+              <span class="tipitaka-label">
+                <a href="/dn">
+                  <i lang="pi">Dīghanikāya</i>
+                </a>
+                <span set:html={t(userLanguage, 'suttapitaka:dighanikaya')} />
+              </span>
+              <ul>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/dn-silakkhandhavagga">
+                      <i lang="pi">Sīlakkhandhavagga</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'dighanikaya:silakkhandhavagga'
+                      )}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/dn-mahavagga">
+                      <i lang="pi">Mahāvagga</i>
+                    </a>
+                    <span set:html={t(userLanguage, 'dighanikaya:mahavagga')} />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/dn-pathikavagga">
+                      <i lang="pi">Pāthikavagga</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'dighanikaya:pathikavagga')}
+                    />
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <span class="sr-only" lang="pi">Majjhimanikāya</span>
+                </summary>
+              </details>
+              <span class="tipitaka-label">
+                <a href="/mn">
+                  <i lang="pi">Majjhimanikāya</i>
+                </a>
+                <span
+                  set:html={t(userLanguage, 'suttapitaka:majjhimanikaya')}
+                />
+              </span>
+              <ul>
+                <li>
+                  <details>
+                    <summary>
+                      <span class="sr-only" lang="pi">Mūlapaṇṇāsa</span>
+                    </summary>
+                  </details>
+                  <span class="tipitaka-label">
+                    <a href="/mn-mulapannasa">
+                      <i lang="pi">Mūlapaṇṇāsa</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'majjhimanikaya:mulapannasa')}
+                    />
+                  </span>
+                  <ul>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/mn-mulapariyayavagga">
+                          <i lang="pi">Mūlapariyāyavagga</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mulapannasa:mulapariyayavagga'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/mn-sihanadavagga">
+                          <i lang="pi">Sīhanādavagga</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mulapannasa:sihanadavagga'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/mn-opammavagga">
+                          <i lang="pi">Opammavagga</i>
+                        </a>
+                        <span
+                          set:html={t(userLanguage, 'mulapannasa:opammavagga')}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/mn-mahayamakavagga">
+                          <i lang="pi">Mahāyamakavagga</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mulapannasa:mahayamakavagg'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/mn-culayamakavagga">
+                          <i lang="pi">Cūḷayamakavagga</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mulapannasa:culayamakavagga'
+                          )}
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <details>
+                    <summary>
+                      <span class="sr-only" lang="pi">Majjhimapaṇṇāsa</span>
+                    </summary>
+                  </details>
+                  <span class="tipitaka-label">
+                    <a href="/mn-majjhimapannasa">
+                      <i lang="pi">Majjhimapaṇṇāsa</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'majjhimanikaya:majjhimapannasa'
+                      )}
+                    />
+                  </span>
+                  <ul>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/mn-gahapativagga">
+                          <i lang="pi">Gahapativagga</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'majjhimapannasa:gahapativagga'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/mn-bhikkhuvagga">
+                          <i lang="pi">Bhikkhuvagga</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'majjhimapannasa:bhikkhuvagga'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/mn-paribbajakavagga">
+                          <i lang="pi">Paribbājakavagga</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'majjhimapannasa:paribbajakavagga'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/mn-rajavagga">
+                          <i lang="pi">Rājavagga</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'majjhimapannasa:rajavagga'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/mn-brahmanavagga">
+                          <i lang="pi">Brāhmaṇavagga</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'majjhimapannasa:brahmanavagga'
+                          )}
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <details>
+                    <summary>
+                      <span class="sr-only" lang="pi">Uparipaṇṇāsa</span>
+                    </summary>
+                  </details>
+                  <span class="tipitaka-label">
+                    <a href="/mn-uparipannasa">
+                      <i lang="pi">Uparipaṇṇāsa</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'majjhimanikaya:uparipannasa')}
+                    />
+                  </span>
+                  <ul>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/mn-devadahavagga">
+                          <i lang="pi">Devadahavagga</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'uparipannasa:devadahavagga'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/mn-anupadavagga">
+                          <i lang="pi">Anupadavagga</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'uparipannasa:anupadavagga'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/mn-sunnatavagga">
+                          <i lang="pi">Suññatavagga</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'uparipannasa:sujnjnatavagga'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/mn-vibhangavagga">
+                          <i lang="pi">Vibhaṅgavagga</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'uparipannasa:vibhangavagga'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/mn-salayatanavagga">
+                          <i lang="pi">Saḷāyatanavagga</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'uparipannasa:salayatanavagga'
+                          )}
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <span class="sr-only" lang="pi">Saṁyuttanikāya</span>
+                </summary>
+              </details>
+              <span class="tipitaka-label">
+                <a href="/pitaka/sutta/linked/sn">
+                  <i lang="pi">Saṁyuttanikāya</i>
+                </a>
+                <span
+                  set:html={t(userLanguage, 'suttapitaka:samyuttanikaya')}
+                />
+              </span>
+              <ul>
+                <li>
+                  <details>
+                    <summary>
+                      <span class="sr-only" lang="pi">Sagāthāvaggasaṁyutta</span
+                      >
+                    </summary>
+                  </details>
+                  <span class="tipitaka-label">
+                    <a href="/sn-sagathavaggasamyutta">
+                      <i lang="pi">Sagāthāvaggasaṁyutta</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'samyuttanikaya:sagathavaggasamyutta'
+                      )}
+                    />
+                  </span>
+                  <ul>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn1">
+                          <i lang="pi">Devatāsaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'sagathavaggasamyutta:devatasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn2">
+                          <i lang="pi">Devaputtasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'sagathavaggasamyutta:devaputtasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn3">
+                          <i lang="pi">Kosalasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'sagathavaggasamyutta:kosalasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn4">
+                          <i lang="pi">Mārasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'sagathavaggasamyutta:marasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn5">
+                          <i lang="pi">Bhikkhunīsaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'sagathavaggasamyutta:bhikkhunisamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn6">
+                          <i lang="pi">Brahmasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'sagathavaggasamyutta:brahmasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn7">
+                          <i lang="pi">Brāhmaṇasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'sagathavaggasamyutta:brahmanasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn8">
+                          <i lang="pi">Vaṅgīsasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'sagathavaggasamyutta:vangisasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn9">
+                          <i lang="pi">Vanasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'sagathavaggasamyutta:vanasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn10">
+                          <i lang="pi">Yakkhasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'sagathavaggasamyutta:yakkhasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn11">
+                          <i lang="pi">Sakkasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'sagathavaggasamyutta:sakkasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <details>
+                    <summary>
+                      <span class="sr-only" lang="pi">Nidānavaggasaṁyutta</span>
+                    </summary>
+                  </details>
+                  <span class="tipitaka-label">
+                    <a href="/sn-nidanavaggasamyutta">
+                      <i lang="pi">Nidānavaggasaṁyutta</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'samyuttanikaya:nidanavaggasamyutta'
+                      )}
+                    />
+                  </span>
+                  <ul>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn12">
+                          <i lang="pi">Nidānasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'nidanavaggasamyutta:nidanasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn13">
+                          <i lang="pi">Abhisamayasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'nidanavaggasamyutta:abhisamayasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn14">
+                          <i lang="pi">Dhātusaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'nidanavaggasamyutta:dhatusamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn15">
+                          <i lang="pi">Anamataggasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'nidanavaggasamyutta:anamataggasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn16">
+                          <i lang="pi">Kassapasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'nidanavaggasamyutta:kassapasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn17">
+                          <i lang="pi">Lābhasakkārasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'nidanavaggasamyutta:labhasakkarasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn18">
+                          <i lang="pi">Rāhulasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'nidanavaggasamyutta:rahulasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn19">
+                          <i lang="pi">Lakkhaṇasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'nidanavaggasamyutta:lakkhanasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn20">
+                          <i lang="pi">Opammasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'nidanavaggasamyutta:opammasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn21">
+                          <i lang="pi">Bhikkhusaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'nidanavaggasamyutta:bhikkhusamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <details>
+                    <summary>
+                      <span class="sr-only" lang="pi">Khandhavaggasaṁyutta</span
+                      >
+                    </summary>
+                  </details>
+                  <span class="tipitaka-label">
+                    <a href="/sn-khandhavaggasamyutta">
+                      <i lang="pi">Khandhavaggasaṁyutta</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'samyuttanikaya:khandhavaggasamyutta'
+                      )}
+                    />
+                  </span>
+                  <ul>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn22">
+                          <i lang="pi">Khandhasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'khandhavaggasamyutta:khandhasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn23">
+                          <i lang="pi">Rādhasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'khandhavaggasamyutta:radhasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn24">
+                          <i lang="pi">Diṭṭhisaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'khandhavaggasamyutta:ditthisamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn25">
+                          <i lang="pi">Okkantasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'khandhavaggasamyutta:okkantasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn26">
+                          <i lang="pi">Uppādasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'khandhavaggasamyutta:uppadasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn27">
+                          <i lang="pi">Kilesasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'khandhavaggasamyutta:kilesasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn28">
+                          <i lang="pi">Sāriputtasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'khandhavaggasamyutta:sariputtasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn29">
+                          <i lang="pi">Nāgasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'khandhavaggasamyutta:nagasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn30">
+                          <i lang="pi">Supaṇṇasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'khandhavaggasamyutta:supannasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn31">
+                          <i lang="pi">Gandhabbakāyasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'khandhavaggasamyutta:gandhabbakayasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn32">
+                          <i lang="pi">Valāhakasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'khandhavaggasamyutta:valahakasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn33">
+                          <i lang="pi">Vacchagottasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'khandhavaggasamyutta:vacchagottasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn34">
+                          <i lang="pi">Jhānasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'khandhavaggasamyutta:jhanasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <details>
+                    <summary>
+                      <span class="sr-only" lang="pi"
+                        >Saḷāyatanavaggasaṁyutta</span
+                      >
+                    </summary>
+                  </details>
+                  <span class="tipitaka-label">
+                    <a href="/sn-salayatanavaggasamyutta">
+                      <i lang="pi">Saḷāyatanavaggasaṁyutta</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'samyuttanikaya:salayatanavaggasamyutta'
+                      )}
+                    />
+                  </span>
+                  <ul>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn35">
+                          <i lang="pi">Saḷāyatanasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'salayatanavaggasamyutta:salayatanasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn36">
+                          <i lang="pi">Vedanāsaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'salayatanavaggasamyutta:vedanasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn37">
+                          <i lang="pi">Mātugāmasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'salayatanavaggasamyutta:matugamasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn38">
+                          <i lang="pi">Jambukhādakasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'salayatanavaggasamyutta:jambukhadakasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn39">
+                          <i lang="pi">Sāmaṇḍakasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'salayatanavaggasamyutta:samandakasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn40">
+                          <i lang="pi">Moggallānasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'salayatanavaggasamyutta:moggallanasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn41">
+                          <i lang="pi">Cittasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'salayatanavaggasamyutta:cittasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn42">
+                          <i lang="pi">Gāmaṇisaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'salayatanavaggasamyutta:gamanisamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn43">
+                          <i lang="pi">Asaṅkhatasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'salayatanavaggasamyutta:asankhatasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn44">
+                          <i lang="pi">Abyākatasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'salayatanavaggasamyutta:abyakatasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <details>
+                    <summary>
+                      <span class="sr-only" lang="pi">Mahāvaggasaṁyutta</span>
+                    </summary>
+                  </details>
+                  <span class="tipitaka-label">
+                    <a href="/sn-mahavaggasamyutta">
+                      <i lang="pi">Mahāvaggasaṁyutta</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'samyuttanikaya:mahavaggasamyutta'
+                      )}
+                    />
+                  </span>
+                  <ul>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn45">
+                          <i lang="pi">Maggasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavaggasamyutta:maggasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn46">
+                          <i lang="pi">Bojjhaṅgasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavaggasamyutta:bojjhangasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn47">
+                          <i lang="pi">Satipaṭṭhānasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavaggasamyutta:satipatthanasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn48">
+                          <i lang="pi">Indriyasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavaggasamyutta:indriyasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn49">
+                          <i lang="pi">Sammappadhānasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavaggasamyutta:sammappadhanasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn50">
+                          <i lang="pi">Balasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavaggasamyutta:balasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn51">
+                          <i lang="pi">Iddhipādasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavaggasamyutta:iddhipadasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn52">
+                          <i lang="pi">Anuruddhasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavaggasamyutta:anuruddhasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn53">
+                          <i lang="pi">Jhānasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavaggasamyutta:jhanasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn54">
+                          <i lang="pi">Ānāpānasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavaggasamyutta:anapanasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn55">
+                          <i lang="pi">Sotāpattisaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavaggasamyutta:sotapattisamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                    <li>
+                      <span class="tipitaka-label">
+                        <a href="/sn56">
+                          <i lang="pi">Saccasaṁyutta</i>
+                        </a>
+                        <span
+                          set:html={t(
+                            userLanguage,
+                            'mahavaggasamyutta:saccasamyutta'
+                          )}
+                        />
+                      </span>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <span class="sr-only" lang="pi">Aṅguttaranikāya</span>
+                </summary>
+              </details>
+              <span class="tipitaka-label">
+                <a href="/pitaka/sutta/numbered/an">
+                  <i lang="pi">Aṅguttaranikāya</i>
+                </a>
+                <span
+                  set:html={t(userLanguage, 'suttapitaka:anguttaranikaya')}
+                />
+              </span>
+              <ul>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/an1">
+                      <i lang="pi">Ekakanipāta</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'anguttaranikaya:ekakanipata')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/an2">
+                      <i lang="pi">Dukanipāta</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'anguttaranikaya:dukanipata')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/an3">
+                      <i lang="pi">Tikanipāta</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'anguttaranikaya:tikanipata')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/an4">
+                      <i lang="pi">Catukkanipāta</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'anguttaranikaya:catukkanipata'
+                      )}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/an5">
+                      <i lang="pi">Pañcakanipāta</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'anguttaranikaya:pajncakanipata'
+                      )}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/an6">
+                      <i lang="pi">Chakkanipāta</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'anguttaranikaya:chakkanipata')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/an7">
+                      <i lang="pi">Sattakanipāta</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'anguttaranikaya:sattakanipata'
+                      )}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/an8">
+                      <i lang="pi">Aṭṭhakanipāta</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'anguttaranikaya:atthakanipata'
+                      )}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/an9">
+                      <i lang="pi">Navakanipāta</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'anguttaranikaya:navakanipata')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/an10">
+                      <i lang="pi">Dasakanipāta</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'anguttaranikaya:dasakanipata')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/an11">
+                      <i lang="pi">Ekādasakanipāta</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'anguttaranikaya:ekadasakanipata'
+                      )}
+                    />
+                  </span>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  <span class="sr-only" lang="pi">Khuddakanikāya</span>
+                </summary>
+              </details>
+              <span class="tipitaka-label">
+                <a href="/kn">
+                  <i lang="pi">Khuddakanikāya</i>
+                </a>
+                <span
+                  set:html={t(userLanguage, 'suttapitaka:khuddakanikaya')}
+                />
+              </span>
+              <ul>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/kp">
+                      <i lang="pi">Khuddakapāṭha</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:khuddakapatha')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/dhp">
+                      <i lang="pi">Dhammapada</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:dhammapada')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/ud">
+                      <i lang="pi">Udāna</i>
+                    </a>
+                    <span set:html={t(userLanguage, 'khuddakanikaya:udana')} />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/iti">
+                      <i lang="pi">Itivuttaka</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:itivuttaka')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/snp">
+                      <i lang="pi">Suttanipāta</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:suttanipata')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/vv">
+                      <i lang="pi">Vimānavatthu</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:vimanavatthu')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pv">
+                      <i lang="pi">Petavatthu</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:petavatthu')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/thag">
+                      <i lang="pi">Theragāthā</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:theragatha')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/thig">
+                      <i lang="pi">Therīgāthā</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:therigatha')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/tha-ap">
+                      <i lang="pi">Therāpadāna</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:therapadana')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/thi-ap">
+                      <i lang="pi">Therīapadāna</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:theriapadana')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/bv">
+                      <i lang="pi">Buddhavaṁsa</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:buddhavamsa')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/cp">
+                      <i lang="pi">Cariyāpiṭaka</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:cariyapitaka')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/ja">
+                      <i lang="pi">Jātaka</i>
+                    </a>
+                    <span set:html={t(userLanguage, 'khuddakanikaya:jataka')} />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/mnd">
+                      <i lang="pi">Mahāniddesa</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:mahaniddesa')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/cnd">
+                      <i lang="pi">Cūḷaniddesa</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:culaniddesa')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/ps">
+                      <i lang="pi">Paṭisambhidāmagga</i>
+                    </a>
+                    <span
+                      set:html={t(
+                        userLanguage,
+                        'khuddakanikaya:patisambhidamagga'
+                      )}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/ne">
+                      <i lang="pi">Netti</i>
+                    </a>
+                    <span set:html={t(userLanguage, 'khuddakanikaya:netti')} />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/pe">
+                      <i lang="pi">Peṭakopadesa</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:petakopadesa')}
+                    />
+                  </span>
+                </li>
+                <li>
+                  <span class="tipitaka-label">
+                    <a href="/mil">
+                      <i lang="pi">Milindapañha</i>
+                    </a>
+                    <span
+                      set:html={t(userLanguage, 'khuddakanikaya:milindapajnha')}
+                    />
+                  </span>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <details>
+            <summary>
+              <span class="sr-only" lang="pi">Abhidhammapiṭaka</span>
+            </summary>
+          </details>
+          <span class="tipitaka-label">
+            <a href="/pli-tv-ab">
+              <i lang="pi">Abhidhammapiṭaka</i>
+            </a>
+            <span set:html={t(userLanguage, 'palitipitaka:abhidhammaPitaka')} />
+          </span>
+          <ul>
+            <li>
+              <span class="tipitaka-label">
+                <a href="/ds">
+                  <i lang="pi">Dhammasaṅgaṇī</i>
+                </a>
+                <span
+                  set:html={t(userLanguage, 'abhidhammaPitaka:dhammasangani')}
+                />
+              </span>
+            </li>
+            <li>
+              <span class="tipitaka-label">
+                <a href="/vb">
+                  <i lang="pi">Vibhaṅga</i>
+                </a>
+                <span set:html={t(userLanguage, 'abhidhammaPitaka:vibhanga')} />
+              </span>
+            </li>
+            <li>
+              <span class="tipitaka-label">
+                <a href="/dt">
+                  <i lang="pi">Dhātukathā</i>
+                </a>
+                <span
+                  set:html={t(userLanguage, 'abhidhammaPitaka:dhatukatha')}
+                />
+              </span>
+            </li>
+            <li>
+              <span class="tipitaka-label">
+                <a href="/pp">
+                  <i lang="pi">Puggalapaññatti</i>
+                </a>
+                <span
+                  set:html={t(
+                    userLanguage,
+                    'abhidhammaPitaka:puggalapajnjnatti'
+                  )}
+                />
+              </span>
+            </li>
+            <li>
+              <span class="tipitaka-label">
+                <a href="/kv">
+                  <i lang="pi">Kathāvatthu</i>
+                </a>
+                <span
+                  set:html={t(userLanguage, 'abhidhammaPitaka:kathavatthu')}
+                />
+              </span>
+            </li>
+            <li>
+              <span class="tipitaka-label">
+                <a href="/ya">
+                  <i lang="pi">Yamaka</i>
+                </a>
+                <span set:html={t(userLanguage, 'abhidhammaPitaka:yamaka')} />
+              </span>
+            </li>
+            <li>
+              <span class="tipitaka-label">
+                <a href="/patthana">
+                  <i lang="pi">Paṭṭhāna</i>
+                </a>
+                <span set:html={t(userLanguage, 'abhidhammaPitaka:patthana')} />
+              </span>
             </li>
           </ul>
         </li>

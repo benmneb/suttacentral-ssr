@@ -1,46 +1,139 @@
 main {
-  li:has(h1) {
-    list-style: none;
-  }
-
   h1,
-  li a {
+  .tipitaka-tree a {
     display: inline-flex;
     flex-direction: column;
     text-decoration: none;
     overflow-wrap: anywhere;
   }
 
+  h1 > span {
+    font-size: 0.8em;
+  }
+
   i[lang]:not(h1 i) {
     font-size: larger;
   }
-  i[lang] + span {
+
+  i[lang] + span,
+  .tipitaka-label > a + span {
     color: var(--text-color-secondary);
   }
 
-  a:hover i[lang] + span {
+  a:hover i[lang] + span,
+  .tipitaka-label > a:hover + span {
     color: unset;
   }
+}
 
-  .horizontal .second {
-    padding-left: 0;
-    list-style: unset;
+.tipitaka-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  margin-bottom: 0.5rem;
+}
 
-    > li > a:first-of-type {
-      font-size: larger;
-      margin: 1rem 0;
-    }
+.tipitaka-tree {
+  margin: 0;
+  padding-inline-start: 1.25rem;
+
+  ul {
+    margin: 0;
+    padding-inline-start: 1.1rem;
   }
 
-  @media (max-width: 600px) {
-    .first {
-      padding-left: 0;
+  li::marker {
+    color: var(--text-color-secondary);
+  }
+
+  > li > .tipitaka-label {
+    margin-block: 0.5rem;
+    font-size: larger;
+  }
+
+  /* Without :has() the tree stays open as plain lists */
+  details {
+    display: none;
+  }
+}
+
+@supports selector(:has(a)) {
+  .tipitaka-tree {
+    /* Not none, which drops a list's semantics in Safari */
+    list-style: '\200B';
+
+    ul,
+    li {
+      list-style: '\200B';
     }
 
-    .third,
-    .fourth,
-    .fifth {
-      padding-left: 1.25rem;
+    ul:not(:has(details)) {
+      padding-inline-start: 0.4rem;
+    }
+
+    li:not(:has(> details)) {
+      margin-inline-start: 1rem;
+      list-style: disc;
+    }
+
+    /* The toggle where the marker was, on the label's baseline, as the link can't go inside it */
+    li:has(> details) {
+      display: grid;
+      grid-template-columns: 2rem minmax(0, 1fr);
+      align-items: baseline;
+      margin-inline-start: -1.5rem;
+
+      > ul {
+        grid-column: 2;
+      }
+    }
+
+    li:has(> details:not([open])) > ul {
+      display: none;
+    }
+
+    details {
+      display: block;
+    }
+
+    summary {
+      display: block;
+      padding-block: 0.25rem;
+      border-radius: var(--rounding);
+      text-align: center;
+      color: var(--text-color-secondary);
+      list-style: none;
+      cursor: pointer;
+
+      &:hover,
+      &:active {
+        background-color: var(--details-summary-hover-background);
+
+        @media (forced-colors: active) {
+          outline: 2px solid Highlight;
+          outline-offset: -2px;
+        }
+      }
+
+      /* Safari before 18.4 draws it even with no list-style */
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      &::before {
+        content: '▸';
+        content: '▸' / '';
+      }
+    }
+
+    details[open] > summary::before {
+      content: '▾';
+      content: '▾' / '';
+    }
+
+    > li > details > summary {
+      font-size: larger;
     }
   }
 }
