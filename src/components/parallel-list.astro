@@ -64,6 +64,7 @@ const notesLabel = t(userLanguage, 'viewoption:notes')
       const altVolpages = formatVolpages(to.alt_volpages)
       const refs = {
         acronym: titled ? label : undefined,
+        altAcronym: to.alt_acronym,
         language: languageOf(to),
         volpages: [volpages, altVolpages !== volpages && altVolpages].filter(
           Boolean

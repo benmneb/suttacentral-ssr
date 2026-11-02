@@ -30,7 +30,7 @@ hgroup:has(p) {
     color: var(--text-color-secondary);
   }
 
-  .volpages:not(.parallel-list *) {
+  :is(.alt-acronym, .volpages):not(.parallel-list *) {
     font-size: small;
   }
 }

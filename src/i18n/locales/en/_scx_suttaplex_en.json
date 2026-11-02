@@ -1,6 +1,8 @@
 {
+  "suttaplex:alternateNumber": "Alternate number",
   "suttaplex:fullParallelName": "Full parallel",
   "suttaplex:mentionName": "Mention",
   "suttaplex:resemblingParallelName": "Resembling parallel",
-  "suttaplex:retellingParallelName": "Retelling"
+  "suttaplex:retellingParallelName": "Retelling",
+  "suttaplex:taishoNumber": "Taishō number"
 }
