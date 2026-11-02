@@ -243,43 +243,48 @@ const userLanguage = Astro.locals.userLanguage
 </style>
 
 <script>
-  'use strict'
-
-  const popover = document.getElementById('search-modal')
+  const dialog = document.querySelector<HTMLDialogElement>('#search-modal')
   const input = document.querySelector<HTMLInputElement>('#search-input')
 
-  document.addEventListener('keydown', function (event) {
-    if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
-      event.preventDefault()
+  document.addEventListener('keydown', event => {
+    if (!(event.metaKey || event.ctrlKey) || event.key !== 'k') return
+    event.preventDefault()
 
-      if (popover) {
-        popover.togglePopover()
-      }
-
-      if (window.location.pathname.startsWith('/search') && input) {
-        input.focus()
-
-        // Run after the browser's own focus handling, to put cursor at the end, not the start
-        requestAnimationFrame(() => {
-          const { value } = input
-          // It only moves the caret to the end when the value actually changes...
-          input.value = ''
-          input.value = value
-        })
-      }
+    if (dialog) {
+      if (dialog.open) dialog.close()
+      else dialog.showModal()
+      return
     }
+    if (!input) return
+
+    input.focus()
+    // After the browser's own focus handling, which puts the caret at the start
+    requestAnimationFrame(() => {
+      const { value } = input
+      // The caret only moves to the end when the value changes
+      input.value = ''
+      input.value = value
+    })
   })
 
-  // For the Windows 7 + Chrome 109 clan
-  if (!('popover' in HTMLElement.prototype)) {
-    const searchButton = document.querySelector(
-      'button[popovertarget="search-modal"]'
-    )
-    if (searchButton) {
-      searchButton.addEventListener('click', event => {
-        event.preventDefault()
-        window.location.href = '/search'
+  if (dialog) {
+    // Invoker commands and closedby are too new for some browsers
+    if (!('commandForElement' in HTMLButtonElement.prototype)) {
+      document
+        .querySelectorAll('button[commandfor="search-modal"]')
+        .forEach(button =>
+          button.addEventListener('click', () => dialog.showModal())
+        )
+    }
+    if (!('closedBy' in HTMLDialogElement.prototype)) {
+      dialog.addEventListener('click', event => {
+        if (event.target === dialog) dialog.close()
       })
     }
+
+    // Safari's search field keeps Escape from the dialog, even once empty
+    dialog.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !input?.value) dialog.close()
+    })
   }
 </script>

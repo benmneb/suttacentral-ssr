@@ -1466,7 +1466,9 @@ const jsonLd = generateTextJsonLd(
         </li>
         <li class="aside-search">
           <button
-            popovertarget="search-modal"
+            type="button"
+            commandfor="search-modal"
+            command="show-modal"
             aria-label={t(userLanguage, 'search:search')}
             title={t(userLanguage, 'header:searchShortcut')}
           >

@@ -226,7 +226,7 @@ body {
     overflow-wrap: break-word;
   }
 
-  &:has([popover]#search-modal:popover-open) {
+  &:has(> dialog#search-modal[open]) {
     overflow: hidden;
   }
 }
@@ -249,23 +249,23 @@ body {
   }
 }
 
-[popover]#search-modal {
+dialog#search-modal {
+  color: var(--text-color);
+  border: none;
+  box-shadow: 0 0.3rem 1rem var(--shadow-color);
+  border-radius: var(--rounding);
+  background-color: var(--popover-background-color);
   max-width: calc(min(600px, 100vw) - 2rem);
+  width: 100%;
   padding: 0;
-}
 
-[popover]#search-modal::backdrop {
-  backdrop-filter: blur(3px);
-}
-
-/* Not inherited, as some set pointer-events back to auto */
-body:has(> #search-modal:popover-open) > :not(#search-modal) {
-  &,
-  & *,
-  & *::before,
-  & *::after {
-    pointer-events: none !important;
+  @media (forced-colors: active) {
+    border: 1px solid;
   }
+}
+
+dialog#search-modal::backdrop {
+  backdrop-filter: blur(3px);
 }
 
 ul li::marker,

@@ -123,9 +123,13 @@ const externalLinkAlt = JSON.stringify(
     <SiteFooter />
     {
       !pathname.startsWith('/search') && (
-        <section id="search-modal" popover>
+        <dialog
+          id="search-modal"
+          aria-label={t(userLanguage, 'search:search')}
+          closedby="any"
+        >
           <SearchForm />
-        </section>
+        </dialog>
       )
     }
   </body>

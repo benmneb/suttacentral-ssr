@@ -57,8 +57,9 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
       !pathname.startsWith('/search') && (
         <button
           class="icon-button"
-          type="submit"
-          popovertarget="search-modal"
+          type="button"
+          commandfor="search-modal"
+          command="show-modal"
           aria-label={t(userLanguage, 'search:search')}
           title={t(userLanguage, 'header:searchShortcut')}
         >
