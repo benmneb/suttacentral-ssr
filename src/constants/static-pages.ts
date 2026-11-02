@@ -19,7 +19,6 @@ export const staticPages = {
     { href: '/discourses-guide-sujato', label: 'interface:discourses' },
     { href: '/vinaya-guide-brahmali', label: 'interface:vinaya' },
     { href: '/abhidhamma-guide-sujato', label: 'interface:abhidhamma' },
-    { href: '/pali-tipitaka', label: 'interface:overview' },
   ],
   misc: [
     { href: '/introduction', label: 'interface:introduction' },
@@ -47,6 +46,7 @@ export const staticPages = {
     { href: '/similes', label: 'interface:similes' },
     { href: '/names', label: 'interface:names' },
     { href: '/terminology', label: 'interface:terminology' },
+    { href: '/pali-tipitaka', label: 'interface:overview' },
   ],
 } satisfies Record<string, StaticPage[]>
 
@@ -105,7 +105,7 @@ export const pageIcons: Record<string, string> = {
   '/discourses-guide-sujato': icon('documentText'),
   '/vinaya-guide-brahmali': icon('documentText'),
   '/abhidhamma-guide-sujato': icon('documentText'),
-  '/pali-tipitaka': icon('documentText'),
+  '/pali-tipitaka': icon('rectangleStack'),
   '/subjects': icon('tag'),
   '/similes': icon('sparkles'),
   '/names': icon('identification'),
