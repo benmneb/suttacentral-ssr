@@ -116,6 +116,14 @@ if (suttasData.segmented) {
   for (const texts of [bilaraData.root_text, bilaraData.translation_text]) {
     for (const key in texts) texts[key] = bilaraMarkup(texts[key])
   }
+  // A space left a link dead, as DN 16's "/sn47.14 /en/sujato" once was
+  for (const key in bilaraData.comment_text) {
+    bilaraData.comment_text[key] = bilaraData.comment_text[key].replace(
+      /href=(['"])([^'"]*\s[^'"]*)\1/g,
+      (_: string, quote: string, url: string) =>
+        `href=${quote}${url.replace(/\s+/g, '')}${quote}`
+    )
+  }
 
   // As .net has them: no whitespace (dn33:1.11.85), no id the text has (pdhp2)
   if (bilaraData.reference_text) {
