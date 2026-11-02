@@ -5,6 +5,7 @@ import { collectionURL } from '~/constants/edition'
 import Icon from '~/components/icon.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
+import { tidyMatter } from '~/utils/editions'
 import { toSentenceCase } from '~/utils/strings'
 
 const [uid, lang, author, matter] = Astro.params.book?.split('/') || []
@@ -97,7 +98,7 @@ if (matter) {
   ]
 
   // Replace SC URLs with relative
-  matterContent = matterContent.replaceAll(
+  matterContent = tidyMatter(matterContent).replaceAll(
     'href="https://suttacentral.net',
     'href="'
   )
@@ -266,7 +267,7 @@ if (matter) {
             </figure>
           </section>
 
-          <section>
+          <div>
             <table>
               <caption>Get this book</caption>
               <tbody>
@@ -364,7 +365,7 @@ if (matter) {
                 </tr>
               </tfoot>
             </table>
-          </section>
+          </div>
 
           <section>
             <h2>The {menuData.root_name}</h2>

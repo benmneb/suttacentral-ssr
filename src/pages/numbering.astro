@@ -7,6 +7,12 @@ import Layout from '~/layouts/Layout.astro'
 const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'numbering:1')
+
+// Each paragraph as code, as .net has them inside one code, which can't hold a paragraph
+const poExample = t(userLanguage, 'numbering:14')
+  .replace(/<\/?code>/g, '')
+  .replaceAll('<p>', '<p><code>')
+  .replaceAll('</p>', '</code></p>')
 ---
 
 <Layout title={title}>
@@ -28,7 +34,7 @@ const title = t(userLanguage, 'numbering:1')
       <p set:html={t(userLanguage, 'numbering:11')} />
       <p set:html={t(userLanguage, 'numbering:12')} />
       <p set:html={t(userLanguage, 'numbering:13')} />
-      <div class="pre" set:html={t(userLanguage, 'numbering:14')} />
+      <div class="pre" set:html={poExample} />
       <p set:html={t(userLanguage, 'numbering:15')} />
       <h2 set:html={t(userLanguage, 'numbering:16')} />
       <p set:html={t(userLanguage, 'numbering:17')} />

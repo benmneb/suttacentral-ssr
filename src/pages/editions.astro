@@ -65,7 +65,7 @@ function getBlurb(textUid: string): string | undefined {
       </hgroup>
 
       <header>
-        <section>
+        <div>
           <p>{t(userLanguage, 'publication:editions1')}</p>
           <p>{t(userLanguage, 'publication:editions2')}</p>
           <ul>
@@ -90,14 +90,14 @@ function getBlurb(textUid: string): string | undefined {
             <p>{t(userLanguage, 'publication:about3')}</p>
             <p>{t(userLanguage, 'publication:about4')}</p>
           </aside>
-        </section>
+        </div>
         <img
           src="https://suttacentral.net/img/publication-pages/editions-kn-wet.jpg"
           alt="Stack of SuttaCentral edition books"
         />
       </header>
 
-      <section>
+      <div>
         {
           editions.map((edition: any) => (
             <article>
@@ -124,7 +124,7 @@ function getBlurb(textUid: string): string | undefined {
             </article>
           ))
         }
-      </section>
+      </div>
     </article>
   </main>
 </Layout>

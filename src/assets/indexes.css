@@ -22,6 +22,10 @@ h2 {
 
 dt {
   font-weight: bold;
+}
+
+dt,
+.again {
   margin-top: 0.5rem;
 }
 
