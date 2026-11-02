@@ -2,6 +2,8 @@
 import '~/assets/define.css'
 import { dictionaryTitles } from '~/constants/define'
 import Icon from '~/components/icon.astro'
+import MiniMap from '~/components/mini-map.astro'
+import map from '~/constants/map.json'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 
@@ -31,6 +33,31 @@ if (term) {
     ).then(r => r.json()),
   ])
 }
+
+const places: Record<string, (typeof map.places)[keyof typeof map.places]> =
+  map.places
+
+// .net's map component, which a place's DPPN entry starts its first paragraph with, before a comma
+const MAP_TAG = /(<p>)?<sc-map view='([^']*)'><\/sc-map>,?/
+
+/** An entry's HTML either side of its map, with the place on the map, if it's there */
+function splitAtMap(html: string) {
+  const match = html.match(MAP_TAG)
+  if (!match) return { before: html }
+  const [tag, paragraph = '', view] = match
+  return {
+    before: html.slice(0, match.index),
+    place: places[view],
+    after: paragraph + html.slice(match.index! + tag.length),
+  }
+}
+
+const entries = dictionaryData.map(entry => ({
+  ...entry,
+  html:
+    entry.text &&
+    splitAtMap(entry.text.replaceAll('https://suttacentral.net', '')),
+}))
 ---
 
 <Layout
@@ -67,7 +94,7 @@ if (term) {
         !!dictionaryData.length && (
           <article>
             <dl>
-              {dictionaryData.map(entry => (
+              {entries.map(entry => (
                 <>
                   <dt>
                     {dictionaryTitles[entry.dictname] ?? entry.dictname}
@@ -85,13 +112,14 @@ if (term) {
                       <em>{entry.grammar}</em>
                     </dd>
                   )}
-                  {entry.text && (
-                    <dd
-                      set:html={entry.text.replaceAll(
-                        'https://suttacentral.net',
-                        ''
+                  {entry.html && (
+                    <dd>
+                      <Fragment set:html={entry.html.before} />
+                      {entry.html.place && <MiniMap place={entry.html.place} />}
+                      {entry.html.after && (
+                        <Fragment set:html={entry.html.after} />
                       )}
-                    />
+                    </dd>
                   )}
                   {entry.definition && (
                     <dd>
@@ -283,9 +311,3 @@ if (term) {
     display: block;
   }
 </style>
-
-<script>
-  if (document.querySelector('sc-map')) {
-    import('~/components/sc-map')
-  }
-</script>

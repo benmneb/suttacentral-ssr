@@ -1,0 +1,53 @@
+---
+import '~/assets/map-colours.css'
+import '~/assets/mini-map.css'
+import Icon from '~/components/icon.astro'
+import { t } from '~/i18n'
+
+interface Props {
+  /** A place from map.json's `places` */
+  place: {
+    id: string
+    icon: string
+    type: string
+    view: string
+    x: number
+    y: number
+  }
+}
+
+const { place } = Astro.props
+const userLanguage = Astro.locals.userLanguage
+const base = '/map/base.svg'
+const href = `/map#${place.id}`
+---
+
+<div class="mini-map">
+  <svg viewBox={place.view} aria-hidden="true">
+    <use href={`${base}#land`}></use>
+    <use href={`${base}#rivers`}></use>
+    <a href={href} tabindex="-1">
+      {
+        place.type === 'point' ? (
+          <use
+            href={`${base}#marker-${place.icon}`}
+            transform={`translate(${place.x} ${place.y})`}
+            x="-3"
+            y="-3"
+            width="6"
+            height="6"
+          />
+        ) : (
+          <use
+            class={place.type}
+            href={`${base}#${place.id.replace('place', 'shape')}`}
+          />
+        )
+      }
+    </a>
+  </svg>
+  <a class="with-icon" href={href}>
+    <Icon name="map" />
+    <span>{t(userLanguage, 'map:viewOnFullMap')}</span>
+  </a>
+</div>

@@ -17,5 +17,6 @@
   "map:zoom": "Zoom",
   "map:zoomHow": "double click/tap, or {ctrl}/{cmd} and scroll, or pinch, or {keys}",
   "map:pan": "Pan",
-  "map:panHow": "drag, or the arrows, or {keys}"
+  "map:panHow": "drag, or the arrows, or {keys}",
+  "map:viewOnFullMap": "View on full map"
 }
