@@ -24,7 +24,7 @@ hgroup:has(p) {
   }
 
   > span[title] {
-    white-space: nowrap;
+    display: inline-block;
   }
 }
 

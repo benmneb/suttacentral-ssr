@@ -100,8 +100,13 @@
   &:not(:has(#segmenter-others:not(:checked))) a.ref.others,
   &:not(:has(:is(#segmenter-main, #segmenter-pts, #segmenter-others):checked))
     :is(.reference > a, a.ref) {
+    /* Inline-block, so one never breaks across lines */
     &:not(:is(header, h2, h3, h4, h5, h6) .reference > a) {
       display: inline-block;
+    }
+
+    .reference > & ~ a {
+      margin-left: 0.1rem;
     }
   }
 }
@@ -589,10 +594,6 @@ main:has(.segment) > :first-child {
             align-items: end;
             gap: 0.2rem;
 
-            a.ref {
-              margin-right: 0;
-            }
-
             a.ref:target {
               order: -1;
             }
@@ -676,10 +677,6 @@ main:has(.segment) > :first-child {
             flex-direction: column;
             align-items: end;
             gap: 0.2rem;
-
-            a.ref {
-              margin-right: 0;
-            }
 
             a.ref:target {
               order: -1;
@@ -1369,6 +1366,17 @@ input[type='range'] {
 }
 
 @media only screen and (max-width: 600px) {
+  /* So what focus moves to isn't put under the menu bar */
+  :root:has(#positioner:checked) {
+    scroll-padding-block-end: 2.75rem;
+
+    @media (hover: none) {
+      &:has(#stop:enabled) {
+        scroll-padding-block-end: calc(2.75rem + var(--tts-controls-height));
+      }
+    }
+  }
+
   body:has(#positioner:checked) {
     padding-bottom: 2.75rem;
 
@@ -2458,6 +2466,7 @@ article,
         color: var(--fg-alt-4);
         font-size: 0.7rem;
         font-weight: initial;
+        margin-right: 0;
         box-shadow: none;
 
         &:hover {
@@ -2494,6 +2503,10 @@ article,
     @media (forced-colors: active) {
       outline: 2px solid Highlight;
       outline-offset: -2px;
+    }
+
+    .reference > & ~ a {
+      margin-left: 0.1rem;
     }
   }
 
