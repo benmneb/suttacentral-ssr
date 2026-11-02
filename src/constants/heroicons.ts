@@ -3,6 +3,7 @@ export type IconName =
   | 'academicCap'
   | 'archiveBoxArrowDown'
   | 'arrowLeft'
+  | 'arrowPath'
   | 'arrowRight'
   | 'arrowsRightLeft'
   | 'arrowsUpDown'

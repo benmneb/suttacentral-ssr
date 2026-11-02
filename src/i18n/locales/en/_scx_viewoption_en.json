@@ -66,6 +66,7 @@
   "viewoption:showParallelTexts": "Show parallel texts",
   "viewoption:showPublicationInfo": "Show publication information",
   "viewoption:showVariantReading": "Show variant reading for segment {ref}",
+  "viewoption:simplified": "Simplified",
   "viewoption:stop": "Stop",
   "viewoption:ttsNoVoices": "No voices found. Listen reads aloud with the text-to-speech voices installed on your device - add a voice in your system's speech settings, then reload the page.",
   "viewoption:ttsNoscript": "Please enable javascript to listen to this text. It reads aloud in your browser with your device's own voices, via the SpeechSynthesis API, and most of them work offline.",

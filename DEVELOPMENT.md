@@ -43,6 +43,16 @@ The script writes one entry per line, so an upstream edit to a definition shows 
 1. **JS only, with no markup per word.** The root text is plain text. A link to `/define/` on every word made up 40–48% of a long text's elements, only for readers without JS. Now the script wraps a segment's Pali words in spans as the pointer reaches it, finds a tapped Chinese character from the caret, and highlights it with the CSS Custom Highlight API. The text selects, drags and gets the OS dictionary (a hard press on macOS) like any other.
 1. **One tab stop per segment.** While the setting is on, each segment's root text takes focus, and Enter looks up its first word and moves focus into the popover. ← and → step through the words from there, and Tab leaves it for the segments either side.
 
+### Simplified Chinese
+
+Chinese root texts have a "Simplified" view setting, which swaps traditional characters and phrases for simplified ones in the browser, as OpenCC does. Its map, [`src/constants/hans.json`](src/constants/hans.json), is generated from OpenCC's dictionaries and committed:
+
+```sh
+pnpm build-hans
+```
+
+The script ([`scripts/build-hans.ts`](scripts/build-hans.ts)) pins an OpenCC release, so the map only changes when that does. It keeps only same-length swaps, so word lookup can read the traditional text at the same offsets, and the page imports the map only once the setting is on.
+
 ---
 
 ## Internationalisation

@@ -981,7 +981,12 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
   > li:has(#commenter-side),
 &:has(#rooter):not(:has(#rooter:checked))
   #views-menu
-  > li:is(:has(#rooter-side), :has(#rooter-first), :has(#rooter-look-up)),
+  > li:is(
+    :has(#rooter-side),
+    :has(#rooter-first),
+    :has(#rooter-look-up),
+    :has(#simplifier)
+  ),
 &:not(:has(#segmenter:checked))
   #views-menu
   > li:is(

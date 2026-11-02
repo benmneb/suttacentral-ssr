@@ -964,11 +964,13 @@ const jsonLd = generateTextJsonLd(
                       id="rooter"
                       {...fromUrl('rooter')}
                       checked={viewPrefs.rooter ?? false}
-                      aria-controls={
-                        availableLangs
-                          ? 'rooter-side rooter-first rooter-look-up'
-                          : 'rooter-side rooter-first'
-                      }
+                      aria-controls={[
+                        'rooter-side rooter-first',
+                        availableLangs && 'rooter-look-up',
+                        rootLang === 'lzh' && 'simplifier',
+                      ]
+                        .filter(Boolean)
+                        .join(' ')}
                     />
                   </li>
                   <li class="sub">
@@ -1033,6 +1035,32 @@ const jsonLd = generateTextJsonLd(
                       />
                     </li>
                   )}
+                  {rootLang === 'lzh' && (
+                    <li class="sub" hidden>
+                      <label for="simplifier">
+                        <span class="with-icon">
+                          <Icon name="arrowPath" />
+                          <span>
+                            {t(userLanguage, 'viewoption:simplified')}
+                            <span lang="zh-Hans">(简体)</span>
+                          </span>
+                        </span>
+                        <kbd
+                          aria-hidden="true"
+                          title={t(userLanguage, 'viewoption:hotkeyToggle', {
+                            key: 'C',
+                          })}
+                        >
+                          C
+                        </kbd>
+                      </label>
+                      <input
+                        type="checkbox"
+                        id="simplifier"
+                        checked={viewPrefs.simplifier ?? false}
+                      />
+                    </li>
+                  )}
                 </>
               )
             }
@@ -1063,6 +1091,34 @@ const jsonLd = generateTextJsonLd(
                     />
                   </li>
                 </>
+              )
+            }
+            {
+              isRootText && rootLang === 'lzh' && (
+                <li hidden>
+                  <label for="simplifier">
+                    <span class="with-icon">
+                      <Icon name="arrowPath" />
+                      <span>
+                        {t(userLanguage, 'viewoption:simplified')}
+                        <span lang="zh-Hans">(简体)</span>
+                      </span>
+                    </span>
+                    <kbd
+                      aria-hidden="true"
+                      title={t(userLanguage, 'viewoption:hotkeyToggle', {
+                        key: 'C',
+                      })}
+                    >
+                      C
+                    </kbd>
+                  </label>
+                  <input
+                    type="checkbox"
+                    id="simplifier"
+                    checked={viewPrefs.simplifier ?? false}
+                  />
+                </li>
               )
             }
             {
@@ -1785,6 +1841,7 @@ const jsonLd = generateTextJsonLd(
     'rooter-first',
     'rooter-look-up',
     'rooter-side',
+    'simplifier',
     'segmenter',
     'segmenter-main',
     'segmenter-pts',
@@ -1992,6 +2049,7 @@ const jsonLd = generateTextJsonLd(
     v: ['rooter', 'rooter-side'],
     f: ['rooter-first'],
     d: ['rooter-look-up'],
+    c: ['simplifier'],
     r: ['segmenter'],
     i: ['illustrator'],
     o: ['highlighter'],
@@ -2447,7 +2505,17 @@ const jsonLd = generateTextJsonLd(
 </script>
 
 <script>
+  import { setUpSimplify } from '~/utils/simplify'
+
+  const simplifier = document.getElementById('simplifier')
+  const main = document.querySelector('main')
+  if (simplifier instanceof HTMLInputElement && main)
+    setUpSimplify(simplifier, main)
+</script>
+
+<script>
   import { icon } from '~/constants/heroicons'
+  import { original } from '~/utils/simplify'
 
   /**
    * Word Lookup
@@ -2596,11 +2664,17 @@ const jsonLd = generateTextJsonLd(
       return rangeOf(node, start, end)
     }
 
-    /** What to ask the server about a word */
+    /**
+     * What to ask the server about a word. Chinese in traditional characters,
+     * as the dictionary has them, where they've been simplified
+     */
     function queryOf(word: Word) {
-      return word instanceof Range
-        ? contextOf(word).toString()
-        : cleanWord(word.textContent ?? '')
+      if (!(word instanceof Range)) return cleanWord(word.textContent ?? '')
+      const context = contextOf(word)
+      return original(context.startContainer as Text).slice(
+        context.startOffset,
+        context.endOffset
+      )
     }
 
     function caretAt(x: number, y: number) {
