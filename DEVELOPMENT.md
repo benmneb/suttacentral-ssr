@@ -55,6 +55,23 @@ The script ([`scripts/build-hans.ts`](scripts/build-hans.ts)) pins an OpenCC rel
 
 ---
 
+## Map
+
+`/map` and the mini maps on a place's `/define` page are SVG, drawn from [Natural Earth](https://www.naturalearthdata.com/)'s land, rivers and borders (public domain) and SuttaCentral's `/api/map_data`. Both are generated and committed:
+
+```sh
+pnpm build-map
+```
+
+The script ([`scripts/build-map.ts`](scripts/build-map.ts)) cuts the world to the places, thins it and projects it in Web Mercator, as .net's tiles are. It writes:
+
+- [`public/map/base.svg`](public/map/base.svg): the land, rivers, borders, marker symbols and each region's and journey's outline, which the pages `<use>`. They take their colours from the page's `--map-*` variables.
+- [`src/constants/map.json`](src/constants/map.json): the first view, present-day towns (named in the user's language where Natural Earth has it) and countries, the places in their layers, and each place by its `/define` word.
+
+It pins a Natural Earth release, so only SuttaCentral's places change between runs. Run it again when .net's map data changes.
+
+---
+
 ## Internationalisation
 
 UI translations are synced from SuttaCentral's static assets. Three types of files exist in `src/i18n/locales/`:
