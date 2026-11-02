@@ -220,11 +220,11 @@ if (matter) {
 <Layout title={title} breadcrumbs={crumbsData}>
   {
     matter ? (
-      <main>
+      <main id="main">
         <Fragment set:html={matterContent} />
       </main>
     ) : (
-      <main>
+      <main id="main">
         <article>
           <hgroup>
             <h1>{translationTitle}</h1>

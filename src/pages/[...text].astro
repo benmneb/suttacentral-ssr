@@ -1478,7 +1478,10 @@ const jsonLd = generateTextJsonLd(
       </ul>
     </fieldset>
   </aside>
-  <main style={hasParallels ? `--parallel-lanes: ${lanes.length}` : undefined}>
+  <main
+    id="main"
+    style={hasParallels ? `--parallel-lanes: ${lanes.length}` : undefined}
+  >
     <Fragment set:html={articleHTML} />
     <Fragment set:html={commentsHtml} />
 
