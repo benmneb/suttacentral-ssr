@@ -156,25 +156,27 @@ body main:has(article) {
           margin: 0;
         }
 
-        a[rel='license'] {
+        .license {
           display: flex;
           align-items: flex-start;
           gap: 1rem;
           padding: 1rem;
           background-color: var(--background-color-secondary);
           border-radius: var(--rounding);
-          text-decoration: none;
-          color: inherit;
-          margin-top: 0.5rem;
+          margin-top: 1rem;
 
           img {
             width: 80px;
             flex-shrink: 0;
           }
 
-          span {
-            font-size: 0.9rem;
+          p {
+            font-size: small;
             line-height: 1.5;
+          }
+
+          a[rel='license'] {
+            font-weight: bold;
           }
         }
       }

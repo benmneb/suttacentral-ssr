@@ -408,16 +408,17 @@ if (matter) {
               <dt>License</dt>
               <dd>
                 <p>{publication.license_statement}</p>
-                <a rel="license" href={publication.license_url}>
+                <div class="license">
                   <img
                     src="https://suttacentral.net/img/publication-pages/cc-zero.svg"
-                    alt="CC0"
+                    alt=""
                   />
-                  <span>
-                    <strong>
-                      {publication.license_type} (
-                      {publication.license_abbreviation})
-                    </strong>
+                  <p>
+                    <a
+                      rel="license"
+                      href={publication.license_url}
+                      set:text={`${publication.license_type} (${publication.license_abbreviation})`}
+                    />
                     <br />
                     To the extent possible under law, {
                       publication.creator_name
@@ -425,8 +426,8 @@ if (matter) {
                     has waived all copyright and related or neighboring rights
                     to {translationTitle}. This work is published from
                     Australia.
-                  </span>
-                </a>
+                  </p>
+                </div>
               </dd>
             </dl>
           </section>

@@ -38,7 +38,9 @@ function redirectTarget(path: string): string | null {
     s.replace(/^pi-/, 'pli-').replace(/^skt-/, 'san-')
   )
 
+  // Not edition paths, as a matter page like kd-1-introduction has a digit after the language
   const isLegacyLang =
+    segments[0] !== 'edition' &&
     (LANG_THEN_UID.test(path) || UID_THEN_LANG.test(path)) &&
     !UID_LANG_AUTHOR.test(path)
 
