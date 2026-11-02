@@ -16,12 +16,16 @@ const root = Astro.props.root?.trim()
 const translation = Astro.props.translation?.trim()
 const isPair =
   !!root && !!translation && normalise(root) !== normalise(translation)
+// Some, eg lzh-sarv-bi-pm-pc170, have the English as their root name too
+const isRoot = !!root && (isPair || !translation)
+const name = softHyphenateTitle((isRoot ? root : translation) || '')
 // By script, as romanised titles like Madhyamāgama are tagged lzh too
-const isUpright =
-  !!root &&
+const upright =
   /[\p{Script=Han}\p{Script=Hangul}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Tibetan}]/u.test(
-    root
+    name
   )
+    ? 'upright'
+    : undefined
 ---
 
 {
@@ -29,21 +33,33 @@ const isUpright =
     <span class="root-title">
       {href ? (
         <a href={href}>
-          <dfn lang={lang} class={isUpright ? 'upright' : undefined}>
-            {softHyphenateTitle(root)}
-          </dfn>
+          <i lang={lang} class={upright}>
+            {name}
+          </i>
         </a>
       ) : (
-        <dfn lang={lang} class={isUpright ? 'upright' : undefined}>
-          {softHyphenateTitle(root)}
-        </dfn>
+        <i lang={lang} class={upright}>
+          {name}
+        </i>
       )}
       {/* The space keeps the two apart in reader mode and copied text */}
       <span>{` ${translation}`}</span>
     </span>
+  ) : isRoot ? (
+    href ? (
+      <a href={href}>
+        <i lang={lang} class={upright}>
+          {name}
+        </i>
+      </a>
+    ) : (
+      <i lang={lang} class={upright}>
+        {name}
+      </i>
+    )
   ) : href ? (
-    <a href={href}>{softHyphenateTitle(translation || root || '')}</a>
+    <a href={href}>{name}</a>
   ) : (
-    softHyphenateTitle(translation || root || '')
+    name
   )
 }

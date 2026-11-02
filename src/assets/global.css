@@ -310,6 +310,6 @@ input[type='checkbox'] {
   }
 }
 
-.root-title .upright {
+i.upright {
   font-style: normal;
 }

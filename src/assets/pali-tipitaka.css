@@ -11,14 +11,14 @@ main {
     overflow-wrap: anywhere;
   }
 
-  dfn:not(h1 dfn) {
+  i[lang]:not(h1 i) {
     font-size: larger;
   }
-  dfn + span {
+  i[lang] + span {
     color: var(--text-color-secondary);
   }
 
-  a:hover dfn + span {
+  a:hover i[lang] + span {
     color: unset;
   }
 
