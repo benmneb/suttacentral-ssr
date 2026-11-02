@@ -4,229 +4,174 @@ import { languageName } from '~/utils/strings'
 
 const { entry } = Astro.props
 const data = entry[0]
+const edition = data.edition?.[0] ?? {}
+const license = data.license ?? {}
 
 const userLanguage = Astro.locals.userLanguage
+
+type Row = {
+  label: string
+  value: any
+  property?: string
+  type?: 'link' | 'date'
+}
+
+// The API gives false for a translation language a root text has none of
+const filled = (value: unknown) =>
+  value != null && value !== false && String(value).trim() !== ''
+
+const sections = (
+  [
+    [
+      'publication:basicTranslationDetails',
+      [
+        {
+          label: 'publication:translationTitle',
+          value: data.translation_title,
+          property: 'dc:title',
+        },
+        {
+          label: 'publication:translationSubTitle',
+          value: data.translation_subtitle,
+          property: 'dc:title',
+        },
+        {
+          label: 'publication:translator',
+          value: data.author_name,
+          property: 'dc:creator',
+        },
+        {
+          label: 'publication:collaborator',
+          value: data.collaborator,
+          property: 'dc:creator',
+        },
+      ],
+    ],
+    [
+      'publication:languageInformation',
+      [
+        {
+          label: 'publication:rootTitle',
+          value: data.root_title,
+          property: 'dc:title',
+        },
+        {
+          label: 'publication:translationLanguage',
+          value: languageName(data.translation_lang_name),
+          property: 'dc:language',
+        },
+        {
+          label: 'publication:rootLanguage',
+          value: languageName(data.root_lang_name),
+        },
+      ],
+    ],
+    [
+      'publication:descriptionAndProcess',
+      [
+        {
+          label: 'publication:translationDescription',
+          value: data.translation_description,
+          property: 'dc:description',
+        },
+        {
+          label: 'publication:translationProcess',
+          value: data.translation_process,
+          property: 'dc:description',
+        },
+        {
+          label: 'publication:publicationStatus',
+          value: data.publication_status,
+        },
+      ],
+    ],
+    [
+      'publication:publicationDetails',
+      [
+        { label: 'publication:edition', value: edition.edition_number },
+        {
+          label: 'publication:publicationDate',
+          value: edition.publication_date,
+          property: 'dc:date',
+          type: 'date',
+        },
+        {
+          label: 'publication:publisher',
+          value: edition.publisher,
+          property: 'dc:publisher',
+        },
+        {
+          label: 'publication:publicationType',
+          value: edition.publication_type,
+          property: 'dc:format',
+        },
+      ],
+    ],
+    [
+      'publication:linksAndIdentifiers',
+      [
+        { label: 'publication:url', value: edition.edition_url, type: 'link' },
+        { label: 'publication:source', value: data.source_url, type: 'link' },
+        {
+          label: 'publication:suttaCentralPublicationNumber',
+          value: data._key,
+          property: 'dc:identifier',
+        },
+      ],
+    ],
+  ] as [string, Row[]][]
+)
+  .map(([heading, rows]) => [heading, rows.filter(row => filled(row.value))])
+  .filter(([, rows]) => rows.length) as [string, Row[]][]
 ---
 
 <article id="info" popover>
-  <section role="main" aria-labelledby="publication-info-heading">
-    <h1 id="publication-info-heading">
-      {t(userLanguage, 'publication:title')}
-    </h1>
+  <h1>{t(userLanguage, 'publication:title')}</h1>
 
-    <article
-      about=`${ data.source_url }`
-      role="article"
-      aria-labelledby="translation-info-heading"
-    >
-      <h2 id="translation-info-heading" class="sr-only">
-        {t(userLanguage, 'publication:translationInformation')}
-      </h2>
-
-      <section aria-labelledby="basic-translation-info">
-        <h3 id="basic-translation-info" class="sr-only">
-          {t(userLanguage, 'publication:basicTranslationDetails')}
-        </h3>
-        <dl>
-          <dt>{t(userLanguage, 'publication:translationTitle')}</dt>
-          <dd
-            property="dc:title"
-            aria-label={t(userLanguage, 'publication:translationTitle')}
-          >
-            {data.translation_title}
-          </dd>
-          <dt>{t(userLanguage, 'publication:translationSubTitle')}</dt>
-          <dd
-            property="dc:title"
-            aria-label={t(userLanguage, 'publication:translationSubTitle')}
-          >
-            {data.translation_subtitle}
-          </dd>
-          {
-            !!data.author_name && (
+  <div about={data.source_url || undefined}>
+    {
+      sections.map(([heading, rows]) => (
+        <section>
+          <h2 class="sr-only">{t(userLanguage, heading)}</h2>
+          <dl>
+            {rows.map(({ label, value, property, type }) => (
               <>
-                <dt>{t(userLanguage, 'publication:translator')}</dt>
-                <dd
-                  property="dc:creator"
-                  aria-label={t(userLanguage, 'publication:translator')}
-                >
-                  {data.author_name}
-                </dd>
-              </>
-            )
-          }
-          {
-            !!data.collaborator && (
-              <>
-                <dt>{t(userLanguage, 'publication:collaborator')}</dt>
-                <dd
-                  property="dc:creator"
-                  aria-label={t(userLanguage, 'publication:collaborator')}
-                >
-                  {data.collaborator}
-                </dd>
-              </>
-            )
-          }
-        </dl>
-      </section>
-
-      <section aria-labelledby="language-info">
-        <h3 id="language-info" class="sr-only">
-          {t(userLanguage, 'publication:languageInformation')}
-        </h3>
-        <dl>
-          <dt>{t(userLanguage, 'publication:rootTitle')}</dt>
-          <dd
-            property="dc:title"
-            aria-label={t(userLanguage, 'publication:rootTitle')}
-          >
-            {data.root_title}
-          </dd>
-          {
-            !!data.translation_lang_name && (
-              <>
-                <dt>{t(userLanguage, 'publication:translationLanguage')}</dt>
-                <dd
-                  property="dc:language"
-                  aria-label={t(
-                    userLanguage,
-                    'publication:translationLanguage'
+                <dt>{t(userLanguage, label)}</dt>
+                <dd property={property}>
+                  {type === 'link' ? (
+                    <a href={value}>{value}</a>
+                  ) : type === 'date' ? (
+                    <time datetime={value}>{value}</time>
+                  ) : (
+                    value
                   )}
-                >
-                  {languageName(data.translation_lang_name)}
                 </dd>
               </>
-            )
-          }
-          <dt>{t(userLanguage, 'publication:rootLanguage')}</dt>
-          <dd aria-label={t(userLanguage, 'publication:rootLanguage')}>
-            {languageName(data.root_lang_name)}
-          </dd>
-        </dl>
-      </section>
+            ))}
+          </dl>
+        </section>
+      ))
+    }
+  </div>
 
-      <section aria-labelledby="description-info">
-        <h3 id="description-info" class="sr-only">
-          {t(userLanguage, 'publication:descriptionAndProcess')}
-        </h3>
-        <dl>
-          <dt>{t(userLanguage, 'publication:translationDescription')}</dt>
-          <dd
-            property="dc:description"
-            aria-label={t(userLanguage, 'publication:translationDescription')}
-          >
-            {data.translation_description}
-          </dd>
-          <dt>{t(userLanguage, 'publication:translationProcess')}</dt>
-          <dd
-            property="dc:description"
-            aria-label={t(userLanguage, 'publication:translationProcess')}
-          >
-            {data.translation_process}
-          </dd>
-          <dt>{t(userLanguage, 'publication:publicationStatus')}</dt>
-          <dd aria-label={t(userLanguage, 'publication:publicationStatus')}>
-            {data.publication_status}
-          </dd>
-        </dl>
+  {
+    [license.license_type, license.license_url, license.license_statement].some(
+      filled
+    ) && (
+      <section>
+        <h2>{t(userLanguage, 'publication:license')}</h2>
+        {filled(license.license_type) && (
+          <p property="dc:rights">{license.license_type}</p>
+        )}
+        {filled(license.license_url) && (
+          <p>
+            <a href={license.license_url}>{license.license_url}</a>
+          </p>
+        )}
+        {filled(license.license_statement) && (
+          <p>{license.license_statement}</p>
+        )}
       </section>
-
-      <section aria-labelledby="publication-details">
-        <h3 id="publication-details" class="sr-only">
-          {t(userLanguage, 'publication:publicationDetails')}
-        </h3>
-        <dl>
-          <dt>{t(userLanguage, 'publication:edition')}</dt>
-          <dd aria-label={t(userLanguage, 'publication:edition')}>
-            {data.edition[0].edition_number}
-          </dd>
-          <dt>{t(userLanguage, 'publication:publicationDate')}</dt>
-          <dd
-            property="dc:date"
-            aria-label={t(userLanguage, 'publication:publicationDate')}
-          >
-            <time datetime=`${ data.edition[0].publication_date }`>
-              {data.edition[0].publication_date}
-            </time>
-          </dd>
-          <dt>{t(userLanguage, 'publication:publisher')}</dt>
-          <dd
-            property="dc:publisher"
-            aria-label={t(userLanguage, 'publication:publisher')}
-          >
-            {data.edition[0].publisher}
-          </dd>
-          <dt>{t(userLanguage, 'publication:publicationType')}</dt>
-          <dd
-            property="dc:format"
-            aria-label={t(userLanguage, 'publication:publicationType')}
-          >
-            {data.edition[0].publication_type}
-          </dd>
-        </dl>
-      </section>
-
-      <section aria-labelledby="links-identifiers">
-        <h3 id="links-identifiers" class="sr-only">
-          {t(userLanguage, 'publication:linksAndIdentifiers')}
-        </h3>
-        <dl>
-          <dt>{t(userLanguage, 'publication:url')}</dt>
-          <dd>
-            <a
-              href=`${ data.edition[0].edition_url }`
-              aria-label={t(userLanguage, 'publication:url')}
-            >
-              {data.edition[0].edition_url}
-            </a>
-          </dd>
-          <dt>{t(userLanguage, 'publication:source')}</dt>
-          <dd>
-            <a
-              href=`${ data.source_url }`
-              aria-label={t(userLanguage, 'publication:source')}
-            >
-              {data.source_url}
-            </a>
-          </dd>
-          <dt>
-            {t(userLanguage, 'publication:suttaCentralPublicationNumber')}
-          </dt>
-          <dd
-            property="dc:identifier"
-            aria-label={t(
-              userLanguage,
-              'publication:suttaCentralPublicationNumber'
-            )}
-          >
-            {data._key}
-          </dd>
-        </dl>
-      </section>
-    </article>
-
-    <section aria-labelledby="license-info">
-      <h2 id="license-info">{t(userLanguage, 'publication:license')}</h2>
-      <div role="group" aria-labelledby="license-info">
-        <p
-          property="dc:rights"
-          aria-label={t(userLanguage, 'publication:license')}
-        >
-          {data.license.license_type}
-        </p>
-        <p>
-          <a
-            href=`${ data.license.license_url }`
-            aria-label={t(userLanguage, 'publication:license')}
-          >
-            {data.license.license_url}
-          </a>
-        </p>
-        <p aria-label={t(userLanguage, 'publication:license')}>
-          {data.license.license_statement}
-        </p>
-      </div>
-    </section>
-  </section>
+    )
+  }
 </article>

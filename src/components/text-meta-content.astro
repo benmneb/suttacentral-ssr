@@ -105,6 +105,9 @@ function printIconsHTML(translation) {
             <span class="volpages">
               <span aria-hidden="true">∙</span>
               <span title={t(userLanguage, 'suttaplex:volumeAndPage')}>
+                <span class="sr-only">
+                  {`${t(userLanguage, 'suttaplex:volumeAndPage')}: `}
+                </span>
                 <Icon name="bookOpen" />
                 {v}
               </span>
@@ -115,7 +118,7 @@ function printIconsHTML(translation) {
     }
   </hgroup>
   {!!entry.blurb && <p set:html={entry.blurb} />}
-  <section>
+  <div>
     {
       !!entry.translations.length && (
         <>
@@ -186,5 +189,5 @@ function printIconsHTML(translation) {
         />
       )
     }
-  </section>
+  </div>
 </article>

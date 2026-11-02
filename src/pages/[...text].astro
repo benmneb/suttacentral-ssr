@@ -262,6 +262,12 @@ if (isRangeSutta) {
 const isSegmented = !!suttasData.segmented
 const isRootText = language === suttaplexData[0].root_lang
 
+// A legacy text's publication info is its own last <footer>
+const hasLegacyInfo =
+  !isSegmented && suttasData.translation.text.includes('<footer')
+const hasPublicationInfo = !hasLegacyInfo && !!publicationData?.[0]
+const hasInfo = hasLegacyInfo || hasPublicationInfo
+
 const rootLang = suttasData.suttaplex?.root_lang
 const availableLangs = rootLang ? AVAILABLE_LOOKUPS[rootLang] : null
 const lookupTargetLang = availableLangs?.includes(userLanguage)
@@ -674,7 +680,7 @@ ${renderReferences(key, ref)}
           comment
             ? `
         <button class="variant-btn" popovertarget="comment-${key}" style="--anchor: --note${commentNote}" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">*</button>
-        <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}" hidden>
+        <span class="inline-comment" hidden>
           ${t(userLanguage, 'viewoption:variant')} ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
         </span>
         `
@@ -732,8 +738,8 @@ ${renderReferences(key, ref)}
           comment
             ? `
         <button popovertarget="comment-${key}" style="--anchor: --note${commentNote}" aria-label="${t(userLanguage, 'viewoption:showFootnote', { author: suttasData.translation.author, ref: key })}">*</button>
-        <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showFootnote', { author: suttasData.translation.author, ref: key })}" hidden>
-          ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
+        <span class="inline-comment" hidden>
+          <span class="sr-only">${t(userLanguage, 'viewoption:noteLabel')}</span> ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
         </span>
         `
             : ''
@@ -751,7 +757,7 @@ ${renderReferences(key, ref)}
           variant
             ? `
       <button class="variant-btn" popovertarget="variant-${key}" style="--anchor: --note${variantNote}" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">*</button>
-      <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}" hidden>
+      <span class="inline-comment" hidden>
         ${t(userLanguage, 'viewoption:variant')} ${variant.replace(/https:\/\/suttacentral\.net/g, '')}
       </span>
       `
@@ -809,7 +815,9 @@ function getLegacyHTML() {
   const footerParts = htmlContent.split('<footer')
   const lastFooterPart = footerParts[footerParts.length - 1]
   const footerContent = lastFooterPart.split('</footer>')[0]
-  const originalFooter = '<footer' + footerContent + '</footer>'
+  const originalFooter = hasLegacyInfo
+    ? '<footer' + footerContent + '</footer>'
+    : ''
   const htmlWithoutFooter = htmlContent.replace(originalFooter, '')
   const modifiedFooter = originalFooter
     .replace('<footer', '<article id="info" popover')
@@ -948,18 +956,22 @@ const jsonLd = generateTextJsonLd(
             </li>
           )
         }
-        <li>
-          <button
-            popovertarget="info"
-            tabindex="0"
-            aria-controls="info"
-            aria-label={t(userLanguage, 'viewoption:showPublicationInfo')}
-            title={t(userLanguage, 'viewoption:showPublicationInfo')}
-            id="info-button"
-          >
-            <Icon name="informationCircle" />
-          </button>
-        </li>
+        {
+          hasInfo && (
+            <li>
+              <button
+                popovertarget="info"
+                tabindex="0"
+                aria-controls="info"
+                aria-label={t(userLanguage, 'viewoption:showPublicationInfo')}
+                title={t(userLanguage, 'viewoption:showPublicationInfo')}
+                id="info-button"
+              >
+                <Icon name="informationCircle" />
+              </button>
+            </li>
+          )
+        }
         <li>
           <button
             popovertarget="views-menu"
@@ -1711,11 +1723,7 @@ const jsonLd = generateTextJsonLd(
       )
     }
 
-    {
-      !!publicationData && !publicationData.error && (
-        <PublicationInfo entry={publicationData} />
-      )
-    }
+    {hasPublicationInfo && <PublicationInfo entry={publicationData} />}
 
     <article id="parallels" popover>
       <TextMetaContent

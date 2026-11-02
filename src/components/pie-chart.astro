@@ -10,7 +10,7 @@ const len = 2 * Math.PI * radius
 const progress = ((100 - safePercent) / 100) * len
 ---
 
-<svg viewBox="0 0 220 220">
+<svg viewBox="0 0 220 220" role="img" aria-label={`${safePercent.toFixed(1)}%`}>
   <circle
     r={radius}
     cx="110"
