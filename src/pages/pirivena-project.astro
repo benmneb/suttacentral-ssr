@@ -6,10 +6,9 @@ import Layout from '~/layouts/Layout.astro'
 const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'pirivenaPage:title')
-const crumbsData = [{ title }]
 ---
 
-<Layout title={title} breadcrumbs={crumbsData}>
+<Layout title={title}>
   <main>
     <article>
       <h1>{t(userLanguage, 'pirivenaPage:title')}</h1>

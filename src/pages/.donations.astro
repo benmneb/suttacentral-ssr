@@ -5,10 +5,9 @@ import Layout from '~/layouts/Layout.astro'
 const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'interface:donationsTitle')
-const crumbsData = [{ title }]
 ---
 
-<Layout title={title} breadcrumbs={crumbsData}>
+<Layout title={title}>
   <main>
     <article>
       <h1 set:html={t(userLanguage, 'donations:1')} />

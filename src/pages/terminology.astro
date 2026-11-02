@@ -7,10 +7,9 @@ import Layout from '~/layouts/Layout.astro'
 const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'terminology:1')
-const crumbsData = [{ title }]
 ---
 
-<Layout title={title} breadcrumbs={crumbsData}>
+<Layout title={title}>
   <RelatedPages category="indexes" />
   <main>
     <article>

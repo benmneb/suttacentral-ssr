@@ -6,10 +6,9 @@ import Layout from '~/layouts/Layout.astro'
 const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'search:searchOptions')
-const crumbsData = [{ title }]
 ---
 
-<Layout title={title} breadcrumbs={crumbsData}>
+<Layout title={title}>
   <main>
     <article>
       <SearchForm />

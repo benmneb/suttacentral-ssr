@@ -47,7 +47,6 @@ const editions = webEditionInfoList.sort(
 )
 
 const title = t(userLanguage, 'publication:editionsToolbarTitle')
-const crumbsData = [{ title }]
 
 function getBlurb(textUid: string): string | undefined {
   return blurbs.find((x: { uid: string; blurb: string }) => x.uid === textUid)
@@ -55,7 +54,7 @@ function getBlurb(textUid: string): string | undefined {
 }
 ---
 
-<Layout title={title} breadcrumbs={crumbsData}>
+<Layout title={title}>
   <main>
     <article>
       <hgroup>

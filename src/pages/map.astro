@@ -10,7 +10,6 @@ import { icon } from '~/constants/icons'
 const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'map:1')
-const crumbsData = [{ title }]
 
 let features: any[] = []
 let layerNames: string[] = []
@@ -51,7 +50,7 @@ function getLayerLabel(layerName: string): string {
 }
 ---
 
-<Layout title={title} breadcrumbs={crumbsData}>
+<Layout title={title}>
   <RelatedPages category="misc" />
   <main>
     <article>
