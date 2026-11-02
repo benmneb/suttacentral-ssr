@@ -21,6 +21,25 @@ export function normalise(str: string): string {
   return str.trim().toLowerCase()
 }
 
+/**
+ * A segment's text with bilara's own tags as HTML: <supplied> and <unclear> as
+ * the classes legacy texts use, and <j>, which starts a verse's next
+ * half-line, as a span closed at the segment's end
+ */
+export function bilaraMarkup(text: string): string {
+  if (!text?.includes('<')) return text
+  let joins = 0
+  const html = text
+    .replace(/<j>/g, () => {
+      joins++
+      return '<span class="j">'
+    })
+    .replace(/<(\/?)(supplied|unclear)>/g, (_, close, tag) =>
+      close ? '</span>' : `<span class="${tag}">`
+    )
+  return html + '</span>'.repeat(joins)
+}
+
 /** Lets a long Pali compound title wrap before its suffix, eg "-sutta" */
 export function softHyphenateTitle(title: string): string {
   return title.replace(

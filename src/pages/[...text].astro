@@ -21,6 +21,7 @@ import {
   parseParallelKey,
 } from '~/utils/parallels'
 import {
+  bilaraMarkup,
   parseUidNumbers,
   rangeUidToAcronym,
   softHyphenateTitle,
@@ -110,6 +111,10 @@ if (suttasData.segmented) {
     Astro.response.status = 404
     Astro.response.statusText = 'Bilara data not found'
     return Astro.rewrite('/404')
+  }
+
+  for (const texts of [bilaraData.root_text, bilaraData.translation_text]) {
+    for (const key in texts) texts[key] = bilaraMarkup(texts[key])
   }
 
   // The bilara keys are what can actually be isolated. Usually that's one
@@ -287,8 +292,14 @@ const HIGHLIGHT_MARKUP = new RegExp(
   ].join('|')})['"\\s]|data-(?:counter|doxy|direction)=`
 )
 const hasHighlights = isSegmented
-  ? Object.values(bilaraData.html_text as Record<string, string>).some(html =>
-      HIGHLIGHT_MARKUP.test(html)
+  ? [
+      bilaraData.html_text,
+      bilaraData.root_text,
+      bilaraData.translation_text,
+    ].some(texts =>
+      Object.values((texts ?? {}) as Record<string, string>).some(html =>
+        HIGHLIGHT_MARKUP.test(html)
+      )
     )
   : HIGHLIGHT_MARKUP.test(suttasData.translation?.text ?? '')
 
