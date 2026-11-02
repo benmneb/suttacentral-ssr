@@ -5,15 +5,17 @@ import { t } from '~/i18n'
 
 interface Props {
   acronym?: string
+  language?: string
   volpages?: string[] // formatted already
   userLanguage: string
 }
 
-const { acronym, volpages = [], userLanguage } = Astro.props
+const { acronym, language, volpages = [], userLanguage } = Astro.props
 const pageTitle = t(userLanguage, 'suttaplex:volumeAndPage')
 
 const parts: { text: string; title?: string; className?: string }[] = [
   { text: acronym?.trim() ?? '' },
+  { text: language ?? '' },
   ...volpages.map(text => ({ text, title: pageTitle, className: 'volpages' })),
 ].filter(part => part.text)
 

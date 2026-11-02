@@ -6,7 +6,7 @@ import { parallelHref, parallelKeyLabel } from '~/utils/parallels'
 interface Props {
   id?: string
   segments: [string, any[]][] // from parallelSegments
-  entry: { uid: string; acronym?: string } // the text the keys are from
+  entry: { uid: string; acronym?: string; root_lang?: string } // the text the keys are from
   onScreenUid: string // what a key spanning two suttas points at instead
   rootTrans?: { lang: string; author_uid: string }
   userLanguage: string
@@ -30,7 +30,11 @@ const label = (segmentKey: string) => parallelKeyLabel(segmentKey, entry)
           ) : (
             <span>{label(segmentKey)}</span>
           )}
-          <ParallelList parallels={parallels} userLanguage={userLanguage} />
+          <ParallelList
+            parallels={parallels}
+            rootLang={entry.root_lang}
+            userLanguage={userLanguage}
+          />
         </li>
       ))
     ) : (

@@ -19,6 +19,7 @@ import {
 import {
   acronymOf,
   PARALLEL_TYPES,
+  parallelType,
   parallelTypeTitle,
   parseParallelKey,
 } from '~/utils/parallels'
@@ -473,7 +474,7 @@ for (const [key, parallels] of Object.entries(parallelsData ?? {})) {
     lane: 0,
   }
   for (const parallel of parallels) {
-    const type = parallel.to?.type ?? ''
+    const type = parallelType(parallel)
     const group = run.groups.find(([t]) => t === type)
     if (group) group[1].push(parallel)
     else run.groups.push([type, [parallel]])
@@ -1708,6 +1709,7 @@ const jsonLd = generateTextJsonLd(
                       <h2>{parallelTypeTitle(userLanguage, type)}</h2>
                       <ParallelList
                         parallels={parallels}
+                        rootLang={suttaplexData[0].root_lang}
                         userLanguage={userLanguage}
                         typeTitles={false}
                       />

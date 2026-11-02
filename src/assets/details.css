@@ -79,6 +79,38 @@ details {
   > p {
     margin: 0;
   }
+
+  .parallel-notes {
+    > summary {
+      display: block;
+      padding: 0;
+      margin: 0;
+
+      /* Safari before 18.4 draws it even on a block summary */
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      &:hover,
+      &:active {
+        background-color: transparent;
+      }
+
+      > .icon {
+        margin-inline-start: 0.25em;
+        color: var(--text-color-secondary);
+      }
+
+      &:hover > .icon {
+        color: var(--text-color);
+      }
+    }
+
+    > p {
+      margin: 0.3rem 0;
+      font-size: small;
+    }
+  }
 }
 .parallel-list > li[title] {
   cursor: help;

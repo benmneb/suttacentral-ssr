@@ -6,16 +6,6 @@ import {
 } from '~/utils/strings'
 
 /**
- * "dn1#1.9.1" -> "#1.9.1", "dn1" -> ""
- */
-export function getHashFragment(key: string): string {
-  if (key.includes('#')) {
-    return '#' + key.split('#')[1]
-  }
-  return ''
-}
-
-/**
  * A key of /api/parallels, split into the text it names and the part of it
  *
  * "dn1" -> { base: "dn1" }
@@ -40,6 +30,12 @@ export function parseParallelKey(key: string): {
       ? part.split('-')
       : [part]
   return { base, start, end }
+}
+
+/** Where a key's passage starts on its page, eg "dn16#3.1.1-#4.23.1" -> "#3.1.1" */
+export function parallelAnchor(key: string): string {
+  const { start } = parseParallelKey(key)
+  return start ? `#${start}` : ''
 }
 
 /** A passage id without its edition's letters, eg "wal1.1" -> "1.1" */
@@ -94,7 +90,17 @@ export function parallelKeyLabel(
 }
 
 /** Strongest first, which is the one a passage with several is shown as */
-export const PARALLEL_TYPES = ['full', 'retelling', 'mention'] as const
+export const PARALLEL_TYPES = [
+  'full',
+  'resembling',
+  'retelling',
+  'mention',
+] as const
+
+/** Resembling parallels are flagged apart from their type */
+export function parallelType(parallel: any): string {
+  return parallel.resembling ? 'resembling' : (parallel.to?.type ?? '')
+}
 
 export function parallelTypeTitle(locale: string, type: string): string {
   switch (type) {
@@ -104,7 +110,7 @@ export function parallelTypeTitle(locale: string, type: string): string {
       return t(locale, 'suttaplex:mention')
     case 'retelling':
       return t(locale, 'suttaplex:retellingParallel')
-    case 'resembling': // ¿¿what texts have this??
+    case 'resembling':
       return t(locale, 'suttaplex:resemblingParallel')
     default:
       return ''
@@ -120,6 +126,8 @@ export function parallelTypeName(locale: string, type: string): string {
       return t(locale, 'suttaplex:mentionName')
     case 'retelling':
       return t(locale, 'suttaplex:retellingParallelName')
+    case 'resembling':
+      return t(locale, 'suttaplex:resemblingParallelName')
     default:
       return ''
   }
@@ -190,5 +198,5 @@ export function parallelHref(
   const base = segmentKey.split('#')[0]
   const span = parseUidNumbers(base)
   const uid = span && span.start !== span.end ? onScreenUid : base
-  return `/${uid}/${rootTrans.lang}/${rootTrans.author_uid}${getHashFragment(segmentKey)}`
+  return `/${uid}/${rootTrans.lang}/${rootTrans.author_uid}${parallelAnchor(segmentKey)}`
 }

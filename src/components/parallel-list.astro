@@ -1,38 +1,78 @@
 ---
+import Icon from '~/components/icon.astro'
 import RootTitle from '~/components/root-title.astro'
 import TextRefs from '~/components/text-refs.astro'
+import { t } from '~/i18n'
 import { langTag } from '~/utils/language'
 import {
-  getHashFragment,
+  parallelAnchor,
+  parallelType,
   parallelTypeName,
   parallelTypeTitle,
+  passageLabel,
 } from '~/utils/parallels'
-import { formatVolpages } from '~/utils/strings'
+import { formatVolpages, languageName } from '~/utils/strings'
 
 interface Props {
   parallels: any[] // one key's entries from /api/parallels
+  rootLang?: string // the text's, so only other languages are named
   userLanguage: string
   // Off where the list is already headed with its type
   typeTitles?: boolean
 }
 
-const { parallels, userLanguage, typeTitles = true } = Astro.props
+const { parallels, rootLang, userLanguage, typeTitles = true } = Astro.props
+
+// More than this many, eg SHT's lists of fragments, and the rest go in the notes
+const MAX_VOLPAGES = 3
+
+function volpagesOf(to: any) {
+  const volpages = formatVolpages(to.volpages)
+  const parts = volpages.split(',')
+  if (volpages.startsWith('PTS') || parts.length <= MAX_VOLPAGES)
+    return { volpages }
+  return {
+    volpages: `${parts.slice(0, MAX_VOLPAGES).join(',')} …`,
+    full: volpages,
+  }
+}
+
+function languageOf(to: any) {
+  if (!to.root_lang || to.root_lang === rootLang) return ''
+  const key = `interface:${to.root_lang}`
+  const name = t(userLanguage, key)
+  return languageName(name !== key ? name : to.root_lang)
+}
+
+const notesLabel = t(userLanguage, 'viewoption:notes')
 ---
 
 <ul class="parallel-list">
   {
     parallels.map(parallel => {
       const { to } = parallel
-      const type = to.type
+      const type = parallelType(parallel)
       const trans = to.translations?.[0]
       const href =
         trans &&
-        `/${to.uid}/${trans.lang}/${trans.author_uid}${getHashFragment(to.to)}`
-      const label = to.acronym?.trim()
+        `/${to.uid}/${trans.lang}/${trans.author_uid}${parallelAnchor(to.to ?? '')}`
+      const label = `${to.acronym?.trim() ?? ''}${passageLabel(to.to ?? '')}`
       const titled = !!(
         to.original_title?.trim() || to.translated_title?.trim()
       )
-      const volpages = formatVolpages(to.volpages)
+      const { volpages, full } = volpagesOf(to)
+      const altVolpages = formatVolpages(to.alt_volpages)
+      const refs = {
+        acronym: titled ? label : undefined,
+        language: languageOf(to),
+        volpages: [volpages, altVolpages !== volpages && altVolpages].filter(
+          Boolean
+        ) as string[],
+      }
+      const hasRefs = !!(refs.acronym || refs.language || refs.volpages.length)
+      const remarks: string[] =
+        parallel.remark?.split(' | ').map((r: string) => r.trim()) ?? []
+      const hasNotes = !!(remarks.length || to.biblio || full)
       const typeName = typeTitles ? parallelTypeName(userLanguage, type) : ''
 
       return (
@@ -55,14 +95,25 @@ const { parallels, userLanguage, typeTitles = true } = Astro.props
           ) : (
             <span>{label}</span>
           )}
-          {((titled && label) || volpages) && (
-            <p class="text-refs">
-              <TextRefs
-                acronym={titled ? label : undefined}
-                volpages={[volpages]}
-                userLanguage={userLanguage}
-              />
-            </p>
+          {hasNotes ? (
+            <details class="parallel-notes">
+              <summary class="text-refs" title={notesLabel}>
+                <TextRefs {...refs} userLanguage={userLanguage} />
+                <Icon name="informationCircle" />
+                <span class="sr-only">{notesLabel}</span>
+              </summary>
+              {remarks.map(remark => (
+                <p set:html={remark} />
+              ))}
+              {full && <p>{full}</p>}
+              {to.biblio && <p set:html={to.biblio} />}
+            </details>
+          ) : (
+            hasRefs && (
+              <p class="text-refs">
+                <TextRefs {...refs} userLanguage={userLanguage} />
+              </p>
+            )
           )}
         </li>
       )
