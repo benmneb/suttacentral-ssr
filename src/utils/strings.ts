@@ -248,3 +248,8 @@ export function expandUid(
 
   return result.replace(/–\s*$/, '').trim()
 }
+
+/** A word's /define page, with its spaces encoded, eg /define/udena%20cetiya */
+export function defineHref(word: string): string {
+  return `/define/${word.replaceAll(' ', '%20')}`
+}

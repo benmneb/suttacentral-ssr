@@ -5,12 +5,14 @@ import Icon from '~/components/icon.astro'
 import MiniMap from '~/components/mini-map.astro'
 import map from '~/constants/map.json'
 import { t } from '~/i18n'
+import { langTag } from '~/utils/language'
+import { closeHeadingGaps, defineHref } from '~/utils/strings'
 import Layout from '~/layouts/Layout.astro'
 
 // Handle form submissions: /define/?term=X → /define/X
 const queryTerm = Astro.url.searchParams.get('term')
 if (queryTerm) {
-  return Astro.redirect(`/define/${queryTerm}`)
+  return Astro.redirect(defineHref(queryTerm))
 }
 
 const { term } = Astro.params
@@ -27,10 +29,14 @@ if (term) {
     ).then(r => r.json()),
     fetch(
       `https://suttacentral.net/api/dictionary_full/similar/${term}?language=${userLanguage}`
-    ).then(r => r.json()),
+    )
+      .then(r => r.json())
+      .catch(() => [[]]),
     fetch(
       `https://suttacentral.net/api/dictionary_full/adjacent/${term}?language=${userLanguage}`
-    ).then(r => r.json()),
+    )
+      .then(r => r.json())
+      .catch(() => [[]]),
   ])
 }
 
@@ -52,12 +58,47 @@ function splitAtMap(html: string) {
   }
 }
 
-const entries = dictionaryData.map(entry => ({
-  ...entry,
-  html:
-    entry.text &&
-    splitAtMap(entry.text.replaceAll('https://suttacentral.net', '')),
-}))
+// Each id once on the page, as PTS gives each of a word's homonyms the word as its id, eg ambho
+const ids = new Set<string>()
+
+/** An entry's HTML with no type='α', which isn't a list type HTML has, no id already used and no heading gaps */
+function tidyEntry(html: string) {
+  return closeHeadingGaps(html)
+    .replaceAll('https://suttacentral.net', '')
+    .replaceAll(" type='α'", '')
+    .replace(/ id=(['"])(.*?)\1/g, (match, _, id) =>
+      ids.has(id) ? '' : (ids.add(id), match)
+    )
+}
+
+/** The parts of an entry with a dd each, in order */
+const PARTS = ['grammar', 'html', 'definition', 'xr', 'pronunciation'] as const
+
+const entries = dictionaryData.map((entry, i) => {
+  const parts = {
+    ...entry,
+    html: entry.text && splitAtMap(tidyEntry(entry.text)),
+  }
+  return {
+    ...parts,
+    // A dictionary's several entries under one dt, as a dl can't name two the same
+    again: entry.dictname === dictionaryData[i - 1]?.dictname,
+    first: PARTS.find(part => parts[part]),
+  }
+})
+
+/** The class of an entry's first dd, if it's another of the dictionary above's entries */
+const again = (entry: (typeof entries)[number], part: string) =>
+  entry.again && entry.first === part ? 'again' : undefined
+
+const dictionaries = new Set(dictionaryData.map(entry => entry.dictname)).size
+const dictionaryCount = t(
+  userLanguage,
+  new Intl.PluralRules(langTag(userLanguage)).select(dictionaries) === 'one'
+    ? 'dictionary:foundInDictionary'
+    : 'dictionary:foundInDictionaries',
+  { count: dictionaries.toLocaleString(langTag(userLanguage)) }
+)
 ---
 
 <Layout
@@ -72,30 +113,28 @@ const entries = dictionaryData.map(entry => ({
     : t(userLanguage, 'dictionary:description')}
 >
   <main id="main">
-    <hgroup>
-      <h1>{t(userLanguage, 'dictionary:define')}</h1>
-      {
-        term && (
-          <p>
-            {dictionaryData.length.toLocaleString()}
-            {t(
-              userLanguage,
-              dictionaryData.length !== 1
-                ? 'search:resultsFor'
-                : 'search:resultsFor'
-            )}
-            <b>{term}</b>
-          </p>
-        )
-      }
-    </hgroup>
-    <section>
+    {
+      term ? (
+        <hgroup>
+          <h1>
+            {t(userLanguage, 'dictionary:definitionsFor')}{' '}
+            <span lang="pi" translate="no">
+              {term}
+            </span>
+          </h1>
+          <p>{dictionaryCount}</p>
+        </hgroup>
+      ) : (
+        <h1>{t(userLanguage, 'dictionary:define')}</h1>
+      )
+    }
+    <div>
       {
         !!dictionaryData.length && (
-          <article>
-            <dl>
-              {entries.map(entry => (
-                <>
+          <dl>
+            {entries.map(entry => (
+              <>
+                {!entry.again && (
                   <dt>
                     {dictionaryTitles[entry.dictname] ?? entry.dictname}
                     {entry.dictname === 'dpd' && (
@@ -107,72 +146,73 @@ const entries = dictionaryData.map(entry => ({
                       </>
                     )}
                   </dt>
-                  {entry.grammar && (
-                    <dd>
-                      <em>{entry.grammar}</em>
-                    </dd>
-                  )}
-                  {entry.html && (
-                    <dd>
-                      <Fragment set:html={entry.html.before} />
-                      {entry.html.place && <MiniMap place={entry.html.place} />}
-                      {entry.html.after && (
-                        <Fragment set:html={entry.html.after} />
-                      )}
-                    </dd>
-                  )}
-                  {entry.definition && (
-                    <dd>
-                      {Array.isArray(entry.definition) ? (
-                        <ol>
-                          {entry.definition.map(d => (
-                            <li set:html={d} />
+                )}
+                {entry.grammar && (
+                  <dd class={again(entry, 'grammar')}>
+                    <em>{entry.grammar}</em>
+                  </dd>
+                )}
+                {entry.html && (
+                  <dd class={again(entry, 'html')}>
+                    <Fragment set:html={entry.html.before} />
+                    {entry.html.place && <MiniMap place={entry.html.place} />}
+                    {entry.html.after && (
+                      <Fragment set:html={entry.html.after} />
+                    )}
+                  </dd>
+                )}
+                {entry.definition && (
+                  <dd class={again(entry, 'definition')}>
+                    {Array.isArray(entry.definition) ? (
+                      <ol>
+                        {entry.definition.map(d => (
+                          <li set:html={d} />
+                        ))}
+                      </ol>
+                    ) : (
+                      entry.definition
+                    )}
+                  </dd>
+                )}
+                {entry.xr && (
+                  <dd class={again(entry, 'xr')}>
+                    <ul>
+                      {Array.isArray(entry.xr) ? (
+                        <>
+                          {entry.xr.map(d => (
+                            <li>
+                              <a href={defineHref(d)}>{d}</a>
+                            </li>
                           ))}
-                        </ol>
+                        </>
                       ) : (
-                        entry.definition
+                        <li>
+                          <a href={defineHref(entry.xr)}>{entry.xr}</a>
+                        </li>
                       )}
-                    </dd>
-                  )}
-                  {entry.xr && (
-                    <dd>
-                      <ul>
-                        {Array.isArray(entry.xr) ? (
-                          <>
-                            {entry.xr.map(d => (
-                              <li>
-                                <a href={`/define/${d}`}>{d}</a>
-                              </li>
-                            ))}
-                          </>
-                        ) : (
-                          <li>
-                            <a href={`/define/${entry.xr}`}>{entry.xr}</a>
-                          </li>
-                        )}
-                      </ul>
-                    </dd>
-                  )}
-                  {entry.pronunciation && (
-                    <dd>
-                      <strong>
-                        {t(userLanguage, 'dictionary:pronunciation')}
-                      </strong>{' '}
-                      {entry.pronunciation}
-                    </dd>
-                  )}
-                </>
-              ))}
-            </dl>
-          </article>
+                    </ul>
+                  </dd>
+                )}
+                {entry.pronunciation && (
+                  <dd class={again(entry, 'pronunciation')}>
+                    <strong>
+                      {t(userLanguage, 'dictionary:pronunciation')}
+                    </strong>{' '}
+                    {entry.pronunciation}
+                  </dd>
+                )}
+              </>
+            ))}
+          </dl>
         )
       }
-      <nav>
+      <nav aria-label={t(userLanguage, 'dictionary:otherWords')}>
         <form action="/define" method="get">
           <input
             type="search"
             name="term"
             required
+            autofocus={!term}
             autocomplete="off"
             autocorrect="off"
             autocapitalize="off"
@@ -197,11 +237,19 @@ const entries = dictionaryData.map(entry => ({
                 {adjacentData[0].map(adjacentTerm =>
                   adjacentTerm === term ? (
                     <li class="no-list-item">
-                      <span>{adjacentTerm}</span>
+                      <span aria-current="page" lang="pi" translate="no">
+                        {adjacentTerm}
+                      </span>
                     </li>
                   ) : (
                     <li>
-                      <a href={`/define/${adjacentTerm}`}>{adjacentTerm}</a>
+                      <a
+                        href={defineHref(adjacentTerm)}
+                        lang="pi"
+                        translate="no"
+                      >
+                        {adjacentTerm}
+                      </a>
                     </li>
                   )
                 )}
@@ -216,7 +264,9 @@ const entries = dictionaryData.map(entry => ({
               <ol>
                 {similarData[0].map(similarTerm => (
                   <li>
-                    <a href={`/define/${similarTerm}`}>{similarTerm}</a>
+                    <a href={defineHref(similarTerm)} lang="pi" translate="no">
+                      {similarTerm}
+                    </a>
                   </li>
                 ))}
               </ol>
@@ -224,7 +274,7 @@ const entries = dictionaryData.map(entry => ({
           )
         }
       </nav>
-    </section>
+    </div>
   </main>
 </Layout>
 
@@ -232,7 +282,15 @@ const entries = dictionaryData.map(entry => ({
   main {
     max-width: calc(var(--content-max-width) + 30ch);
 
-    & > section {
+    > hgroup > h1 {
+      color: var(--text-color);
+
+      > span {
+        color: var(--headings-color);
+      }
+    }
+
+    & > div {
       display: grid;
       grid-template-columns: 1fr auto;
       align-items: start;
@@ -242,11 +300,7 @@ const entries = dictionaryData.map(entry => ({
         grid-template-columns: 1fr;
       }
 
-      & > section {
-        max-width: var(--content-max-width);
-      }
-
-      & > article > dl {
+      & > dl {
         & > dt {
           font-weight: bold;
           margin-bottom: 0.4rem;
@@ -256,7 +310,8 @@ const entries = dictionaryData.map(entry => ({
           }
         }
 
-        & > dd + dt {
+        & > dd + dt,
+        & > dd.again {
           margin-top: 1em;
         }
       }

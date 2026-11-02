@@ -11,3 +11,7 @@ dd .info {
   display: block;
   color: var(--text-color-secondary);
 }
+
+.lower-greek {
+  list-style-type: lower-greek;
+}

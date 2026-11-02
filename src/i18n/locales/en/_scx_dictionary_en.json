@@ -1,7 +1,10 @@
 {
   "dictionary:define": "Define",
   "dictionary:description": "Pāli to English dictionary",
+  "dictionary:foundInDictionaries": "Found in {count} dictionaries",
+  "dictionary:foundInDictionary": "Found in {count} dictionary",
   "dictionary:link": "Link",
+  "dictionary:otherWords": "Other words",
   "dictionary:pronunciation": "Pronunciation:",
   "dictionary:searchPlaceholder": "Pāli word search…"
 }

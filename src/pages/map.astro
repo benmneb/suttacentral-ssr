@@ -9,6 +9,7 @@ import map from '~/constants/map.json'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { langTag } from '~/utils/language'
+import { defineHref } from '~/utils/strings'
 
 const userLanguage = Astro.locals.userLanguage
 
@@ -214,7 +215,7 @@ const moves = [
                     >
                       <strong>
                         {place.define ? (
-                          <a href={`/define/${place.define}`}>{place.name}</a>
+                          <a href={defineHref(place.define)}>{place.name}</a>
                         ) : (
                           place.name
                         )}
@@ -348,7 +349,7 @@ const moves = [
                           <svg class="marker" aria-hidden="true">
                             <use href={`${base}#marker-${place.icon}`} />
                           </svg>
-                          <a href={`/define/${place.define}`}>{place.name}</a>
+                          <a href={defineHref(place.define)}>{place.name}</a>
                         </>
                       ) : (
                         place.name
