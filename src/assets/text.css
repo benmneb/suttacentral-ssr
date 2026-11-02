@@ -143,42 +143,53 @@
 }
 
 /* Highlight text-critical details */
+.mark-line {
+  display: none;
+}
+
+/* The labels are in the reader's language, from the text page's <head> */
 &:has(#highlighter:checked) {
+  /* Labels with no ::before only title the line, from the view settings script */
   .nidana {
     --mark-color: var(--aqua);
+    --mark-label: var(--nidana-label);
   }
   .padabhajaniya {
     --mark-color: var(--blue);
+    --mark-label: var(--padabhajaniya-label);
   }
   .cakka {
     --mark-color: var(--purple);
+    --mark-label: var(--cakka-label);
   }
   .anapatti {
     --mark-color: var(--yellow);
+    --mark-label: var(--anapatti-label);
   }
   .vinaya-vinita {
     --mark-color: var(--gray);
+    --mark-label: var(--vinaya-vinita-label);
   }
   .kamma {
     --mark-color: var(--orange);
-    --mark-label: 'Formal act of the Sangha';
+    --mark-label: var(--kamma-label);
   }
   .patimokkha {
     --mark-color: var(--green);
-    --mark-label: 'In the pātimokkha recitation';
+    --mark-label: var(--patimokkha-label);
   }
   /* Not .net's :not(.patimokkha) .rule, which every rule matches */
   .rule:not(.patimokkha *):has(.segment) {
     --mark-color: var(--red);
-    --mark-label: 'Not in the pātimokkha recitation';
+    --mark-label: var(--rule-label);
   }
   .suttanta {
     --mark-color: var(--brown);
-    --mark-label: 'Also found in the suttas';
+    --mark-label: var(--suttanta-label);
   }
   .jataka {
     --mark-color: var(--headings-color);
-    --mark-label: 'A past life story (Jātaka)';
+    --mark-label: var(--jataka-label);
   }
 
   /* :where, so span.kamma's inline label wins */
@@ -194,8 +205,18 @@
     .suttanta,
     .jataka
   ):not(span) {
+    position: relative;
     border-inline-start: 2px dotted var(--mark-color);
     padding-inline-start: 0.75rem;
+  }
+
+  .mark-line {
+    display: block;
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: -2px;
+    width: calc(0.75rem + 2px);
+    cursor: help;
   }
 
   :where(
@@ -238,15 +259,19 @@
   }
   [data-doxy='orthodox']::before {
     content: '👍';
+    content: '👍' / var(--orthodox-label);
   }
   [data-doxy='heterodox']::before {
     content: '👎';
+    content: '👎' / var(--heterodox-label);
   }
   [data-direction='forward']::before {
     content: '👉';
+    content: '👉' / var(--forward-label);
   }
   [data-direction='reverse']::before {
     content: '👈';
+    content: '👈' / var(--reverse-label);
   }
   [data-counter]::after {
     content: attr(data-counter);
@@ -263,6 +288,7 @@
   /* Editors' marks in the legacy Sanskrit, Gāndhārī and Chinese editions */
   .term {
     color: var(--brown);
+    font-weight: bold;
   }
   .gloss {
     color: var(--aqua);
@@ -270,23 +296,58 @@
   .supplied,
   .supplied2 {
     color: var(--blue);
+
+    /* Leiden's brackets */
+    &::before {
+      content: '⟨';
+      content: '⟨' / var(--supplied-label);
+    }
+    &::after {
+      content: '⟩';
+      content: '⟩' / '';
+    }
   }
   .surplus {
     color: var(--orange);
+
+    &::before {
+      content: '{';
+      content: '{' / var(--surplus-label);
+    }
+    &::after {
+      content: '}';
+      content: '}' / '';
+    }
   }
   .var {
     color: var(--purple);
+
+    &::before {
+      content: '';
+      content: '' / var(--variant-label);
+    }
   }
   .corr,
   .corrected {
     color: var(--green);
+
+    &::before {
+      content: '';
+      content: '' / var(--corrected-label);
+    }
   }
   .unclear,
   .expanded {
     color: var(--text-color-secondary);
   }
-  :is(.var, .corr, .corrected)[title] {
+  .unclear::before {
+    content: '';
+    content: '' / var(--unclear-label);
+  }
+  :is(.var, .corr, .corrected) {
     text-decoration: underline dotted;
+  }
+  :is(.var, .corr, .corrected)[title] {
     cursor: help;
   }
   .metre {

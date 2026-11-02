@@ -106,6 +106,7 @@ const externalLinkAlt = JSON.stringify(
       is:inline
       set:html={`:is(main, aside, #site-pages) a[href^='http']::after { content: '' / ${externalLinkAlt}; }`}
     ></style>
+    <slot name="head" />
     {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
     <script
       is:inline

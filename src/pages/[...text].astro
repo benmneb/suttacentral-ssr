@@ -308,6 +308,33 @@ const hasHighlights = isSegmented
     )
   : HIGHLIGHT_MARKUP.test(suttasData.translation?.text ?? '')
 
+// Here, not in text.css, as the marks are named in the reader's language
+const markLabels = `:root { ${Object.entries({
+  nidana: 'viewoption:markNidana',
+  padabhajaniya: 'viewoption:markPadabhajaniya',
+  cakka: 'viewoption:markCakka',
+  anapatti: 'viewoption:markAnapatti',
+  'vinaya-vinita': 'viewoption:markVinayaVinita',
+  kamma: 'viewoption:markKamma',
+  patimokkha: 'viewoption:markPatimokkha',
+  rule: 'viewoption:markRule',
+  suttanta: 'viewoption:markSuttanta',
+  jataka: 'viewoption:markJataka',
+  orthodox: 'viewoption:markOrthodox',
+  heterodox: 'viewoption:markHeterodox',
+  forward: 'viewoption:markForward',
+  reverse: 'viewoption:markReverse',
+  supplied: 'viewoption:markSupplied',
+  surplus: 'viewoption:markSurplus',
+  variant: 'viewoption:variant',
+  corrected: 'viewoption:markCorrected',
+  unclear: 'viewoption:markUnclear',
+})
+  .map(
+    ([name, key]) => `--${name}-label: ${JSON.stringify(t(userLanguage, key))};`
+  )
+  .join(' ')} }`
+
 /**
  * A passage the "Show parallels" setting brackets in the margin. The api keys
  * a parallel to where it starts, so it runs to the end of that section
@@ -708,7 +735,7 @@ ${renderIllustrations(key)}
       if (variant) {
         commentsHtml += `
       <article id="variant-${key}" popover style="--anchored-to: --note${variantNote}">
-        Variant: ${variant.replace(/https:\/\/suttacentral\.net/g, '')}
+        ${t(userLanguage, 'viewoption:variant')} ${variant.replace(/https:\/\/suttacentral\.net/g, '')}
       </article>
     `
       }
@@ -819,6 +846,9 @@ const jsonLd = generateTextJsonLd(
     ],
   }}
 >
+  <Fragment slot="head">
+    <style is:inline set:html={markLabels}></style>
+  </Fragment>
   <aside>
     <fieldset>
       <ul>
@@ -1876,7 +1906,8 @@ const jsonLd = generateTextJsonLd(
    * keeps the reading position when a view setting changes.
    * Unlike accounting for this with notes view, this layout shift fix
    * is not possible in CSS without a big refactor, so it's handled here.
-   * Also lets Esc hide the menus and panels hovering shows.
+   * Also lets Esc hide the menus and panels hovering shows, and titles each
+   * highlighting line.
    */
   'use strict'
 
@@ -2284,6 +2315,34 @@ const jsonLd = generateTextJsonLd(
         if (!running) el.classList.remove('pressed')
       })
     }
+  }
+
+  // Each line's title is its --mark-label in text.css
+  const highlighter = document.getElementById('highlighter')
+  if (highlighter instanceof HTMLInputElement) {
+    const MARKED =
+      ':is(.nidana, .padabhajaniya, .cakka, .anapatti, .vinaya-vinita, .kamma, .patimokkha, .rule:not(.patimokkha *):has(.segment), .suttanta, .jataka):not(span)'
+    let titled = false
+
+    function titleLines() {
+      if (titled || !highlighter.checked) return
+      titled = true
+      for (const el of document.querySelectorAll(`main ${MARKED}`)) {
+        const label = getComputedStyle(el)
+          .getPropertyValue('--mark-label')
+          .trim()
+          .replace(/^(['"])(.*)\1$/, '$2')
+        if (!label) continue
+        const line = document.createElement('span')
+        line.className = 'mark-line'
+        line.title = label
+        line.setAttribute('aria-hidden', 'true')
+        el.append(line)
+      }
+    }
+
+    titleLines()
+    highlighter.addEventListener('change', titleLines)
   }
 </script>
 
