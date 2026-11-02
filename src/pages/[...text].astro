@@ -491,7 +491,7 @@ const parallelAnchors = new Set(parallelRuns.flatMap(r => [r.start, r.end]))
 function anchorStyle(key: string) {
   const i = shownIndex.get(key)
   return i !== undefined && parallelAnchors.has(i)
-    ? ` style="anchor-name: --ps${i}"`
+    ? ` style="--anchor: --ps${i}"`
     : ''
 }
 
@@ -597,7 +597,7 @@ ${renderReferences(key, ref)}
         ${
           comment
             ? `
-        <button class="variant-btn" popovertarget="comment-${key}" style="anchor-name: --note${commentNote}" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">*</button>
+        <button class="variant-btn" popovertarget="comment-${key}" style="--anchor: --note${commentNote}" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">*</button>
         <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}" hidden>
           ${t(userLanguage, 'viewoption:variant')} ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
         </span>
@@ -614,7 +614,7 @@ ${renderIllustrations(key)}
 
       if (comment) {
         commentsHtml += `
-      <article id="comment-${key}" popover style="position-anchor: --note${commentNote}">
+      <article id="comment-${key}" popover style="--anchored-to: --note${commentNote}">
         ${t(userLanguage, 'viewoption:variant')} ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
       </article>
     `
@@ -655,7 +655,7 @@ ${renderReferences(key, ref)}
         ${
           comment
             ? `
-        <button popovertarget="comment-${key}" style="anchor-name: --note${commentNote}" aria-label="${t(userLanguage, 'viewoption:showFootnote', { author: suttasData.translation.author, ref: key })}">*</button>
+        <button popovertarget="comment-${key}" style="--anchor: --note${commentNote}" aria-label="${t(userLanguage, 'viewoption:showFootnote', { author: suttasData.translation.author, ref: key })}">*</button>
         <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showFootnote', { author: suttasData.translation.author, ref: key })}" hidden>
           ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
         </span>
@@ -683,7 +683,7 @@ ${renderReferences(key, ref)}
         ${
           variant
             ? `
-      <button class="variant-btn" popovertarget="variant-${key}" style="anchor-name: --note${variantNote}" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">*</button>
+      <button class="variant-btn" popovertarget="variant-${key}" style="--anchor: --note${variantNote}" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}">*</button>
       <span class="inline-comment" aria-label="${t(userLanguage, 'viewoption:showVariantReading', { ref })}" hidden>
         ${t(userLanguage, 'viewoption:variant')} ${variant.replace(/https:\/\/suttacentral\.net/g, '')}
       </span>
@@ -700,14 +700,14 @@ ${renderIllustrations(key)}
 
       if (comment) {
         commentsHtml += `
-      <article id="comment-${key}" popover style="position-anchor: --note${commentNote}">
+      <article id="comment-${key}" popover style="--anchored-to: --note${commentNote}">
         ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
       </article>
     `
       }
       if (variant) {
         commentsHtml += `
-      <article id="variant-${key}" popover style="position-anchor: --note${variantNote}">
+      <article id="variant-${key}" popover style="--anchored-to: --note${variantNote}">
         Variant: ${variant.replace(/https:\/\/suttacentral\.net/g, '')}
       </article>
     `
@@ -1535,7 +1535,7 @@ const jsonLd = generateTextJsonLd(
                   data-type={run.type}
                   data-outer={run.lane === lanes.length - 1 ? '' : undefined}
                   aria-label={`${run.label}, ${countLabel}`}
-                  style={`--lane: ${run.lane}; top: anchor(--ps${run.start} top); bottom: anchor(--ps${run.end} bottom)`}
+                  style={`--lane: ${run.lane}; --from: --ps${run.start}; --to: --ps${run.end}`}
                 />
                 <article id={`parallels-${i}`} popover>
                   <h1>
