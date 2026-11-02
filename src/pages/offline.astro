@@ -1,6 +1,5 @@
 ---
 import '~/assets/offline-icons.css'
-import RelatedPages from '~/components/related-pages.astro'
 import Icon from '~/components/icon.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
@@ -8,50 +7,58 @@ import Layout from '~/layouts/Layout.astro'
 const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'interface:offlineTitle')
+
+const scxStaticReleases =
+  'https://codeberg.org/benmneb/suttacentral-static/releases/latest'
 ---
 
 <Layout title={title}>
-  <RelatedPages category="misc" />
   <main id="main">
     <article>
       <h1>{title}</h1>
       <h2>SuttaCentral</h2>
       <ul>
         <li>
-          <a href="https://suttacentral.net/offline">
+          <a href="https://suttacentral.net/offline" rel="external">
             <Icon name="devicePhoneMobile" />
-            Web app (PWA)
+            {t(userLanguage, 'offline:webApp')}
           </a>
-          <p>
-            Install SuttaCentral.net as an app and keep the texts you choose for
-            reading offline. Needs JavaScript and an up to date browser, and can
-            be unreliable to install.
-          </p>
+          <p>{t(userLanguage, 'offline:webAppDescription')}</p>
         </li>
         <li>
           <a href="/editions">
             <Icon name="bookOpen" />
-            Editions
+            {t(userLanguage, 'publication:editionsToolbarTitle')}
           </a>
-          <p>
-            Whole books of translations, as ePub, PDF or HTML files, or in
-            print.
-          </p>
+          <p>{t(userLanguage, 'offline:editionsDescription')}</p>
         </li>
       </ul>
-      <h2>SuttaCentral Express</h2>
+      <h2 id="scx-offline">SuttaCentral Express</h2>
       <ul>
         <li>
-          <a
-            href="https://codeberg.org/benmneb/suttacentral-static/releases/latest"
-          >
+          <a href={scxStaticReleases}>
             <Icon name="archiveBoxArrowDown" />
-            Archives and native apps
+            {t(userLanguage, 'offline:siteArchive')}
           </a>
-          <p>
-            This whole site as plain HTML to download, which works on any
-            computer or smartphone, plus apps to install.
-          </p>
+          <p>{t(userLanguage, 'offline:siteArchiveDescription')}</p>
+        </li>
+        <li>
+          <a href={scxStaticReleases}>
+            <Icon name="computerDesktop" />
+            {t(userLanguage, 'offline:nativeApps')}
+          </a>
+          <p>{t(userLanguage, 'offline:nativeAppsDescription')}</p>
+        </li>
+        <li>
+          <a href={scxStaticReleases}>
+            <Icon name="documentArrowDown" />
+            {t(userLanguage, 'offline:kiwixZim')}
+          </a>
+          <p
+            set:html={t(userLanguage, 'offline:kiwixZimDescription', {
+              kiwix: '<a href="https://kiwix.org" rel="external">Kiwix</a>',
+            })}
+          />
         </li>
       </ul>
     </article>

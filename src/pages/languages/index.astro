@@ -1,5 +1,5 @@
 ---
-import RelatedPages from '~/components/related-pages.astro'
+import { siteMetaData } from '~/constants/meta-data'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 
@@ -9,13 +9,16 @@ const response = await fetch('https://suttacentral.net/api/translation_count')
 const languages = await response.json()
 
 const title = t(userLanguage, 'interface:languages')
+const heading = t(userLanguage, 'languages:languagesOnSuttaCentral').replace(
+  /SuttaCentral/i,
+  siteMetaData.title
+)
 ---
 
 <Layout title={title}>
-  <RelatedPages category="tech" />
   <main id="main">
     <article>
-      <h1 set:html={t(userLanguage, 'languages:languagesOnSuttaCentral')} />
+      <h1 set:html={heading} />
 
       <h2>
         <span set:html={t(userLanguage, 'languages:ancientLanguages')} />

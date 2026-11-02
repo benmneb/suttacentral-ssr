@@ -5,7 +5,6 @@ import '~/assets/map-icons.css'
 import '~/assets/figure.css'
 import '~/assets/details.css'
 import Icon from '~/components/icon.astro'
-import RelatedPages from '~/components/related-pages.astro'
 import map from '~/constants/map.json'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
@@ -105,7 +104,6 @@ const moves = [
   <Fragment slot="head">
     <style is:inline set:html={mapStyles}></style>
   </Fragment>
-  <RelatedPages category="misc" />
   <main id="main" class="map">
     <article>
       <h1 set:html={t(userLanguage, 'map:1')} />

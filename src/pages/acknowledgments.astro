@@ -1,6 +1,5 @@
 ---
 import '~/assets/table.css'
-import RelatedPages from '~/components/related-pages.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 
@@ -10,7 +9,6 @@ const title = t(userLanguage, 'interface:acknowledgmentsTitle')
 ---
 
 <Layout title={title}>
-  <RelatedPages category="meta" />
   <main id="main">
     <article>
       <h1 set:html={t(userLanguage, 'acknowledgments:1')} />

@@ -50,8 +50,6 @@ export const staticPages = {
   ],
 } satisfies Record<string, StaticPage[]>
 
-export type StaticPageCategory = keyof typeof staticPages
-
 /** The site map groups in the footer and the header menu */
 export const siteMap: { label: string; pages: StaticPage[] }[] = [
   {
