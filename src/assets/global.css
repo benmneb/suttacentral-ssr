@@ -7,6 +7,7 @@
 } */
 @import url(./_variables.css);
 @import url(./icons.css);
+@import url(./print.css) print;
 
 :root {
   color-scheme: light dark;
