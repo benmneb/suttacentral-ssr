@@ -15,6 +15,7 @@ The site also:
 - Shows every text and core feature without JavaScript
 - Follows the system's light or dark mode, contrast setting and forced colours
 - Has a skip link on every page
+- Keeps motion to scrolling and panning, and leaves it out when reduced motion is set
 
 ## Known limits
 

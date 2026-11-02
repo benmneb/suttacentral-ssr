@@ -1,38 +1,21 @@
 ---
 import '~/assets/map.css'
+import '~/assets/map-colours.css'
+import '~/assets/map-icons.css'
 import '~/assets/figure.css'
 import '~/assets/details.css'
+import Icon from '~/components/icon.astro'
 import RelatedPages from '~/components/related-pages.astro'
+import map from '~/constants/map.json'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
-import { icon } from '~/constants/icons'
+import { langTag } from '~/utils/language'
 
 const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'map:1')
 
-let features: any[] = []
-let layerNames: string[] = []
-
-try {
-  const res = await fetch('https://suttacentral.net/api/map_data')
-  const data = await res.json()
-  const geoJSON = data[0]
-  features = geoJSON.features || []
-
-  // Extract unique layer names preserving order
-  const seenLayers = new Set<string>()
-  for (const f of features) {
-    if (f.properties?.layer && !seenLayers.has(f.properties.layer)) {
-      seenLayers.add(f.properties.layer)
-      layerNames.push(f.properties.layer)
-    }
-  }
-} catch (e) {
-  console.error('Failed to fetch map data:', e)
-}
-
-const layerTranslations: Record<string, string> = {
+const layerKeys: Record<string, string> = {
   'Capital cities': 'map:5',
   'Towns & villages': 'map:6',
   'Temples & features': 'map:7',
@@ -44,15 +27,86 @@ const layerTranslations: Record<string, string> = {
   'Extraterrestrial Places': 'map:13',
 }
 
-function getLayerLabel(layerName: string): string {
-  const key = layerTranslations[layerName]
-  return key ? t(userLanguage, key) : layerName
+type Place = (typeof map.layers)[number]['places'][number] & {
+  shape?: {
+    type: string
+    x: number
+    y: number
+    fill?: string
+    fillOpacity?: number
+  }
 }
+
+const layers = map.layers.map((layer, i) => ({
+  n: i + 1,
+  label: layerKeys[layer.name]
+    ? t(userLanguage, layerKeys[layer.name])
+    : layer.name,
+  places: layer.places as Place[],
+  onMap: layer.places.some(place => 'shape' in place),
+}))
+
+// Regions under the journeys, under the places' markers
+const placesOnMap = ['area', 'line', 'point'].flatMap(type =>
+  layers.flatMap(layer =>
+    layer.places
+      .filter(place => place.shape?.type === type)
+      .map(place => ({ place, layer }))
+  )
+)
+
+const [x0, y0, width, height] = map.viewBox.split(' ')
+const base = '/map/base.svg'
+
+let regionNames: Intl.DisplayNames | undefined
+try {
+  regionNames = new Intl.DisplayNames([langTag(userLanguage)], {
+    type: 'region',
+  })
+} catch {}
+
+function countryName({ code, name }: { code: string; name: string }) {
+  try {
+    return regionNames?.of(code) ?? name
+  } catch {
+    return name
+  }
+}
+
+const townName = (town: (typeof map.towns)[number]) =>
+  (town as { names?: Record<string, string> }).names?.[userLanguage] ??
+  town.name
+
+// Per layer and place, as CSS can't match a checkbox or popover to the shapes it names
+const mapStyles = [
+  ...layers.map(
+    ({ n }) =>
+      `.interactive-map:has(#map-layer-${n}:not(:checked)) .layer-${n}{display:none}`
+  ),
+  ...placesOnMap
+    .filter(({ place }) => place.shape!.type !== 'point')
+    .map(
+      ({ place }) =>
+        `.map-frame:has(#${place.id}:popover-open) [data-place="${place.id}"]{opacity:1;stroke:var(--primary-color)}`
+    ),
+].join('')
+
+const kbd = (keys: string[]) => keys.map(key => `<kbd>${key}</kbd>`).join(' ')
+
+const moves = [
+  { key: 'h', label: 'map:moveLeft', icon: 'arrowLeft' },
+  { key: 'j', label: 'map:moveDown', icon: 'arrowDown' },
+  { key: 'k', label: 'map:moveUp', icon: 'arrowUp' },
+  { key: 'l', label: 'map:moveRight', icon: 'arrowRight' },
+] as const
 ---
 
 <Layout title={title}>
+  <Fragment slot="head">
+    <style is:inline set:html={mapStyles}></style>
+  </Fragment>
   <RelatedPages category="misc" />
-  <main id="main">
+  <main id="main" class="map">
     <article>
       <h1 set:html={t(userLanguage, 'map:1')} />
 
@@ -65,7 +119,7 @@ function getLayerLabel(layerName: string): string {
               type="image/avif"
             />
             <img
-              alt="Hand-drawn map of Jambudipa"
+              alt={t(userLanguage, 'map:posterAlt')}
               class="image-home"
               src="https://suttacentral.net/img/static-pages/jambudipa_map.jpg"
               width="1476"
@@ -78,10 +132,204 @@ function getLayerLabel(layerName: string): string {
 
       <section aria-labelledby="interactive-map-heading">
         <h2 id="interactive-map-heading" set:html={t(userLanguage, 'map:4')} />
-        <noscript>
-          <p>{t(userLanguage, 'interface:noScript')}</p>
-        </noscript>
-        <sc-map></sc-map>
+        <div
+          class="interactive-map"
+          style={`--home-width: ${width}; --home-height: ${height}`}
+        >
+          <a class="skip" href="#places-index-heading">
+            {t(userLanguage, 'map:skipMap')}
+          </a>
+          <div
+            class="map-frame"
+            style={`--x0: ${x0}; --y0: ${y0}; --width: ${width}; --height: ${height}`}
+          >
+            <svg
+              viewBox={map.viewBox}
+              data-extent={map.extent}
+              aria-hidden="true"
+            >
+              <use href={`${base}#land`}></use>
+              <use class="today" href={`${base}#borders`}></use>
+              <use href={`${base}#rivers`}></use>
+              {
+                placesOnMap
+                  .filter(({ place }) => place.shape!.type !== 'point')
+                  .map(({ place, layer }) => (
+                    <use
+                      class={`${place.shape!.type === 'area' ? 'area' : 'journey'} layer-${layer.n}`}
+                      data-place={place.id}
+                      href={`${base}#${place.id.replace('place', 'shape')}`}
+                      fill={place.shape!.fill}
+                      fill-opacity={place.shape!.fillOpacity}
+                    />
+                  ))
+              }
+            </svg>
+            <div class="map-labels today" aria-hidden="true">
+              {
+                map.countries.map(country => (
+                  <span
+                    class="country"
+                    style={`--x: ${country.x}; --y: ${country.y}`}
+                  >
+                    {countryName(country)}
+                  </span>
+                ))
+              }
+              {
+                map.towns.map(town => (
+                  <span
+                    class:list={['town', { major: town.major }]}
+                    style={`--x: ${town.x}; --y: ${town.y}`}
+                  >
+                    {townName(town)}
+                  </span>
+                ))
+              }
+            </div>
+            <div class="map-places">
+              {
+                placesOnMap.map(({ place, layer }) => (
+                  <>
+                    <button
+                      type="button"
+                      class={`${place.shape!.type} layer-${layer.n}`}
+                      popovertarget={place.id}
+                      style={`--x: ${place.shape!.x}; --y: ${place.shape!.y}; --anchor: --${place.id}`}
+                    >
+                      {place.shape!.type === 'point' ? (
+                        <>
+                          <svg aria-hidden="true">
+                            <use href={`${base}#marker-${place.icon}`} />
+                          </svg>
+                          <span class="sr-only">{place.name}</span>
+                        </>
+                      ) : (
+                        place.name
+                      )}
+                    </button>
+                    <div
+                      id={place.id}
+                      class="map-place"
+                      style={`--anchored-to: --${place.id}`}
+                      popover
+                    >
+                      <strong>
+                        {place.define ? (
+                          <a href={`/define/${place.define}`}>{place.name}</a>
+                        ) : (
+                          place.name
+                        )}
+                      </strong>
+                      {!place.route && <span>{layer.label}</span>}
+                    </div>
+                  </>
+                ))
+              }
+            </div>
+          </div>
+          <div class="map-controls">
+            <fieldset class="map-layers">
+              <legend class="sr-only">{t(userLanguage, 'map:layers')}</legend>
+              {
+                layers
+                  .filter(layer => layer.onMap)
+                  .map(layer => (
+                    <label>
+                      <input
+                        type="checkbox"
+                        id={`map-layer-${layer.n}`}
+                        checked
+                      />
+                      <span>{layer.label}</span>
+                    </label>
+                  ))
+              }
+              <label>
+                <input type="checkbox" id="map-layer-today" />
+                <span>{t(userLanguage, 'map:presentDay')}</span>
+              </label>
+            </fieldset>
+            <fieldset class="map-view" hidden>
+              <legend class="sr-only">{t(userLanguage, 'map:view')}</legend>
+              <button
+                type="button"
+                class="button"
+                data-zoom="in"
+                aria-label={t(userLanguage, 'map:zoomIn')}
+                aria-keyshortcuts="I"
+                title={`${t(userLanguage, 'map:zoomIn')} (I)`}
+              >
+                <Icon name="plus" />
+              </button>
+              <button
+                type="button"
+                class="button"
+                data-zoom="out"
+                aria-label={t(userLanguage, 'map:zoomOut')}
+                aria-keyshortcuts="O"
+                title={`${t(userLanguage, 'map:zoomOut')} (O)`}
+              >
+                <Icon name="minus" />
+              </button>
+              <button
+                type="button"
+                class="button"
+                data-zoom="reset"
+                aria-keyshortcuts="R"
+                title={`${t(userLanguage, 'map:reset')} (R)`}
+              >
+                <Icon name="arrowPath" />
+                <span>{t(userLanguage, 'map:reset')}</span>
+              </button>
+              <button
+                type="button"
+                class="button"
+                data-fullscreen
+                data-exit={t(userLanguage, 'map:exitFullScreen')}
+                aria-keyshortcuts="F"
+                title={`${t(userLanguage, 'map:fullScreen')} (F)`}
+              >
+                <Icon name="arrowsPointingOut" />
+                <span>{t(userLanguage, 'map:fullScreen')}</span>
+              </button>
+              {
+                moves.map(({ key, label, icon }) => (
+                  <button
+                    type="button"
+                    class="button"
+                    data-move={key}
+                    aria-label={t(userLanguage, label)}
+                    aria-keyshortcuts={key.toUpperCase()}
+                    title={`${t(userLanguage, label)} (${key.toUpperCase()})`}
+                  >
+                    <Icon name={icon} />
+                  </button>
+                ))
+              }
+              <dl>
+                <div>
+                  <dt>{t(userLanguage, 'map:zoom')}</dt>
+                  <dd
+                    set:html={t(userLanguage, 'map:zoomHow', {
+                      ctrl: kbd(['ctrl']),
+                      cmd: kbd(['cmd']),
+                      keys: kbd(['I', 'O']),
+                    })}
+                  />
+                </div>
+                <div>
+                  <dt>{t(userLanguage, 'map:pan')}</dt>
+                  <dd
+                    set:html={t(userLanguage, 'map:panHow', {
+                      keys: kbd(['H', 'J', 'K', 'L']),
+                    })}
+                  />
+                </div>
+              </dl>
+            </fieldset>
+          </div>
+        </div>
       </section>
 
       <section aria-labelledby="places-index-heading">
@@ -89,46 +337,467 @@ function getLayerLabel(layerName: string): string {
           {t(userLanguage, 'map:indexOfPlaces')}
         </h2>
         {
-          layerNames.map(layerName => {
-            const layerFeatures = features
-              .filter(f => f.properties?.layer === layerName)
-              .sort((a, b) =>
-                // Numeric, so the journeys' 10) comes after 9), not 1)
-                (a.properties?.name || '').localeCompare(
-                  b.properties?.name || '',
-                  undefined,
-                  { numeric: true }
-                )
-              )
-
-            return (
-              <details>
-                <summary>{getLayerLabel(layerName)}</summary>
-                <ul>
-                  {layerFeatures.map(f => (
+          layers.map(layer => (
+            <details>
+              <summary>{layer.label}</summary>
+              <ul>
+                {layer.places
+                  .filter(place => !place.route)
+                  .map(place => (
                     <li>
-                      {f.properties?.define ? (
+                      {place.define ? (
                         <>
-                          <span set:html={icon.marker[f.properties.icon]} />
-                          <a href={`/define/${f.properties.define}`}>
-                            {f.properties.name}
-                          </a>
+                          <svg class="marker" aria-hidden="true">
+                            <use href={`${base}#marker-${place.icon}`} />
+                          </svg>
+                          <a href={`/define/${place.define}`}>{place.name}</a>
                         </>
                       ) : (
-                        f.properties?.name
+                        place.name
                       )}
                     </li>
                   ))}
-                </ul>
-              </details>
-            )
-          })
+              </ul>
+            </details>
+          ))
         }
       </section>
     </article>
   </main>
-
-  <script>
-    import '~/components/sc-map.ts'
-  </script>
 </Layout>
+
+<script>
+  /**
+   * Pans and zooms the map: ctrl/⌘ + scroll (so the page still scrolls), pinching, double clicking or
+   * tapping, dragging, the view buttons and their hotkeys (I, O, R, F), the arrows or H J K L to move, and
+   * full screen, and brings a place tabbed to into view. The keys only work once the map was last clicked or
+   * focused, so they don't catch keys meant for anything else. It changes the SVG's viewBox, and the --x0
+   * --y0 --width --height the places over it are positioned by, and opens the place a link's #place-… names.
+   * Without it the map shows its first view, and its places and layers still work.
+   */
+  type View = [number, number, number, number]
+
+  const figure = document.querySelector<HTMLElement>('.interactive-map')
+  const frame = figure?.querySelector<HTMLElement>('.map-frame')
+  const svg = frame?.querySelector('svg')
+  if (figure && frame && svg) initMap(figure, frame, svg)
+
+  function initMap(
+    figure: HTMLElement,
+    frame: HTMLElement,
+    svg: SVGSVGElement
+  ) {
+    const viewControls = figure.querySelector<HTMLElement>('.map-view')!
+    const home = svg.getAttribute('viewBox')!.split(' ').map(Number) as View
+    const extent = svg.dataset.extent!.split(' ').map(Number) as View
+    const MAX_ZOOM = 16
+    // Past this, the smaller present-day towns show too
+    const DETAIL_ZOOM = 2
+    const HOTKEYS: Record<string, string> = {
+      i: 'in',
+      o: 'out',
+      r: 'reset',
+      f: 'fullscreen',
+    }
+    // As vim's, each a fraction of the view to move by
+    const MOVES: Record<string, [number, number]> = {
+      h: [-0.2, 0],
+      j: [0, 0.2],
+      k: [0, -0.2],
+      l: [0.2, 0],
+    }
+    const GLIDE_MS = 200
+    // Without them, :popover-open would throw
+    const popovers = 'showPopover' in HTMLElement.prototype
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
+    let view: View = [...home]
+    // The width of the first view, which zooming is measured from
+    let base = home[2]
+    let glide = 0
+
+    /** `[x, y, width, height]` moved to within the map's extent */
+    function clamp([x, y, width, height]: View): View {
+      return [
+        Math.min(Math.max(x, extent[0]), extent[0] + extent[2] - width),
+        Math.min(Math.max(y, extent[1]), extent[1] + extent[3] - height),
+        width,
+        height,
+      ]
+    }
+
+    /** Shows `[x, y, width, height]` of the map at once, as a drag or pinch follows the pointer */
+    function show(next: View) {
+      cancelAnimationFrame(glide)
+      render(clamp(next))
+    }
+
+    /** Glides to `[x, y, width, height]`, as for buttons and keys, unless motion is reduced */
+    function glideTo(next: View) {
+      const to = clamp(next)
+      if (reducedMotion.matches) return show(to)
+      cancelAnimationFrame(glide)
+      const from = [...view]
+      // The first frame's time, as Chromium's can be before now, which eased it backwards first
+      let start: number | undefined
+      const step = (now: number) => {
+        start ??= now
+        const progress = Math.min((now - start) / GLIDE_MS, 1)
+        const ease = 1 - (1 - progress) ** 3
+        render(from.map((n, i) => n + (to[i] - n) * ease) as View)
+        if (progress < 1) glide = requestAnimationFrame(step)
+      }
+      glide = requestAnimationFrame(step)
+    }
+
+    function render(next: View) {
+      view = next
+      svg.setAttribute('viewBox', view.map(n => n.toFixed(2)).join(' '))
+      ;['--x0', '--y0', '--width', '--height'].forEach((name, i) =>
+        frame.style.setProperty(name, String(view[i]))
+      )
+      frame.toggleAttribute('data-zoomed', base / view[2] >= DETAIL_ZOOM)
+    }
+
+    /** The smallest view of the frame's shape that holds `[x, y, width, height]`, around its middle */
+    function fitting([x, y, width, height]: View): View {
+      const shape = frame.clientHeight / frame.clientWidth
+      let newWidth = Math.max(width, height / shape)
+      newWidth = Math.min(newWidth, extent[2], extent[3] / shape)
+      const newHeight = newWidth * shape
+      return [
+        x + (width - newWidth) / 2,
+        y + (height - newHeight) / 2,
+        newWidth,
+        newHeight,
+      ]
+    }
+
+    // Shorter than the first view's shape, so it's widened to fill it
+    frame.classList.add('fitted')
+    show(fitting(home))
+    base = view[2]
+
+    // Full screen changes the frame's size, so the view keeps its scale, around the same middle
+    let frameWidth = frame.clientWidth
+    new ResizeObserver(() => {
+      if (!frame.clientWidth || frame.clientWidth === frameWidth) return
+      const unitsPerPixel = view[2] / frameWidth
+      frameWidth = frame.clientWidth
+      const [cx, cy] = centre()
+      const width = frameWidth * unitsPerPixel
+      const height = frame.clientHeight * unitsPerPixel
+      show([cx - width / 2, cy - height / 2, width, height])
+    }).observe(frame)
+
+    /** A point on screen as map units */
+    function toMap(clientX: number, clientY: number): [number, number] {
+      const box = frame.getBoundingClientRect()
+      return [
+        view[0] + ((clientX - box.left) / box.width) * view[2],
+        view[1] + ((clientY - box.top) / box.height) * view[3],
+      ]
+    }
+
+    /** The view zoomed by `factor` (above 1 is in) around a point in map units, no further than its limits */
+    function zoomed(factor: number, [cx, cy]: [number, number]): View {
+      const [x, y, width, height] = view
+      const widest = Math.min(extent[2], (extent[3] * width) / height)
+      const newWidth = Math.min(
+        Math.max(width / factor, base / MAX_ZOOM),
+        widest
+      )
+      factor = width / newWidth
+      return [
+        cx - (cx - x) / factor,
+        cy - (cy - y) / factor,
+        width / factor,
+        height / factor,
+      ]
+    }
+
+    function centre(): [number, number] {
+      return [view[0] + view[2] / 2, view[1] + view[3] / 2]
+    }
+
+    const placeAt = (target: EventTarget | null) =>
+      (target as Element).closest('.map-place')
+
+    frame.addEventListener(
+      'wheel',
+      event => {
+        if (!event.ctrlKey && !event.metaKey) return
+        if (placeAt(event.target)) return
+        event.preventDefault()
+        show(
+          zoomed(
+            event.deltaY < 0 ? 1.25 : 0.8,
+            toMap(event.clientX, event.clientY)
+          )
+        )
+      },
+      { passive: false }
+    )
+
+    // One pointer drags, two pinch
+    type Pointer = { x: number; y: number }
+    const pointers = new Map<number, Pointer>()
+    let gesture: {
+      distance?: number
+      middle?: [number, number]
+      start?: [number, number]
+      from?: Pointer
+    } | null = null
+
+    function startGesture() {
+      const [a, b] = [...pointers.values()]
+      gesture = b
+        ? {
+            distance: Math.hypot(a.x - b.x, a.y - b.y),
+            middle: toMap((a.x + b.x) / 2, (a.y + b.y) / 2),
+          }
+        : { start: toMap(a.x, a.y), from: a }
+    }
+
+    frame.addEventListener('pointerdown', event => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return
+      if (placeAt(event.target)) return
+      frame.classList.remove('dragging')
+      pointers.set(event.pointerId, { x: event.clientX, y: event.clientY })
+      startGesture()
+    })
+
+    frame.addEventListener('pointermove', event => {
+      if (!pointers.has(event.pointerId) || !gesture) return
+      pointers.set(event.pointerId, { x: event.clientX, y: event.clientY })
+      const [a, b] = [...pointers.values()]
+      if (b && gesture.distance) {
+        const distance = Math.hypot(a.x - b.x, a.y - b.y)
+        show(zoomed(distance / gesture.distance, gesture.middle!))
+        startGesture()
+      } else if (gesture.start) {
+        // Past a few pixels it's a drag, so a place let go of here doesn't open
+        if (!frame.hasPointerCapture(event.pointerId)) {
+          const from = gesture.from!
+          if (Math.hypot(a.x - from.x, a.y - from.y) < 4) return
+          frame.setPointerCapture(event.pointerId)
+          frame.classList.add('dragging')
+        }
+        const [x, y] = toMap(a.x, a.y)
+        show([
+          view[0] + gesture.start[0] - x,
+          view[1] + gesture.start[1] - y,
+          view[2],
+          view[3],
+        ])
+      }
+    })
+
+    function endPointer(event: PointerEvent) {
+      pointers.delete(event.pointerId)
+      if (pointers.size) startGesture()
+      else gesture = null
+    }
+    frame.addEventListener('pointerup', event => {
+      endPointer(event)
+      doubleTap(event)
+    })
+    frame.addEventListener('pointercancel', endPointer)
+
+    frame.addEventListener(
+      'click',
+      event => {
+        if (!frame.classList.contains('dragging')) return
+        frame.classList.remove('dragging')
+        event.preventDefault()
+        event.stopPropagation()
+      },
+      true
+    )
+
+    // By pointer for mouse and touch alike, as a double tap gives no dblclick where touch-action is none
+    let lastTap: { time: number; x: number; y: number } | null = null
+    function doubleTap(event: PointerEvent) {
+      if (
+        frame.classList.contains('dragging') ||
+        (event.target as Element).closest('button, .map-place')
+      ) {
+        lastTap = null
+        return
+      }
+      const tap = { time: event.timeStamp, x: event.clientX, y: event.clientY }
+      const isDouble =
+        lastTap &&
+        tap.time - lastTap.time < 300 &&
+        Math.hypot(tap.x - lastTap.x, tap.y - lastTap.y) < 20
+      lastTap = isDouble ? null : tap
+      if (isDouble) {
+        glideTo(zoomed(event.shiftKey ? 0.5 : 2, toMap(tap.x, tap.y)))
+      }
+    }
+
+    /** Moves the view by one of `MOVES` */
+    function move(key: string) {
+      const [x, y, width, height] = view
+      const [dx, dy] = MOVES[key]
+      glideTo([x + dx * width, y + dy * height, width, height])
+    }
+
+    viewControls.addEventListener('click', event => {
+      const button = (event.target as Element).closest<HTMLElement>('button')
+      if (!button) return
+      const { move: moveKey, zoom } = button.dataset
+      if (moveKey && MOVES[moveKey]) move(moveKey)
+      if (zoom === 'in') glideTo(zoomed(1.5, centre()))
+      if (zoom === 'out') glideTo(zoomed(1 / 1.5, centre()))
+      if (zoom === 'reset') glideTo(fitting(home))
+      if (button.hasAttribute('data-fullscreen')) toggleFullscreen()
+    })
+
+    // Kept from before a focus scrolls the page, as the scroll event only comes after.
+    // Also on Tab, before Safari's scroll, whose event can come first
+    let pageScroll = [scrollX, scrollY]
+    const keepScroll = () => (pageScroll = [scrollX, scrollY])
+    addEventListener('scroll', keepScroll, { passive: true })
+    addEventListener('keydown', event => event.key === 'Tab' && keepScroll(), {
+      capture: true,
+    })
+
+    /** A place's spot on the map, from the button that opens it */
+    function placePoint(button: HTMLElement): [number, number] {
+      return [
+        Number(button.style.getPropertyValue('--x')),
+        Number(button.style.getPropertyValue('--y')),
+      ]
+    }
+
+    // A place tabbed to outside the view is brought into the middle of it, with the page put back first, as
+    // the browser scrolls it to where the place sits off the map
+    frame.querySelector('.map-places')?.addEventListener('focusin', event => {
+      const button = (event.target as Element).closest<HTMLElement>(
+        '.map-places > button'
+      )
+      if (!button) return
+      const [x, y] = placePoint(button)
+      const [vx, vy, width, height] = view
+      if (x > vx && x < vx + width && y > vy && y < vy + height) return
+      const before = pageScroll
+      const putBack = () => {
+        scrollTo(before[0], before[1])
+        frame.scrollIntoView({ block: 'nearest' })
+      }
+      putBack()
+      // Again next frame, as Safari scrolls to the place after focusin
+      requestAnimationFrame(putBack)
+      glideTo([x - width / 2, y - height / 2, width, height])
+    })
+
+    // A region or journey's shape opens its popover, as its name does, where it's clicked rather than dragged
+    frame.addEventListener('click', event => {
+      const shape = (event.target as Element).closest<SVGElement>(
+        '[data-place]'
+      )
+      const popover = shape && document.getElementById(shape.dataset.place!)
+      if (!popovers || !popover || popover.matches(':popover-open')) return
+      popover.showPopover()
+    })
+
+    const fullscreenButton =
+      viewControls.querySelector<HTMLElement>('[data-fullscreen]')!
+    const fullscreenLabel = fullscreenButton.querySelector('span')!
+    const enterLabel = fullscreenLabel.textContent
+
+    // In the page's own box where the Fullscreen API is missing or refused, as on iPhones and in app webviews
+    function toggleFullscreen() {
+      if (document.fullscreenElement) return document.exitFullscreen()
+      if (figure.classList.contains('pseudo-fullscreen')) {
+        return setPseudoFullscreen(false)
+      }
+      if (!figure.requestFullscreen) return setPseudoFullscreen(true)
+      figure.requestFullscreen().catch(() => setPseudoFullscreen(true))
+    }
+
+    function setPseudoFullscreen(on: boolean) {
+      figure.classList.toggle('pseudo-fullscreen', on)
+      labelFullscreen()
+    }
+
+    function labelFullscreen() {
+      const on =
+        !!document.fullscreenElement ||
+        figure.classList.contains('pseudo-fullscreen')
+      fullscreenLabel.textContent = on
+        ? fullscreenButton.dataset.exit!
+        : enterLabel
+    }
+
+    document.addEventListener('fullscreenchange', labelFullscreen)
+
+    // Only while the map was the last thing clicked or focused
+    let active = false
+    for (const type of ['pointerdown', 'focusin']) {
+      document.addEventListener(type, event => {
+        active = figure.contains(event.target as Node)
+      })
+    }
+
+    document.addEventListener('keydown', event => {
+      if (
+        event.key === 'Escape' &&
+        figure.classList.contains('pseudo-fullscreen')
+      ) {
+        // Not when it closes an open popover first
+        if (!popovers || !document.querySelector('.map-place:popover-open')) {
+          setPseudoFullscreen(false)
+        }
+        return
+      }
+      if (!active || event.ctrlKey || event.metaKey || event.altKey) return
+      if (
+        (event.target as Element).closest?.(
+          'input:not([type="checkbox"]), textarea, select'
+        )
+      ) {
+        return
+      }
+      const key = event.key.toLowerCase()
+      if (MOVES[key]) {
+        event.preventDefault()
+        move(key)
+        return
+      }
+      const action = HOTKEYS[key]
+      const button =
+        action === 'fullscreen'
+          ? fullscreenButton
+          : viewControls.querySelector<HTMLElement>(`[data-zoom="${action}"]`)
+      if (!action || !button || button.hidden) return
+      event.preventDefault()
+      button.click()
+    })
+
+    // A place a /define page links to, ie /map#place-3-12, zoomed to and opened
+    function openLinkedPlace() {
+      const popover = document.getElementById(
+        decodeURIComponent(location.hash.slice(1))
+      )
+      if (!popovers || !popover?.matches('.map-place')) return
+      const button = frame.querySelector<HTMLElement>(
+        `[popovertarget="${popover.id}"]`
+      )!
+      const [x, y] = placePoint(button)
+      const [, , width, height] = fitting(home)
+      show([x - width / 4, y - height / 4, width / 2, height / 2])
+      popover.showPopover()
+      const centreMap = () => figure.scrollIntoView({ block: 'center' })
+      centreMap()
+      // Again once loaded, as till then the browser scrolls the open place to the top
+      if (document.readyState !== 'complete') {
+        addEventListener('load', centreMap, { once: true })
+      }
+    }
+    openLinkedPlace()
+    addEventListener('hashchange', openLinkedPlace)
+
+    viewControls.hidden = false
+  }
+</script>

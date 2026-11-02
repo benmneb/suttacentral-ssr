@@ -17,7 +17,8 @@ body {
   .skip,
   [popover],
   dialog,
-  main :is(form, search)
+  main :is(form, search),
+  .map-controls
 ) {
   display: none !important;
 }
@@ -60,5 +61,10 @@ body > footer {
 }
 
 :is(.segment, .illustration) {
+  break-inside: avoid;
+}
+
+/* Whole, as Firefox leaves the land on one page and moves the places over it to the next */
+.map-frame {
   break-inside: avoid;
 }

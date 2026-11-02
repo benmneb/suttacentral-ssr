@@ -1,3 +1,21 @@
 {
-  "map:indexOfPlaces": "Index of Places"
+  "map:indexOfPlaces": "Index of Places",
+  "map:posterAlt": "Hand-drawn map of Jambudīpa",
+  "map:skipMap": "Skip the map",
+  "map:layers": "Layers",
+  "map:presentDay": "Present day",
+  "map:view": "View",
+  "map:zoomIn": "Zoom in",
+  "map:zoomOut": "Zoom out",
+  "map:reset": "Reset",
+  "map:fullScreen": "Full screen",
+  "map:exitFullScreen": "Exit full screen",
+  "map:moveLeft": "Move left",
+  "map:moveDown": "Move down",
+  "map:moveUp": "Move up",
+  "map:moveRight": "Move right",
+  "map:zoom": "Zoom",
+  "map:zoomHow": "double click/tap, or {ctrl}/{cmd} and scroll, or pinch, or {keys}",
+  "map:pan": "Pan",
+  "map:panHow": "drag, or the arrows, or {keys}"
 }
