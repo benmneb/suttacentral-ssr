@@ -9,6 +9,7 @@ interface Props {
   query?: string | null
   autoFocus?: boolean
   languageArray?: string[]
+  inDialog?: boolean
 }
 
 const {
@@ -16,6 +17,7 @@ const {
   query,
   autoFocus = true,
   languageArray,
+  inDialog,
 } = Astro.props
 const pathname = Astro.url.pathname
 const isSearchPage = pathname.startsWith('/search')
@@ -43,6 +45,17 @@ const userLanguage = Astro.locals.userLanguage
     <button aria-label={t(userLanguage, 'search:search')} type="submit"
       ><Icon name="magnifyingGlass" mini /></button
     >
+    {
+      inDialog && (
+        <button
+          formmethod="dialog"
+          formnovalidate
+          aria-label={t(userLanguage, 'search:closeSearch')}
+        >
+          <Icon name="xMark" mini />
+        </button>
+      )
+    }
   </fieldset>
   {
     isSearchPage && (
@@ -159,8 +172,15 @@ const userLanguage = Astro.locals.userLanguage
       button {
         border: none;
         background: none;
+        color: inherit;
         font-size: inherit;
         cursor: pointer;
+      }
+
+      @media (hover: hover) {
+        > button[formmethod='dialog'] {
+          display: none;
+        }
       }
     }
 

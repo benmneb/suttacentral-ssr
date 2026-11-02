@@ -1,4 +1,5 @@
 {
   "search:failedFor": "The search failed for",
-  "search:pagination": "Search pagination"
+  "search:pagination": "Search pagination",
+  "search:closeSearch": "Close search"
 }
