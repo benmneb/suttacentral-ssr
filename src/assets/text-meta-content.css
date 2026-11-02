@@ -19,7 +19,7 @@ hgroup:has(p) {
   font-size: small;
 
   > span:first-child {
-    margin-inline: 0.25em;
+    margin-inline: 0.5em 0.25em;
     opacity: 0.7;
   }
 
