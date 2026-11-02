@@ -563,6 +563,21 @@ function tocLabel(text: string): string {
   return stripped || text.trim()
 }
 
+// A page of several texts repeats a number like 1.1, so it takes .net's whole
+// key on a range like an1.1-10 (an1.2_1.1), and elsewhere (dhp1-20) keeps the
+// short one where first used, where a .net link lands
+const isMultiTextRange =
+  new Set(shownKeys.map(key => key.split(':')[0])).size > 1 &&
+  /^\d+-\d+$/.test(lowerAcronym.split('.')[1] ?? '')
+const segmentIds = new Map<string, string>()
+const seenRefs = new Set<string>()
+for (const key of shownKeys) {
+  const ref = key.split(':').pop()!
+  if (isMultiTextRange || seenRefs.has(ref))
+    segmentIds.set(key, key.replace(':', '_'))
+  seenRefs.add(ref)
+}
+
 /**
  * The reference span for a segment: the SuttaCentral number, then an anchor per
  * id in `reference_text` - "bj10.20, cck12.12, ms9M_53" and so on.
@@ -573,10 +588,11 @@ function renderReferences(key: string, ref: string) {
     .split(',')
     .map((id: string) => id.trim())
     .filter(Boolean)
+  const id = segmentIds.get(key) ?? ref
 
   return `
-      <span class="reference" id="${ref}" hidden>
-        <a href="#${ref}" title="${t(userLanguage, 'text:segmentNumber')}">${ref}</a>
+      <span class="reference" id="${id}" hidden>
+        <a href="#${id}" title="${t(userLanguage, 'text:segmentNumber')}">${isMultiTextRange ? key : ref}</a>
         ${ids
           .map(
             (id: string) =>
