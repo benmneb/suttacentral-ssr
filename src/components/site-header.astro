@@ -24,7 +24,7 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
 
 <header>
   <nav aria-label={t(userLanguage, 'header:breadcrumb')}>
-    <ul>
+    <ol>
       <li aria-current={pathname === '/' ? 'page' : undefined}>
         {
           pathname === '/' ? (
@@ -33,7 +33,7 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
               <span class="sr-only">{t(userLanguage, 'interface:home')}</span>
             </span>
           ) : (
-            <a href="/" aria-label={t(userLanguage, 'interface:home')}>
+            <a href="/">
               <Icon name="home" />
               <span class="sr-only">{t(userLanguage, 'interface:home')}</span>
             </a>
@@ -50,7 +50,7 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
           </li>
         ))
       }
-    </ul>
+    </ol>
   </nav>
   <div>
     {
@@ -94,7 +94,7 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
       block-size: 1rem;
     }
 
-    ul {
+    ol {
       list-style: none;
       display: flex;
       flex-wrap: wrap;
