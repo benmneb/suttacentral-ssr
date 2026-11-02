@@ -17,23 +17,16 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '')
       <section>
         <h2>{t(userLanguage, label)}</h2>
         <ul>
-          {pages.map(({ href, label }) =>
-            currentPath === href ? (
-              <li>
-                <span aria-current="page">
-                  <Fragment set:html={pageIcons[href]} />
-                  {t(userLanguage, label)}
-                </span>
-              </li>
-            ) : (
-              <li>
-                <a href={href}>
-                  <Fragment set:html={pageIcons[href]} />
-                  {t(userLanguage, label)}
-                </a>
-              </li>
-            )
-          )}
+          {pages.map(({ href, label }) => (
+            <li>
+              <Fragment set:html={pageIcons[href]} />
+              {currentPath === href ? (
+                <span aria-current="page">{t(userLanguage, label)}</span>
+              ) : (
+                <a href={href}>{t(userLanguage, label)}</a>
+              )}
+            </li>
+          ))}
         </ul>
       </section>
     ))
@@ -53,6 +46,9 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '')
     inset: 2.75rem 1rem auto auto;
     margin: 0;
     max-width: min(34rem, 100vw - 2rem);
+    /* 5.5rem clears the menu button, even when it wraps below search */
+    max-height: calc(100dvh - 5.5rem);
+    overflow-y: auto;
 
     section {
       height: fit-content;
@@ -95,24 +91,16 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '')
 
   /* On the items, as text.css gives list items in a section bullets back */
   li {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
     list-style: none;
     padding: 0.125rem 0;
     overflow-wrap: anywhere;
-  }
 
-  /* Flex drops the markup's spaces, so the underline stops at the words */
-  a,
-  [aria-current='page'] {
-    display: inline-flex;
-    align-items: center;
-  }
-
-  a > :global(.icon:first-child),
-  [aria-current='page'] > :global(.icon:first-child) {
-    flex-shrink: 0;
-    align-self: flex-start;
-    margin-top: calc((1lh - 1em) / 2);
-    margin-inline-end: 0.375rem;
+    > :global(.icon) {
+      color: var(--text-color-secondary);
+    }
   }
 
   [aria-current='page'] {
