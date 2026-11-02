@@ -746,7 +746,18 @@ ${renderIllustrations(key)}
 function getLegacyHTML() {
   if (isSegmented) return null
 
-  const htmlContent = suttasData?.translation.text
+  let text: string = suttasData?.translation.text
+  // Some come as a whole document (mn10/horner), which can't go in <main>
+  const bodyStart = text.indexOf('<body')
+  if (bodyStart !== -1) {
+    const bodyEnd = text.lastIndexOf('</body>')
+    text = text.slice(
+      text.indexOf('>', bodyStart) + 1,
+      bodyEnd === -1 ? undefined : bodyEnd
+    )
+  }
+
+  const htmlContent = text
     .replace(/\n/g, '')
     .replace(
       /class='ref ([^' ]+)/g,
