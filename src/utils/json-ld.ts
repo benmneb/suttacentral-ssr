@@ -69,7 +69,7 @@ export function generateIndexJsonLd(tipitaka: any[], origin: string) {
       keywords: [
         'Buddhism',
         'Buddhist texts',
-        'Pali Canon',
+        'Pāli Canon',
         'Tipitaka',
         'suttas',
         'dharma',
@@ -303,7 +303,7 @@ export function generateTextMetaJsonLd(
         about: {
           '@type': 'Thing',
           name: 'Buddhist Teaching',
-          description: 'Ancient Buddhist discourse or text from the Pali Canon',
+          description: 'Ancient Buddhist discourse or text from the Pāli Canon',
         },
       },
       isPartOf: {
@@ -439,7 +439,7 @@ export function generateTextJsonLd(
         entry.translated_title || entry.translated_name,
       ].filter(Boolean),
       description:
-        entry.blurb || 'Buddhist text from the Pali Canon with translation',
+        entry.blurb || 'Buddhist text from the Pāli Canon with translation',
       url: `${origin}${currentPath}`,
       sameAs: [
         `https://suttacentral.net${currentPath}`,

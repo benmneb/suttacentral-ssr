@@ -21,6 +21,11 @@ export function normalise(str: string): string {
   return str.trim().toLowerCase()
 }
 
+/** The site's spelling of a language name, as the API has "Pali" in places */
+export function languageName(name: string): string {
+  return name === 'Pali' ? 'Pāli' : name
+}
+
 /**
  * A segment's text with bilara's own tags as HTML: <supplied> and <unclear> as
  * the classes legacy texts use, and <j>, which starts a verse's next

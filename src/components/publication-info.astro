@@ -1,5 +1,6 @@
 ---
 import { t } from '~/i18n'
+import { languageName } from '~/utils/strings'
 
 const { entry } = Astro.props
 const data = entry[0]
@@ -93,14 +94,14 @@ const userLanguage = Astro.locals.userLanguage
                     'publication:translationLanguage'
                   )}
                 >
-                  {data.translation_lang_name}
+                  {languageName(data.translation_lang_name)}
                 </dd>
               </>
             )
           }
           <dt>{t(userLanguage, 'publication:rootLanguage')}</dt>
           <dd aria-label={t(userLanguage, 'publication:rootLanguage')}>
-            {data.root_lang_name}
+            {languageName(data.root_lang_name)}
           </dd>
         </dl>
       </section>
