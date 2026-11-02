@@ -39,6 +39,7 @@ const rootTrans = entry.translations.find((t: any) => t.is_root)
 
 <ParallelSegments
   segments={parallelSegments(parallelsData)}
+  entry={entry}
   onScreenUid={entry.uid}
   rootTrans={rootTrans}
   userLanguage={userLanguage}

@@ -15,20 +15,23 @@ hgroup:has(p) {
   }
 }
 
-.volpages {
-  font-size: small;
-
-  > span:first-child {
+.text-refs {
+  > span > [aria-hidden] {
     margin-inline: 0.5em 0.25em;
     opacity: 0.7;
   }
 
-  > span[title] {
+  [title] {
     display: inline-block;
   }
 
-  .icon {
+  .volpages .icon {
     margin-inline-end: 0.25em;
+    color: var(--text-color-secondary);
+  }
+
+  .volpages:not(.parallel-list *) {
+    font-size: small;
   }
 }
 

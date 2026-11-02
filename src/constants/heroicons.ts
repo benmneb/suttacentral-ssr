@@ -14,6 +14,7 @@ export type IconName =
   | 'bookmark'
   | 'bookOpen'
   | 'chatBubbleBottomCenterText'
+  | 'chatBubbleLeftEllipsis'
   | 'chevronDoubleDown'
   | 'clock'
   | 'commandLine'

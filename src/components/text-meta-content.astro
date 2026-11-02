@@ -2,8 +2,8 @@
 import '~/assets/details.css'
 import '~/assets/text-meta-content.css'
 import Heading, { type HeadingProps } from '~/components/heading.astro'
-import Icon from '~/components/icon.astro'
 import RootTitle from '~/components/root-title.astro'
+import TextRefs from '~/components/text-refs.astro'
 import { icon } from '~/constants/heroicons'
 import { t } from '~/i18n'
 import {
@@ -99,20 +99,12 @@ function printIconsHTML(translation) {
     </Heading>
     {
       !!entry.acronym && !isIndividualRangeSutta && (
-        <p>
-          {entry.acronym.trim()}
-          {volpages.map(v => (
-            <span class="volpages">
-              <span aria-hidden="true">∙</span>
-              <span title={t(userLanguage, 'suttaplex:volumeAndPage')}>
-                <span class="sr-only">
-                  {`${t(userLanguage, 'suttaplex:volumeAndPage')}: `}
-                </span>
-                <Icon name="bookOpen" />
-                {v}
-              </span>
-            </span>
-          ))}
+        <p class="text-refs">
+          <TextRefs
+            acronym={entry.acronym}
+            volpages={volpages}
+            userLanguage={userLanguage}
+          />
         </p>
       )
     }

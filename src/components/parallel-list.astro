@@ -1,6 +1,12 @@
 ---
+import RootTitle from '~/components/root-title.astro'
+import TextRefs from '~/components/text-refs.astro'
 import { langTag } from '~/utils/language'
-import { getHashFragment, parallelTypeTitle } from '~/utils/parallels'
+import {
+  getHashFragment,
+  parallelTypeName,
+  parallelTypeTitle,
+} from '~/utils/parallels'
 import { formatVolpages } from '~/utils/strings'
 
 interface Props {
@@ -16,64 +22,48 @@ const { parallels, userLanguage, typeTitles = true } = Astro.props
 <ul class="parallel-list">
   {
     parallels.map(parallel => {
-      const prettyVolpages = formatVolpages(parallel.to.volpages)
-      const hasTranslations = parallel.to.translations?.length > 0
-      const firstTrans = parallel.to.translations?.[0]
-      const displayTitle =
-        parallel.to.translated_title?.trim() ||
-        parallel.to.original_title?.trim() ||
-        parallel.to.acronym?.trim()
+      const { to } = parallel
+      const type = to.type
+      const trans = to.translations?.[0]
+      const href =
+        trans &&
+        `/${to.uid}/${trans.lang}/${trans.author_uid}${getHashFragment(to.to)}`
+      const label = to.acronym?.trim()
+      const titled = !!(
+        to.original_title?.trim() || to.translated_title?.trim()
+      )
+      const volpages = formatVolpages(to.volpages)
+      const typeName = typeTitles ? parallelTypeName(userLanguage, type) : ''
 
       return (
         <li
-          class={`parallel-list-item-${parallel.to.type}`}
-          title={
-            typeTitles
-              ? parallelTypeTitle(userLanguage, parallel.to.type)
-              : undefined
-          }
+          class={`parallel-list-item-${type}`}
+          title={typeTitles ? parallelTypeTitle(userLanguage, type) : undefined}
         >
-          {hasTranslations ? (
-            <a
-              href={`/${parallel.to.uid}/${firstTrans.lang}/${firstTrans.author_uid}${getHashFragment(parallel.to.to)}`}
-              hreflang={langTag(firstTrans.lang)}
-            >
-              {displayTitle}
+          {typeName && <span class="sr-only">{`${typeName}: `}</span>}
+          {titled ? (
+            <RootTitle
+              root={to.original_title}
+              translation={to.translated_title}
+              lang={to.root_lang}
+              href={href}
+            />
+          ) : href ? (
+            <a href={href} hreflang={langTag(trans.lang)}>
+              {label}
             </a>
           ) : (
-            <span>{displayTitle}</span>
+            <span>{label}</span>
           )}
-
-          {/* Secondary info line */}
-          {parallel.to.translated_title && parallel.to.original_title ? (
-            <div>
-              {parallel.to.original_title.trim()}
-              {parallel.to.acronym && (
-                <>
-                  {' '}
-                  <span aria-hidden="true">∙</span> {parallel.to.acronym.trim()}
-                </>
-              )}
-              {prettyVolpages && (
-                <>
-                  {' '}
-                  <span aria-hidden="true">∙</span> {prettyVolpages.trim()}
-                </>
-              )}
-            </div>
-          ) : parallel.to.original_title ? (
-            <div>
-              {parallel.to.acronym && <>{parallel.to.acronym.trim()}</>}
-              {prettyVolpages && (
-                <>
-                  {' '}
-                  <span aria-hidden="true">∙</span> {prettyVolpages.trim()}
-                </>
-              )}
-            </div>
-          ) : parallel.to.acronym && prettyVolpages ? (
-            <div>{prettyVolpages.trim()}</div>
-          ) : null}
+          {((titled && label) || volpages) && (
+            <p class="text-refs">
+              <TextRefs
+                acronym={titled ? label : undefined}
+                volpages={[volpages]}
+                userLanguage={userLanguage}
+              />
+            </p>
+          )}
         </li>
       )
     })

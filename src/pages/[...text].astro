@@ -17,6 +17,7 @@ import {
   referenceEditions,
 } from '~/constants/reference-editions'
 import {
+  acronymOf,
   PARALLEL_TYPES,
   parallelTypeTitle,
   parseParallelKey,
@@ -449,10 +450,7 @@ function parallelSpan(key: string) {
 
 function spanLabel(key: string, start: number, end: number) {
   const { base, start: from } = parseParallelKey(key)
-  const acronym =
-    base === suttaplexData[0].uid
-      ? suttaplexData[0].acronym
-      : rangeUidToAcronym(base)
+  const acronym = acronymOf(base, suttaplexData[0])
   if (!from) return acronym
   const ref = (i: number) => shownKeys[i].split(':')[1]
   const refs = start === end ? ref(start) : `${ref(start)}–${ref(end)}`

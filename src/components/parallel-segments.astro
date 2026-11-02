@@ -1,20 +1,23 @@
 ---
 import ParallelList from '~/components/parallel-list.astro'
 import { t } from '~/i18n'
-import { parallelHref } from '~/utils/parallels'
+import { parallelHref, parallelKeyLabel } from '~/utils/parallels'
 
 interface Props {
   id?: string
   segments: [string, any[]][] // from parallelSegments
+  entry: { uid: string; acronym?: string } // the text the keys are from
   onScreenUid: string // what a key spanning two suttas points at instead
   rootTrans?: { lang: string; author_uid: string }
   userLanguage: string
 }
 
-const { id, segments, onScreenUid, rootTrans, userLanguage } = Astro.props
+const { id, segments, entry, onScreenUid, rootTrans, userLanguage } =
+  Astro.props
 
 const href = (segmentKey: string) =>
   parallelHref(segmentKey, onScreenUid, rootTrans!)
+const label = (segmentKey: string) => parallelKeyLabel(segmentKey, entry)
 ---
 
 <ul id={id}>
@@ -23,9 +26,9 @@ const href = (segmentKey: string) =>
       segments.map(([segmentKey, parallels]) => (
         <li>
           {rootTrans ? (
-            <a href={href(segmentKey)}>{segmentKey}</a>
+            <a href={href(segmentKey)}>{label(segmentKey)}</a>
           ) : (
-            <span>{segmentKey}</span>
+            <span>{label(segmentKey)}</span>
           )}
           <ParallelList parallels={parallels} userLanguage={userLanguage} />
         </li>

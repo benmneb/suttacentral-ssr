@@ -41,6 +41,7 @@ details {
 
       ul {
         padding-left: 2rem;
+        margin-top: 0.3rem;
 
         li {
           list-style-type: lower-roman;
@@ -50,14 +51,34 @@ details {
   }
 }
 
-.parallel-list-item-full {
-  list-style-type: '⇆  ';
-}
-.parallel-list-item-mention {
-  list-style-type: '〞';
-}
-.parallel-list-item-retelling {
-  list-style-type: '↺ ';
+/* Each type's --icon is in icons.css */
+.parallel-list > [class^='parallel-list-item-'] {
+  position: relative;
+  margin-bottom: 0.5rem;
+  list-style-type: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: -1.5em;
+    inset-block-start: 0.25em;
+    inset-block-start: calc((1lh - 1em) / 2);
+    inline-size: 1em;
+    block-size: 1em;
+    background-color: currentColor;
+    mask: var(--icon) center / contain no-repeat;
+    forced-color-adjust: none;
+    forced-color-adjust: preserve-parent-color;
+    print-color-adjust: exact;
+  }
+
+  .root-title > span {
+    font-size: inherit;
+  }
+
+  > p {
+    margin: 0;
+  }
 }
 .parallel-list > li[title] {
   cursor: help;

@@ -1,0 +1,33 @@
+---
+import '~/assets/text-meta-content.css'
+import { icon } from '~/constants/heroicons'
+import { t } from '~/i18n'
+
+interface Props {
+  acronym?: string
+  volpages?: string[] // formatted already
+  userLanguage: string
+}
+
+const { acronym, volpages = [], userLanguage } = Astro.props
+const pageTitle = t(userLanguage, 'suttaplex:volumeAndPage')
+
+const parts: { text: string; title?: string; className?: string }[] = [
+  { text: acronym?.trim() ?? '' },
+  ...volpages.map(text => ({ text, title: pageTitle, className: 'volpages' })),
+].filter(part => part.text)
+
+// No space before a ∙, so a line only wraps after one
+const html = parts
+  .map(({ text, title, className }, i) => {
+    const dot = i ? '<span aria-hidden="true">∙</span> ' : ''
+    const pageIcon = className === 'volpages' ? icon('bookOpen') : ''
+    const value = title
+      ? `<span title="${title}"><span class="sr-only">${title}: </span>${pageIcon}${text}</span>`
+      : text
+    return `<span${className ? ` class="${className}"` : ''}>${dot}${value}</span>`
+  })
+  .join('')
+---
+
+<Fragment set:html={html} />
