@@ -40,6 +40,36 @@ export function bilaraMarkup(text: string): string {
   return html + '</span>'.repeat(joins)
 }
 
+/**
+ * Gives each heading level in turn the one `closeHeadingGaps` makes it, eg h1,
+ * h4, h6, h4 as 1, 2, 3, 2
+ */
+export function headingRenumberer() {
+  // Each open section's level and new level, under one for anything before h1
+  const sections = [{ level: 0, to: 1 }]
+  return (level: number) => {
+    while (sections.length > 1 && sections.at(-1)!.level >= level)
+      sections.pop()
+    const to = level === 1 ? 1 : sections.at(-1)!.to + 1
+    sections.push({ level, to })
+    return to
+  }
+}
+
+/**
+ * Headings renumbered so none is more than a level below the one it's under,
+ * eg an h4 straight after the h1 as an h2, as .net's texts skip levels
+ */
+export function closeHeadingGaps(html: string): string {
+  const renumber = headingRenumberer()
+  const open: number[] = []
+  return html.replace(/<(\/?)h([1-6])(?=[\s>])/g, (_, close, digit) => {
+    if (close) return `</h${open.pop() ?? digit}`
+    open.push(renumber(Number(digit)))
+    return `<h${open.at(-1)}`
+  })
+}
+
 /** Lets a long Pali compound title wrap before its suffix, eg "-sutta" */
 export function softHyphenateTitle(title: string): string {
   return title.replace(

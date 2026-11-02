@@ -22,6 +22,7 @@ import {
 } from '~/utils/parallels'
 import {
   bilaraMarkup,
+  closeHeadingGaps,
   parseUidNumbers,
   rangeUidToAcronym,
   softHyphenateTitle,
@@ -817,7 +818,9 @@ const rootLangHTML = getRootLangHTML()
 const segmentedHTML = getSegmentedHTML()
 const legacyHTML = getLegacyHTML()
 
-const articleHTML = rootLangHTML || segmentedHTML || legacyHTML
+const articleHTML = closeHeadingGaps(
+  rootLangHTML || segmentedHTML || legacyHTML
+)
 
 // A lone sutta title is the page title, not a table of contents
 if (toc.length === 1 && toc[0].isTitle) toc.length = 0
