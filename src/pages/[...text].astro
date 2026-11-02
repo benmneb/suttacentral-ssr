@@ -22,6 +22,7 @@ import {
   parseParallelKey,
 } from '~/utils/parallels'
 import {
+  authorName,
   bilaraMarkup,
   closeHeadingGaps,
   dropEmptyHeadings,
@@ -100,6 +101,14 @@ if (!suttaplexData?.[0]?.uid) {
   Astro.response.status = 404
   Astro.response.statusText = 'Suttaplex UID not found'
   return Astro.rewrite('/404')
+}
+
+for (const text of [
+  suttasData.root_text,
+  suttasData.translation,
+  ...(suttaplexData[0].translations ?? []),
+]) {
+  if (text?.author_uid === 'sct') text.author = authorName(text)
 }
 
 let bilaraData: any = {}

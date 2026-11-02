@@ -21,6 +21,15 @@ export function normalise(str: string): string {
   return str.trim().toLowerCase()
 }
 
+/**
+ * A translation's author or a root text's edition. The API names the Taishō
+ * edition "Taisho Tipitaka" on one text and nothing on the rest
+ */
+export function authorName(text: { author?: string; author_uid?: string }) {
+  if (text.author_uid === 'sct') return 'SuttaCentral Taishō'
+  return (text.author || text.author_uid)?.trim()
+}
+
 /** The site's spelling of a language name, as the API has "Pali" in places */
 export function languageName(name: string): string {
   return name === 'Pali' ? 'Pāli' : name

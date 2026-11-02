@@ -7,6 +7,7 @@ import RootTitle from '~/components/root-title.astro'
 import { icon } from '~/constants/heroicons'
 import { t } from '~/i18n'
 import {
+  authorName,
   formatVolpages,
   rangeSuttaTitle,
   toSentenceCase,
@@ -69,11 +70,6 @@ function translationHref(translation) {
   return `/${uid}/${translation.lang}/${translation.author_uid}`
 }
 
-function translatorName(translation) {
-  const name = (translation.author || translation.author_uid)?.trim()
-  if (name === 'sct') return 'SuttaCentral Taishō'
-  return name
-}
 function printIconsHTML(translation) {
   const icons = [
     translation.segmented && alignedHTML,
@@ -146,7 +142,7 @@ function printIconsHTML(translation) {
             <ul>
               {rootTexts.map(t => (
                 <li
-                  set:html={`${t.lang_name}—<a href="${translationHref(t)}">${translatorName(t)}</a> ${t.publication_date ? `(${t.publication_date})` : ''}`}
+                  set:html={`${t.lang_name}—<a href="${translationHref(t)}">${authorName(t)}</a> ${t.publication_date ? `(${t.publication_date})` : ''}`}
                 />
               ))}
             </ul>
