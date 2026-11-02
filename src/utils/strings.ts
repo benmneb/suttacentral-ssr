@@ -70,6 +70,47 @@ export function closeHeadingGaps(html: string): string {
   })
 }
 
+/**
+ * Headings with no text unwrapped, and a section one of them opens made a div.
+ * On a root text's page these are headings only translations fill, eg
+ * /ma1/lzh/sct and /pli-tv-bu-vb-pj1/pli/ms
+ */
+export function dropEmptyHeadings(html: string): string {
+  const unsectioned = html.replace(
+    /<section\b([^>]*)>(\s*<(h[1-6])\b[^>]*>((?:(?!<\/h[1-6]>)[\s\S])*)<\/\3>)/g,
+    (match, attrs, heading) =>
+      isEmptyHeading(heading)
+        ? `<div${attrs} data-unsectioned>${heading}`
+        : match
+  )
+  const open: string[] = []
+  return unsectioned.replace(
+    /<div([^>]*) data-unsectioned>|<section\b|<\/section>|<(h[1-6])\b[^>]*>((?:(?!<\/h[1-6]>)[\s\S])*)<\/\2>/g,
+    (match, divAttrs, tag, inner) => {
+      if (divAttrs !== undefined) {
+        open.push('div')
+        return `<div${divAttrs}>`
+      }
+      if (match === '<section') open.push('section')
+      else if (match === '</section>') {
+        return open.pop() === 'div' ? '</div>' : match
+      } else if (tag && isEmptyHeading(match)) return inner
+      return match
+    }
+  )
+}
+
+/** Has a heading nothing to read, leaving aside its hidden segment number? */
+function isEmptyHeading(heading: string): boolean {
+  const text = heading
+    .replace(
+      /<span class="reference"[^>]*>(?:(?!<\/span>)[\s\S])*<\/span>/g,
+      ''
+    )
+    .replace(/<[^>]*>/g, '')
+  return !text.trim() && !/<(?:img|svg)\b|aria-label/.test(heading)
+}
+
 /** Lets a long Pali compound title wrap before its suffix, eg "-sutta" */
 export function softHyphenateTitle(title: string): string {
   return title.replace(

@@ -23,6 +23,7 @@ import {
 import {
   bilaraMarkup,
   closeHeadingGaps,
+  dropEmptyHeadings,
   headingRenumberer,
   parseUidNumbers,
   rangeUidToAcronym,
@@ -612,8 +613,13 @@ const renumberHeading = headingRenumberer()
  */
 function collectHeading(html: string, key: string, text?: string) {
   const heading = html.match(/<h([2-4])([^>]*)>(?=\{\})/)
+  // As `dropEmptyHeadings` takes it off the page
+  const isDropped =
+    !bilaraData.root_text?.[key]?.trim() &&
+    (isRootText || !bilaraData.translation_text?.[key]?.trim())
   let level = 0
-  for (const match of html.matchAll(/<h([1-6])(?=[\s>])/g)) {
+  for (const match of html.matchAll(/<h([1-6])(?=[\s>])[^>]*>(\{\})?/g)) {
+    if (match[2] && isDropped) continue
     const to = renumberHeading(Number(match[1]))
     if (match.index === heading?.index) level = to
   }
@@ -839,7 +845,7 @@ const segmentedHTML = getSegmentedHTML()
 const legacyHTML = getLegacyHTML()
 
 const articleHTML = closeHeadingGaps(
-  rootLangHTML || segmentedHTML || legacyHTML
+  dropEmptyHeadings(rootLangHTML || segmentedHTML || legacyHTML)
 )
 
 // A lone sutta title is the page title, not a table of contents
