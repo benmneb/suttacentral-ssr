@@ -23,6 +23,7 @@ import {
 import {
   bilaraMarkup,
   closeHeadingGaps,
+  headingRenumberer,
   parseUidNumbers,
   rangeUidToAcronym,
   softHyphenateTitle,
@@ -603,14 +604,22 @@ function renderReferences(key: string, ref: string) {
       </span>`
 }
 
+const renumberHeading = headingRenumberer()
+
 /**
- * Record a segmented heading for the table of contents.
+ * Record a segmented heading for the table of contents, at the level
+ * `closeHeadingGaps` gives it on the page
  */
 function collectHeading(html: string, key: string, text?: string) {
   const heading = html.match(/<h([2-4])([^>]*)>(?=\{\})/)
+  let level = 0
+  for (const match of html.matchAll(/<h([1-6])(?=[\s>])/g)) {
+    const to = renumberHeading(Number(match[1]))
+    if (match.index === heading?.index) level = to
+  }
   if (!heading || !text?.trim()) return
   toc.push({
-    level: Number(heading[1]),
+    level,
     href: `#${key}`,
     html: tocLabel(text),
     // On a range page (eg an1.1-10) each sutta's own title is the only
@@ -792,15 +801,26 @@ function getLegacyHTML() {
 
   // Collect headings for the table of contents, giving them an id to anchor to
   // - legacy texts don't have any (eg pli-tv-kd1/horner has 67 bare headings)
+  const renumber = headingRenumberer()
+  const levels = new Map<number, number>()
+  for (const match of htmlWithoutFooter.matchAll(/<h([1-6])(?=[\s>])/g)) {
+    levels.set(match.index, renumber(Number(match[1])))
+  }
   let n = 0
   const htmlWithHeadingIds = htmlWithoutFooter.replace(
     /<h([2-4])([^>]*)>([\s\S]*?)<\/h\1>/g,
-    (match: string, level: string, attrs: string, inner: string) => {
+    (
+      match: string,
+      level: string,
+      attrs: string,
+      inner: string,
+      offset: number
+    ) => {
       const existingId = attrs.match(/\bid=["']([^"']+)["']/)
       const id = existingId?.[1] ?? `toc-${++n}`
       if (inner.trim()) {
         toc.push({
-          level: Number(level),
+          level: levels.get(offset)!,
           href: `#${id}`,
           html: tocLabel(inner),
         })
