@@ -226,6 +226,13 @@ const availableLangs = rootLang ? AVAILABLE_LOOKUPS[rootLang] : null
 const lookupTargetLang = availableLangs?.includes(userLanguage)
   ? userLanguage
   : 'en'
+// Not for the other languages, whose dictionaries come from elsewhere
+const lookupSource =
+  rootLang === 'lzh'
+    ? '<a href="http://www.buddhism-dict.net/ddb/">Digital Dictionary of Buddhism</a>'
+    : lookupTargetLang === 'en'
+      ? '<a href="https://digitalpalidictionary.github.io/">Digital Pāḷi Dictionary</a>'
+      : null
 
 function isHeadingHTML(html: string): boolean {
   return /<h[1-6][^>]*>\{\}/.test(html)
@@ -1575,6 +1582,62 @@ const jsonLd = generateTextJsonLd(
           data-failed={t(userLanguage, 'viewoption:lookupFailed')}
         >
           <section />
+          <section
+            id="definition-help"
+            aria-label={t(userLanguage, 'bottomsheet:help')}
+            hidden
+          >
+            {lookupSource && (
+              <p
+                set:html={t(userLanguage, 'viewoption:lookupSource', {
+                  source: lookupSource,
+                })}
+              />
+            )}
+            <p>
+              {rootLang === 'lzh'
+                ? t(userLanguage, 'viewoption:lookupLzhMachine')
+                : t(userLanguage, 'bottomsheet:help2')}
+            </p>
+            <p
+              set:html={t(userLanguage, 'viewoption:lookupBookHelp', {
+                icon: icon('bookOpen'),
+              })}
+            />
+            <h2 id="definition-keys">
+              {t(userLanguage, 'viewoption:lookupKeyboard')}
+            </h2>
+            <dl aria-labelledby="definition-keys">
+              <dt>
+                <kbd>←</kbd> <kbd>→</kbd>
+              </dt>
+              <dd>
+                {rootLang === 'lzh'
+                  ? t(userLanguage, 'viewoption:lookupKeyStepLzh')
+                  : t(userLanguage, 'viewoption:lookupKeyStep')}
+              </dd>
+              <dt>
+                <kbd>Tab</kbd>
+              </dt>
+              <dd>{t(userLanguage, 'viewoption:lookupKeyTab')}</dd>
+              <dt>
+                <kbd>Enter</kbd>
+              </dt>
+              <dd>
+                {rootLang === 'lzh'
+                  ? t(userLanguage, 'viewoption:lookupKeyEnterLzh')
+                  : t(userLanguage, 'viewoption:lookupKeyEnter')}
+              </dd>
+              <dt>
+                <kbd>Esc</kbd>
+              </dt>
+              <dd>{t(userLanguage, 'viewoption:lookupKeyEsc')}</dd>
+              <dt>
+                <kbd>D</kbd>
+              </dt>
+              <dd>{t(userLanguage, 'viewoption:lookupKeyD')}</dd>
+            </dl>
+          </section>
           <nav aria-label={t(userLanguage, 'viewoption:wordLookup')}>
             <button
               type="button"
@@ -1583,6 +1646,15 @@ const jsonLd = generateTextJsonLd(
               aria-keyshortcuts="ArrowLeft"
             >
               <Icon name="arrowLeft" />
+            </button>
+            <button
+              type="button"
+              data-help
+              aria-label={t(userLanguage, 'bottomsheet:help')}
+              aria-expanded="false"
+              aria-controls="definition-help"
+            >
+              <Icon name="questionMarkCircle" />
             </button>
             <a>
               <Icon name="bookOpen" />
@@ -1605,6 +1677,15 @@ const jsonLd = generateTextJsonLd(
             </button>
           </nav>
         </article>
+      )
+    }
+    {
+      availableLangs && (
+        <p id="definition-hint" hidden>
+          {rootLang === 'lzh'
+            ? t(userLanguage, 'viewoption:lookupHintLzh')
+            : t(userLanguage, 'viewoption:lookupHint')}
+        </p>
       )
     }
   </main>
@@ -2442,8 +2523,13 @@ const jsonLd = generateTextJsonLd(
     // Tab stops only while it's on
     function setTabbable() {
       for (const text of texts) {
-        if (toggle.checked) text.tabIndex = 0
-        else text.removeAttribute('tabindex')
+        if (toggle.checked) {
+          text.tabIndex = 0
+          text.setAttribute('aria-describedby', 'definition-hint')
+        } else {
+          text.removeAttribute('tabindex')
+          text.removeAttribute('aria-describedby')
+        }
       }
     }
     setTabbable()
@@ -2743,6 +2829,7 @@ const jsonLd = generateTextJsonLd(
      * word
      */
     function open(word: string, lang: string) {
+      setHelp(false)
       const section = popover.querySelector('section')!
       section.setAttribute('aria-busy', 'true')
       section.innerHTML = `<dfn lang="${lang}" translate="no">${escape(word)}</dfn>`
@@ -2755,6 +2842,15 @@ const jsonLd = generateTextJsonLd(
         )
       }
       if (!popover.matches(':popover-open')) popover.showPopover()
+    }
+
+    /** The help in place of the answer, or the answer back */
+    function setHelp(shown: boolean) {
+      popover
+        .querySelector('[data-help]')
+        ?.setAttribute('aria-expanded', String(shown))
+      popover.querySelector('section')!.hidden = shown
+      popover.querySelector<HTMLElement>('#definition-help')!.hidden = !shown
     }
 
     async function show(word: Word) {
@@ -2831,6 +2927,8 @@ const jsonLd = generateTextJsonLd(
     popover.addEventListener('click', event => {
       const button = (event.target as Element).closest<HTMLElement>('button')
       if (button?.hasAttribute('data-close')) popover.hidePopover()
+      else if (button?.hasAttribute('data-help'))
+        setHelp(button.getAttribute('aria-expanded') !== 'true')
       else if (button?.dataset.step) go(Number(button.dataset.step))
     })
 

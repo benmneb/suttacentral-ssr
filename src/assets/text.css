@@ -786,6 +786,11 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
 .segment .text .word.looked-up {
   color: var(--background-color);
   background-color: var(--primary-color);
+  border-radius: var(--rounding);
+  box-shadow:
+    0.1rem 0 0 var(--primary-color),
+    -0.1rem 0 0 var(--primary-color);
+  box-decoration-break: clone;
 }
 
 ::highlight(lookup) {
@@ -890,6 +895,26 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
       font-style: italic;
       color: var(--text-color-secondary);
     }
+
+    &#definition-help {
+      p {
+        margin: 0 0 0.5rem;
+      }
+
+      h2 {
+        margin: 0.75rem 0 0.25rem;
+        font-size: inherit;
+        color: var(--text-color-secondary);
+      }
+
+      dl {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        gap: 0.25rem 1rem;
+        margin: 0;
+        padding: 0 0 0.5rem;
+      }
+    }
   }
 
   nav {
@@ -907,6 +932,20 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
     [data-close] {
       flex: none;
       border-right: 1px solid var(--bg-alt-3);
+    }
+
+    [data-help] {
+      flex: none;
+      border-left: 1px solid var(--bg-alt-3);
+
+      &[aria-expanded='true'] {
+        color: var(--primary-color);
+
+        @media (forced-colors: active) {
+          outline: 2px solid Highlight;
+          outline-offset: -2px;
+        }
+      }
     }
 
     a {

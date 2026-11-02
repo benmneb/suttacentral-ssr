@@ -42,6 +42,7 @@ export type IconName =
   | 'pencilSquare'
   | 'photo'
   | 'play'
+  | 'questionMarkCircle'
   | 'rectangleStack'
   | 'scale'
   | 'scissors'
