@@ -2,7 +2,7 @@
 
 ## Word Lookup Feature
 
-Clicking a root language word (Pali/Chinese) shows DPD dictionary definitions in a HTML popover when the "Word Lookup" checkbox is enabled. The feature is progressive enhancement — it falls back to `/define/{word}` links when JS is unavailable.
+Clicking a root language word (Pali/Chinese) shows DPD dictionary definitions in a HTML popover when the "Word Lookup" checkbox is enabled. It is the one feature that needs JS: without it, or without popovers, its checkbox stays hidden. This is to reduce the HTML payload by up to almost 50% (`/dn1/en/esujato`) for almost every user, who has JS enabled.
 
 ### Architecture
 
@@ -40,8 +40,8 @@ The script writes one entry per line, so an upstream edit to a definition shows 
 ### Design Decisions
 
 1. **Server-side processing, minimal payload.** Official SC ships the full dictionary + DPD tables (~30MB) as client-side JS. This project processes words server-side and returns only matched results (~70-500KB) that are relevant to the current text.
-1. **Works without JavaScript.** Every word is an `<a href="/define/word">` link. If JS fails or is disabled, ticking the "Word Lookup" checkbox makes those links navigable, so definitions are still reachable via the `/define/` route.
-1. **Clicks are blocked in CSS, and JS enables them.** The words are `pointer-events: none` so they can't be followed without JS; `data-lookup-js` on `<html>` lifts that and a delegated click handler on `main` blocks the clicks instead. Don't move this back into CSS: `pointer-events: none` takes the words out of hit-testing, which stops Firefox/macOS offering the native dictionary on a 3D press. For the same reason JS sets `draggable = false` on each link, so dragging selects text rather than dragging a URL. This mirrors the "listen" menu, whose controls ship disabled and are enabled by script.
+1. **JS only, with no markup per word.** The root text is plain text. A link to `/define/` on every word made up 40–48% of a long text's elements, only for readers without JS. Now the script wraps a segment's Pali words in spans as the pointer reaches it, finds a tapped Chinese character from the caret, and highlights it with the CSS Custom Highlight API. The text selects, drags and gets the OS dictionary (a hard press on macOS) like any other.
+1. **One tab stop per segment.** While the setting is on, each segment's root text takes focus, and Enter looks up its first word and moves focus into the popover. ← and → step through the words from there, and Tab leaves it for the segments either side.
 
 ---
 

@@ -1,6 +1,7 @@
 {
   "viewoption:autoScroll": "Auto-scroll",
   "viewoption:comments": "Notes",
+  "viewoption:fullDefinitions": "Full definitions of {word}",
   "viewoption:highlighting": "Highlighting",
   "viewoption:hotkeyCycle": "Press {key} to cycle through these",
   "viewoption:hotkeyPress": "Press {key}",
@@ -10,6 +11,7 @@
   "viewoption:illustrations": "Illustrations",
   "viewoption:inline": "Inline",
   "viewoption:listen": "Listen",
+  "viewoption:lookupFailed": "Couldn't look that up. Check your connection and try again.",
   "viewoption:marginNotes": "Sidenotes",
   "viewoption:markAnapatti": "Non-offenses",
   "viewoption:markCakka": "Permutations",
@@ -30,6 +32,7 @@
   "viewoption:markUnclear": "Unclear:",
   "viewoption:markVinayaVinita": "Case studies",
   "viewoption:next": "Next",
+  "viewoption:nextWord": "Next word",
   "viewoption:parallels": "Parallels",
   "viewoption:parallelsOf": "Parallels of {ref}",
   "viewoption:pause": "Pause",
@@ -37,10 +40,12 @@
   "viewoption:pitch": "Pitch",
   "viewoption:play": "Play",
   "viewoption:prev": "Prev",
+  "viewoption:previousWord": "Previous word",
   "viewoption:rate": "Rate",
   "viewoption:referenceOthers": "Others",
   "viewoption:rootFirst": "Root first",
   "viewoption:rootText": "Root text",
+  "viewoption:seeWord": "See: {word}",
   "viewoption:segments": "References",
   "viewoption:settingOff": "{name} off",
   "viewoption:settingOn": "{name} on",
@@ -59,5 +64,6 @@
   "viewoption:voiceInfoSource": "These voices all come from your device and browser. Higher quality voices are usually a free download in your system's speech or accessibility settings. Remember to reload the page after adding new ones.",
   "viewoption:voiceLabel": "Voice",
   "viewoption:voiceOnline": "ONLINE",
+  "viewoption:wordDefinition": "Word definition",
   "viewoption:wordLookup": "Word lookup"
 }

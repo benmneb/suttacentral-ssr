@@ -117,9 +117,7 @@ a:where([href]) {
       -0.1rem 0 0 var(--primary-color);
   }
 
-  /* Word look-up links are styled as plain text, so they select like the
-  prose around them rather than taking the link selection colour */
-  &:not(.look-up)::selection {
+  &::selection {
     background-color: var(--blue-dim);
   }
 }

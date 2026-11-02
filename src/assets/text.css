@@ -576,17 +576,19 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
   }
 }
 
-/* Root text page: look-up toggle (no rooter parent needed) */
-&:has(#rooter-look-up:checked) .segment .translation .text a.look-up {
-  pointer-events: auto;
-  cursor: pointer;
-  &:hover,
-  &.active {
-    color: var(--background-color);
-    background-color: var(--primary-color);
+/* Not while its row is hidden, as without JS a cookie can still check it */
+&:has(#views-menu > li:not([hidden]) > #rooter-look-up:checked)
+  .segment
+  > :is(.translation, .root)[translate='no']
+  > .text {
+  &:lang(lzh),
+  .word {
+    cursor: help;
   }
-  /* The first click on a word waits on the server */
-  &[aria-busy='true'] {
+
+  /* The first tap on a word waits on the server */
+  &[aria-busy='true'],
+  .word[aria-busy='true'] {
     cursor: progress;
   }
 }
@@ -596,19 +598,6 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
   .endvagga,
   .endkanda {
     color: unset;
-  }
-
-  &:has(#rooter-look-up:checked) .segment .root .text a.look-up {
-    pointer-events: auto;
-    cursor: pointer;
-    &:hover,
-    &.active {
-      color: var(--background-color);
-      background-color: var(--primary-color);
-    }
-    &[aria-busy='true'] {
-      cursor: progress;
-    }
   }
 
   &:has(#rooter-side:checked) {
@@ -794,33 +783,14 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
   cursor: text;
 }
 
-a.look-up {
-  color: inherit;
-  text-decoration: none;
-  /* Unclickable without JS, so the /define/ fallback can only be reached by
-  enabling the lookup feature. With JS the block is lifted, see below */
-  pointer-events: none;
-  /* The UA stylesheet gives any `a[href]` a pointer cursor, which would make
-  these look clickable while the feature is off. Beats inheriting from .text */
-  cursor: text;
-
-  &:visited {
-    color: inherit;
-  }
-
-  /* These only look like links when the feature is on, so opt out of the
-  global `a:hover` highlight. The `:checked` rules above re-add it, and win */
-  &:hover,
-  &:active {
-    color: inherit;
-    background-color: transparent;
-  }
+.segment .text .word.looked-up {
+  color: var(--background-color);
+  background-color: var(--primary-color);
 }
 
-/* JS blocks the clicks itself, so let the links hit-test - the OS dictionary
-(3D press on macOS) needs that to find the word. Without JS they stay blocked */
-&[data-lookup-js] a.look-up {
-  pointer-events: auto;
+::highlight(lookup) {
+  color: var(--background-color);
+  background-color: var(--primary-color);
 }
 
 #definition[popover] {
@@ -840,6 +810,10 @@ a.look-up {
   &:popover-open {
     display: flex;
     flex-direction: column;
+  }
+
+  &:focus {
+    outline: none;
   }
 
   section {
@@ -930,7 +904,7 @@ a.look-up {
       border: none;
     }
 
-    #def-close {
+    [data-close] {
       flex: none;
       border-right: 1px solid var(--bg-alt-3);
     }
@@ -949,19 +923,13 @@ a.look-up {
       font: inherit;
       text-decoration: none;
 
-      &:hover:not(:disabled) {
+      &:hover {
         background-color: var(--details-summary-hover-background);
 
         @media (forced-colors: active) {
           outline: 2px solid Highlight;
           outline-offset: -2px;
         }
-      }
-
-      &:disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
-        color: var(--gray);
       }
     }
   }
@@ -1077,10 +1045,6 @@ a.look-up {
 .tts-clickable {
   cursor: pointer;
 
-  a.look-up {
-    cursor: pointer;
-  }
-
   /* An element split into sentences gets the hover on the sentence instead,
      from the listen script */
   &:not(.tts-sentences):hover {
@@ -1117,6 +1081,16 @@ a.look-up {
   }
 
   ::highlight(tts-word) {
+    color: HighlightText;
+    background-color: Highlight;
+  }
+
+  .segment .text .word.looked-up {
+    color: HighlightText;
+    background-color: Highlight;
+  }
+
+  ::highlight(lookup) {
     color: HighlightText;
     background-color: Highlight;
   }
