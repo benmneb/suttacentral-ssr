@@ -1,14 +1,13 @@
 ---
 import '~/assets/editions.css'
+import { SC_API, SC_EDITIONS_REPO, SC_IMG } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { sitePageMetadata } from '~/utils/json-ld'
 
 const userLanguage = Astro.locals.userLanguage
 
-const editionsResponse = await fetch(
-  'https://suttacentral.net/api/publication/editions'
-)
+const editionsResponse = await fetch(`${SC_API}/publication/editions`)
 const editionsData = await editionsResponse.json()
 
 const webEditionIds = editionsData
@@ -18,14 +17,12 @@ const webEditionIds = editionsData
 const [webEditionInfoList, blurbs] = await Promise.all([
   Promise.all(
     webEditionIds.map((id: string) =>
-      fetch(`https://suttacentral.net/api/publication/edition/${id}`).then(r =>
-        r.json()
-      )
+      fetch(`${SC_API}/publication/edition/${id}`).then(r => r.json())
     )
   ),
-  fetch(
-    `https://suttacentral.net/api/publication/edition/blurbs/${userLanguage}`
-  ).then(r => r.json()),
+  fetch(`${SC_API}/publication/edition/blurbs/${userLanguage}`).then(r =>
+    r.json()
+  ),
 ])
 
 // Sort by predefined order
@@ -72,14 +69,12 @@ function getBlurb(textUid: string): string | undefined {
           <ul>
             <li>{t(userLanguage, 'publication:orderPrint')}</li>
             <li>
-              <a
-                href="https://github.com/suttacentral/editions/archive/refs/heads/main.zip"
-              >
+              <a href={`${SC_EDITIONS_REPO}/archive/refs/heads/main.zip`}>
                 {t(userLanguage, 'publication:download')}
               </a>
             </li>
             <li>
-              <a href="https://github.com/suttacentral/editions">
+              <a href={SC_EDITIONS_REPO}>
                 {t(userLanguage, 'publication:githubSource')}
               </a>
             </li>
@@ -93,7 +88,7 @@ function getBlurb(textUid: string): string | undefined {
           </aside>
         </div>
         <img
-          src="https://suttacentral.net/img/publication-pages/editions-kn-wet.jpg"
+          src={`${SC_IMG}/publication-pages/editions-kn-wet.jpg`}
           alt="Stack of SuttaCentral edition books"
         />
       </header>
@@ -117,7 +112,7 @@ function getBlurb(textUid: string): string | undefined {
               </header>
               <figure>
                 <img
-                  src={`https://suttacentral.net/img/publication-pages/${edition.publication.text_uid}-book.jpg`}
+                  src={`${SC_IMG}/publication-pages/${edition.publication.text_uid}-book.jpg`}
                   alt={`Cover art for ${edition.publication.translation_title}`}
                 />
                 <figcaption set:html={getBlurb(edition.publication.text_uid)} />

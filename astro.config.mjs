@@ -3,6 +3,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 
 import cloudflare from '@astrojs/cloudflare'
+import { siteMetaData } from './src/constants/meta-data.ts'
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,7 +17,7 @@ export default defineConfig({
   session: {
     driver: { entrypoint: 'unstorage/drivers/null' },
   },
-  site: 'https://suttacentral.now',
+  site: siteMetaData.origin,
   vite: {
     plugins: [tailwindcss()],
     // Vite 7s targets, as Vite 8s drop fallbacks like 100vh before 100svh

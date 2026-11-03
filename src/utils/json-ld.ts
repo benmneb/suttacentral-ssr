@@ -1,5 +1,6 @@
 import { siteMetaData } from '~/constants/meta-data'
 import { staticPages } from '~/constants/static-pages'
+import { SC_ORIGIN, SCHEMA_ORG } from '~/constants/urls'
 import { t } from '~/i18n'
 import { getLanguageName, langTag } from '~/utils/language'
 import {
@@ -7,8 +8,6 @@ import {
   rangeSuttaTitle,
   uidToAcronym,
 } from '~/utils/strings'
-
-const SC_ORIGIN = 'https://suttacentral.net'
 
 interface Breadcrumb {
   url?: string
@@ -85,22 +84,24 @@ export const SUTTACENTRAL = {
   url: SC_ORIGIN,
 }
 
+const WIKIPEDIA = 'https://en.wikipedia.org/wiki'
+
 // Wikipedia articles, as `sameAs`, so search engines can tell who each translator is
 const TRANSLATOR_PAGES: Record<string, string> = {
-  analayo: 'https://en.wikipedia.org/wiki/Bhikkhu_Analayo',
-  beal: 'https://en.wikipedia.org/wiki/Samuel_Beal',
-  bodhi: 'https://en.wikipedia.org/wiki/Bhikkhu_Bodhi',
-  buddharakkhita: 'https://en.wikipedia.org/wiki/Acharya_Buddharakkhita',
-  chalmers: 'https://en.wikipedia.org/wiki/Robert_Chalmers,_1st_Baron_Chalmers',
-  horner: 'https://en.wikipedia.org/wiki/Isaline_Blew_Horner',
-  narada: 'https://en.wikipedia.org/wiki/Narada_Maha_Thera',
-  nyanamoli: 'https://en.wikipedia.org/wiki/Ñāṇamoli_Bhikkhu',
-  rockhill: 'https://en.wikipedia.org/wiki/William_Woodville_Rockhill',
-  rouse: 'https://en.wikipedia.org/wiki/W._H._D._Rouse',
-  sujato: 'https://en.wikipedia.org/wiki/Bhante_Sujato',
-  thanissaro: 'https://en.wikipedia.org/wiki/Ṭhānissaro_Bhikkhu',
-  tw_rhysdavids: 'https://en.wikipedia.org/wiki/Thomas_William_Rhys_Davids',
-  woodward: 'https://en.wikipedia.org/wiki/F._L._Woodward',
+  analayo: `${WIKIPEDIA}/Bhikkhu_Analayo`,
+  beal: `${WIKIPEDIA}/Samuel_Beal`,
+  bodhi: `${WIKIPEDIA}/Bhikkhu_Bodhi`,
+  buddharakkhita: `${WIKIPEDIA}/Acharya_Buddharakkhita`,
+  chalmers: `${WIKIPEDIA}/Robert_Chalmers,_1st_Baron_Chalmers`,
+  horner: `${WIKIPEDIA}/Isaline_Blew_Horner`,
+  narada: `${WIKIPEDIA}/Narada_Maha_Thera`,
+  nyanamoli: `${WIKIPEDIA}/Ñāṇamoli_Bhikkhu`,
+  rockhill: `${WIKIPEDIA}/William_Woodville_Rockhill`,
+  rouse: `${WIKIPEDIA}/W._H._D._Rouse`,
+  sujato: `${WIKIPEDIA}/Bhante_Sujato`,
+  thanissaro: `${WIKIPEDIA}/Ṭhānissaro_Bhikkhu`,
+  tw_rhysdavids: `${WIKIPEDIA}/Thomas_William_Rhys_Davids`,
+  woodward: `${WIKIPEDIA}/F._L._Woodward`,
 }
 
 /** A translator, linked to their Wikipedia article if they have one */
@@ -154,7 +155,7 @@ export function breadcrumbList(
 
 export function jsonLd(data: Record<string, any>) {
   return (
-    JSON.stringify({ '@context': 'https://schema.org', ...data })
+    JSON.stringify({ '@context': SCHEMA_ORG, ...data })
       // A "</script>" in any text would end the script element early
       .replace(/</g, '\\u003c')
   )

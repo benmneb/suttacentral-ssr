@@ -8,6 +8,7 @@
  */
 
 import { siteMetaData } from '../../src/constants/meta-data.ts'
+import { SCHEMA_ORG } from '../../src/constants/urls.ts'
 
 export const MISSING_PAGE = '/not-a-page'
 
@@ -215,7 +216,7 @@ export function jsonLdProblems(scripts: unknown[]) {
       problems.push(`unparsable: ${data.message}`)
       continue
     }
-    if ((data as any)['@context'] !== 'https://schema.org') {
+    if ((data as any)['@context'] !== SCHEMA_ORG) {
       problems.push(`@context: ${(data as any)['@context']}`)
     }
     walk(data)

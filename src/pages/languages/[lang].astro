@@ -1,5 +1,6 @@
 ---
 import PieChart from '~/components/pie-chart.astro'
+import { SC_API } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { sitePageMetadata } from '~/utils/json-ld'
@@ -9,8 +10,8 @@ const userLanguage = Astro.locals.userLanguage
 const { lang } = Astro.params
 
 const [translationCountRes, languageDataRes] = await Promise.all([
-  fetch('https://suttacentral.net/api/translation_count'),
-  fetch(`https://suttacentral.net/api/translation_count/${lang}`),
+  fetch(`${SC_API}/translation_count`),
+  fetch(`${SC_API}/translation_count/${lang}`),
 ])
 
 const translationCount = await translationCountRes.json()

@@ -1,4 +1,5 @@
 import { icon } from '~/constants/heroicons'
+import { SC_ORIGIN } from '~/constants/urls'
 
 /** A static page's path and the translation key of its link text */
 export interface StaticPage {
@@ -24,7 +25,7 @@ export const staticPages = {
     { href: '/introduction', label: 'interface:introduction' },
     { href: '/start', label: 'interface:start' },
     {
-      href: 'https://suttacentral.net/donations',
+      href: `${SC_ORIGIN}/donations`,
       label: 'interface:donations',
     },
     { href: '/map', label: 'interface:map' },
@@ -91,7 +92,7 @@ export const pitakaGuides: Record<string, StaticPage[]> = {
 export const pageIcons: Record<string, string> = {
   '/introduction': icon('lightBulb'),
   '/start': icon('flag'),
-  'https://suttacentral.net/donations': icon('heart'),
+  [`${SC_ORIGIN}/donations`]: icon('heart'),
   '/map': icon('map'),
   '/offline': icon('bolt'),
   '/editions': icon('bookOpen'),

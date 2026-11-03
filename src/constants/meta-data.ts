@@ -1,3 +1,5 @@
+import { UMAMI_ORIGIN } from './urls.ts'
+
 export const siteMetaData = {
   title: 'SuttaCentral.now',
   description: 'A fast and minimal alternative frontend for SuttaCentral.net',
@@ -7,7 +9,7 @@ export const siteMetaData = {
     'https://codeberg.org/benmneb/suttacentral-ssr',
     'https://github.com/benmneb/suttacentral-ssr',
   ],
-  analytics: 'https://umamalytics.netlify.app/share/O7XCxmZWdFUE9kVC',
+  analytics: `${UMAMI_ORIGIN}/share/O7XCxmZWdFUE9kVC`,
   accessibility:
     'https://git.sr.ht/~benmneb/suttacentral-ssr/tree/main/item/ACCESSIBILITY.md',
   feedback: 'mailto:feedback@suttacentral.now',

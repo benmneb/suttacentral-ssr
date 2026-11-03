@@ -9,6 +9,7 @@ import { mkdir, unlink, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { AVAILABLE_LOOKUPS } from '../src/constants/lookup.ts'
+import { SC_API, SC_GITHUB_RAW } from '../src/constants/urls.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 // Sharded into public/data on build, see scripts/shard-dictionaries.ts
@@ -34,7 +35,7 @@ const DICTIONARIES = Object.entries(AVAILABLE_LOOKUPS).flatMap(([from, tos]) =>
 )
 
 async function fetchDict(from, to, fallback = false) {
-  const url = `https://suttacentral.net/api/dictionaries/lookup?from=${from}&to=${to}&fallback=${fallback}`
+  const url = `${SC_API}/dictionaries/lookup?from=${from}&to=${to}&fallback=${fallback}`
   const response = await fetch(url)
   if (!response.ok) {
     console.error(`  Failed: ${response.status} ${response.statusText}`)
@@ -93,8 +94,7 @@ for (const dict of DICTIONARIES) {
  * DPD (Digital Pali Dictionary) data — maps inflected Pali forms to headwords,
  * enabling lookup of words like "naṁ" → "ta" regardless of target language
  */
-const DPD_BASE_URL =
-  'https://raw.githubusercontent.com/suttacentral/suttacentral/main/client/elements/lookups/dpd'
+const DPD_BASE_URL = `${SC_GITHUB_RAW}/suttacentral/main/client/elements/lookups/dpd`
 
 async function fetchDPD() {
   for (const name of ['dpd_i2h', 'dpd_deconstructor']) {

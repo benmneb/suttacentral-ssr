@@ -19,6 +19,7 @@
 import { writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { SC_API } from '../src/constants/urls.ts'
 
 type Point = [number, number]
 type Geometry = { type: string; coordinates: any }
@@ -29,7 +30,7 @@ const ROOT = join(__dirname, '..')
 // A release, so the base only changes along with this
 const NATURAL_EARTH =
   'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson'
-const MAP_DATA = 'https://suttacentral.net/api/map_data'
+const MAP_DATA = `${SC_API}/map_data`
 
 // Every place but the extraterrestrial ones, Yona (Greece) included
 const BOX = { west: 18, east: 105, south: 5, north: 48 }

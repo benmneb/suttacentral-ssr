@@ -4,6 +4,7 @@ import { dictionaryTitles } from '~/constants/define'
 import Icon from '~/components/icon.astro'
 import MiniMap from '~/components/mini-map.astro'
 import map from '~/constants/map.json'
+import { SC_API, SC_ORIGIN } from '~/constants/urls'
 import { t } from '~/i18n'
 import { langTag } from '~/utils/language'
 import { closeHeadingGaps, defineHref } from '~/utils/strings'
@@ -25,17 +26,13 @@ let adjacentData = [[]]
 
 if (term) {
   ;[dictionaryData, similarData, adjacentData] = await Promise.all([
-    fetch(
-      `https://suttacentral.net/api/dictionary_full/${term}?language=${userLanguage}`
-    ).then(r => r.json()),
-    fetch(
-      `https://suttacentral.net/api/dictionary_full/similar/${term}?language=${userLanguage}`
-    )
+    fetch(`${SC_API}/dictionary_full/${term}?language=${userLanguage}`).then(
+      r => r.json()
+    ),
+    fetch(`${SC_API}/dictionary_full/similar/${term}?language=${userLanguage}`)
       .then(r => r.json())
       .catch(() => [[]]),
-    fetch(
-      `https://suttacentral.net/api/dictionary_full/adjacent/${term}?language=${userLanguage}`
-    )
+    fetch(`${SC_API}/dictionary_full/adjacent/${term}?language=${userLanguage}`)
       .then(r => r.json())
       .catch(() => [[]]),
   ])
@@ -65,7 +62,7 @@ const ids = new Set<string>()
 /** An entry's HTML with no type='α', which isn't a list type HTML has, no id already used and no heading gaps */
 function tidyEntry(html: string) {
   return closeHeadingGaps(html)
-    .replaceAll('https://suttacentral.net', '')
+    .replaceAll(SC_ORIGIN, '')
     .replaceAll(" type='α'", '')
     .replace(/ id=(['"])(.*?)\1/g, (match, _, id) =>
       ids.has(id) ? '' : (ids.add(id), match)

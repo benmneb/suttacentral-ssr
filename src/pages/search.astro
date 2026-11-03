@@ -8,6 +8,7 @@ import { dictionaryTitles } from '~/constants/define'
 import { expansionData } from '~/constants/expansion'
 import Icon from '~/components/icon.astro'
 import { siteMap } from '~/constants/static-pages'
+import { SC_API, SC_ORIGIN } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getSearchLanguages, setSearchLanguages } from '~/utils/cookies'
@@ -18,9 +19,7 @@ const { searchParams } = Astro.url
 const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = Astro.locals.userLanguage
 
-const langResponse = await fetch(
-  'https://suttacentral.net/api/languages?all=true'
-)
+const langResponse = await fetch(`${SC_API}/languages?all=true`)
 const langData = await langResponse.json()
 
 const userLanguages = getAllPreferredLanguages(acceptLanguage)
@@ -64,7 +63,7 @@ let searchFailed = false
 if (query) {
   try {
     const searchResponse = await fetch(
-      `https://suttacentral.net/api/search/instant?limit=${limit}&offset=${offset}&query=${encodeURIComponent(query)}&language=${userLanguage}&restrict=all&matchpartial=${matchPartial}`,
+      `${SC_API}/search/instant?limit=${limit}&offset=${offset}&query=${encodeURIComponent(query)}&language=${userLanguage}&restrict=all&matchpartial=${matchPartial}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -213,7 +212,7 @@ const pageHits =
                             {hit.highlight.detail[0].text && (
                               <dd
                                 set:html={hit.highlight.detail[0].text.replaceAll(
-                                  'https://suttacentral.net',
+                                  SC_ORIGIN,
                                   ''
                                 )}
                               />

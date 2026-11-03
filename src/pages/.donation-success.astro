@@ -1,4 +1,5 @@
 ---
+import { SC_IMG } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 
@@ -14,13 +15,13 @@ const title = t(userLanguage, 'interface:donationSuccessTitle')
       <p set:html={t(userLanguage, 'donations:success2')} />
       <picture>
         <source
-          srcset="https://suttacentral.net/img/static-pages/novice_reading.avif"
+          srcset={`${SC_IMG}/static-pages/novice_reading.avif`}
           type="image/avif"
         />
         <img
           alt={t(userLanguage, 'donations:successAltText')}
           class="image-home-full"
-          src="https://suttacentral.net/img/static-pages/novice_reading.jpg"
+          src={`${SC_IMG}/static-pages/novice_reading.jpg`}
           width="100%"
           height="auto"
         />

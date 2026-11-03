@@ -3,6 +3,7 @@ import '~/assets/edition.css'
 import '~/assets/matter.css'
 import { collectionURL } from '~/constants/edition'
 import Icon from '~/components/icon.astro'
+import { SC_API, SC_EDITIONS_REPO, SC_IMG } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { editionMetadata, matterMetadata } from '~/utils/json-ld'
@@ -16,9 +17,7 @@ if (!uid || !lang || !author) {
   return Astro.redirect('/editions')
 }
 
-const editionsResponse = await fetch(
-  'https://suttacentral.net/api/publication/editions'
-)
+const editionsResponse = await fetch(`${SC_API}/publication/editions`)
 const allEditions: Array<{ edition_id: string; uid?: string }> =
   await editionsResponse.json()
 
@@ -40,13 +39,13 @@ let matterContent: string | null = null
 if (matter) {
   // Matter page, ie /edition/dn/en/sujato/foreword
   const [menuDataRaw, editionData, editionFilesData] = await Promise.all([
-    fetch(`https://suttacentral.net/api/menu/${uid}`).then(r => r.json()),
-    fetch(
-      `https://suttacentral.net/api/publication/edition/${webEdition.edition_id}`
-    ).then(r => r.json()),
-    fetch(
-      `https://suttacentral.net/api/publication/edition/${webEdition.edition_id}/files`
-    ).then(r => r.json()),
+    fetch(`${SC_API}/menu/${uid}`).then(r => r.json()),
+    fetch(`${SC_API}/publication/edition/${webEdition.edition_id}`).then(r =>
+      r.json()
+    ),
+    fetch(`${SC_API}/publication/edition/${webEdition.edition_id}/files`).then(
+      r => r.json()
+    ),
   ])
 
   const menuData = menuDataRaw?.[0]
@@ -112,16 +111,16 @@ if (matter) {
 
   var [menuDataRaw, webEditionData, paperbackEditionData, creatorBioData] =
     await Promise.all([
-      fetch(`https://suttacentral.net/api/menu/${uid}`).then(r => r.json()),
-      fetch(
-        `https://suttacentral.net/api/publication/edition/${webEdition.edition_id}`
-      ).then(r => r.json()),
+      fetch(`${SC_API}/menu/${uid}`).then(r => r.json()),
+      fetch(`${SC_API}/publication/edition/${webEdition.edition_id}`).then(r =>
+        r.json()
+      ),
       paperbackEdition
         ? fetch(
-            `https://suttacentral.net/api/publication/edition/${paperbackEdition.edition_id}`
+            `${SC_API}/publication/edition/${paperbackEdition.edition_id}`
           ).then(r => r.json())
         : Promise.resolve(null),
-      fetch('https://suttacentral.net/api/creator_bio').then(r => r.json()),
+      fetch(`${SC_API}/creator_bio`).then(r => r.json()),
     ])
 
   var menuData = menuDataRaw?.[0]
@@ -173,11 +172,11 @@ if (matter) {
   // Fetch GitHub directory contents for download URLs via SuttaCentral proxy
   type GitHubFile = { name: string; download_url: string }
   type GitHubDirResponse = { contents?: GitHubFile[] }
-  const repoUrl = encodeURIComponent('https://github.com/suttacentral/editions')
+  const repoUrl = encodeURIComponent(SC_EDITIONS_REPO)
 
   const fetchGitHubDir = (path: string) =>
     fetch(
-      `https://suttacentral.net/api/github-directory?repo_url=${repoUrl}&path=${encodeURIComponent(path)}&branch=main`
+      `${SC_API}/github-directory?repo_url=${repoUrl}&path=${encodeURIComponent(path)}&branch=main`
     )
       .then(r => (r.ok ? r.json() : { contents: [] }))
       .then((data: GitHubDirResponse) => data.contents || [])
@@ -235,7 +234,7 @@ const metadata = matter
       publication,
       crumbs: crumbsData,
       readPath: collectionURL.get(uid) || `/${uid}`,
-      cover: `https://suttacentral.net/img/publication-pages/${uid}-book.jpg`,
+      cover: `${SC_IMG}/publication-pages/${uid}-book.jpg`,
       isbn: volumes.map((volume: any) => volume.volume_isbn).filter(Boolean),
       dateModified: lastGeneratedDate,
     })
@@ -283,7 +282,7 @@ const metadata = matter
             </header>
             <figure>
               <img
-                src={`https://suttacentral.net/img/publication-pages/${uid}-book.jpg`}
+                src={`${SC_IMG}/publication-pages/${uid}-book.jpg`}
                 alt={`Cover art for ${translationTitle}`}
               />
               <figcaption>Paperback edition of {translationTitle}</figcaption>
@@ -400,7 +399,7 @@ const metadata = matter
               <h2>The Author</h2>
               <figure>
                 <img
-                  src={`https://suttacentral.net/img/publication-pages/${creator.creator_uid}.jpg`}
+                  src={`${SC_IMG}/publication-pages/${creator.creator_uid}.jpg`}
                   alt={`Photo of ${publication.creator_name}`}
                 />
                 <figcaption>
@@ -432,10 +431,7 @@ const metadata = matter
               <dd>
                 <p>{publication.license_statement}</p>
                 <div class="license">
-                  <img
-                    src="https://suttacentral.net/img/publication-pages/cc-zero.svg"
-                    alt=""
-                  />
+                  <img src={`${SC_IMG}/publication-pages/cc-zero.svg`} alt="" />
                   <p>
                     <a
                       rel="license"

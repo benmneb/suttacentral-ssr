@@ -2,6 +2,7 @@
 import FurtherReading from '~/components/further-reading.astro'
 import LazyParallels from '~/components/lazy-parallels.astro'
 import TextMetaContent from '~/components/text-meta-content.astro'
+import { SC_API } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { fetchEditions } from '~/utils/editions'
@@ -15,13 +16,13 @@ const lowerChapter = chapter?.toLowerCase()
 
 async function fetchCrumbs(uid: string | undefined) {
   const r = await fetch(
-    `https://suttacentral.net/api/navigation_data/${uid}?language=${userLanguage}`
+    `${SC_API}/navigation_data/${uid}?language=${userLanguage}`
   )
   return r.json()
 }
 
 async function fetchShortcuts(): Promise<string[]> {
-  const r = await fetch(`https://suttacentral.net/api/shortcuts`)
+  const r = await fetch(`${SC_API}/shortcuts`)
   return (await r.json())?.[0]?.shortcuts ?? []
 }
 
@@ -32,15 +33,13 @@ async function fetchSiblings() {
   const crumbs = await crumbsPromise
   const parentUid = crumbs.at(-1)?.uid === lowerChapter && crumbs.at(-2)?.uid
   if (!parentUid) return []
-  const r = await fetch(
-    `https://suttacentral.net/api/menu/${parentUid}?language=${userLanguage}`
-  )
+  const r = await fetch(`${SC_API}/menu/${parentUid}?language=${userLanguage}`)
   return (await r.json())?.[0]?.children ?? []
 }
 
 const suttaplexAbort = new AbortController()
 const suttaplexPromise = fetch(
-  `https://suttacentral.net/api/suttaplex/${lowerChapter}?language=${userLanguage}`,
+  `${SC_API}/suttaplex/${lowerChapter}?language=${userLanguage}`,
   { signal: suttaplexAbort.signal }
 )
 const crumbsPromise = fetchCrumbs(lowerChapter)
@@ -70,7 +69,7 @@ let isIndividualRangeSutta = false
 
 if (!suttaplexData?.[0]?.uid) {
   const rangeSuttaplexResponse = await fetch(
-    `https://suttacentral.net/api/range_suttaplex/${lowerChapter}?language=${userLanguage}`
+    `${SC_API}/range_suttaplex/${lowerChapter}?language=${userLanguage}`
   )
   const rangeSuttaplexData = await rangeSuttaplexResponse.json()
   if (rangeSuttaplexData?.[0]?.uid) {

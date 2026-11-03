@@ -1,5 +1,6 @@
 ---
 import RootTitle from '~/components/root-title.astro'
+import { SC_API } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { homeMetadata } from '~/utils/json-ld'
@@ -7,7 +8,7 @@ import { homeMetadata } from '~/utils/json-ld'
 const userLanguage = Astro.locals.userLanguage
 
 const tipitakaResponse = await fetch(
-  `https://suttacentral.net/api/tipitaka_menu?language=${userLanguage}`
+  `${SC_API}/tipitaka_menu?language=${userLanguage}`
 )
 const tipitakaData = await tipitakaResponse.json()
 

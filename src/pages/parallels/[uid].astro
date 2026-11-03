@@ -1,5 +1,6 @@
 ---
 import ParallelSegments from '~/components/parallel-segments.astro'
+import { SC_API } from '~/constants/urls'
 import { parallelSegments } from '~/utils/parallels'
 
 // Just the list, for lazy-parallels to fetch into a card
@@ -11,13 +12,13 @@ const userLanguage = Astro.locals.userLanguage
 const lowerUid = uid?.toLowerCase()
 
 async function fetchParallels() {
-  const r = await fetch(`https://suttacentral.net/api/parallels/${lowerUid}`)
+  const r = await fetch(`${SC_API}/parallels/${lowerUid}`)
   return r.json()
 }
 
 async function fetchSuttaplex() {
   const r = await fetch(
-    `https://suttacentral.net/api/suttaplex/${lowerUid}?language=${userLanguage}`
+    `${SC_API}/suttaplex/${lowerUid}?language=${userLanguage}`
   )
   return r.json()
 }

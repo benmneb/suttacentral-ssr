@@ -6,11 +6,13 @@ import SiteFooter from '~/components/site-footer.astro'
 import SiteHeader from '~/components/site-header.astro'
 import SitePages from '~/components/site-pages.astro'
 import { siteMetaData } from '~/constants/meta-data'
+import { UMAMI_ORIGIN } from '~/constants/urls'
 import { t } from '~/i18n'
 import { textFromHtml } from '~/utils/json-ld'
 import { langTag } from '~/utils/language'
 
 const pathname = Astro.url.pathname
+const siteHost = new URL(siteMetaData.origin).host
 const userLanguage = Astro.locals.userLanguage
 interface Props {
   title?: string
@@ -135,9 +137,9 @@ const externalLinkAlt = JSON.stringify(
     <script
       is:inline
       defer
-      src="https://umamalytics.netlify.app/script.js"
+      src={`${UMAMI_ORIGIN}/script.js`}
       data-website-id="1e65129e-1d78-4a78-a6d2-a339152f9a1d"
-      data-domains="suttacentral.now,www.suttacentral.now"
+      data-domains={`${siteHost},www.${siteHost}`}
       data-exclude-search="true"
       data-exclude-hash="true"></script>
   </head>

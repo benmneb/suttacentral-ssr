@@ -1,4 +1,5 @@
 import { collectionURL } from '~/constants/edition'
+import { SC_API } from '~/constants/urls'
 import { langTagsIn } from '~/utils/language'
 import { closeHeadingGaps } from '~/utils/strings'
 
@@ -19,9 +20,7 @@ export async function fetchEditions(
   if (!collections.length) return editions
 
   try {
-    const response = await fetch(
-      'https://suttacentral.net/api/publication/editions'
-    )
+    const response = await fetch(`${SC_API}/publication/editions`)
     const all: { edition_id: string }[] = await response.json()
 
     await Promise.all(
@@ -32,9 +31,7 @@ export async function fetchEditions(
             edition_id.includes('-web_')
         )
         if (!web) return
-        const r = await fetch(
-          `https://suttacentral.net/api/publication/edition/${web.edition_id}`
-        )
+        const r = await fetch(`${SC_API}/publication/edition/${web.edition_id}`)
         const { publication } = await r.json()
         if (!publication) return
         editions.set(uid!, {

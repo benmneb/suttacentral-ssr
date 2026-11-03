@@ -1,4 +1,5 @@
 ---
+import { SC_API } from '~/constants/urls'
 import { getSearchLanguages } from '~/utils/cookies'
 import { getAllPreferredLanguages } from '~/utils/language'
 
@@ -11,9 +12,7 @@ interface Language {
   localized_percent: number
 }
 
-const languageResponse = await fetch(
-  'https://suttacentral.net/api/languages?all=true'
-)
+const languageResponse = await fetch(`${SC_API}/languages?all=true`)
 const languageData: Language[] = await languageResponse.json()
 
 const acceptLanguage = Astro.request.headers.get('accept-language')

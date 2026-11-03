@@ -24,6 +24,7 @@ import { readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { format, resolveConfig } from 'prettier'
+import { SC_API } from '../src/constants/urls.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const CONSTANTS_DIR = join(__dirname, '..', 'src', 'constants')
@@ -47,7 +48,7 @@ function entries(
 const CONSTANTS = [
   {
     file: 'expansion.ts',
-    url: 'https://suttacentral.net/api/expansion',
+    url: `${SC_API}/expansion`,
     // The api wraps the whole lot in a single-element array
     pick: (json: any) => json[0] as Record<string, [string, string]>,
     render: (data: Record<string, [string, string]>) =>
@@ -66,7 +67,7 @@ ${entries(data, v => `[${v.map((s: string) => JSON.stringify(s)).join(', ')}]`)}
   },
   {
     file: 'reference-editions.ts',
-    url: 'https://suttacentral.net/api/pali_reference_edition',
+    url: `${SC_API}/pali_reference_edition`,
     pick: (json: any) =>
       Object.fromEntries(
         json.map((e: { edition_set: string; name: string }) => [

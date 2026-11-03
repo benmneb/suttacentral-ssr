@@ -7,6 +7,7 @@ import '~/assets/details.css'
 import base from '~/assets/map-base.svg?url'
 import Icon from '~/components/icon.astro'
 import map from '~/constants/map.json'
+import { SC_IMG } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { mapMetadata } from '~/utils/json-ld'
@@ -50,7 +51,7 @@ const layers = map.layers.map((layer, i) => ({
 }))
 
 const metadata = mapMetadata(userLanguage, title, layers, {
-  src: 'https://suttacentral.net/img/static-pages/jambudipa_map.jpg',
+  src: `${SC_IMG}/static-pages/jambudipa_map.jpg`,
   width: 1476,
   height: 1034,
 })
@@ -122,13 +123,13 @@ const moves = [
         <figure>
           <picture>
             <source
-              srcset="https://suttacentral.net/img/static-pages/jambudipa_map.avif"
+              srcset={`${SC_IMG}/static-pages/jambudipa_map.avif`}
               type="image/avif"
             />
             <img
               alt={t(userLanguage, 'map:posterAlt')}
               class="image-home"
-              src="https://suttacentral.net/img/static-pages/jambudipa_map.jpg"
+              src={`${SC_IMG}/static-pages/jambudipa_map.jpg`}
               width="1476"
               height="1034"
             />

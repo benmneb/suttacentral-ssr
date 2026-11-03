@@ -9,10 +9,11 @@
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { SC_ORIGIN } from '../src/constants/urls.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const LOCALES_DIR = join(__dirname, '..', 'src', 'i18n', 'locales')
-const SC_BASE = 'https://suttacentral.net/localization/elements'
+const SC_BASE = `${SC_ORIGIN}/localization/elements`
 
 /**
  * File base names to sync from SC.

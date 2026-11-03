@@ -1,5 +1,6 @@
 ---
 import { siteMetaData } from '~/constants/meta-data'
+import { SC_ORIGIN } from '~/constants/urls'
 import { t } from '~/i18n'
 
 const pathname = Astro.originPathname.replace(/\/$/, '') + Astro.url.search
@@ -12,7 +13,7 @@ const userLanguage = Astro.locals.userLanguage
   <p>{t(userLanguage, 'footer:tagline')}</p>
   <p>
     {t(userLanguage, 'footer:viewPageOn')}
-    <a href={`https://suttacentral.net${pathname}`}>SuttaCentral.net</a>
+    <a href={`${SC_ORIGIN}${pathname}`}>SuttaCentral.net</a>
   </p>
   <p>{t(userLanguage, 'footer:renderedIn').replace('{time}', renderTime)}</p>
   <ul>

@@ -23,6 +23,7 @@ import { readdir, unlink, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { siteMetaData } from '../src/constants/meta-data.ts'
+import { SC_API, SC_GITHUB_RAW } from '../src/constants/urls.ts'
 
 type MenuNode = { uid: string | null; node_type: string; children?: MenuNode[] }
 type Translation = { lang: string; author_uid: string; segmented: boolean }
@@ -32,9 +33,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
 const PUBLIC = join(ROOT, 'public')
 const ORIGIN = siteMetaData.origin
-const API = 'https://suttacentral.net/api'
-const DICTIONARIES =
-  'https://raw.githubusercontent.com/suttacentral/sc-data/main/dictionaries'
+const DICTIONARIES = `${SC_GITHUB_RAW}/sc-data/main/dictionaries`
 const PER_FILE = 40_000
 const CONCURRENCY = 8
 const RETRIES = 3
@@ -66,7 +65,7 @@ async function fetchJson(url: string): Promise<any> {
 
 /** A menu node with its children, without the empty ones the api gives some, eg g2dhp */
 async function fetchMenu(uid: string): Promise<MenuNode> {
-  const [node] = await fetchJson(`${API}/menu/${uid}?language=en`)
+  const [node] = await fetchJson(`${SC_API}/menu/${uid}?language=en`)
   return { ...node, children: node.children?.filter((c: MenuNode) => c?.uid) }
 }
 
@@ -94,7 +93,7 @@ const sitePages = async () => {
 }
 
 const shortcuts: string[] =
-  (await fetchJson(`${API}/shortcuts`))[0]?.shortcuts ?? []
+  (await fetchJson(`${SC_API}/shortcuts`))[0]?.shortcuts ?? []
 
 /**
  * The /pitaka paths and /uid pages under a menu node, and the uids whose
@@ -164,7 +163,7 @@ function textPaths(items: Suttaplex[]) {
 }
 
 async function languagePaths() {
-  const { ancient, modern } = await fetchJson(`${API}/translation_count`)
+  const { ancient, modern } = await fetchJson(`${SC_API}/translation_count`)
   return [...ancient, ...modern].map(
     ({ iso_code }: { iso_code: string }) => `/languages/${iso_code}`
   )
@@ -173,11 +172,11 @@ async function languagePaths() {
 /** Each web edition and its front matter, by the first web edition of a text, as /edition finds it */
 async function editionPaths() {
   const editions: { edition_id: string }[] = await fetchJson(
-    `${API}/publication/editions`
+    `${SC_API}/publication/editions`
   )
   const web = editions.filter(e => e.edition_id.includes('-web_'))
   const details = await Promise.all(
-    web.map(e => fetchJson(`${API}/publication/edition/${e.edition_id}`))
+    web.map(e => fetchJson(`${SC_API}/publication/edition/${e.edition_id}`))
   )
   return details.flatMap(({ edition, publication }, i) => {
     const { text_uid, translation_lang_iso, creator_uid } = publication
@@ -222,12 +221,12 @@ async function definePaths() {
   return [...words].sort(collator.compare).map(word => `/define/${word}`)
 }
 
-const roots: { uid: string }[] = await fetchJson(`${API}/tipitaka_menu`)
+const roots: { uid: string }[] = await fetchJson(`${SC_API}/tipitaka_menu`)
 const menu = await Promise.all(roots.map(({ uid }) => walk(uid, `/${uid}`)))
 const suttaplexes = await Promise.all(
   menu
     .flatMap(m => m.suttaplexes)
-    .map(uid => fetchJson(`${API}/suttaplex/${uid}?language=en`))
+    .map(uid => fetchJson(`${SC_API}/suttaplex/${uid}?language=en`))
 )
 const texts = textPaths(suttaplexes.flat())
 

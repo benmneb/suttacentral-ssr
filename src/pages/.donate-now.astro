@@ -2,6 +2,7 @@
 import '~/assets/donate-now.css'
 import Icon from '~/components/icon.astro'
 import { icon } from '~/constants/heroicons'
+import { SC_API } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 
@@ -22,13 +23,11 @@ if (Astro.request.method === 'POST') {
     )
     const frequency = formData.get('frequency') as string
 
-    const keyResponse = await fetch(
-      'https://suttacentral.net/api/stripe_public_key'
-    )
+    const keyResponse = await fetch(`${SC_API}/stripe_public_key`)
     const keyData = await keyResponse.json()
     stripePublicKey = keyData.public_key
 
-    const sessionRes = await fetch('https://suttacentral.net/api/donate', {
+    const sessionRes = await fetch(`${SC_API}/donate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ currency, amount, frequency }),
@@ -44,9 +43,7 @@ let currencies: { symbol: string }[] = [{ symbol: 'USD' }]
 let defaultCurrencyIndex = 0
 
 try {
-  const res = await fetch(
-    `https://suttacentral.net/api/currencies?language=${userLanguage}`
-  )
+  const res = await fetch(`${SC_API}/currencies?language=${userLanguage}`)
   const data = await res.json()
   currencies = data.currencies || currencies
   defaultCurrencyIndex = data.default_currency_index || 0

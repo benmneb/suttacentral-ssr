@@ -1,5 +1,6 @@
 ---
 import '~/assets/table.css'
+import { SC_API } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { sitePageMetadata } from '~/utils/json-ld'
@@ -7,9 +8,9 @@ import { sitePageMetadata } from '~/utils/json-ld'
 const userLanguage = Astro.locals.userLanguage
 
 const [textsRes, editionsRes, schoolsRes] = await Promise.all([
-  fetch('https://suttacentral.net/api/abbreviation_texts'),
-  fetch('https://suttacentral.net/api/abbreviation_editions'),
-  fetch('https://suttacentral.net/api/abbreviation_schools'),
+  fetch(`${SC_API}/abbreviation_texts`),
+  fetch(`${SC_API}/abbreviation_editions`),
+  fetch(`${SC_API}/abbreviation_schools`),
 ])
 
 const textsData = await textsRes.json()

@@ -1,6 +1,7 @@
 ---
 import '~/assets/offline-icons.css'
 import Icon from '~/components/icon.astro'
+import { SC_ORIGIN } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { sitePageMetadata } from '~/utils/json-ld'
@@ -20,7 +21,7 @@ const scxStaticReleases =
       <h2>SuttaCentral</h2>
       <ul>
         <li>
-          <a href="https://suttacentral.net/offline" rel="external">
+          <a href={`${SC_ORIGIN}/offline`} rel="external">
             <Icon name="devicePhoneMobile" />
             {t(userLanguage, 'offline:webApp')}
           </a>
