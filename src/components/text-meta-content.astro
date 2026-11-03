@@ -119,7 +119,8 @@ function printIconsHTML(translation) {
             <summary>
               {toSentenceCase(
                 `${t(userLanguage, translations.length !== 1 ? 'suttaplex:translationsIn' : 'suttaplex:translationIn')} ${t(userLanguage, translations.length !== 1 ? 'suttaplex:inYourLanguage' : 'suttaplex:inYourLanguage')}`
-              )}
+              )}{' '}
+              ({translations.length})
             </summary>
             <ul>
               {translations.map(t => (
