@@ -2650,8 +2650,8 @@ const metadata = textMetadata(userLanguage, {
       p?: string
     }
     type PaliMatch = { base: string; entry?: LookupEntry; meaning?: string }
-    type LzhMatch = { term: string; entry: LookupEntry }
-    /** A Pāli word's span, or a Range of one Chinese character */
+    type LzhMatch = { term: string; start: number; entry: LookupEntry }
+    /** A Pāli word's span, or a Range of Chinese characters */
     type Word = HTMLElement | Range
 
     const toggle = document.getElementById('rooter-look-up')
@@ -2724,7 +2724,8 @@ const metadata = textMetadata(userLanguage, {
        * every word on the page in one go is more than a Worker gets the CPU
        * time for.
        */
-      function lookUp(query: string) {
+      function lookUp(word: Word) {
+        const query = queryOf(word).toString()
         if (!answers.has(query)) answers.set(query, fetchAnswer(query))
         return answers.get(query)!
       }
@@ -2732,13 +2733,8 @@ const metadata = textMetadata(userLanguage, {
       async function fetchAnswer(
         query: string
       ): Promise<PaliMatch[] | LzhMatch[] | null> {
-        const params = new URLSearchParams({
-          from: toggle.dataset.from ?? '',
-          to: toggle.dataset.to ?? '',
-          [isLzh ? 'text' : 'word']: query,
-        })
         try {
-          const res = await fetch(`/api/lookup?${params}`)
+          const res = await fetch(`/api/lookup?${query}`)
           if (!res.ok) throw new Error()
           return await res.json()
         } catch {
@@ -2754,8 +2750,8 @@ const metadata = textMetadata(userLanguage, {
       }
 
       /**
-       * The Chinese characters around one, up to 3 each way within its run, as
-       * the server finds every term in them
+       * The Chinese characters around one within its run, up to 3 before and 7
+       * after, for the terms of up to 8 that take it in
        */
       function contextOf(char: Range) {
         const node = char.startContainer as Text
@@ -2766,7 +2762,7 @@ const metadata = textMetadata(userLanguage, {
           if (!before || !HAN.test(before)) break
           start -= before.length
         }
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 7; i++) {
           const after =
             end < data.length
               ? String.fromCodePoint(data.codePointAt(end)!)
@@ -2777,17 +2773,53 @@ const metadata = textMetadata(userLanguage, {
         return rangeOf(node, start, end)
       }
 
+      /** A Pāli word as the dictionary has it, or the Chinese character */
+      function nameOf(word: Word) {
+        return word instanceof Range
+          ? word.toString()
+          : cleanWord(word.textContent ?? '')
+      }
+
       /**
-       * What to ask the server about a word. Chinese in traditional characters,
-       * as the dictionary has them, where they've been simplified
+       * What to ask the server about a word. Chinese with the characters around
+       * it, in traditional characters as the dictionary has them where they've
+       * been simplified, and where it is among them
        */
       function queryOf(word: Word) {
-        if (!(word instanceof Range)) return cleanWord(word.textContent ?? '')
+        const query = new URLSearchParams({
+          from: toggle.dataset.from ?? '',
+          to: toggle.dataset.to ?? '',
+        })
+        if (!(word instanceof Range)) {
+          query.set('word', nameOf(word))
+          return query
+        }
         const context = contextOf(word)
-        return original(context.startContainer as Text).slice(
-          context.startOffset,
-          context.endOffset
+        const data = original(context.startContainer as Text)
+        query.set('text', data.slice(context.startOffset, context.endOffset))
+        query.set(
+          'at',
+          String([...data.slice(context.startOffset, word.startOffset)].length)
         )
+        return query
+      }
+
+      /** The longest term found, in place of the character it takes in */
+      function termOf(char: Range, terms: LzhMatch[]) {
+        const context = contextOf(char)
+        const text = [
+          ...original(context.startContainer as Text).slice(
+            context.startOffset,
+            context.endOffset
+          ),
+        ]
+        const [{ term, start }] = terms
+        const before = text.slice(0, start).join('').length
+        const length = text
+          .slice(start, start + [...term].length)
+          .join('').length
+        const offset = context.startOffset + before
+        return rangeOf(context.startContainer, offset, offset + length)
       }
 
       function caretAt(x: number, y: number) {
@@ -3046,26 +3078,29 @@ const metadata = textMetadata(userLanguage, {
 
       async function show(word: Word) {
         if (!canPop) {
-          location.href = definePath(
-            word instanceof Range ? word.toString() : queryOf(word)
-          )
+          location.href = definePath(nameOf(word))
           return
         }
         const search = ++latest
         clearHighlight()
         current = word
-        const query = queryOf(word)
+        const name = nameOf(word)
         const text = elementOf(word).closest(TEXT)
         const lang = text?.parentElement?.getAttribute('lang') ?? ''
-        paint(word instanceof Range ? contextOf(word) : word)
-        open(word instanceof Range ? word.toString() : query, escape(lang))
+        paint(word)
+        open(name, escape(lang))
         keepInSight(word)
 
         const busy = word instanceof Range ? text : word
         busy?.setAttribute('aria-busy', 'true')
-        const answer = await lookUp(query)
+        const answer = await lookUp(word)
         busy?.removeAttribute('aria-busy')
         if (search !== latest || !toggle.checked) return
+        if (word instanceof Range && answer?.length) {
+          clearHighlight()
+          current = termOf(word, answer as LzhMatch[])
+          paint(current)
+        }
 
         const section = popover.querySelector(':scope > div')!
         section.insertAdjacentHTML(
@@ -3074,7 +3109,7 @@ const metadata = textMetadata(userLanguage, {
             ? `<p>${escape(popover.dataset.failed ?? '')}</p>`
             : isLzh
               ? lzhHtml(answer as LzhMatch[])
-              : paliHtml(query, answer as PaliMatch[], escape(lang))
+              : paliHtml(name, answer as PaliMatch[], escape(lang))
         )
         section.removeAttribute('aria-busy')
       }
@@ -3118,7 +3153,7 @@ const metadata = textMetadata(userLanguage, {
         const word = isLzh
           ? charAt(event)
           : (event.target as Element).closest?.<HTMLElement>(`${TEXT} .word`)
-        if (word) lookUp(queryOf(word))
+        if (word) lookUp(word)
       })
 
       popover.addEventListener('click', event => {

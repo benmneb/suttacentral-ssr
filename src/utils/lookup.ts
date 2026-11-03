@@ -340,28 +340,30 @@ export async function lookupPali(
 }
 
 /**
- * Chinese: every dictionary entry that appears as a substring of the text,
- * after normalizing character variants. Longest first, as the longer terms
- * are the more specific
+ * Chinese: every dictionary entry in the text that takes in the character at
+ * `at` (counting characters, not UTF-16 units), after normalizing character
+ * variants. Longest first, as the longer terms are the more specific
  */
 export async function lookupLzh(
   rawText: string,
+  at: number,
   dict: Dict<LookupEntry>
-): Promise<Array<{ term: string; entry: LookupEntry }>> {
-  const text = normalizeHanzi(rawText)
-  const found = new Map<string, LookupEntry>()
+): Promise<Array<{ term: string; start: number; entry: LookupEntry }>> {
+  const chars = [...normalizeHanzi(rawText)]
+  const found = new Map<string, { start: number; entry: LookupEntry }>()
 
-  for (let i = 0; i < text.length; i++) {
-    for (let len = 1; len <= Math.min(20, text.length - i); len++) {
-      const term = text.substring(i, i + len)
+  for (let start = 0; start <= at; start++) {
+    const longest = Math.min(chars.length, start + 20)
+    for (let end = at + 1; end <= longest; end++) {
+      const term = chars.slice(start, end).join('')
       if (found.has(term)) continue
       const entry = await dict.get(term)
-      if (entry) found.set(term, entry)
+      if (entry) found.set(term, { start, entry })
     }
   }
 
   return [...found]
-    .map(([term, entry]) => ({ term, entry }))
+    .map(([term, { start, entry }]) => ({ term, start, entry }))
     .sort((a, b) => b.term.length - a.term.length)
 }
 
