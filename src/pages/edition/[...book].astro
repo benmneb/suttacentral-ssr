@@ -99,9 +99,9 @@ if (matter) {
   ]
 
   // Replace SC URLs with relative
-  matterContent = tidyMatter(matterContent).replaceAll(
-    'href="https://suttacentral.net',
-    'href="'
+  matterContent = tidyMatter(matterContent).replace(
+    /(?<=href=['"])https:\/\/suttacentral\.net/g,
+    ''
   )
 } else {
   // === EDITION PAGE ===
