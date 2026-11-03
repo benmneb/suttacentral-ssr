@@ -309,7 +309,9 @@ const pageHits =
                         </hgroup>
                         {hit.highlight.content.map((excerpt: string) => (
                           <span
-                            set:html={excerpt.replaceAll('target="_blank"', '')}
+                            set:html={excerpt
+                              .replaceAll('target="_blank"', '')
+                              .replace(/\sid="[^"]*"/g, '')}
                           />
                         ))}
                         {hit.all_reference
@@ -352,7 +354,7 @@ const pageHits =
                   {matchPartial && (
                     <input type="hidden" name="matchpartial" value="true" />
                   )}
-                  <button class="with-icon" type="submit">
+                  <button class="button" type="submit">
                     <Icon name="arrowLeft" />
                     <span>{t(userLanguage, 'interface:previous')}</span>
                   </button>
@@ -367,7 +369,7 @@ const pageHits =
                   {matchPartial && (
                     <input type="hidden" name="matchpartial" value="true" />
                   )}
-                  <button class="with-icon" type="submit">
+                  <button class="button" type="submit">
                     <span>{t(userLanguage, 'interface:next')}</span>
                     <Icon name="arrowRight" />
                   </button>

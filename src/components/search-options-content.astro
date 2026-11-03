@@ -32,7 +32,7 @@ const isChecked = (lang: Language) => {
 <fieldset id="search-options">
   <legend>Language options</legend>
   <div class="sections-wrapper">
-    <section class="root-section">
+    <div class="root-section">
       <b>Root languages</b>
       {
         languageData
@@ -49,8 +49,8 @@ const isChecked = (lang: Language) => {
             </label>
           ))
       }
-    </section>
-    <section class="translation-section">
+    </div>
+    <div class="translation-section">
       <b>Translation languages</b>
       <div class="translation-grid">
         {
@@ -69,7 +69,7 @@ const isChecked = (lang: Language) => {
             ))
         }
       </div>
-    </section>
+    </div>
   </div>
 </fieldset>
 

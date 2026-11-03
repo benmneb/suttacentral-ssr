@@ -826,7 +826,7 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
     outline: none;
   }
 
-  section {
+  > :is(div, section) {
     width: calc(100% - 1rem); /* account for padding */
     max-width: var(--content-max-width);
     margin: 0 auto;

@@ -72,7 +72,7 @@ const userLanguage = Astro.locals.userLanguage
             checked={matchPartial}
           />
         </label>
-        {/* Owned by no form, so not sent with the search */}
+        {/* Owned by the empty form below, so not sent with the search */}
         <input
           type="radio"
           name="search-panel"
@@ -134,9 +134,10 @@ const userLanguage = Astro.locals.userLanguage
     )
   }
 </form>
+{isSearchPage && <form id="search-panels" hidden />}
 
 <style>
-  form {
+  form[role='search'] {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;

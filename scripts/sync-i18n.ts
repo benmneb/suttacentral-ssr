@@ -65,6 +65,8 @@ const TRANSFORMATIONS: [RegExp, string][] = [
     /(?<!rel=['"]dct:publisher['"][^>]*)href=(['"])https:\/\/suttacentral\.net\/(?![^>]*rel=['"]dct:publisher['"])/g,
     'href=$1/',
   ],
+  // A </br> end tag isn't valid HTML
+  [/<\/br>/g, '<br>'],
 ]
 
 /**

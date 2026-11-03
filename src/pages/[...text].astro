@@ -578,7 +578,7 @@ const toc: TocEntry[] = []
 function tocLabel(text: string): string {
   const stripped = text.trim().replace(/^\d+(?:\.\d+)*\.\s*/, '')
   // A heading that is only a number would leave a link with no name
-  return stripped || text.trim()
+  return langTagsIn(stripped || text.trim())
 }
 
 // A page of several texts repeats a number like 1.1, so it takes .net's whole
@@ -1726,7 +1726,7 @@ const metadata = textMetadata(userLanguage, {
 
     {hasPublicationInfo && <PublicationInfo entry={publicationData} />}
 
-    <article id="parallels" popover>
+    <div id="parallels" popover>
       <TextMetaContent
         data={suttaplexData[0]}
         userLanguage={userLanguage}
@@ -1735,7 +1735,7 @@ const metadata = textMetadata(userLanguage, {
         inRangeSuttaId={lowerAcronym}
         parallelsData={parallelsData}
       />
-    </article>
+    </div>
     {
       availableLangs && (
         <article
@@ -1746,7 +1746,7 @@ const metadata = textMetadata(userLanguage, {
           data-see={t(userLanguage, 'viewoption:seeWord')}
           data-failed={t(userLanguage, 'viewoption:lookupFailed')}
         >
-          <section />
+          <div />
           <section
             id="definition-help"
             aria-label={t(userLanguage, 'bottomsheet:help')}
@@ -3013,7 +3013,7 @@ const metadata = textMetadata(userLanguage, {
      */
     function open(word: string, lang: string) {
       setHelp(false)
-      const section = popover.querySelector('section')!
+      const section = popover.querySelector(':scope > div')!
       section.setAttribute('aria-busy', 'true')
       section.innerHTML = `<dfn lang="${lang}" translate="no">${escape(word)}</dfn>`
       const book = popover.querySelector<HTMLAnchorElement>('nav > a')
@@ -3032,7 +3032,7 @@ const metadata = textMetadata(userLanguage, {
       popover
         .querySelector('[data-help]')
         ?.setAttribute('aria-expanded', String(shown))
-      popover.querySelector('section')!.hidden = shown
+      popover.querySelector(':scope > div')!.hidden = shown
       popover.querySelector<HTMLElement>('#definition-help')!.hidden = !shown
     }
 
@@ -3053,7 +3053,7 @@ const metadata = textMetadata(userLanguage, {
       busy?.removeAttribute('aria-busy')
       if (search !== latest || !toggle.checked) return
 
-      const section = popover.querySelector('section')!
+      const section = popover.querySelector(':scope > div')!
       section.insertAdjacentHTML(
         'beforeend',
         !answer

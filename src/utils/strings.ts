@@ -85,16 +85,17 @@ export function closeHeadingGaps(html: string): string {
 }
 
 /**
- * Headings with no text unwrapped, and a section one of them opens made a div.
+ * Headings with no text unwrapped, and a section one of them opens made a div,
+ * as is one that opens with a paragraph, eg the Vinaya's `<section class='suttanta'>`.
  * On a root text's page these are headings only translations fill, eg
  * /ma1/lzh/sct and /pli-tv-bu-vb-pj1/pli/ms
  */
 export function dropEmptyHeadings(html: string): string {
   const unsectioned = html.replace(
-    /<section\b([^>]*)>(\s*<(h[1-6])\b[^>]*>((?:(?!<\/h[1-6]>)[\s\S])*)<\/\3>)/g,
+    /<section\b([^>]*)>(?:(\s*<(h[1-6])\b[^>]*>((?:(?!<\/h[1-6]>)[\s\S])*)<\/\3>)|(?=\s*<p\b))/g,
     (match, attrs, heading) =>
-      isEmptyHeading(heading)
-        ? `<div${attrs} data-unsectioned>${heading}`
+      !heading || isEmptyHeading(heading)
+        ? `<div${attrs} data-unsectioned>${heading ?? ''}`
         : match
   )
   const open: string[] = []
