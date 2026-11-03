@@ -969,6 +969,8 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
 
       &:hover {
         background-color: var(--details-summary-hover-background);
+        box-shadow: none;
+        border-radius: initial;
 
         @media (forced-colors: active) {
           outline: 2px solid Highlight;
