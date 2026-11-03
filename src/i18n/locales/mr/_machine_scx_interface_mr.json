@@ -12,5 +12,7 @@
   "interface:suttaCentralEdition": "छापील स्वरूपात आणि ऑफलाइन वाचनासाठी अनेक डिजिटल स्वरूपांमध्ये उपलब्ध असलेली SuttaCentral आवृत्ती",
   "interface:translationCount": "भाषांतरे ({language}): {count}",
   "interface:externalLink": "बाह्य दुवा",
-  "interface:skipToMain": "मुख्य मजकुराकडे जा"
+  "interface:skipToMain": "मुख्य मजकुराकडे जा",
+  "interface:defineHeading": "व्याख्या",
+  "interface:canonOverview": "कॅनन आढावा"
 }

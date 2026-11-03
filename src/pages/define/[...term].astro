@@ -106,7 +106,7 @@ const dictionaryCount = t(
   {...defineMetadata(userLanguage, term, dictionaryData, dictionaryTitles)}
   title={term
     ? `${t(userLanguage, 'dictionary:dictionaryResultsText')} ${term}`
-    : t(userLanguage, 'dictionary:define')}
+    : t(userLanguage, 'interface:defineHeading')}
 >
   <main id="main">
     {
@@ -121,7 +121,7 @@ const dictionaryCount = t(
           <p>{dictionaryCount}</p>
         </hgroup>
       ) : (
-        <h1>{t(userLanguage, 'dictionary:define')}</h1>
+        <h1>{t(userLanguage, 'interface:defineHeading')}</h1>
       )
     }
     <div>

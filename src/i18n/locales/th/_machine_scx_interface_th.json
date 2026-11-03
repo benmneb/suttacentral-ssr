@@ -12,5 +12,7 @@
   "interface:suttaCentralEdition": "ฉบับ SuttaCentral ที่มีทั้งฉบับพิมพ์และรูปแบบดิจิทัลหลายรูปแบบสำหรับอ่านแบบออฟไลน์",
   "interface:translationCount": "คำแปล ({language}): {count}",
   "interface:externalLink": "ลิงก์ภายนอก",
-  "interface:skipToMain": "ข้ามไปยังเนื้อหาหลัก"
+  "interface:skipToMain": "ข้ามไปยังเนื้อหาหลัก",
+  "interface:defineHeading": "คำนิยาม",
+  "interface:canonOverview": "ภาพรวมพระไตรปิฎก"
 }

@@ -12,5 +12,7 @@
   "interface:suttaCentralEdition": "SuttaCentral-laitos, saatavilla painettuna ja useissa digitaalisissa muodoissa offline-lukemista varten",
   "interface:translationCount": "Käännökset ({language}): {count}",
   "interface:externalLink": "ulkoinen linkki",
-  "interface:skipToMain": "Siirry pääsisältöön"
+  "interface:skipToMain": "Siirry pääsisältöön",
+  "interface:defineHeading": "Määritelmät",
+  "interface:canonOverview": "Kaanonin yleiskatsaus"
 }

@@ -12,5 +12,7 @@
   "interface:suttaCentralEdition": "Edisi SuttaCentral yang tersedia dalam versi cetak dan berbagai format digital untuk dibaca secara luring",
   "interface:translationCount": "Terjemahan ({language}): {count}",
   "interface:externalLink": "tautan eksternal",
-  "interface:skipToMain": "Langsung ke konten utama"
+  "interface:skipToMain": "Langsung ke konten utama",
+  "interface:defineHeading": "Definisi",
+  "interface:canonOverview": "Gambaran Kanon"
 }

@@ -12,5 +12,7 @@
   "interface:suttaCentralEdition": "Wydanie SuttaCentral dostępne w druku i w kilku formatach cyfrowych do czytania offline",
   "interface:translationCount": "Tłumaczenia ({language}): {count}",
   "interface:externalLink": "link zewnętrzny",
-  "interface:skipToMain": "Przejdź do głównej treści"
+  "interface:skipToMain": "Przejdź do głównej treści",
+  "interface:defineHeading": "Definicje",
+  "interface:canonOverview": "Przegląd Kanonu"
 }

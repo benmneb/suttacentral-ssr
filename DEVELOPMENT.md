@@ -133,7 +133,7 @@ UI translations are synced from SuttaCentral's static assets. Three types of fil
 - `_scx_interface_en.json` etc. — Project-specific labels, maintained in this repo
 - `_machine_interface_cs.json`, `_machine_scx_interface_cs.json` etc. — Machine translation fallbacks, maintained in this repo
 
-A human translation wins over a machine one with the same key. To add a string, put the English in the `_scx_<namespace>_en.json` it belongs to, and its translation in each other locale's `_machine_scx_<namespace>_<lang>.json`. Until a locale has it, `t()` falls back to English.
+Machine translations exist to fill the gaps. A human translation wins over a machine one with the same key. To add a string, put the English in the `_scx_<namespace>_en.json` it belongs to, and its translation in each other locale's `_machine_scx_<namespace>_<lang>.json`. Until a locale has it, `t()` falls back to English.
 
 To pull the latest official translations:
 

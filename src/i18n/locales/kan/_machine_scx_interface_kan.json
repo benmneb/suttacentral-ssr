@@ -12,5 +12,7 @@
   "interface:suttaCentralEdition": "ಮುದ್ರಿತ ರೂಪದಲ್ಲಿ ಮತ್ತು ಆಫ್‌ಲೈನ್ ಓದುವಿಕೆಗಾಗಿ ಹಲವು ಡಿಜಿಟಲ್ ಸ್ವರೂಪಗಳಲ್ಲಿ ಲಭ್ಯವಿರುವ SuttaCentral ಆವೃತ್ತಿ",
   "interface:translationCount": "ಅನುವಾದಗಳು ({language}): {count}",
   "interface:externalLink": "ಬಾಹ್ಯ ಕೊಂಡಿ",
-  "interface:skipToMain": "ಮುಖ್ಯ ವಿಷಯಕ್ಕೆ ಹೋಗಿ"
+  "interface:skipToMain": "ಮುಖ್ಯ ವಿಷಯಕ್ಕೆ ಹೋಗಿ",
+  "interface:defineHeading": "ವ್ಯಾಖ್ಯಾನಗಳು",
+  "interface:canonOverview": "ತ್ರಿಪಿಟಕ ಅವಲೋಕನ"
 }

@@ -12,5 +12,7 @@
   "interface:suttaCentralEdition": "SuttaCentral 版本，提供印刷版及多种可离线阅读的数字格式",
   "interface:translationCount": "翻译（{language}）：{count}",
   "interface:externalLink": "外部链接",
-  "interface:skipToMain": "跳到主要内容"
+  "interface:skipToMain": "跳到主要内容",
+  "interface:defineHeading": "定义",
+  "interface:canonOverview": "三藏概览"
 }

@@ -40,17 +40,18 @@ export const staticPages = {
     { href: '/numbering', label: 'interface:numbering' },
     { href: '/abbreviations', label: 'interface:abbreviations' },
     { href: '/methodology', label: 'interface:methodology' },
+    { href: '/define', label: 'interface:defineHeading' },
   ],
   indexes: [
     { href: '/subjects', label: 'interface:subjects' },
     { href: '/similes', label: 'interface:similes' },
     { href: '/names', label: 'interface:names' },
     { href: '/terminology', label: 'interface:terminology' },
-    { href: '/pali-tipitaka', label: 'interface:overview' },
+    { href: '/pali-tipitaka', label: 'interface:canonOverview' },
   ],
 } satisfies Record<string, StaticPage[]>
 
-/** The site map groups in the footer and the header menu */
+/** The site map groups in the header menu */
 export const siteMap: { label: string; pages: StaticPage[] }[] = [
   {
     label: 'interface:pagesExplore',
@@ -112,6 +113,7 @@ export const pageIcons: Record<string, string> = {
   '/numbering': icon('numberedList'),
   '/abbreviations': icon('scissors'),
   '/methodology': icon('beaker'),
+  '/define': icon('bookOpen'),
   '/acknowledgments': icon('users'),
   '/licensing': icon('scale'),
   '/about': icon('informationCircle'),

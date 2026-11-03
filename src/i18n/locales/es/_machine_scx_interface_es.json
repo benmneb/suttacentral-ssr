@@ -12,5 +12,7 @@
   "interface:suttaCentralEdition": "Una edición de SuttaCentral disponible impresa y en varios formatos digitales para leer sin conexión",
   "interface:translationCount": "Traducciones ({language}): {count}",
   "interface:externalLink": "enlace externo",
-  "interface:skipToMain": "Saltar al contenido principal"
+  "interface:skipToMain": "Saltar al contenido principal",
+  "interface:defineHeading": "Definiciones",
+  "interface:canonOverview": "Panorama del Canon"
 }

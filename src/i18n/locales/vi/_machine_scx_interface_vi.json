@@ -12,5 +12,7 @@
   "interface:suttaCentralEdition": "Một ấn bản SuttaCentral có bản in và nhiều định dạng kỹ thuật số để đọc ngoại tuyến",
   "interface:translationCount": "Bản dịch ({language}): {count}",
   "interface:externalLink": "liên kết ngoài",
-  "interface:skipToMain": "Chuyển đến nội dung chính"
+  "interface:skipToMain": "Chuyển đến nội dung chính",
+  "interface:defineHeading": "Định nghĩa",
+  "interface:canonOverview": "Tổng quan Tam tạng"
 }

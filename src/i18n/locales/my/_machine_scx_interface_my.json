@@ -12,5 +12,7 @@
   "interface:suttaCentralEdition": "ပုံနှိပ်စာအုပ်နှင့် အော့ဖ်လိုင်းဖတ်ရှုနိုင်သော ဒစ်ဂျစ်တယ်ပုံစံများစွာဖြင့် ရရှိနိုင်သော SuttaCentral ထုတ်ဝေမှု",
   "interface:translationCount": "ဘာသာပြန်များ ({language}): {count}",
   "interface:externalLink": "ပြင်ပလင့်ခ်",
-  "interface:skipToMain": "အဓိကအကြောင်းအရာသို့ ကျော်သွားရန်"
+  "interface:skipToMain": "အဓိကအကြောင်းအရာသို့ ကျော်သွားရန်",
+  "interface:defineHeading": "အဓိပ္ပါယ်ဖွင့်ဆိုချက်များ",
+  "interface:canonOverview": "ပိဋကတော်ကို ခြုံငုံကြည့်ခြင်း"
 }

@@ -12,5 +12,7 @@
   "interface:suttaCentralEdition": "SuttaCentral આવૃત્તિ, મુદ્રિત સ્વરૂપે અને ઑફલાઇન વાંચન માટે અનેક ડિજિટલ ફોર્મેટમાં ઉપલબ્ધ",
   "interface:translationCount": "અનુવાદો ({language}): {count}",
   "interface:externalLink": "બાહ્ય લિંક",
-  "interface:skipToMain": "મુખ્ય સામગ્રી પર જાઓ"
+  "interface:skipToMain": "મુખ્ય સામગ્રી પર જાઓ",
+  "interface:defineHeading": "વ્યાખ્યાઓ",
+  "interface:canonOverview": "કેનન ઝાંખી"
 }

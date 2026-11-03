@@ -12,5 +12,7 @@
   "interface:suttaCentralEdition": "Izdaja SuttaCentral, na voljo v tiskani obliki in v več digitalnih oblikah za branje brez povezave",
   "interface:translationCount": "Prevodi ({language}): {count}",
   "interface:externalLink": "zunanja povezava",
-  "interface:skipToMain": "Skoči na glavno vsebino"
+  "interface:skipToMain": "Skoči na glavno vsebino",
+  "interface:defineHeading": "Definicije",
+  "interface:canonOverview": "Pregled kanona"
 }
