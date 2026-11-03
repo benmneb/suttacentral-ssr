@@ -5,6 +5,7 @@ import { collectionURL } from '~/constants/edition'
 import Icon from '~/components/icon.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
+import { editionMetadata, matterMetadata } from '~/utils/json-ld'
 import { tidyMatter } from '~/utils/editions'
 import { toSentenceCase } from '~/utils/strings'
 
@@ -216,9 +217,31 @@ if (matter) {
 
   var lastGeneratedDate = fileDates[0] || null
 }
+
+const bookPath = `/edition/${uid}/${lang}/${author}`
+const metadata = matter
+  ? matterMetadata(userLanguage, title, {
+      path: `${bookPath}/${matter}`,
+      bookPath,
+      bookTitle: translationTitle,
+      label: crumbsData.at(-1)!.title,
+      html: matterContent!,
+      lang,
+      crumbs: crumbsData,
+    })
+  : editionMetadata(userLanguage, title, {
+      path: bookPath,
+      title: translationTitle,
+      publication,
+      crumbs: crumbsData,
+      readPath: collectionURL.get(uid) || `/${uid}`,
+      cover: `https://suttacentral.net/img/publication-pages/${uid}-book.jpg`,
+      isbn: volumes.map((volume: any) => volume.volume_isbn).filter(Boolean),
+      dateModified: lastGeneratedDate,
+    })
 ---
 
-<Layout title={title} breadcrumbs={crumbsData}>
+<Layout {...metadata} breadcrumbs={crumbsData}>
   {
     matter ? (
       <main id="main">

@@ -94,6 +94,9 @@ const MARKER_COLOURS: Record<string, string> = {
 // Numeric, so the journeys' 10) comes after 9), not 1)
 const byName = new Intl.Collator('en', { numeric: true })
 
+// The number a journey puts before each of its stops, as "1) Rājagaha"
+const STOP_NUMBER = /^\d+\)/
+
 // The mini maps are this much wider than they're high, and a town's this many SVG units across, about 600km,
 // and a region's no more than this, about 2,000km
 const MINI_MAP_RATIO = 1.5
@@ -381,12 +384,21 @@ for (const { properties, geometry } of mapData[0].features as Feature[]) {
   })
 }
 
-const sortedLayers = [...layers].map(([name, places], i) => ({
-  name,
-  places: places
-    .sort((a, b) => byName.compare(a.name ?? '', b.name ?? ''))
-    .map((place, j) => ({ ...place, id: `place-${i + 1}-${j + 1}` })),
-}))
+const sortedLayers = [...layers].map(([name, places], i) => {
+  places.sort((a, b) => byName.compare(a.name ?? '', b.name ?? ''))
+  const stops = places.filter(place => !place.route)
+  return {
+    name,
+    // A journey's stops are a sequence, and the other layers only sorted by name
+    ordered:
+      stops.length > 1 &&
+      stops.every(({ name }) => STOP_NUMBER.test(name ?? '')),
+    places: places.map((place, j) => ({
+      ...place,
+      id: `place-${i + 1}-${j + 1}`,
+    })),
+  }
+})
 
 const outlines = sortedLayers.flatMap(({ places }) =>
   places.filter(place => place.shape?.d)
@@ -450,8 +462,9 @@ const map = {
       major: properties.SCALERANK <= 3,
     }
   }),
-  layers: sortedLayers.map(({ name, places }) => ({
+  layers: sortedLayers.map(({ name, ordered, places }) => ({
     name,
+    ...(ordered && { ordered }),
     places: places.map(({ id, name, define, icon, route, shape }) => ({
       id,
       name,

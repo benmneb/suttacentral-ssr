@@ -8,6 +8,7 @@ import { t } from '~/i18n'
 import { langTag } from '~/utils/language'
 import { closeHeadingGaps, defineHref } from '~/utils/strings'
 import Layout from '~/layouts/Layout.astro'
+import { defineMetadata } from '~/utils/json-ld'
 
 // Handle form submissions: /define/?term=X → /define/X
 const queryTerm = Astro.url.searchParams.get('term')
@@ -102,15 +103,10 @@ const dictionaryCount = t(
 ---
 
 <Layout
+  {...defineMetadata(userLanguage, term, dictionaryData, dictionaryTitles)}
   title={term
     ? `${t(userLanguage, 'dictionary:dictionaryResultsText')} ${term}`
     : t(userLanguage, 'dictionary:define')}
-  description={term && dictionaryData[0]?.definition
-    ? (Array.isArray(dictionaryData[0].definition)
-        ? dictionaryData[0].definition[0]
-        : dictionaryData[0].definition
-      ).replace(/<[^>]*>/g, '')
-    : t(userLanguage, 'dictionary:description')}
 >
   <main id="main">
     {

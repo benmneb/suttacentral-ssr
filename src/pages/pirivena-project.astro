@@ -2,13 +2,14 @@
 import '~/assets/figure.css'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
+import { sitePageMetadata } from '~/utils/json-ld'
 
 const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'pirivenaPage:title')
 ---
 
-<Layout title={title}>
+<Layout {...sitePageMetadata(userLanguage, '/pirivena-project', title)}>
   <main id="main">
     <article>
       <h1>{t(userLanguage, 'pirivenaPage:title')}</h1>

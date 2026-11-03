@@ -2,6 +2,7 @@
 import '~/assets/table.css'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
+import { sitePageMetadata } from '~/utils/json-ld'
 
 const userLanguage = Astro.locals.userLanguage
 
@@ -16,9 +17,17 @@ const editionsData = await editionsRes.json()
 const schoolsData = await schoolsRes.json()
 
 const title = t(userLanguage, 'abbreviations:1')
+const metadata = sitePageMetadata(userLanguage, '/abbreviations', title, {
+  mainEntity: {
+    '@type': 'ItemList',
+    name: title,
+    numberOfItems: textsData.length + editionsData.length + schoolsData.length,
+  },
+  mainContentOfPage: { '@type': 'Table' },
+})
 ---
 
-<Layout title={title}>
+<Layout {...metadata}>
   <main id="main">
     <article>
       <h1 set:html={t(userLanguage, 'abbreviations:1')} />

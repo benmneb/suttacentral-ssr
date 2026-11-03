@@ -2,6 +2,7 @@
 import PieChart from '~/components/pie-chart.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
+import { sitePageMetadata } from '~/utils/json-ld'
 
 const userLanguage = Astro.locals.userLanguage
 
@@ -64,9 +65,13 @@ const crumbsData = [
   },
   { title },
 ]
+const metadata = sitePageMetadata(userLanguage, `/languages/${lang}`, title, {
+  description: t(userLanguage, 'meta:language', { language: name }),
+  crumbs: crumbsData,
+})
 ---
 
-<Layout title={title} breadcrumbs={crumbsData}>
+<Layout {...metadata} breadcrumbs={crumbsData}>
   <main id="main">
     <article>
       <h1>{name}</h1>

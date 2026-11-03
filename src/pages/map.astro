@@ -8,6 +8,7 @@ import Icon from '~/components/icon.astro'
 import map from '~/constants/map.json'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
+import { mapMetadata } from '~/utils/json-ld'
 import { langTag } from '~/utils/language'
 import { defineHref } from '~/utils/strings'
 
@@ -42,9 +43,16 @@ const layers = map.layers.map((layer, i) => ({
   label: layerKeys[layer.name]
     ? t(userLanguage, layerKeys[layer.name])
     : layer.name,
+  ordered: 'ordered' in layer && layer.ordered,
   places: layer.places as Place[],
   onMap: layer.places.some(place => 'shape' in place),
 }))
+
+const metadata = mapMetadata(userLanguage, title, layers, {
+  src: 'https://suttacentral.net/img/static-pages/jambudipa_map.jpg',
+  width: 1476,
+  height: 1034,
+})
 
 // Regions under the journeys, under the places' markers
 const placesOnMap = ['area', 'line', 'point'].flatMap(type =>
@@ -101,7 +109,7 @@ const moves = [
 ] as const
 ---
 
-<Layout title={title}>
+<Layout {...metadata}>
   <Fragment slot="head">
     <style is:inline set:html={mapStyles}></style>
   </Fragment>

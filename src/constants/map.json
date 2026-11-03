@@ -3679,6 +3679,7 @@
     },
     {
       "name": "Mahāparinibbāna journey",
+      "ordered": true,
       "places": [
         {
           "id": "place-7-1",
@@ -3835,6 +3836,7 @@
     },
     {
       "name": "Pārāyanavagga journey",
+      "ordered": true,
       "places": [
         {
           "id": "place-8-1",

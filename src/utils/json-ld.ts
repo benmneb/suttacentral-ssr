@@ -1,4 +1,5 @@
 import { siteMetaData } from '~/constants/meta-data'
+import { staticPages } from '~/constants/static-pages'
 import { t } from '~/i18n'
 import { getLanguageName, langTag } from '~/utils/language'
 import {
@@ -550,4 +551,489 @@ export function textMetadata(
       },
     }),
   }
+}
+
+/** The site pages' schema.org types, other than WebPage */
+const SITE_PAGE_TYPES: Record<string, string> = {
+  '/about': 'AboutPage',
+  '/abbreviations': 'CollectionPage',
+  '/editions': 'CollectionPage',
+  '/languages': 'CollectionPage',
+  ...Object.fromEntries(
+    staticPages.indexes.map(({ href }) => [href, 'CollectionPage'])
+  ),
+}
+
+/** The guides and essays, as articles, by their byline's keys */
+const SCHOLARLY_PAGES: Record<
+  string,
+  { bylineKeys: string[]; about: string[]; keywords: string[] }
+> = {
+  '/abhidhamma-guide-sujato': {
+    bylineKeys: ['abhidhamma:2'],
+    about: ['Abhidhamma', 'Buddhist philosophy'],
+    keywords: [
+      'Abhidhamma',
+      'Systematic Treatise',
+      'Buddhist philosophy',
+      'Pāli Canon',
+    ],
+  },
+  '/an-guide-sujato': {
+    bylineKeys: ['an-guide-sujato:2'],
+    about: ['Aṅguttara Nikāya', 'Buddhist discourses'],
+    keywords: [
+      'Aṅguttara Nikāya',
+      'Numbered Discourses',
+      'Buddhist discourses',
+      'Pāli Canon',
+    ],
+  },
+  '/an-introduction-bodhi': {
+    bylineKeys: ['an-introduction-bodhi:2'],
+    about: ['Aṅguttara Nikāya', 'Buddhist discourses'],
+    keywords: [
+      'Aṅguttara Nikāya',
+      'Numerical Discourses',
+      'Buddhist discourses',
+      'Pāli Canon',
+    ],
+  },
+  '/discourses-guide-sujato': {
+    bylineKeys: ['discourses:2'],
+    about: ['Early Buddhist texts', 'Buddhist discourses'],
+    keywords: [
+      'Early Buddhist texts',
+      'Suttas',
+      'Buddhist discourses',
+      'Pāli Canon',
+    ],
+  },
+  '/dn-guide-sujato': {
+    bylineKeys: ['dn-guide-sujato:2'],
+    about: ['Dīgha Nikāya', 'Buddhist discourses'],
+    keywords: [
+      'Dīgha Nikāya',
+      'Long Discourses',
+      'Buddhist discourses',
+      'Pāli Canon',
+    ],
+  },
+  '/general-guide-sujato': {
+    bylineKeys: ['general-guide-sujato:2'],
+    about: ['Early Buddhist texts', 'Pāli Canon'],
+    keywords: ['Early Buddhist texts', 'Buddhist texts', 'Pāli Canon'],
+  },
+  '/mn-guide-sujato': {
+    bylineKeys: ['mn-guide-sujato:2'],
+    about: ['Majjhima Nikāya', 'Buddhist discourses'],
+    keywords: [
+      'Majjhima Nikāya',
+      'Middle Discourses',
+      'Buddhist discourses',
+      'Pāli Canon',
+    ],
+  },
+  '/methodology': {
+    bylineKeys: ['methodology:16', 'methodology:33'],
+    about: ['Textual studies', 'Early Buddhist texts'],
+    keywords: ['Textual studies', 'Textual parallels', 'Early Buddhist texts'],
+  },
+  '/sn-guide-sujato': {
+    bylineKeys: ['sn-guide-sujato:2'],
+    about: ['Saṁyutta Nikāya', 'Buddhist discourses'],
+    keywords: [
+      'Saṁyutta Nikāya',
+      'Linked Discourses',
+      'Buddhist discourses',
+      'Pāli Canon',
+    ],
+  },
+  '/vinaya-guide-brahmali': {
+    bylineKeys: ['vinaya:2'],
+    about: ['Vinaya', 'Buddhist monastic discipline'],
+    keywords: ['Vinaya', 'Buddhist monastic discipline', 'Pāli Canon'],
+  },
+}
+
+/** A guide or essay's authors and year, from its English bylines, eg "Rod Bucknell, updated by Sujato" */
+function scholarlyData(path: string) {
+  const article = SCHOLARLY_PAGES[path]
+  if (!article) return {}
+
+  const authors = new Set<string>()
+  let datePublished: string | undefined
+  for (const key of article.bylineKeys) {
+    const byline = textFromHtml(t('en', key))
+    datePublished ??= byline.match(/\b(?:18|19|20)\d{2}\b/)?.[0]
+    byline
+      .replace(/,\s*(?:18|19|20)\d{2}\b/g, '')
+      .replace(/,\s*updated by\s+/gi, ';')
+      .split(/\s*;\s*/)
+      .map(name => name.trim())
+      .filter(Boolean)
+      .forEach(name => authors.add(name))
+  }
+
+  return {
+    '@type': 'ScholarlyArticle',
+    author: [...authors].map(name => ({ '@type': 'Person', name })),
+    ...(datePublished && { datePublished }),
+    about: article.about.map(name => ({ '@type': 'Thing', name })),
+    keywords: article.keywords,
+    publisher: SUTTACENTRAL,
+  }
+}
+
+interface SitePage {
+  description?: string
+  /** Its crumbs, as the page shows them, if it has more than its own */
+  crumbs?: Breadcrumb[]
+  /** Any more schema.org properties, which may override its `@type` */
+  [property: string]: any
+}
+
+/**
+ * A site page, eg /about, whose description is `meta:<its path>` unless it has one of its own
+ * @param path - The page's path, eg "/about"
+ */
+export function sitePageMetadata(
+  locale: string,
+  path: string,
+  title: string,
+  { description, crumbs, ...properties }: SitePage = {}
+): PageMetadata {
+  const url = absoluteUrl(path)
+  const pageTitle = textFromHtml(title)
+  const pageDescription = textFromHtml(
+    description ??
+      t(locale, `meta:${path.slice(1)}`, { site: siteMetaData.title })
+  )
+  const data: Record<string, any> = {
+    '@type': SITE_PAGE_TYPES[path] ?? 'WebPage',
+    ...scholarlyData(path),
+    ...properties,
+  }
+  return {
+    title: pageTitle,
+    description: pageDescription,
+    jsonLd: jsonLd({
+      '@type': data['@type'],
+      '@id': url,
+      ...([data['@type']].flat().includes('ScholarlyArticle')
+        ? { headline: pageTitle }
+        : { name: pageTitle }),
+      description: pageDescription,
+      url,
+      sameAs: scUrl(path),
+      inLanguage: langTag(locale),
+      isPartOf: website(),
+      breadcrumb: breadcrumbList(
+        locale,
+        crumbs ?? [{ title: pageTitle }],
+        path
+      ),
+      ...data,
+    }),
+  }
+}
+
+/** A matter page's first paragraph of prose: not the title, byline or contents it may start with */
+function firstParagraph(html: string) {
+  const body = html
+    .replace(/<nav\b[\s\S]*?<\/nav>/gi, ' ')
+    .replace(
+      /<p\b[^>]*\bclass=['"][^'"]*\bbyline\b[^'"]*['"][^>]*>[\s\S]*?<\/p>/gi,
+      ' '
+    )
+  const paragraph = body.match(/<p\b[^>]*>([\s\S]*?)<\/p>/i)?.[1]
+  return excerpt(textFromHtml(paragraph ?? body))
+}
+
+interface Edition {
+  path: string
+  title: string
+  publication: any
+  crumbs: Breadcrumb[]
+  /** Where the edition's text is read */
+  readPath: string
+  cover: string
+  isbn: string[]
+  dateModified?: string | null
+}
+
+/** An edition's page, as the book it is */
+export function editionMetadata(
+  locale: string,
+  pageTitle: string,
+  edition: Edition
+): PageMetadata {
+  const { publication } = edition
+  const author = { '@type': 'Person', name: publication.creator_name }
+  return sitePageMetadata(locale, edition.path, pageTitle, {
+    description:
+      textFromHtml(publication.text_description) ||
+      t(locale, 'meta:edition', {
+        title: edition.title,
+        translator: publication.creator_name,
+      }),
+    crumbs: edition.crumbs,
+    '@type': ['WebPage', 'Book'],
+    name: [edition.title, publication.translation_subtitle]
+      .filter(Boolean)
+      .join('—'),
+    author,
+    ...(publication.translation_lang_iso !== 'pli' && { translator: author }),
+    ...(publication.first_published && {
+      datePublished: publication.first_published,
+    }),
+    ...(edition.dateModified && { dateModified: edition.dateModified }),
+    inLanguage: langTag(publication.translation_lang_iso || 'en'),
+    publisher: SUTTACENTRAL,
+    ...(publication.license_url && { license: publication.license_url }),
+    image: edition.cover,
+    potentialAction: {
+      '@type': 'ReadAction',
+      target: absoluteUrl(edition.readPath),
+    },
+    ...(edition.isbn.length && {
+      isbn: edition.isbn.length === 1 ? edition.isbn[0] : edition.isbn,
+    }),
+    isBasedOn: {
+      '@type': 'Book',
+      name: publication.root_title || publication.text_uid,
+      inLanguage: 'pi',
+    },
+  })
+}
+
+/** A page of an edition's front matter, as a chapter of its book */
+export function matterMetadata(
+  locale: string,
+  pageTitle: string,
+  {
+    path,
+    bookPath,
+    bookTitle,
+    label,
+    html,
+    lang,
+    crumbs,
+  }: {
+    path: string
+    bookPath: string
+    bookTitle: string
+    label: string
+    html: string
+    lang: string
+    crumbs: Breadcrumb[]
+  }
+): PageMetadata {
+  const url = absoluteUrl(path)
+  const book = {
+    '@type': 'Book',
+    '@id': absoluteUrl(bookPath),
+    name: bookTitle,
+  }
+  return sitePageMetadata(locale, path, pageTitle, {
+    description: firstParagraph(html),
+    crumbs,
+    isPartOf: book,
+    hasPart: {
+      '@type': 'Chapter',
+      '@id': `${url}#chapter`,
+      name: label,
+      url,
+      isPartOf: book,
+      inLanguage: langTag(lang),
+    },
+  })
+}
+
+interface DictionaryEntry {
+  dictname: string
+  definition?: string | string[] | null
+  text?: string | null
+  xr?: string | string[] | null
+}
+
+/** A DPPN entry's other names for the word, in its dts */
+function aliasesOf(entry: DictionaryEntry, word: string) {
+  if (entry.dictname !== 'dppn' || !entry.text) return []
+  const names = [...entry.text.matchAll(/<dt\b[^>]*>([\s\S]*?)<\/dt>/gi)].map(
+    ([, html]) => textFromHtml(html)
+  )
+  return [...new Set(names)].filter(
+    name => name && name.toLocaleLowerCase() !== word.toLocaleLowerCase()
+  )
+}
+
+/** What a dictionary says of the word, as plain text, without the names and map a DPPN entry starts with */
+function descriptionsOf(entry: DictionaryEntry) {
+  return [
+    ...[entry.definition ?? []].flat(),
+    entry.text
+      ?.replace(/<dt\b[\s\S]*?<\/dt>/gi, '')
+      .replace(/<sc-map\b[^>]*><\/sc-map>,?/gi, ''),
+    ...[entry.xr ?? []].flat(),
+  ]
+    .map(textFromHtml)
+    .filter(Boolean)
+}
+
+/** A definition without the headword DPD starts each with, eg "dhamma 1.01: masc. nature" */
+function withoutHeadword(entry: DictionaryEntry, definition: string) {
+  if (entry.dictname !== 'dpd') return definition
+  return definition.match(/^[^:]+:\s*(.+)$/s)?.[1] ?? definition
+}
+
+/** The first definition any dictionary gives the word */
+function firstDefinition(entries: DictionaryEntry[]) {
+  for (const entry of entries) {
+    const [definition] = descriptionsOf(entry)
+    if (definition) return excerpt(withoutHeadword(entry, definition))
+  }
+}
+
+/** A /define page, around the word it defines, or the dictionary's own */
+export function defineMetadata(
+  locale: string,
+  word: string | undefined,
+  entries: DictionaryEntry[],
+  titles: Record<string, string>
+): PageMetadata {
+  const define = { title: t(locale, 'dictionary:define'), url: '/define' }
+  if (!word) {
+    return sitePageMetadata(locale, '/define', define.title, {
+      description: t(locale, 'dictionary:description'),
+      '@type': 'CollectionPage',
+    })
+  }
+
+  const path = `/define/${word}`
+  const url = absoluteUrl(path)
+  const description =
+    firstDefinition(entries) ??
+    `${t(locale, 'dictionary:dictionaryResultsText')} “${word}”`
+  return sitePageMetadata(
+    locale,
+    path,
+    `${t(locale, 'dictionary:definitionsFor')} ${word}`,
+    {
+      description,
+      crumbs: [define, { title: word }],
+      mainEntity: {
+        '@type': 'DefinedTerm',
+        '@id': `${url}#term`,
+        name: word,
+        description,
+        url,
+        sameAs: scUrl(path),
+        inLanguage: 'pi',
+        inDefinedTermSet: {
+          '@type': 'DefinedTermSet',
+          name: 'SuttaCentral Pāli dictionaries',
+          url: absoluteUrl('/define'),
+          sameAs: scUrl('/define'),
+        },
+      },
+      // As `about`, as `hasPart` only takes the parts of a CreativeWork, which a DefinedTerm isn't
+      about: entries.flatMap(entry => {
+        const descriptions = descriptionsOf(entry)
+        if (!descriptions.length) return []
+        const title = titles[entry.dictname] ?? entry.dictname
+        const aliases = aliasesOf(entry, word)
+        return {
+          '@type': 'DefinedTerm',
+          name: `${word} (${title})`,
+          description: excerpt(descriptions.join(' ')),
+          inDefinedTermSet: { '@type': 'DefinedTermSet', name: title },
+          ...(aliases.length && { alternateName: aliases }),
+        }
+      }),
+    }
+  )
+}
+
+interface MapLayer {
+  label: string
+  ordered?: boolean
+  places: { id: string; name: string; define?: string; route?: boolean }[]
+}
+
+/** /map, made of its poster, its interactive map and its index of places, each place by its /define page */
+export function mapMetadata(
+  locale: string,
+  title: string,
+  layers: MapLayer[],
+  poster: { src: string; width: number; height: number }
+): PageMetadata {
+  const lists = layers.map(({ label, ordered, places }) => {
+    const items = places
+      .filter(place => !place.route)
+      .map(place => ({
+        '@type': 'Place',
+        // Without the number a journey puts before each stop, as "1) Rājagaha"
+        name: place.name.trim().replace(/^\d+\)\s*/, ''),
+        ...(place.define && { url: absoluteUrl(`/define/${place.define}`) }),
+        sameAs: absoluteUrl(`/map#${place.id}`),
+      }))
+    return {
+      '@type': 'ItemList',
+      name: textFromHtml(label),
+      numberOfItems: items.length,
+      ...(ordered && { itemListOrder: 'ItemListOrderAscending' }),
+      // A journey's stops need a position, which only a ListItem gives
+      itemListElement: ordered
+        ? items.map((item, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            item,
+          }))
+        : items,
+    }
+  })
+  return sitePageMetadata(locale, '/map', title, {
+    hasPart: [
+      {
+        '@type': 'ImageObject',
+        name: textFromHtml(t(locale, 'map:2')),
+        description: textFromHtml(t(locale, 'map:3')),
+        url: poster.src,
+        encodingFormat: 'image/jpeg',
+        width: poster.width,
+        height: poster.height,
+      },
+      {
+        '@type': 'InteractiveResource',
+        name: textFromHtml(t(locale, 'map:4')),
+        description: t(locale, 'meta:mapInteractive'),
+        url: absoluteUrl('/map'),
+        encodingFormat: 'image/svg+xml',
+      },
+      {
+        '@type': 'Table',
+        name: t(locale, 'meta:mapIndex'),
+        // Lists, as `hasPart` only takes the parts of a CreativeWork, and places are Things
+        mainEntity: {
+          '@type': 'ItemList',
+          numberOfItems: lists.reduce(
+            (count, list) => count + list.numberOfItems,
+            0
+          ),
+          itemListElement: lists,
+        },
+      },
+    ],
+    spatialCoverage: {
+      '@type': 'Place',
+      name: 'India',
+      description: 'India during the time of the Buddha',
+    },
+    temporalCoverage: '6th–5th century BCE',
+    about: [
+      { '@type': 'Thing', name: 'Buddhism in Ancient India' },
+      { '@type': 'Thing', name: 'Mahajanapadas' },
+    ],
+  })
 }

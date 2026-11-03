@@ -2,6 +2,7 @@
 import { siteMetaData } from '~/constants/meta-data'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
+import { sitePageMetadata } from '~/utils/json-ld'
 
 const userLanguage = Astro.locals.userLanguage
 
@@ -15,7 +16,7 @@ const heading = t(userLanguage, 'languages:languagesOnSuttaCentral').replace(
 )
 ---
 
-<Layout title={title}>
+<Layout {...sitePageMetadata(userLanguage, '/languages', title)}>
   <main id="main">
     <article>
       <h1 set:html={heading} />
