@@ -2636,8 +2636,8 @@ const metadata = textMetadata(userLanguage, {
      * Shows what a root word means in a sheet along the bottom while "Word
      * lookup" is on, asking the server about one word at a time. ← and → or the
      * sheet's arrows go to the words either side, and Esc or a tap elsewhere
-     * closes it. Its row stays hidden without JS, or without popovers to show
-     * the answers in.
+     * closes it. Its row stays hidden without JS. Without popovers to show the
+     * answers in, a word goes straight to its /define page instead.
      *
      * Each Pāli word gets a span as its segment is first pointed at or reached,
      * for its highlight, and a Chinese character is found where it was tapped.
@@ -2658,12 +2658,7 @@ const metadata = textMetadata(userLanguage, {
     const toggle = document.getElementById('rooter-look-up')
     const popover = document.getElementById('definition')
     const main = document.querySelector('main')
-    if (
-      toggle instanceof HTMLInputElement &&
-      popover &&
-      main &&
-      'popover' in HTMLElement.prototype
-    )
+    if (toggle instanceof HTMLInputElement && popover && main)
       setUpLookup(toggle, popover, main)
 
     function setUpLookup(
@@ -2672,6 +2667,7 @@ const metadata = textMetadata(userLanguage, {
       main: HTMLElement
     ) {
       const isLzh = toggle.dataset.from === 'lzh'
+      const canPop = 'popover' in HTMLElement.prototype
       // The root text: a root page's own, or a translation's beside it
       const TEXT = ".segment > :is(.translation, .root)[translate='no'] > .text"
       const HAN = /\p{Script=Han}/u
@@ -2720,7 +2716,7 @@ const metadata = textMetadata(userLanguage, {
 
       toggle.addEventListener('change', () => {
         setTabbable()
-        if (!toggle.checked && popover.matches(':popover-open'))
+        if (!toggle.checked && canPop && popover.matches(':popover-open'))
           popover.hidePopover()
       })
 
@@ -3050,6 +3046,12 @@ const metadata = textMetadata(userLanguage, {
       }
 
       async function show(word: Word) {
+        if (!canPop) {
+          location.href = definePath(
+            word instanceof Range ? word.toString() : queryOf(word)
+          )
+          return
+        }
         const search = ++latest
         clearHighlight()
         current = word
@@ -3113,7 +3115,7 @@ const metadata = textMetadata(userLanguage, {
       // Asked on press, as the click only comes once the button is back up. Not
       // on touch, where a press is as likely the start of a scroll
       main.addEventListener('pointerdown', event => {
-        if (event.pointerType === 'touch' || !toggle.checked) return
+        if (event.pointerType === 'touch' || !toggle.checked || !canPop) return
         const word = isLzh
           ? charAt(event)
           : (event.target as Element).closest?.<HTMLElement>(`${TEXT} .word`)
@@ -3153,7 +3155,7 @@ const metadata = textMetadata(userLanguage, {
           }
           return
         }
-        if (!popover.matches(':popover-open')) return
+        if (!canPop || !popover.matches(':popover-open')) return
         if (event.ctrlKey || event.metaKey || event.altKey) return
         if (target.closest?.('input, textarea, select')) return
         if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
