@@ -823,6 +823,10 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
   padding: 0;
   border: none;
 
+  @media (forced-colors: active) {
+    border-top: 1px solid;
+  }
+
   &:popover-open {
     display: flex;
     flex-direction: column;
@@ -962,6 +966,11 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
     a {
       border-left: 1px solid var(--bg-alt-3);
       border-right: 1px solid var(--bg-alt-3);
+
+      /* Forced colours give a link's border its LinkText */
+      @media (forced-colors: active) {
+        border-color: ButtonBorder;
+      }
     }
 
     button,
@@ -972,6 +981,10 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
       color: inherit;
       font: inherit;
       text-decoration: none;
+
+      @media (forced-colors: active) {
+        color: ButtonBorder;
+      }
 
       &:hover {
         background-color: var(--details-summary-hover-background);
