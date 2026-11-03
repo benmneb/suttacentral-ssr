@@ -152,10 +152,14 @@ const userLanguage = Astro.locals.userLanguage
       border-color: var(--text-color-secondary);
 
       &:focus-within {
-        border-color: inherit;
-        /* The browser's own ring, the first line where -webkit-focus-ring-color is unknown */
-        outline: 1px auto;
-        outline: auto 1px -webkit-focus-ring-color;
+        border-color: var(--primary-color);
+        outline: var(--focus-ring);
+        outline-offset: -1px;
+
+        /* Forced colours repaint the border, and Highlight can be see-through */
+        @media (forced-colors: active) {
+          border-color: Canvas;
+        }
       }
 
       input {
@@ -224,6 +228,15 @@ const userLanguage = Astro.locals.userLanguage
 
       .panel-close {
         color: var(--primary-color);
+      }
+
+      /* Inset, as the toggles' negative margins leave no room between them */
+      #panel-none:focus-visible ~ .panel-toggle,
+      :is(#filter-toggle, #language-toggle):focus-visible
+        + label
+        + .panel-close {
+        outline: var(--focus-ring);
+        outline-offset: -2px;
       }
 
       #filter-toggle:checked + label,

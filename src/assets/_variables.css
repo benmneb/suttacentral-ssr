@@ -80,6 +80,7 @@
   );
   --comments-background-color: light-dark(var(--offerwhite), var(--bg-hard));
   --comments-border-color: light-dark(var(--bg-soft), var(--bg-hard));
+  --focus-ring: 2px solid var(--primary-color);
 }
 
 /* 7:1 on --bg-alt-1, the nearest surface text sits on to its colour, for WCAG AAA */
@@ -99,5 +100,11 @@
     --orange: light-dark(#7c2800, #febd87);
     --orange-alt: #7a2903;
     --brown: light-dark(#56402d, #e8c4a0);
+  }
+}
+
+@media (forced-colors: active) {
+  :root {
+    --focus-ring: 2px solid Highlight;
   }
 }

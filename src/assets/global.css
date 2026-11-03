@@ -90,6 +90,12 @@ body > main:focus {
   outline: none;
 }
 
+:where(:focus-visible) {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+  z-index: 11;
+}
+
 /* Opacity too, as Firefox fades placeholders */
 ::placeholder {
   color: var(--text-color-secondary);
@@ -101,6 +107,7 @@ body > main:focus {
 a:where([href]):not(.button) {
   color: var(--primary-color);
   box-decoration-break: clone;
+  border-radius: var(--rounding);
 
   &:visited {
     color: var(--primary-color-alt);
@@ -111,7 +118,6 @@ a:where([href]):not(.button) {
     color: var(--background-color);
     background-color: var(--primary-color);
     text-decoration: none;
-    border-radius: var(--rounding);
     box-shadow:
       0.1rem 0 0 var(--primary-color),
       -0.1rem 0 0 var(--primary-color);
@@ -281,6 +287,15 @@ dialog#search-modal {
 
   @media (forced-colors: active) {
     border: 1px solid;
+
+    &:focus-within {
+      border-color: Canvas;
+    }
+  }
+
+  /* Inset, as the dialog clips anything outside it */
+  form[role='search'] > fieldset:focus-within {
+    outline-offset: -2px;
   }
 }
 
