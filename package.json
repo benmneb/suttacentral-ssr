@@ -16,6 +16,7 @@
     "fetch-dicts": "node scripts/fetch-dictionaries.ts",
     "build-hans": "node scripts/build-hans.ts",
     "build-map": "node scripts/build-map.ts",
+    "build-sitemap": "node scripts/build-sitemap.ts",
     "shard-dicts": "node scripts/shard-dictionaries.ts",
     "sync-i18n": "node scripts/sync-i18n.ts",
     "sync-api-constants": "node scripts/sync-api-constants.ts"

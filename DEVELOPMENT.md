@@ -72,6 +72,24 @@ It pins a Natural Earth release, so only SuttaCentral's places change between ru
 
 ---
 
+## Sitemap
+
+Every page is rendered on request, so the build has no list of pages to make a sitemap from. The sitemaps are generated from SuttaCentral's API and committed instead:
+
+```sh
+pnpm build-sitemap
+```
+
+The script ([`scripts/build-sitemap.ts`](scripts/build-sitemap.ts)) takes a minute or two. It walks the menu from `/api/tipitaka_menu` down to the chapters with the same rules as the `/pitaka` pages, then reads each chapter's texts from one `/api/suttaplex` call. It writes [`public/sitemap.xml`](public/sitemap.xml), an index of:
+
+- `sitemap-pages-N.xml`: the site pages, `/pitaka` pages, chapters, shortcuts, each text's suttaplex (individual range suttas such as `/an1.33` too), `/languages` and `/edition` pages
+- `sitemap-texts-N.xml`: every translation of every text, in every language
+- `sitemap-define-N.xml`: every word in the dictionaries .net's `/api/dictionary_full` serves (DPD, NCPED, PTS, DPPN, Dhammika)
+
+Each file holds up to 40,000 URLs, under the protocol's 50,000. Each URL is the path the site links to, so none redirects, and it matches the page's canonical. Search and `/parallels` pages are `noindex`, so they're left out. If any request fails, the script writes nothing. Run it again when SuttaCentral adds texts or translations.
+
+---
+
 ## Internationalisation
 
 UI translations are synced from SuttaCentral's static assets. Three types of files exist in `src/i18n/locales/`:
