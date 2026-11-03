@@ -676,7 +676,8 @@ function scholarlyData(path: string) {
   }
 
   return {
-    '@type': 'ScholarlyArticle',
+    // A WebPage too, as only a WebPage takes a breadcrumb
+    '@type': ['WebPage', 'ScholarlyArticle'],
     author: [...authors].map(name => ({ '@type': 'Person', name })),
     ...(datePublished && { datePublished }),
     about: article.about.map(name => ({ '@type': 'Thing', name })),
@@ -929,10 +930,11 @@ export function defineMetadata(
         description,
         url,
         sameAs: scUrl(path),
-        inLanguage: 'pi',
+        // On its set, as a DefinedTerm has no inLanguage
         inDefinedTermSet: {
           '@type': 'DefinedTermSet',
           name: 'SuttaCentral Pāli dictionaries',
+          inLanguage: 'pi',
           url: absoluteUrl('/define'),
           sameAs: scUrl('/define'),
         },
@@ -1005,7 +1007,7 @@ export function mapMetadata(
         height: poster.height,
       },
       {
-        '@type': 'InteractiveResource',
+        '@type': 'Map',
         name: textFromHtml(t(locale, 'map:4')),
         description: t(locale, 'meta:mapInteractive'),
         url: absoluteUrl('/map'),

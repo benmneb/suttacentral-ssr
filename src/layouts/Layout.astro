@@ -46,6 +46,15 @@ const canonicalUrl = canonical || siteMetaData.origin + Astro.url.pathname
 const shareUrl =
   canonical || siteMetaData.origin + Astro.url.pathname + Astro.url.search
 const isError = ['/404', '/500'].includes(Astro.routePattern)
+
+/** The reader's language as Open Graph takes it, language_TERRITORY, eg en_US */
+function ogLocale(tag: string) {
+  try {
+    const { language, region } = new Intl.Locale(tag).maximize()
+    if (region) return `${language}_${region}`
+  } catch {}
+  return 'en_US'
+}
 const imageUrl = new URL(ogImage || '/og-image2.jpg', siteMetaData.origin).href
 // Here, not in icons.css, as the alt text is in the reader's language
 const externalLinkAlt = JSON.stringify(
@@ -88,7 +97,7 @@ const externalLinkAlt = JSON.stringify(
     <meta property="og:url" content={shareUrl} />
     <meta property="og:site_name" content={siteMetaData.title} />
     <meta property="og:type" content={ogType || 'website'} />
-    <meta property="og:locale" content={langTag(userLanguage)} />
+    <meta property="og:locale" content={ogLocale(langTag(userLanguage))} />
     <meta property="og:image" content={imageUrl} />
     {
       !ogImage && (
