@@ -3,8 +3,8 @@
   "dictionary:description": "पाली-मराठी शब्दकोश",
   "dictionary:foundInDictionaries": "{count} शब्दकोशांमध्ये सापडले",
   "dictionary:foundInDictionary": "{count} शब्दकोशात सापडले",
-  "dictionary:link": "दुवा",
   "dictionary:otherWords": "इतर शब्द",
   "dictionary:pronunciation": "उच्चार:",
-  "dictionary:searchPlaceholder": "पाली शब्द शोधा…"
+  "dictionary:searchPlaceholder": "पाली शब्द शोधा…",
+  "dictionary:inDPD": "Digital Pāḷi Dictionary मध्ये {term}"
 }

@@ -3,8 +3,8 @@
   "dictionary:description": "巴利语-中文词典",
   "dictionary:foundInDictionaries": "见于 {count} 部词典",
   "dictionary:foundInDictionary": "见于 {count} 部词典",
-  "dictionary:link": "链接",
   "dictionary:otherWords": "其他词语",
   "dictionary:pronunciation": "发音：",
-  "dictionary:searchPlaceholder": "巴利语词汇搜索…"
+  "dictionary:searchPlaceholder": "巴利语词汇搜索…",
+  "dictionary:inDPD": "Digital Pāḷi Dictionary 中的 {term}"
 }

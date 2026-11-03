@@ -3,8 +3,8 @@
   "dictionary:description": "पाली-हिंदी शब्दकोश",
   "dictionary:foundInDictionaries": "{count} शब्दकोशों में मिला",
   "dictionary:foundInDictionary": "{count} शब्दकोश में मिला",
-  "dictionary:link": "लिंक",
   "dictionary:otherWords": "अन्य शब्द",
   "dictionary:pronunciation": "उच्चारण:",
-  "dictionary:searchPlaceholder": "पाली शब्द खोजें…"
+  "dictionary:searchPlaceholder": "पाली शब्द खोजें…",
+  "dictionary:inDPD": "Digital Pāḷi Dictionary में {term}"
 }

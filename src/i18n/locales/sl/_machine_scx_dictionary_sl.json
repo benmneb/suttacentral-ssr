@@ -3,8 +3,8 @@
   "dictionary:description": "Pali-slovenski slovar",
   "dictionary:foundInDictionaries": "Najdeno v slovarjih: {count}",
   "dictionary:foundInDictionary": "Najdeno v slovarjih: {count}",
-  "dictionary:link": "Povezava",
   "dictionary:otherWords": "Druge besede",
   "dictionary:pronunciation": "Izgovorjava:",
-  "dictionary:searchPlaceholder": "Iskanje besed v paliju…"
+  "dictionary:searchPlaceholder": "Iskanje besed v paliju…",
+  "dictionary:inDPD": "{term} v Digital Pāḷi Dictionary"
 }

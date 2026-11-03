@@ -3,8 +3,8 @@
   "dictionary:description": "Pāli to English dictionary",
   "dictionary:foundInDictionaries": "Found in {count} dictionaries",
   "dictionary:foundInDictionary": "Found in {count} dictionary",
-  "dictionary:link": "Link",
   "dictionary:otherWords": "Other words",
   "dictionary:pronunciation": "Pronunciation:",
-  "dictionary:searchPlaceholder": "Pāli word search…"
+  "dictionary:searchPlaceholder": "Pāli word search…",
+  "dictionary:inDPD": "{term} in the Digital Pāḷi Dictionary"
 }

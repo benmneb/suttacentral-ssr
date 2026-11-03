@@ -3,8 +3,8 @@
   "dictionary:description": "Páli-český slovník",
   "dictionary:foundInDictionaries": "Nalezeno ve slovnících: {count}",
   "dictionary:foundInDictionary": "Nalezeno ve slovnících: {count}",
-  "dictionary:link": "Odkaz",
   "dictionary:otherWords": "Další slova",
   "dictionary:pronunciation": "Výslovnost:",
-  "dictionary:searchPlaceholder": "Vyhledávání slov v Páli…"
+  "dictionary:searchPlaceholder": "Vyhledávání slov v Páli…",
+  "dictionary:inDPD": "{term} v Digital Pāḷi Dictionary"
 }

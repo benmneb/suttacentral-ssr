@@ -3,8 +3,8 @@
   "dictionary:description": "Diccionario Pali-Español",
   "dictionary:foundInDictionaries": "Encontrado en {count} diccionarios",
   "dictionary:foundInDictionary": "Encontrado en {count} diccionario",
-  "dictionary:link": "Enlace",
   "dictionary:otherWords": "Otras palabras",
   "dictionary:pronunciation": "Pronunciación:",
-  "dictionary:searchPlaceholder": "Búsqueda de palabra Pali…"
+  "dictionary:searchPlaceholder": "Búsqueda de palabra Pali…",
+  "dictionary:inDPD": "{term} en el Digital Pāḷi Dictionary"
 }

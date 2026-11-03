@@ -3,8 +3,8 @@
   "dictionary:description": "Pali-Deutsch-Wörterbuch",
   "dictionary:foundInDictionaries": "In {count} Wörterbüchern gefunden",
   "dictionary:foundInDictionary": "In {count} Wörterbuch gefunden",
-  "dictionary:link": "Link",
   "dictionary:otherWords": "Weitere Wörter",
   "dictionary:pronunciation": "Aussprache:",
-  "dictionary:searchPlaceholder": "Pali-Wortsuche…"
+  "dictionary:searchPlaceholder": "Pali-Wortsuche…",
+  "dictionary:inDPD": "{term} im Digital Pāḷi Dictionary"
 }

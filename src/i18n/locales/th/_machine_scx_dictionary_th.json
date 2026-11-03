@@ -3,8 +3,8 @@
   "dictionary:description": "พจนานุกรมบาลี-ไทย",
   "dictionary:foundInDictionaries": "พบใน {count} พจนานุกรม",
   "dictionary:foundInDictionary": "พบใน {count} พจนานุกรม",
-  "dictionary:link": "ลิงก์",
   "dictionary:otherWords": "คำอื่น ๆ",
   "dictionary:pronunciation": "การออกเสียง:",
-  "dictionary:searchPlaceholder": "ค้นหาคำบาลี…"
+  "dictionary:searchPlaceholder": "ค้นหาคำบาลี…",
+  "dictionary:inDPD": "{term} ใน Digital Pāḷi Dictionary"
 }

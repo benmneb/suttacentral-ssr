@@ -136,9 +136,12 @@ const dictionaryCount = t(
                     {entry.dictname === 'dpd' && (
                       <>
                         {' '}
-                        <a href={`https://dpdict.net/?q=${term}`}>
-                          [{t(userLanguage, 'dictionary:link')}]
-                        </a>
+                        <a
+                          href={`https://dpdict.net/?q=${term}`}
+                          aria-label={t(userLanguage, 'dictionary:inDPD', {
+                            term,
+                          })}
+                        />
                       </>
                     )}
                   </dt>

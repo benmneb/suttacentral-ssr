@@ -3,8 +3,8 @@
   "dictionary:description": "Từ điển Pali-Việt",
   "dictionary:foundInDictionaries": "Có trong {count} từ điển",
   "dictionary:foundInDictionary": "Có trong {count} từ điển",
-  "dictionary:link": "Liên kết",
   "dictionary:otherWords": "Từ khác",
   "dictionary:pronunciation": "Phát âm:",
-  "dictionary:searchPlaceholder": "Tìm kiếm từ Pali…"
+  "dictionary:searchPlaceholder": "Tìm kiếm từ Pali…",
+  "dictionary:inDPD": "{term} trong Digital Pāḷi Dictionary"
 }
