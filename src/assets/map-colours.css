@@ -1,4 +1,4 @@
-/* What /map/base.svg's land, rivers and markers take through a <use> */
+/* What map-base.svg's land, rivers and markers take through a <use> */
 /* .net's own dark fills are lost on the dark land, so they're lighter here, and outlined dark between them */
 :is(main.map, .mini-map) {
   --map-land: var(--bg-alt-1);

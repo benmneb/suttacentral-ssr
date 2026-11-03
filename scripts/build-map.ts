@@ -4,7 +4,7 @@
  * world is cut to the part the places are in, thinned and drawn in Web
  * Mercator, as .net's map tiles are, so the map needs nothing from elsewhere.
  *
- * - public/map/base.svg: the land, rivers, borders, place markers and each
+ * - src/assets/map-base.svg: the land, rivers, borders, place markers and each
  *   region's and journey's outline, for the pages to `<use>`. Their colours
  *   are the page's variables, which reach into a `<use>`
  * - src/constants/map.json: the views, present-day towns and countries, the
@@ -16,7 +16,7 @@
  * Run: pnpm build-map
  */
 
-import { mkdir, writeFile } from 'node:fs/promises'
+import { writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -487,14 +487,13 @@ const map = {
   places: definePlaces,
 }
 
-await mkdir(join(ROOT, 'public', 'map'), { recursive: true })
 await Promise.all([
-  writeFile(join(ROOT, 'public', 'map', 'base.svg'), `${svg}\n`),
+  writeFile(join(ROOT, 'src', 'assets', 'map-base.svg'), `${svg}\n`),
   writeFile(
     join(ROOT, 'src', 'constants', 'map.json'),
     `${JSON.stringify(map, null, 2)}\n`
   ),
 ])
 console.log(
-  `Wrote public/map/base.svg, with ${outlines.length} outlines, and src/constants/map.json, with ${Object.keys(definePlaces).length} places that have a /define page`
+  `Wrote src/assets/map-base.svg, with ${outlines.length} outlines, and src/constants/map.json, with ${Object.keys(definePlaces).length} places that have a /define page`
 )

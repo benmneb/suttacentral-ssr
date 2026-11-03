@@ -4,6 +4,7 @@ import '~/assets/map-colours.css'
 import '~/assets/map-icons.css'
 import '~/assets/figure.css'
 import '~/assets/details.css'
+import base from '~/assets/map-base.svg?url'
 import Icon from '~/components/icon.astro'
 import map from '~/constants/map.json'
 import { t } from '~/i18n'
@@ -64,7 +65,6 @@ const placesOnMap = ['area', 'line', 'point'].flatMap(type =>
 )
 
 const [x0, y0, width, height] = map.viewBox.split(' ')
-const base = '/map/base.svg'
 
 let regionNames: Intl.DisplayNames | undefined
 try {
