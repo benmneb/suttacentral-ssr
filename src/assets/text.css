@@ -983,6 +983,10 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
           outline-offset: -2px;
         }
       }
+
+      &:active {
+        background-color: var(--background-color-secondary);
+      }
     }
   }
 }
