@@ -2,7 +2,7 @@
 
 ## Word Lookup Feature
 
-Clicking a root language word (Pali/Chinese) shows DPD dictionary definitions in a HTML popover when the "Word Lookup" checkbox is enabled. It is the one feature that needs JS: without it, or without popovers, its checkbox stays hidden. This is to reduce the HTML payload by up to almost 50% (`/dn1/en/esujato`) for almost every user, who has JS enabled.
+Clicking a root language word (Pali/Chinese) shows DPD dictionary definitions in a HTML popover when the "Word Lookup" checkbox is enabled. It is the one feature that needs JS: without it, or without popovers, its checkbox stays hidden. This is to reduce the HTML payload by up to almost 50% (`/dn1/en/sujato`) for almost every user, who has JS enabled.
 
 ### Architecture
 
@@ -90,13 +90,50 @@ Each file holds up to 40,000 URLs, under the protocol's 50,000. Each URL is the 
 
 ---
 
+## Caching
+
+Pages are never cached, so every view has SuttaCentral's live data. Their assets are cached for good instead: everything Vite builds into `/_astro/` (styles, scripts and imported files) has a hash in its name, and `@astrojs/cloudflare` gives that path a year's `immutable` `Cache-Control` in the `_headers` it writes at build. There's no additional `_headers` needed in this code.
+
+Files in `public/` keep their names, so Cloudflare serves them with `max-age=0, must-revalidate`, and each view waits on a revalidation. A file pages load belongs in `src/assets/` instead, imported with `?url` when the page links to it rather than inlining it, as [`src/assets/map-base.svg`](src/assets/map-base.svg) is.
+
+---
+
+## Tests
+
+The tests check a sample of every kind of page, from the last build:
+
+```sh
+pnpm build
+pnpm test
+```
+
+`pnpm test` starts `astro preview` on a free port and fetches each page in [`tests/lib/site.ts`](tests/lib/site.ts) once, in English and in another language. Then:
+
+- [`pages.test.ts`](tests/pages.test.ts): each page renders, and a missing one is a 404
+- [`html-validity.test.ts`](tests/html-validity.test.ts): each page is valid HTML by the [Nu validator](https://validator.w3.org/nu/), with no errors or warnings. It needs Java 11+, from `JAVA`, `JAVA_HOME` or the `PATH`, and otherwise downloads one into `node_modules`
+- [`structured-data.test.ts`](tests/structured-data.test.ts): each page's JSON-LD fits the schema.org vocabulary (pinned to a release, fetched once into `node_modules/.cache`), and its meta and Open Graph tags are right
+- [`accessibility.test.ts`](tests/accessibility.test.ts): [axe-core](https://github.com/dequelabs/axe-core) finds nothing by WCAG 2.2 AA and its best practices, at a phone's width and on a desktop in light and dark mode, nor any AAA contrast problem with more contrast set. It uses Brave or Chrome if one is installed, or `BROWSER_PATH`, and otherwise downloads Chrome Headless Shell into `node_modules/.cache`. It takes about 9 minutes, mostly on the longest texts
+
+Every page is rendered from SuttaCentral's API as it's requested, so a change in .net's data can fail a test as well as a change here. To check a few pages, or another server:
+
+```sh
+TEST_PAGES=/mn1/en/sujato,/about pnpm test
+TEST_ORIGIN=https://suttacentral.now pnpm test
+```
+
+The build on SourceHut ([`.build.yml`](.build.yml)) runs every test but the accessibility one, last, after the deploy and the mirrors, so .net's data can't hold up a deploy and a failure still sends an email.
+
+---
+
 ## Internationalisation
 
 UI translations are synced from SuttaCentral's static assets. Three types of files exist in `src/i18n/locales/`:
 
 - `interface_en.json` etc. — Official SC translations, synced via `pnpm sync-i18n`
 - `_scx_interface_en.json` etc. — Project-specific labels, maintained in this repo
-- `_machine_interface_cs.json` etc. — Machine translation fallbacks, maintained in this repo
+- `_machine_interface_cs.json`, `_machine_scx_interface_cs.json` etc. — Machine translation fallbacks, maintained in this repo
+
+A human translation wins over a machine one with the same key. To add a string, put the English in the `_scx_<namespace>_en.json` it belongs to, and its translation in each other locale's `_machine_scx_<namespace>_<lang>.json`. Until a locale has it, `t()` falls back to English.
 
 To pull the latest official translations:
 

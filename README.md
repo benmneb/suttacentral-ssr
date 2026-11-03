@@ -14,7 +14,7 @@ This project fetches data from SuttaCentral's public APIs at request time and se
 - **Instant search** — Fast, powerful search using SuttaCentral's API (includes Pali dictionary lookups)
 - **URLs you know and love** — Mirrors SuttaCentral.net URL structure (just change `.net` to `.now`, or use the [browser extension](https://sr.ht/~benmneb/suttacentral-redirect))
 - **Flexible text settings** — Customizable reading preferences for footnotes, root-text views, and reference links
-- **Minimal JavaScript** — Optional 7.65kb of client-side JS to enable inline Pali & Chinese dictionary lookups and text-to-speech via the Web Speech API
+- **Minimal JavaScript** — Every text and core feature works without it. About 13kb (gzipped) of optional client-side JS on a text adds inline Pali & Chinese dictionary lookups, text-to-speech via the Web Speech API and hot keys
 
 ## Performance Comparisons
 
