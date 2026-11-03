@@ -3,6 +3,7 @@ image: archlinux
 packages:
   - nodejs
   - npm
+  - jre-openjdk-headless
 
 git.sr.ht:
   enabled: true
@@ -49,3 +50,9 @@ tasks:
         GIT_SSH_COMMAND="ssh -i ~/.ssh/62aca017-2dfb-4fb1-aecf-b1c3d1e4d4a0 -o StrictHostKeyChecking=no" git push --mirror git@codeberg.org:benmneb/suttacentral-ssr.git
         GIT_SSH_COMMAND="ssh -i ~/.ssh/62aca017-2dfb-4fb1-aecf-b1c3d1e4d4a0 -o StrictHostKeyChecking=no" git push --mirror git@github.com:benmneb/suttacentral-ssr.git
       fi
+  # After the deploy, so .net's data can't hold one up. Not the accessibility
+  # check, which needs a browser and takes minutes on a long text
+  - test: |
+      cd suttacentral-ssr
+      node --test --test-isolation=none --test-global-setup=tests/lib/setup.ts \
+        tests/pages.test.ts tests/html-validity.test.ts tests/structured-data.test.ts

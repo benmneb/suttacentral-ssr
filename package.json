@@ -19,7 +19,8 @@
     "build-sitemap": "node scripts/build-sitemap.ts",
     "shard-dicts": "node scripts/shard-dictionaries.ts",
     "sync-i18n": "node scripts/sync-i18n.ts",
-    "sync-api-constants": "node scripts/sync-api-constants.ts"
+    "sync-api-constants": "node scripts/sync-api-constants.ts",
+    "test": "node --test --test-isolation=none --test-global-setup=tests/lib/setup.ts 'tests/*.test.ts'"
   },
   "engines": {
     "node": ">=23.6"
@@ -35,15 +36,19 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20261019.1",
+    "@puppeteer/browsers": "^3.2.6",
     "@tailwindcss/vite": "^4.3.3",
+    "axe-core": "^4.14.0",
     "daisyui": "^5.5.11",
     "husky": "^9.1.7",
     "lightningcss": "^1.33.0",
     "lint-staged": "^16.2.7",
     "prettier": "^3.7.4",
     "prettier-plugin-astro": "^0.14.1",
+    "puppeteer-core": "^25.16.0",
     "tailwindcss": "^4.3.3",
     "unstorage": "^1.17.4",
+    "vnu-jar": "^26.10.12",
     "wrangler": "^4.151.1"
   }
 }
