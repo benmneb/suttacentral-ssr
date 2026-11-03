@@ -158,21 +158,19 @@ const externalLinkAlt = JSON.stringify(
         </dialog>
       )
     }
+    <script>
+      // Not the link's own jump, as Firefox then tabs on from a caret, on a text in a hidden segment number
+      const skip = document.querySelector<HTMLAnchorElement>('body > .skip')
+      skip?.addEventListener('click', event => {
+        const target = document.getElementById(skip.hash.slice(1))
+        if (!target) return
+        event.preventDefault()
+        target.tabIndex = -1
+        target.focus({ preventScroll: true })
+        target.scrollIntoView()
+        const untab = () => target.removeAttribute('tabindex')
+        target.addEventListener('blur', untab, { once: true })
+      })
+    </script>
   </body>
 </html>
-
-<script>
-  // Not the link's own jump, as Firefox then tabs on from a caret, on a text in a hidden segment number
-  const skip = document.querySelector<HTMLAnchorElement>('body > .skip')
-  skip?.addEventListener('click', event => {
-    const target = document.getElementById(skip.hash.slice(1))
-    if (!target) return
-    event.preventDefault()
-    target.tabIndex = -1
-    target.focus({ preventScroll: true })
-    target.scrollIntoView()
-    target.addEventListener('blur', () => target.removeAttribute('tabindex'), {
-      once: true,
-    })
-  })
-</script>

@@ -1926,2474 +1926,2498 @@ const metadata = textMetadata(userLanguage, {
       }
     </div>
   </nav>
-</Layout>
 
-<script>
-  /**
-   * User Preferences Handler
-   *
-   * Persists all UI preferences to cookies (view and "listen" settings).
-   * Cookies read server-side to prevent layout shift, which also
-   * eliminates localStorage operations for that perf.
-   *
-   * The voice is kept per text language.
-   *
-   * @requires document.cookie
-   */
-  'use strict'
+  <script>
+    /**
+     * User Preferences Handler
+     *
+     * Persists all UI preferences to cookies (view and "listen" settings).
+     * Cookies read server-side to prevent layout shift, which also
+     * eliminates localStorage operations for that perf.
+     *
+     * The voice is kept per text language.
+     *
+     * @requires document.cookie
+     */
+    'use strict'
 
-  const IDS = [
-    'commenter',
-    'commenter-inline',
-    'commenter-side',
-    'rooter',
-    'rooter-first',
-    'rooter-look-up',
-    'rooter-side',
-    'simplifier',
-    'segmenter',
-    'segmenter-main',
-    'segmenter-pts',
-    'segmenter-others',
-    'illustrator',
-    'highlighter',
-    'paralleler',
-    'positioner',
-    'shortcutter',
-    'rate',
-    'pitch',
-    'auto-scroll',
-  ]
-
-  const COOKIE_NAME = 'viewPrefs'
-  const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 2 // 2 years
-
-  const voiceKey = lang => `voice-${(lang || '').split('-')[0].toLowerCase()}`
-  const VOICE_KEY = voiceKey(
-    document.getElementById('listen-menu')?.dataset.textLang
-  )
-
-  function getCookiePrefs() {
-    try {
-      const match = document.cookie.match(
-        new RegExp('(^| )' + COOKIE_NAME + '=([^;]+)')
-      )
-      if (match) {
-        return JSON.parse(decodeURIComponent(match[2]))
-      }
-    } catch (e) {
-      console.error('Failed to parse cookie prefs:', e)
-    }
-    return {}
-  }
-
-  function saveToCookie(prefs) {
-    try {
-      const value = encodeURIComponent(JSON.stringify(prefs))
-      // SameSite=Lax allows server to read cookie on navigation from external links
-      // (e.g., Google, bookmarks) while still preventing CSRF. Strict would block
-      // the cookie on external navigation, breaking this more performant implementation.
-      document.cookie = `${COOKIE_NAME}=${value};path=/;max-age=${COOKIE_MAX_AGE};SameSite=Lax`
-    } catch (e) {
-      console.error('Failed to save cookie prefs:', e)
-    }
-  }
-
-  /**
-   * A voice saved before they were kept per language becomes its own
-   * language's voice
-   */
-  function migrateVoice() {
-    const prefs = getCookiePrefs()
-    const name = prefs['voice-select']
-    if (!name) return
-    const voices = window.speechSynthesis?.getVoices() ?? []
-    if (!voices.length) return
-    const voice = voices.find(v => v.name === name)
-    // Gone from the device, so it has no language to go to
-    if (voice) {
-      const key = voiceKey(voice.lang)
-      if (!(key in prefs)) prefs[key] = name
-    }
-    delete prefs['voice-select']
-    saveToCookie(prefs)
-    applyVoice(prefs)
-  }
-
-  /**
-   * Hands the listen script this language's voice
-   */
-  function applyVoice(prefs) {
-    const el = document.getElementById('voice-select')
-    if (!el || !(VOICE_KEY in prefs)) return
-    el.dataset.saved = prefs[VOICE_KEY]
-    const opt = [...el.options].find(o => o.dataset.name === prefs[VOICE_KEY])
-    if (opt) el.value = opt.value
-  }
-
-  /** Saves the voice for this language, when the reader picks it */
-  function saveVoice() {
-    const el = document.getElementById('voice-select')
-    const name = el?.options[el.selectedIndex]?.dataset.name
-    if (!name) return
-    const prefs = getCookiePrefs()
-    prefs[VOICE_KEY] = name
-    saveToCookie(prefs)
-    el.dataset.saved = name
-  }
-
-  /**
-   * Save current state of elements found on this page, but not those a
-   * link's query chose
-   */
-  function save() {
-    const prefs = getCookiePrefs()
-
-    IDS.forEach(id => {
-      const el = document.getElementById(id)
-      if (!el || 'fromUrl' in el.dataset) return
-
-      if (el instanceof HTMLInputElement && el.type === 'checkbox') {
-        prefs[id] = el.checked
-        return
-      }
-
-      // inputs with value
-      if ('value' in el) {
-        prefs[id] = el.value
-      }
-    })
-
-    saveToCookie(prefs)
-  }
-
-  /**
-   * Applies saved cookie prefs to all elements, overriding any stale server-rendered HTML.
-   * Except ones a link's query chose, which stand over the cookie on this page
-   */
-  function applyPrefs() {
-    const prefs = getCookiePrefs()
-
-    // Off unless chosen without popovers, where notes show inline
-    const commenter = document.getElementById('commenter')
-    if (
-      commenter instanceof HTMLInputElement &&
-      !('popover' in HTMLElement.prototype) &&
-      !('commenter' in prefs) &&
-      !('fromUrl' in commenter.dataset)
-    )
-      commenter.checked = false
-
-    IDS.forEach(id => {
-      if (!(id in prefs)) return
-      const el = document.getElementById(id)
-      if (!el || 'fromUrl' in el.dataset) return
-      if (el instanceof HTMLInputElement && el.type === 'checkbox') {
-        el.checked = Boolean(prefs[id])
-      } else if (el instanceof HTMLInputElement && el.type === 'range') {
-        el.value = String(prefs[id])
-      }
-    })
-    applyVoice(prefs)
-  }
-
-  /** A setting the link chose that the reader changes is theirs now */
-  function claimFromUrl(param) {
-    if (!param) return
-    document
-      .querySelectorAll<HTMLElement>(`[data-from-url="${param}"]`)
-      .forEach(el => delete el.dataset.fromUrl)
-    const url = new URL(location.href)
-    url.searchParams.delete(param)
-    history.replaceState(history.state, '', url)
-  }
-
-  // Save immediately on any preference change via event delegation
-  document.addEventListener('change', e => {
-    if (!(e.target instanceof HTMLElement)) return
-    if (e.target.id === 'voice-select') saveVoice()
-    else if (IDS.includes(e.target.id)) {
-      claimFromUrl(e.target.dataset.fromUrl)
-      save()
-    }
-  })
-  document.addEventListener('input', e => {
-    if (
-      e.target instanceof HTMLInputElement &&
-      e.target.type === 'range' &&
-      IDS.includes(e.target.id)
-    )
-      save()
-  })
-
-  // Correct any stale server-rendered HTML with current cookie values.
-  // Scripts that need to act on a pref at load time read it themselves rather
-  // than waiting on a change event from here - this runs before they do.
-  applyPrefs()
-
-  migrateVoice()
-  window.speechSynthesis?.addEventListener?.('voiceschanged', migrateVoice)
-
-  // On BFCache restore the script doesn't re-run, so reapply via pageshow
-  window.addEventListener('pageshow', e => {
-    if (e.persisted) applyPrefs()
-  })
-</script>
-
-<script>
-  /**
-   * View Settings and Listen Hotkeys
-   *
-   * Toggles view settings from the keyboard, unless that's turned off, and
-   * keeps the reading position when a view setting changes.
-   * Unlike accounting for this with notes view, this layout shift fix
-   * is not possible in CSS without a big refactor, so it's handled here.
-   * Also lets Esc hide the menus and panels hovering shows, and titles each
-   * highlighting line.
-   */
-  'use strict'
-
-  const VIEW_SETTINGS = {
-    n: ['commenter', 'commenter-inline', 'commenter-side'],
-    v: ['rooter', 'rooter-side'],
-    f: ['rooter-first'],
-    d: ['rooter-look-up'],
-    c: ['simplifier'],
-    r: ['segmenter'],
-    i: ['illustrator'],
-    o: ['highlighter'],
-    p: ['paralleler'],
-    s: ['positioner'],
-  }
-
-  // One turned on turns on what it's under too, or the key would do nothing
-  const SUB_SETTINGS = {
-    m: 'segmenter-main',
-    t: 'segmenter-pts',
-  }
-
-  const LISTEN_CONTROLS = {
-    h: 'prev',
-    j: 'playpause',
-    k: 'stop',
-    l: 'next',
-    a: 'auto-scroll',
-  }
-
-  const viewsMenu = document.getElementById('views-menu')
-
-  // Esc hides what hovering shows (see text.css), until the pointer moves off it
-  const dismissed = new Set<HTMLElement>()
-  const bar = viewsMenu?.closest('fieldset')
-  const panels = ['info', 'parallels']
-    .map(id => document.getElementById(id))
-    .filter((el): el is HTMLElement => !!el)
-  const invoker = (el: HTMLElement) =>
-    el.id
-      ? document.querySelector(`[popovertarget="${CSS.escape(el.id)}"]`)
-      : null
-
-  document.addEventListener('keydown', e => {
-    if (e.key !== 'Escape') return
-    const hovered = [
-      ...(bar?.querySelectorAll<HTMLElement>(
-        ':scope > ul > li:is(:hover, :focus-within)'
-      ) ?? []),
-      ...panels.filter(
-        panel => panel.matches(':hover') || invoker(panel)?.matches(':hover')
-      ),
+    const IDS = [
+      'commenter',
+      'commenter-inline',
+      'commenter-side',
+      'rooter',
+      'rooter-first',
+      'rooter-look-up',
+      'rooter-side',
+      'simplifier',
+      'segmenter',
+      'segmenter-main',
+      'segmenter-pts',
+      'segmenter-others',
+      'illustrator',
+      'highlighter',
+      'paralleler',
+      'positioner',
+      'shortcutter',
+      'rate',
+      'pitch',
+      'auto-scroll',
     ]
-    for (const el of hovered) {
-      el.classList.add('dismissed')
-      dismissed.add(el)
-    }
-  })
 
-  for (const type of ['pointerover', 'focusin'] as const) {
-    document.addEventListener(type, e => {
-      const target = e.target as Node
-      for (const el of dismissed) {
-        if (el.contains(target) || invoker(el)?.contains(target)) continue
-        el.classList.remove('dismissed')
-        dismissed.delete(el)
-      }
-    })
-  }
+    const COOKIE_NAME = 'viewPrefs'
+    const COOKIE_MAX_AGE = 60 * 60 * 24 * 365 * 2 // 2 years
 
-  let anchor = null
-
-  // Not its box, which for a block starts half a line's leading above
-  function textTop(el) {
-    const range = document.createRange()
-    range.selectNodeContents(el)
-    return (range.getClientRects()[0] ?? el.getBoundingClientRect()).top
-  }
-
-  // Has to run before the checkbox flips, as the old layout is gone after
-  function rememberAnchor() {
-    const texts = document.querySelectorAll('main .translation > .text')
-    if (!texts.length) return
-    // The screen starts below the pinned menu, as text under it can't be seen
-    const menuBottom = viewsMenu
-      ?.closest('aside')
-      ?.getBoundingClientRect().bottom
-    const edge = Math.max(0, menuBottom ?? 0)
-    let lo = 0
-    let hi = texts.length - 1
-    while (lo < hi) {
-      const mid = (lo + hi) >> 1
-      if (texts[mid].getBoundingClientRect().bottom <= edge) lo = mid + 1
-      else hi = mid
-    }
-    // Hidden ones have an empty rect, so never count
-    let el = texts[lo]
-    let top = Infinity
-    for (const text of el.closest('.segment').querySelectorAll('.text')) {
-      const rect = text.getBoundingClientRect()
-      if (rect.bottom > edge && rect.top < top) {
-        el = text
-        top = rect.top
-      }
-    }
-    anchor = { el, top: textTop(el) }
-  }
-
-  function restoreAnchor() {
-    if (!anchor) return
-    const { el, top } = anchor
-    // Not window.scrollBy, which after a change this big leaves Safari blank
-    const correct = () => {
-      document.scrollingElement.scrollTop += textTop(el) - top
-    }
-    correct()
-    // Again next frame, after the browser's own correction
-    requestAnimationFrame(() => {
-      correct()
-      anchor = null
-    })
-  }
-
-  viewsMenu?.addEventListener('pointerdown', rememberAnchor)
-  viewsMenu?.addEventListener('keydown', rememberAnchor)
-  viewsMenu?.addEventListener('change', restoreAnchor)
-
-  // Reader views go by the hidden attribute, not CSS
-  const rooter = document.getElementById('rooter')
-  let rootsShown = false
-
-  function syncRoots() {
-    if (!(rooter instanceof HTMLInputElement) || rooter.checked === rootsShown)
-      return
-    rootsShown = rooter.checked
-    for (const root of document.querySelectorAll<HTMLElement>(
-      '.segment > .root'
-    ))
-      root.hidden = !rootsShown
-  }
-
-  syncRoots()
-  viewsMenu?.addEventListener('change', syncRoots)
-
-  // References on always shows something
-  const segmenter = document.getElementById('segmenter')
-  const referenceGroups = [
-    'segmenter-main',
-    'segmenter-pts',
-    'segmenter-others',
-  ]
-    .map(id => document.getElementById(id))
-    .filter(el => el instanceof HTMLInputElement)
-
-  function setChecked(el: HTMLInputElement, checked: boolean) {
-    el.checked = checked
-    // Setting checked doesn't fire change, which saving prefs relies on
-    el.dispatchEvent(new Event('change', { bubbles: true }))
-  }
-
-  viewsMenu?.addEventListener('change', e => {
-    if (!(segmenter instanceof HTMLInputElement) || !referenceGroups.length)
-      return
-    if (!segmenter.checked || referenceGroups.some(el => el.checked)) return
-    if (e.target === segmenter) setChecked(referenceGroups[0], true)
-    else if (referenceGroups.includes(e.target as HTMLInputElement))
-      setChecked(segmenter, false)
-  })
-
-  function parentOf(id: string) {
-    return document.querySelector(`#views-menu input[aria-controls~="${id}"]`)
-  }
-
-  function hasRoom(el: HTMLElement) {
-    const li = el.closest('li')
-    return !!li && getComputedStyle(li).display !== 'none'
-  }
-
-  function isShown(el: HTMLElement) {
-    const parent = parentOf(el.id)
-    return (
-      hasRoom(el) && !(parent instanceof HTMLInputElement && !parent.checked)
+    const voiceKey = lang => `voice-${(lang || '').split('-')[0].toLowerCase()}`
+    const VOICE_KEY = voiceKey(
+      document.getElementById('listen-menu')?.dataset.textLang
     )
-  }
 
-  // Each press turns on the next in order, then all off
-  function cycle(ids: string[]) {
-    const els = ids
-      .map(id => document.getElementById(id))
-      .filter(
-        (el): el is HTMLInputElement =>
-          el instanceof HTMLInputElement && hasRoom(el)
-      )
-    if (!els.length || !isShown(els[0])) return
-
-    rememberAnchor()
-    const level = els.findIndex(el => !el.checked)
-    const next = ((level === -1 ? els.length : level) + 1) % (els.length + 1)
-    els.forEach((el, i) => {
-      if (el.checked !== i < next) setChecked(el, i < next)
-    })
-  }
-
-  function toggleSub(id: string) {
-    const el = document.getElementById(id)
-    if (!(el instanceof HTMLInputElement) || !hasRoom(el)) return
-    const parent = parentOf(id)
-
-    rememberAnchor()
-    setChecked(el, !el.checked)
-    if (el.checked && parent instanceof HTMLInputElement && !parent.checked)
-      setChecked(parent, true)
-  }
-
-  const viewsButton = document.getElementById('views-button')
-  const listenMenu = document.getElementById('listen-menu')
-  const ttsControls = listenMenu?.querySelector(':scope > .tts-controls')
-  let rowsTimer: ReturnType<typeof setTimeout> | undefined
-
-  function checkedStates() {
-    const inputs = viewsMenu?.querySelectorAll('input') ?? []
-    return new Map([...inputs].map(el => [el, el.checked]))
-  }
-
-  function clearShownRows() {
-    removeEventListener('scroll', placeRows)
-    viewsMenu?.style.removeProperty('--past-tts')
-    for (const menu of [viewsMenu, listenMenu]) {
-      menu?.classList.remove('toast')
-      for (const li of menu?.querySelectorAll(':scope > li.toasted') ?? [])
-        li.classList.remove('toasted', 'pressed')
-    }
-  }
-
-  function toast(menu: HTMLElement) {
-    menu.classList.add('toast')
-    clearTimeout(rowsTimer)
-    rowsTimer = setTimeout(clearShownRows, 1500)
-  }
-
-  function placeRows() {
-    if (!viewsMenu || !viewsButton) return
-    const { top, bottom } = viewsButton.getBoundingClientRect()
-    viewsMenu.classList.toggle(
-      'detached',
-      bottom < 0 || top > document.documentElement.clientHeight
-    )
-  }
-
-  // Like .net's toast: the menu comes up for a moment with just the rows a key
-  // changed, and those under them
-  function showChanges(ids: string[], before: Map<HTMLInputElement, boolean>) {
-    if (!viewsMenu) return
-    const changed = new Set(
-      [...before].filter(([el, was]) => el.checked !== was).map(([el]) => el)
-    )
-    if (!changed.size) return
-    announce([...changed])
-    for (const el of changed) {
-      if (!el.checked) continue
-      for (const id of el.getAttribute('aria-controls')?.split(' ') ?? []) {
-        const sub = document.getElementById(id)
-        if (sub instanceof HTMLInputElement && sub.checked) changed.add(sub)
-      }
-    }
-
-    const shown = new Set<Element | null>()
-    for (const el of [
-      ...ids.map(id => document.getElementById(id)),
-      ...changed,
-    ])
-      if (el) shown.add(el).add(parentOf(el.id))
-
-    clearShownRows()
-    for (const el of shown) {
-      const li = el?.closest('li')
-      if (li?.parentElement !== viewsMenu) continue
-      li.classList.add('toasted')
-      if (changed.has(el as HTMLInputElement)) flashPressed(li)
-    }
-    // Measured, as with a mouse the controls have no set height
-    if (ttsControls instanceof HTMLElement && ttsControls.offsetHeight)
-      viewsMenu.style.setProperty('--past-tts', `${ttsControls.offsetHeight}px`)
-    placeRows()
-    addEventListener('scroll', placeRows, { passive: true })
-    toast(viewsMenu)
-  }
-
-  // What a key changed, for screen readers, as the toast only shows it
-  const status = document.getElementById('views-status')
-  function announce(els: HTMLInputElement[]) {
-    if (!status) return
-    status.textContent = els
-      .map(el => {
-        const name =
-          el.labels?.[0]?.querySelector('.with-icon')?.textContent?.trim() ??
-          el.id
-        const said = el.checked ? status.dataset.on : status.dataset.off
-        return said?.replace('{name}', name) ?? name
-      })
-      .join(', ')
-  }
-
-  function showListenRow(el: HTMLElement) {
-    const li = el.closest('li')
-    if (!listenMenu || li?.parentElement !== listenMenu) return
-    clearShownRows()
-    li.classList.add('toasted')
-    flashPressed(li)
-    toast(listenMenu)
-  }
-
-  // Not on cancel, which comes after a quick second press put it back on
-  for (const menu of [viewsMenu, listenMenu]) {
-    menu?.addEventListener('animationend', e => {
-      if (e.animationName !== 'key-press') return
-      if (e.target instanceof HTMLElement && e.target.parentElement === menu)
-        e.target.classList.remove('pressed')
-    })
-  }
-
-  const shortcutter = document.getElementById('shortcutter')
-  // Shown now, as the keys do nothing without JS
-  const shortcutterRow = shortcutter?.closest('li')
-  if (shortcutterRow) shortcutterRow.hidden = false
-  const shortcutsOn = () =>
-    !(shortcutter instanceof HTMLInputElement) || shortcutter.checked
-  // A fine pointer is the best guess as to whether there's a keyboard too, as
-  // in text.css
-  const finePointer = matchMedia('(any-pointer: fine)')
-
-  const shortcuts = [
-    ...Object.entries(VIEW_SETTINGS).map(([key, ids]) => [key, ids[0]]),
-    ...Object.entries(SUB_SETTINGS),
-    ...Object.entries(LISTEN_CONTROLS),
-  ]
-
-  // Set here rather than in the markup so they're only announced when they work
-  function syncShortcuts() {
-    const on = shortcutsOn() && finePointer.matches
-    for (const [key, id] of shortcuts) {
-      const el = document.getElementById(id)
-      if (on) el?.setAttribute('aria-keyshortcuts', key.toUpperCase())
-      else el?.removeAttribute('aria-keyshortcuts')
-    }
-    for (const menu of [viewsMenu, listenMenu])
-      menu?.classList.toggle('hotkeys-off', !shortcutsOn())
-  }
-
-  syncShortcuts()
-  shortcutter?.addEventListener('change', syncShortcuts)
-  finePointer.addEventListener('change', syncShortcuts)
-
-  document.addEventListener('keydown', e => {
-    if (!shortcutsOn() || !finePointer.matches) return
-    if (e.ctrlKey || e.metaKey || e.altKey) return
-    const target = e.target
-    if (
-      target instanceof HTMLElement &&
-      (target.isContentEditable ||
-        target.matches(
-          'input:not([type="checkbox"], [type="range"]), textarea, select'
-        ))
-    )
-      return
-    const key = e.key.toLowerCase()
-    if (VIEW_SETTINGS[key] || SUB_SETTINGS[key]) {
-      const before = checkedStates()
-      if (VIEW_SETTINGS[key]) cycle(VIEW_SETTINGS[key])
-      else toggleSub(SUB_SETTINGS[key])
-      showChanges(VIEW_SETTINGS[key] ?? [SUB_SETTINGS[key]], before)
-    } else if (LISTEN_CONTROLS[key]) {
-      const el = document.getElementById(LISTEN_CONTROLS[key])
-      if (el instanceof HTMLInputElement) {
-        if (!hasRoom(el)) return
-        el.click()
-        showListenRow(el)
-        announce([el])
-        return
-      }
-      // Checked before the click, as stop disables itself
-      const flash = el instanceof HTMLButtonElement && !el.disabled
-      el?.click()
-      if (flash) flashPressed(el)
-    }
-  })
-
-  // The reflow between restarts the animation
-  function flashPressed(el: HTMLElement) {
-    el.classList.remove('pressed')
-    void el.offsetWidth
-    el.classList.add('pressed')
-  }
-
-  // A cancel comes after a quick second press has already started it over
-  for (const id of Object.values(LISTEN_CONTROLS)) {
-    for (const type of ['animationend', 'animationcancel'] as const) {
-      document.getElementById(id)?.addEventListener(type, e => {
-        const el = e.currentTarget as HTMLElement
-        if (e.animationName !== 'key-press') return
-        const running = el
-          .getAnimations?.()
-          .some(
-            a => a instanceof CSSAnimation && a.animationName === 'key-press'
-          )
-        if (!running) el.classList.remove('pressed')
-      })
-    }
-  }
-
-  // Each line's title is its --mark-label in text.css
-  const highlighter = document.getElementById('highlighter')
-  if (highlighter instanceof HTMLInputElement) {
-    const MARKED =
-      ':is(.nidana, .padabhajaniya, .cakka, .anapatti, .vinaya-vinita, .kamma, .patimokkha, .rule:not(.patimokkha *):has(.segment), .suttanta, .jataka):not(span)'
-    let titled = false
-
-    function titleLines() {
-      if (titled || !highlighter.checked) return
-      titled = true
-      for (const el of document.querySelectorAll(`main ${MARKED}`)) {
-        const label = getComputedStyle(el)
-          .getPropertyValue('--mark-label')
-          .trim()
-          .replace(/^(['"])(.*)\1$/, '$2')
-        if (!label) continue
-        const line = document.createElement('span')
-        line.className = 'mark-line'
-        line.title = label
-        line.setAttribute('aria-hidden', 'true')
-        el.append(line)
-      }
-    }
-
-    titleLines()
-    highlighter.addEventListener('change', titleLines)
-  }
-</script>
-
-<script>
-  /**
-   * Note Button State
-   *
-   * Safari doesn't focus a button on click, so :focus alone never lit it.
-   */
-  'use strict'
-
-  document.addEventListener(
-    'toggle',
-    e => {
-      const note = e.target as HTMLElement
-      if (!note.matches?.('main > article[popover]')) return
-      document
-        .querySelector(`button[popovertarget="${CSS.escape(note.id)}"]`)
-        ?.setAttribute(
-          'aria-expanded',
-          String((e as ToggleEvent).newState === 'open')
-        )
-    },
-    true
-  )
-</script>
-
-<script>
-  import { setUpSimplify } from '~/utils/simplify'
-
-  const simplifier = document.getElementById('simplifier')
-  const main = document.querySelector('main')
-  if (simplifier instanceof HTMLInputElement && main)
-    setUpSimplify(simplifier, main)
-</script>
-
-<script>
-  import { icon } from '~/constants/heroicons'
-  import { original } from '~/utils/simplify'
-
-  /**
-   * Word Lookup
-   *
-   * Shows what a root word means in a sheet along the bottom while "Word
-   * lookup" is on, asking the server about one word at a time. ← and → or the
-   * sheet's arrows go to the words either side, and Esc or a tap elsewhere
-   * closes it. Its row stays hidden without JS, or without popovers to show
-   * the answers in.
-   *
-   * Each Pāli word gets a span as its segment is first pointed at or reached,
-   * for its highlight, and a Chinese character is found where it was tapped.
-   * From the keyboard each segment's root text is a tab stop while it's on,
-   * and Enter looks up its first word and takes focus to the sheet.
-   */
-  type LookupEntry = {
-    d: string | string[]
-    g?: string
-    x?: string | string[]
-    p?: string
-  }
-  type PaliMatch = { base: string; entry?: LookupEntry; meaning?: string }
-  type LzhMatch = { term: string; entry: LookupEntry }
-  /** A Pāli word's span, or a Range of one Chinese character */
-  type Word = HTMLElement | Range
-
-  const toggle = document.getElementById('rooter-look-up')
-  const popover = document.getElementById('definition')
-  const main = document.querySelector('main')
-  if (
-    toggle instanceof HTMLInputElement &&
-    popover &&
-    main &&
-    'popover' in HTMLElement.prototype
-  )
-    setUpLookup(toggle, popover, main)
-
-  function setUpLookup(
-    toggle: HTMLInputElement,
-    popover: HTMLElement,
-    main: HTMLElement
-  ) {
-    const isLzh = toggle.dataset.from === 'lzh'
-    // The root text: a root page's own, or a translation's beside it
-    const TEXT = ".segment > :is(.translation, .root)[translate='no'] > .text"
-    const HAN = /\p{Script=Han}/u
-    const WORD = isLzh
-      ? /\p{Script=Han}/gu
-      : /[\p{L}\p{M}­‧]+(?:[’'”][\p{L}\p{M}­‧]+)*/gu
-    // The sheet's height in text.css, so a word under it gets scrolled up
-    const SHEET = 0.3
-    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
-    const rangeHighlight =
-      typeof CSS !== 'undefined' &&
-      CSS.highlights &&
-      typeof Highlight === 'function'
-        ? new Highlight()
-        : null
-    if (rangeHighlight) CSS.highlights.set('lookup', rangeHighlight)
-
-    const texts = main.querySelectorAll<HTMLElement>(TEXT)
-    const wrapped = new WeakSet<Element>()
-    // Answers so far, by what was asked, so going back over a word doesn't
-    // ask again
-    const answers = new Map<string, Promise<PaliMatch[] | LzhMatch[] | null>>()
-    let current: Word | null = null
-    let latest = 0
-
-    // Shown now, as it does nothing without JS
-    toggle.closest('li')!.hidden = false
-    popover.tabIndex = -1
-
-    // Tab stops only while it's on
-    function setTabbable() {
-      for (const text of texts) {
-        if (toggle.checked) {
-          text.tabIndex = 0
-          text.setAttribute('aria-describedby', 'definition-hint')
-        } else {
-          text.removeAttribute('tabindex')
-          text.removeAttribute('aria-describedby')
-        }
-      }
-    }
-    setTabbable()
-
-    toggle.addEventListener('change', () => {
-      setTabbable()
-      if (!toggle.checked && popover.matches(':popover-open'))
-        popover.hidePopover()
-    })
-
-    /**
-     * Ask the server about one word at a time, as it's tapped. Looking up
-     * every word on the page in one go is more than a Worker gets the CPU
-     * time for.
-     */
-    function lookUp(query: string) {
-      if (!answers.has(query)) answers.set(query, fetchAnswer(query))
-      return answers.get(query)!
-    }
-
-    async function fetchAnswer(
-      query: string
-    ): Promise<PaliMatch[] | LzhMatch[] | null> {
-      const params = new URLSearchParams({
-        from: toggle.dataset.from ?? '',
-        to: toggle.dataset.to ?? '',
-        [isLzh ? 'text' : 'word']: query,
-      })
+    function getCookiePrefs() {
       try {
-        const res = await fetch(`/api/lookup?${params}`)
-        if (!res.ok) throw new Error()
-        return await res.json()
-      } catch {
-        // Not knowing isn't an answer, so the next tap asks again
-        answers.delete(query)
-        return null
-      }
-    }
-
-    /** A Pāli word as the dictionary has it */
-    function cleanWord(word: string) {
-      return word.replace(/[­‧]/g, '').toLowerCase()
-    }
-
-    /**
-     * The Chinese characters around one, up to 3 each way within its run, as
-     * the server finds every term in them
-     */
-    function contextOf(char: Range) {
-      const node = char.startContainer as Text
-      const { data } = node
-      let { startOffset: start, endOffset: end } = char
-      for (let i = 0; i < 3; i++) {
-        const before = [...data.slice(Math.max(0, start - 2), start)].at(-1)
-        if (!before || !HAN.test(before)) break
-        start -= before.length
-      }
-      for (let i = 0; i < 3; i++) {
-        const after =
-          end < data.length ? String.fromCodePoint(data.codePointAt(end)!) : ''
-        if (!after || !HAN.test(after)) break
-        end += after.length
-      }
-      return rangeOf(node, start, end)
-    }
-
-    /**
-     * What to ask the server about a word. Chinese in traditional characters,
-     * as the dictionary has them, where they've been simplified
-     */
-    function queryOf(word: Word) {
-      if (!(word instanceof Range)) return cleanWord(word.textContent ?? '')
-      const context = contextOf(word)
-      return original(context.startContainer as Text).slice(
-        context.startOffset,
-        context.endOffset
-      )
-    }
-
-    function caretAt(x: number, y: number) {
-      if (document.caretPositionFromPoint) {
-        const position = document.caretPositionFromPoint(x, y)
-        return (
-          position && { node: position.offsetNode, offset: position.offset }
+        const match = document.cookie.match(
+          new RegExp('(^| )' + COOKIE_NAME + '=([^;]+)')
         )
-      }
-      const range = document.caretRangeFromPoint?.(x, y)
-      return range && { node: range.startContainer, offset: range.startOffset }
-    }
-
-    function rangeOf(node: Node, start: number, end: number) {
-      const range = document.createRange()
-      range.setStart(node, start)
-      range.setEnd(node, end)
-      return range
-    }
-
-    /** The Chinese character tapped */
-    function charAt(event: MouseEvent) {
-      const caret = caretAt(event.clientX, event.clientY)
-      if (!(caret?.node instanceof Text)) return null
-      if (!caret.node.parentElement?.closest(TEXT)) return null
-      // The caret can be either side of it
-      const { data } = caret.node
-      for (const offset of [caret.offset, caret.offset - 1]) {
-        if (offset >= 0 && HAN.test(data[offset] ?? '')) {
-          return rangeOf(caret.node, offset, offset + 1)
-        }
-      }
-      return null
-    }
-
-    /** The text nodes of the root text, in order */
-    function walker() {
-      return document.createTreeWalker(main, NodeFilter.SHOW_TEXT, {
-        acceptNode: node =>
-          node.parentElement?.closest(TEXT)
-            ? NodeFilter.FILTER_ACCEPT
-            : NodeFilter.FILTER_SKIP,
-      })
-    }
-
-    /**
-     * A segment's Pāli words, each in a span, as Safari leaves a replaced
-     * highlight's range painted. One segment at a time, as Safari is slow to
-     * take thousands of new elements at once
-     */
-    function wordsOf(text: Element) {
-      if (!wrapped.has(text)) {
-        wrapped.add(text)
-        const nodes: Text[] = []
-        const walk = document.createTreeWalker(text, NodeFilter.SHOW_TEXT)
-        while (walk.nextNode()) nodes.push(walk.currentNode as Text)
-        for (const node of nodes) wrap(node)
-      }
-      return [...text.querySelectorAll<HTMLElement>('.word')]
-    }
-
-    function wrap(node: Text) {
-      const fragment = document.createDocumentFragment()
-      let at = 0
-      for (const match of node.data.matchAll(WORD)) {
-        if (match.index > at) fragment.append(node.data.slice(at, match.index))
-        const span = document.createElement('span')
-        span.className = 'word'
-        span.textContent = match[0]
-        fragment.append(span)
-        at = match.index + match[0].length
-      }
-      if (!at) return
-      if (at < node.data.length) fragment.append(node.data.slice(at))
-      node.replaceWith(fragment)
-    }
-
-    /** The word before or after the one shown, or null at either end */
-    function step(direction: number) {
-      if (!current) return null
-      return current instanceof Range
-        ? stepChar(current, direction)
-        : stepWord(current, direction)
-    }
-
-    function stepChar(char: Range, direction: number) {
-      const walk = walker()
-      let node: Node | null = char.startContainer
-      walk.currentNode = node
-      while (node) {
-        const matches = [...(node as Text).data.matchAll(WORD)]
-        const candidates =
-          node === char.startContainer
-            ? matches.filter(match =>
-                direction > 0
-                  ? match.index >= char.endOffset
-                  : match.index + match[0].length <= char.startOffset
-              )
-            : matches
-        const match = direction > 0 ? candidates[0] : candidates.at(-1)
         if (match) {
-          return rangeOf(node, match.index, match.index + match[0].length)
+          return JSON.parse(decodeURIComponent(match[2]))
         }
-        node = direction > 0 ? walk.nextNode() : walk.previousNode()
+      } catch (e) {
+        console.error('Failed to parse cookie prefs:', e)
       }
-      return null
+      return {}
     }
 
-    /** The Pāli word either side, in the next segment with any at the end */
-    function stepWord(word: HTMLElement, direction: number) {
-      const text = word.closest(TEXT)!
-      const own = wordsOf(text)
-      const near = own[own.indexOf(word) + direction]
-      if (near) return near
-      for (
-        let i = [...texts].indexOf(text as HTMLElement) + direction;
-        texts[i];
-        i += direction
-      ) {
-        const words = wordsOf(texts[i])
-        if (words.length) return words[direction > 0 ? 0 : words.length - 1]
+    function saveToCookie(prefs) {
+      try {
+        const value = encodeURIComponent(JSON.stringify(prefs))
+        // SameSite=Lax allows server to read cookie on navigation from external links
+        // (e.g., Google, bookmarks) while still preventing CSRF. Strict would block
+        // the cookie on external navigation, breaking this more performant implementation.
+        document.cookie = `${COOKIE_NAME}=${value};path=/;max-age=${COOKIE_MAX_AGE};SameSite=Lax`
+      } catch (e) {
+        console.error('Failed to save cookie prefs:', e)
       }
-      return null
-    }
-
-    /** The first word of a segment's text, for one tabbed to */
-    function firstWord(text: Element): Word | null {
-      if (!isLzh) return wordsOf(text)[0] ?? null
-      const walk = walker()
-      walk.currentNode = text
-      for (
-        let node = walk.nextNode();
-        node && text.contains(node);
-        node = walk.nextNode()
-      ) {
-        const match = (node as Text).data.matchAll(WORD).next().value
-        if (match)
-          return rangeOf(node, match.index, match.index + match[0].length)
-      }
-      return null
-    }
-
-    function paint(word: Word) {
-      if (word instanceof Range) rangeHighlight?.add(word)
-      else word.classList.add('looked-up')
-    }
-
-    function clearHighlight() {
-      if (current instanceof HTMLElement) current.classList.remove('looked-up')
-      rangeHighlight?.clear()
-    }
-
-    /** The element a word is in */
-    const elementOf = (word: Word) =>
-      word instanceof Range ? word.startContainer.parentElement! : word
-
-    const escape = (text: string) =>
-      text.replace(/[&<>"]/g, char => `&#${char.charCodeAt(0)};`)
-
-    const definePath = (word: string) => `/define/${encodeURIComponent(word)}`
-
-    function defineLink(word: string) {
-      const label = popover.dataset.full?.replace('{word}', word) ?? word
-      return `<a href="${definePath(word)}" aria-label="${escape(label)}">${icon('bookOpen')}</a>`
-    }
-
-    function paliHtml(word: string, found: PaliMatch[], lang: string) {
-      const matches = found.length ? found : [{ base: word, meaning: '?' }]
-      // The word already heads the sheet, so one match of it alone needs no
-      // heading of its own
-      const headed = !(matches.length === 1 && matches[0].base === word)
-      return matches
-        .map(match => {
-          const dt = headed
-            ? `<dt><dfn lang="${lang}" translate="no">${escape(match.base)} ${defineLink(match.base)}</dfn></dt>`
-            : ''
-          let dd = ''
-          if (match.entry) {
-            const { d, g, x } = match.entry
-            if (g) dd += `<span class="grammar">${g}</span>`
-            dd += `<ol class="definition">${[d]
-              .flat()
-              .map(d => `<li>${d}</li>`)
-              .join('')}</ol>`
-            if (x) {
-              const see = popover.dataset.see ?? '{word}'
-              dd += `<ul class="xr">${[x]
-                .flat()
-                .map(
-                  x =>
-                    `<li><a href="${definePath(x)}">${escape(see.replace('{word}', x))}</a></li>`
-                )
-                .join('')}</ul>`
-            }
-          } else {
-            dd = escape(match.meaning ?? '?')
-          }
-          return `<dl>${dt}<dd>${dd}</dd></dl>`
-        })
-        .join('')
-    }
-
-    function lzhHtml(terms: LzhMatch[]) {
-      if (!terms.length) return '<ol><li>?</li></ol>'
-      return `<ol>${terms
-        .map(({ term, entry }) => {
-          const defs = [entry.d].flat().join('; ')
-          return `<li><b lang="lzh">${escape(term)}</b>${entry.p ? ` (${escape(entry.p)})` : ''} ${defs} ${defineLink(term)}</li>`
-        })
-        .join('')}</ol>`
-    }
-
-    /** Scrolls the word up out from under the sheet */
-    function keepInSight(word: Word) {
-      const rect = word.getBoundingClientRect()
-      if (rect.bottom <= innerHeight * (1 - SHEET) && rect.top >= 0) return
-      elementOf(word).scrollIntoView({
-        block: 'center',
-        behavior: reducedMotion.matches ? 'auto' : 'smooth',
-      })
     }
 
     /**
-     * Opens the sheet on the word at once, its answer following once the
-     * server has it. The nav stays, so a button keeps its focus from word to
-     * word
+     * A voice saved before they were kept per language becomes its own
+     * language's voice
      */
-    function open(word: string, lang: string) {
-      setHelp(false)
-      const section = popover.querySelector(':scope > div')!
-      section.setAttribute('aria-busy', 'true')
-      section.innerHTML = `<dfn lang="${lang}" translate="no">${escape(word)}</dfn>`
-      const book = popover.querySelector<HTMLAnchorElement>('nav > a')
-      if (book) {
-        book.href = definePath(word)
-        book.setAttribute(
-          'aria-label',
-          popover.dataset.full?.replace('{word}', word) ?? word
-        )
+    function migrateVoice() {
+      const prefs = getCookiePrefs()
+      const name = prefs['voice-select']
+      if (!name) return
+      const voices = window.speechSynthesis?.getVoices() ?? []
+      if (!voices.length) return
+      const voice = voices.find(v => v.name === name)
+      // Gone from the device, so it has no language to go to
+      if (voice) {
+        const key = voiceKey(voice.lang)
+        if (!(key in prefs)) prefs[key] = name
       }
-      if (!popover.matches(':popover-open')) popover.showPopover()
+      delete prefs['voice-select']
+      saveToCookie(prefs)
+      applyVoice(prefs)
     }
 
-    /** The help in place of the answer, or the answer back */
-    function setHelp(shown: boolean) {
-      popover
-        .querySelector('[data-help]')
-        ?.setAttribute('aria-expanded', String(shown))
-      popover.querySelector(':scope > div')!.hidden = shown
-      popover.querySelector<HTMLElement>('#definition-help')!.hidden = !shown
+    /**
+     * Hands the listen script this language's voice
+     */
+    function applyVoice(prefs) {
+      const el = document.getElementById('voice-select')
+      if (!el || !(VOICE_KEY in prefs)) return
+      el.dataset.saved = prefs[VOICE_KEY]
+      const opt = [...el.options].find(o => o.dataset.name === prefs[VOICE_KEY])
+      if (opt) el.value = opt.value
     }
 
-    async function show(word: Word) {
-      const search = ++latest
-      clearHighlight()
-      current = word
-      const query = queryOf(word)
-      const text = elementOf(word).closest(TEXT)
-      const lang = text?.parentElement?.getAttribute('lang') ?? ''
-      paint(word instanceof Range ? contextOf(word) : word)
-      open(word instanceof Range ? word.toString() : query, escape(lang))
-      keepInSight(word)
+    /** Saves the voice for this language, when the reader picks it */
+    function saveVoice() {
+      const el = document.getElementById('voice-select')
+      const name = el?.options[el.selectedIndex]?.dataset.name
+      if (!name) return
+      const prefs = getCookiePrefs()
+      prefs[VOICE_KEY] = name
+      saveToCookie(prefs)
+      el.dataset.saved = name
+    }
 
-      const busy = word instanceof Range ? text : word
-      busy?.setAttribute('aria-busy', 'true')
-      const answer = await lookUp(query)
-      busy?.removeAttribute('aria-busy')
-      if (search !== latest || !toggle.checked) return
+    /**
+     * Save current state of elements found on this page, but not those a
+     * link's query chose
+     */
+    function save() {
+      const prefs = getCookiePrefs()
 
-      const section = popover.querySelector(':scope > div')!
-      section.insertAdjacentHTML(
-        'beforeend',
-        !answer
-          ? `<p>${escape(popover.dataset.failed ?? '')}</p>`
-          : isLzh
-            ? lzhHtml(answer as LzhMatch[])
-            : paliHtml(query, answer as PaliMatch[], escape(lang))
+      IDS.forEach(id => {
+        const el = document.getElementById(id)
+        if (!el || 'fromUrl' in el.dataset) return
+
+        if (el instanceof HTMLInputElement && el.type === 'checkbox') {
+          prefs[id] = el.checked
+          return
+        }
+
+        // inputs with value
+        if ('value' in el) {
+          prefs[id] = el.value
+        }
+      })
+
+      saveToCookie(prefs)
+    }
+
+    /**
+     * Applies saved cookie prefs to all elements, overriding any stale server-rendered HTML.
+     * Except ones a link's query chose, which stand over the cookie on this page
+     */
+    function applyPrefs() {
+      const prefs = getCookiePrefs()
+
+      // Off unless chosen without popovers, where notes show inline
+      const commenter = document.getElementById('commenter')
+      if (
+        commenter instanceof HTMLInputElement &&
+        !('popover' in HTMLElement.prototype) &&
+        !('commenter' in prefs) &&
+        !('fromUrl' in commenter.dataset)
       )
-      section.removeAttribute('aria-busy')
+        commenter.checked = false
+
+      IDS.forEach(id => {
+        if (!(id in prefs)) return
+        const el = document.getElementById(id)
+        if (!el || 'fromUrl' in el.dataset) return
+        if (el instanceof HTMLInputElement && el.type === 'checkbox') {
+          el.checked = Boolean(prefs[id])
+        } else if (el instanceof HTMLInputElement && el.type === 'range') {
+          el.value = String(prefs[id])
+        }
+      })
+      applyVoice(prefs)
     }
 
-    function go(direction: number) {
-      const word = step(direction)
-      if (word) show(word)
+    /** A setting the link chose that the reader changes is theirs now */
+    function claimFromUrl(param) {
+      if (!param) return
+      document
+        .querySelectorAll<HTMLElement>(`[data-from-url="${param}"]`)
+        .forEach(el => delete el.dataset.fromUrl)
+      const url = new URL(location.href)
+      url.searchParams.delete(param)
+      history.replaceState(history.state, '', url)
     }
 
-    // In the capture phase, so a tap on a word isn't also taken by listen as
-    // one to read from
-    main.addEventListener(
-      'click',
-      event => {
-        const target = event.target
-        if (!toggle.checked || !(target instanceof Element)) return
-        if (!target.closest(TEXT) || target.closest('a[href], button')) return
-        // Not a tap but the end of selecting text, which has to stay selectable
-        if (!getSelection()?.isCollapsed) return
-        const word = isLzh
-          ? charAt(event)
-          : target.closest<HTMLElement>('.word')
-        if (!word) return
-        event.preventDefault()
-        event.stopPropagation()
-        show(word)
+    // Save immediately on any preference change via event delegation
+    document.addEventListener('change', e => {
+      if (!(e.target instanceof HTMLElement)) return
+      if (e.target.id === 'voice-select') saveVoice()
+      else if (IDS.includes(e.target.id)) {
+        claimFromUrl(e.target.dataset.fromUrl)
+        save()
+      }
+    })
+    document.addEventListener('input', e => {
+      if (
+        e.target instanceof HTMLInputElement &&
+        e.target.type === 'range' &&
+        IDS.includes(e.target.id)
+      )
+        save()
+    })
+
+    // Correct any stale server-rendered HTML with current cookie values.
+    // Scripts that need to act on a pref at load time read it themselves rather
+    // than waiting on a change event from here - this runs before they do.
+    applyPrefs()
+
+    migrateVoice()
+    window.speechSynthesis?.addEventListener?.('voiceschanged', migrateVoice)
+
+    // On BFCache restore the script doesn't re-run, so reapply via pageshow
+    window.addEventListener('pageshow', e => {
+      if (e.persisted) applyPrefs()
+    })
+  </script>
+
+  <script>
+    /**
+     * View Settings and Listen Hotkeys
+     *
+     * Toggles view settings from the keyboard, unless that's turned off, and
+     * keeps the reading position when a view setting changes.
+     * Unlike accounting for this with notes view, this layout shift fix
+     * is not possible in CSS without a big refactor, so it's handled here.
+     * Also lets Esc hide the menus and panels hovering shows, and titles each
+     * highlighting line.
+     */
+    'use strict'
+
+    const VIEW_SETTINGS = {
+      n: ['commenter', 'commenter-inline', 'commenter-side'],
+      v: ['rooter', 'rooter-side'],
+      f: ['rooter-first'],
+      d: ['rooter-look-up'],
+      c: ['simplifier'],
+      r: ['segmenter'],
+      i: ['illustrator'],
+      o: ['highlighter'],
+      p: ['paralleler'],
+      s: ['positioner'],
+    }
+
+    // One turned on turns on what it's under too, or the key would do nothing
+    const SUB_SETTINGS = {
+      m: 'segmenter-main',
+      t: 'segmenter-pts',
+    }
+
+    const LISTEN_CONTROLS = {
+      h: 'prev',
+      j: 'playpause',
+      k: 'stop',
+      l: 'next',
+      a: 'auto-scroll',
+    }
+
+    const viewsMenu = document.getElementById('views-menu')
+
+    // Esc hides what hovering shows (see text.css), until the pointer moves off it
+    const dismissed = new Set<HTMLElement>()
+    const bar = viewsMenu?.closest('fieldset')
+    const panels = ['info', 'parallels']
+      .map(id => document.getElementById(id))
+      .filter((el): el is HTMLElement => !!el)
+    const invoker = (el: HTMLElement) =>
+      el.id
+        ? document.querySelector(`[popovertarget="${CSS.escape(el.id)}"]`)
+        : null
+
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Escape') return
+      const hovered = [
+        ...(bar?.querySelectorAll<HTMLElement>(
+          ':scope > ul > li:is(:hover, :focus-within)'
+        ) ?? []),
+        ...panels.filter(
+          panel => panel.matches(':hover') || invoker(panel)?.matches(':hover')
+        ),
+      ]
+      for (const el of hovered) {
+        el.classList.add('dismissed')
+        dismissed.add(el)
+      }
+    })
+
+    for (const type of ['pointerover', 'focusin'] as const) {
+      document.addEventListener(type, e => {
+        const target = e.target as Node
+        for (const el of dismissed) {
+          if (el.contains(target) || invoker(el)?.contains(target)) continue
+          el.classList.remove('dismissed')
+          dismissed.delete(el)
+        }
+      })
+    }
+
+    let anchor = null
+
+    // Not its box, which for a block starts half a line's leading above
+    function textTop(el) {
+      const range = document.createRange()
+      range.selectNodeContents(el)
+      return (range.getClientRects()[0] ?? el.getBoundingClientRect()).top
+    }
+
+    // Has to run before the checkbox flips, as the old layout is gone after
+    function rememberAnchor() {
+      const texts = document.querySelectorAll('main .translation > .text')
+      if (!texts.length) return
+      // The screen starts below the pinned menu, as text under it can't be seen
+      const menuBottom = viewsMenu
+        ?.closest('aside')
+        ?.getBoundingClientRect().bottom
+      const edge = Math.max(0, menuBottom ?? 0)
+      let lo = 0
+      let hi = texts.length - 1
+      while (lo < hi) {
+        const mid = (lo + hi) >> 1
+        if (texts[mid].getBoundingClientRect().bottom <= edge) lo = mid + 1
+        else hi = mid
+      }
+      // Hidden ones have an empty rect, so never count
+      let el = texts[lo]
+      let top = Infinity
+      for (const text of el.closest('.segment').querySelectorAll('.text')) {
+        const rect = text.getBoundingClientRect()
+        if (rect.bottom > edge && rect.top < top) {
+          el = text
+          top = rect.top
+        }
+      }
+      anchor = { el, top: textTop(el) }
+    }
+
+    function restoreAnchor() {
+      if (!anchor) return
+      const { el, top } = anchor
+      // Not window.scrollBy, which after a change this big leaves Safari blank
+      const correct = () => {
+        document.scrollingElement.scrollTop += textTop(el) - top
+      }
+      correct()
+      // Again next frame, after the browser's own correction
+      requestAnimationFrame(() => {
+        correct()
+        anchor = null
+      })
+    }
+
+    viewsMenu?.addEventListener('pointerdown', rememberAnchor)
+    viewsMenu?.addEventListener('keydown', rememberAnchor)
+    viewsMenu?.addEventListener('change', restoreAnchor)
+
+    // Reader views go by the hidden attribute, not CSS
+    const rooter = document.getElementById('rooter')
+    let rootsShown = false
+
+    function syncRoots() {
+      if (
+        !(rooter instanceof HTMLInputElement) ||
+        rooter.checked === rootsShown
+      )
+        return
+      rootsShown = rooter.checked
+      for (const root of document.querySelectorAll<HTMLElement>(
+        '.segment > .root'
+      ))
+        root.hidden = !rootsShown
+    }
+
+    syncRoots()
+    viewsMenu?.addEventListener('change', syncRoots)
+
+    // References on always shows something
+    const segmenter = document.getElementById('segmenter')
+    const referenceGroups = [
+      'segmenter-main',
+      'segmenter-pts',
+      'segmenter-others',
+    ]
+      .map(id => document.getElementById(id))
+      .filter(el => el instanceof HTMLInputElement)
+
+    function setChecked(el: HTMLInputElement, checked: boolean) {
+      el.checked = checked
+      // Setting checked doesn't fire change, which saving prefs relies on
+      el.dispatchEvent(new Event('change', { bubbles: true }))
+    }
+
+    viewsMenu?.addEventListener('change', e => {
+      if (!(segmenter instanceof HTMLInputElement) || !referenceGroups.length)
+        return
+      if (!segmenter.checked || referenceGroups.some(el => el.checked)) return
+      if (e.target === segmenter) setChecked(referenceGroups[0], true)
+      else if (referenceGroups.includes(e.target as HTMLInputElement))
+        setChecked(segmenter, false)
+    })
+
+    function parentOf(id: string) {
+      return document.querySelector(`#views-menu input[aria-controls~="${id}"]`)
+    }
+
+    function hasRoom(el: HTMLElement) {
+      const li = el.closest('li')
+      return !!li && getComputedStyle(li).display !== 'none'
+    }
+
+    function isShown(el: HTMLElement) {
+      const parent = parentOf(el.id)
+      return (
+        hasRoom(el) && !(parent instanceof HTMLInputElement && !parent.checked)
+      )
+    }
+
+    // Each press turns on the next in order, then all off
+    function cycle(ids: string[]) {
+      const els = ids
+        .map(id => document.getElementById(id))
+        .filter(
+          (el): el is HTMLInputElement =>
+            el instanceof HTMLInputElement && hasRoom(el)
+        )
+      if (!els.length || !isShown(els[0])) return
+
+      rememberAnchor()
+      const level = els.findIndex(el => !el.checked)
+      const next = ((level === -1 ? els.length : level) + 1) % (els.length + 1)
+      els.forEach((el, i) => {
+        if (el.checked !== i < next) setChecked(el, i < next)
+      })
+    }
+
+    function toggleSub(id: string) {
+      const el = document.getElementById(id)
+      if (!(el instanceof HTMLInputElement) || !hasRoom(el)) return
+      const parent = parentOf(id)
+
+      rememberAnchor()
+      setChecked(el, !el.checked)
+      if (el.checked && parent instanceof HTMLInputElement && !parent.checked)
+        setChecked(parent, true)
+    }
+
+    const viewsButton = document.getElementById('views-button')
+    const listenMenu = document.getElementById('listen-menu')
+    const ttsControls = listenMenu?.querySelector(':scope > .tts-controls')
+    let rowsTimer: ReturnType<typeof setTimeout> | undefined
+
+    function checkedStates() {
+      const inputs = viewsMenu?.querySelectorAll('input') ?? []
+      return new Map([...inputs].map(el => [el, el.checked]))
+    }
+
+    function clearShownRows() {
+      removeEventListener('scroll', placeRows)
+      viewsMenu?.style.removeProperty('--past-tts')
+      for (const menu of [viewsMenu, listenMenu]) {
+        menu?.classList.remove('toast')
+        for (const li of menu?.querySelectorAll(':scope > li.toasted') ?? [])
+          li.classList.remove('toasted', 'pressed')
+      }
+    }
+
+    function toast(menu: HTMLElement) {
+      menu.classList.add('toast')
+      clearTimeout(rowsTimer)
+      rowsTimer = setTimeout(clearShownRows, 1500)
+    }
+
+    function placeRows() {
+      if (!viewsMenu || !viewsButton) return
+      const { top, bottom } = viewsButton.getBoundingClientRect()
+      viewsMenu.classList.toggle(
+        'detached',
+        bottom < 0 || top > document.documentElement.clientHeight
+      )
+    }
+
+    // Like .net's toast: the menu comes up for a moment with just the rows a key
+    // changed, and those under them
+    function showChanges(
+      ids: string[],
+      before: Map<HTMLInputElement, boolean>
+    ) {
+      if (!viewsMenu) return
+      const changed = new Set(
+        [...before].filter(([el, was]) => el.checked !== was).map(([el]) => el)
+      )
+      if (!changed.size) return
+      announce([...changed])
+      for (const el of changed) {
+        if (!el.checked) continue
+        for (const id of el.getAttribute('aria-controls')?.split(' ') ?? []) {
+          const sub = document.getElementById(id)
+          if (sub instanceof HTMLInputElement && sub.checked) changed.add(sub)
+        }
+      }
+
+      const shown = new Set<Element | null>()
+      for (const el of [
+        ...ids.map(id => document.getElementById(id)),
+        ...changed,
+      ])
+        if (el) shown.add(el).add(parentOf(el.id))
+
+      clearShownRows()
+      for (const el of shown) {
+        const li = el?.closest('li')
+        if (li?.parentElement !== viewsMenu) continue
+        li.classList.add('toasted')
+        if (changed.has(el as HTMLInputElement)) flashPressed(li)
+      }
+      // Measured, as with a mouse the controls have no set height
+      if (ttsControls instanceof HTMLElement && ttsControls.offsetHeight)
+        viewsMenu.style.setProperty(
+          '--past-tts',
+          `${ttsControls.offsetHeight}px`
+        )
+      placeRows()
+      addEventListener('scroll', placeRows, { passive: true })
+      toast(viewsMenu)
+    }
+
+    // What a key changed, for screen readers, as the toast only shows it
+    const status = document.getElementById('views-status')
+    function announce(els: HTMLInputElement[]) {
+      if (!status) return
+      status.textContent = els
+        .map(el => {
+          const name =
+            el.labels?.[0]?.querySelector('.with-icon')?.textContent?.trim() ??
+            el.id
+          const said = el.checked ? status.dataset.on : status.dataset.off
+          return said?.replace('{name}', name) ?? name
+        })
+        .join(', ')
+    }
+
+    function showListenRow(el: HTMLElement) {
+      const li = el.closest('li')
+      if (!listenMenu || li?.parentElement !== listenMenu) return
+      clearShownRows()
+      li.classList.add('toasted')
+      flashPressed(li)
+      toast(listenMenu)
+    }
+
+    // Not on cancel, which comes after a quick second press put it back on
+    for (const menu of [viewsMenu, listenMenu]) {
+      menu?.addEventListener('animationend', e => {
+        if (e.animationName !== 'key-press') return
+        if (e.target instanceof HTMLElement && e.target.parentElement === menu)
+          e.target.classList.remove('pressed')
+      })
+    }
+
+    const shortcutter = document.getElementById('shortcutter')
+    // Shown now, as the keys do nothing without JS
+    const shortcutterRow = shortcutter?.closest('li')
+    if (shortcutterRow) shortcutterRow.hidden = false
+    const shortcutsOn = () =>
+      !(shortcutter instanceof HTMLInputElement) || shortcutter.checked
+    // A fine pointer is the best guess as to whether there's a keyboard too, as
+    // in text.css
+    const finePointer = matchMedia('(any-pointer: fine)')
+
+    const shortcuts = [
+      ...Object.entries(VIEW_SETTINGS).map(([key, ids]) => [key, ids[0]]),
+      ...Object.entries(SUB_SETTINGS),
+      ...Object.entries(LISTEN_CONTROLS),
+    ]
+
+    // Set here rather than in the markup so they're only announced when they work
+    function syncShortcuts() {
+      const on = shortcutsOn() && finePointer.matches
+      for (const [key, id] of shortcuts) {
+        const el = document.getElementById(id)
+        if (on) el?.setAttribute('aria-keyshortcuts', key.toUpperCase())
+        else el?.removeAttribute('aria-keyshortcuts')
+      }
+      for (const menu of [viewsMenu, listenMenu])
+        menu?.classList.toggle('hotkeys-off', !shortcutsOn())
+    }
+
+    syncShortcuts()
+    shortcutter?.addEventListener('change', syncShortcuts)
+    finePointer.addEventListener('change', syncShortcuts)
+
+    document.addEventListener('keydown', e => {
+      if (!shortcutsOn() || !finePointer.matches) return
+      if (e.ctrlKey || e.metaKey || e.altKey) return
+      const target = e.target
+      if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable ||
+          target.matches(
+            'input:not([type="checkbox"], [type="range"]), textarea, select'
+          ))
+      )
+        return
+      const key = e.key.toLowerCase()
+      if (VIEW_SETTINGS[key] || SUB_SETTINGS[key]) {
+        const before = checkedStates()
+        if (VIEW_SETTINGS[key]) cycle(VIEW_SETTINGS[key])
+        else toggleSub(SUB_SETTINGS[key])
+        showChanges(VIEW_SETTINGS[key] ?? [SUB_SETTINGS[key]], before)
+      } else if (LISTEN_CONTROLS[key]) {
+        const el = document.getElementById(LISTEN_CONTROLS[key])
+        if (el instanceof HTMLInputElement) {
+          if (!hasRoom(el)) return
+          el.click()
+          showListenRow(el)
+          announce([el])
+          return
+        }
+        // Checked before the click, as stop disables itself
+        const flash = el instanceof HTMLButtonElement && !el.disabled
+        el?.click()
+        if (flash) flashPressed(el)
+      }
+    })
+
+    // The reflow between restarts the animation
+    function flashPressed(el: HTMLElement) {
+      el.classList.remove('pressed')
+      void el.offsetWidth
+      el.classList.add('pressed')
+    }
+
+    // A cancel comes after a quick second press has already started it over
+    for (const id of Object.values(LISTEN_CONTROLS)) {
+      for (const type of ['animationend', 'animationcancel'] as const) {
+        document.getElementById(id)?.addEventListener(type, e => {
+          const el = e.currentTarget as HTMLElement
+          if (e.animationName !== 'key-press') return
+          const running = el
+            .getAnimations?.()
+            .some(
+              a => a instanceof CSSAnimation && a.animationName === 'key-press'
+            )
+          if (!running) el.classList.remove('pressed')
+        })
+      }
+    }
+
+    // Each line's title is its --mark-label in text.css
+    const highlighter = document.getElementById('highlighter')
+    if (highlighter instanceof HTMLInputElement) {
+      const MARKED =
+        ':is(.nidana, .padabhajaniya, .cakka, .anapatti, .vinaya-vinita, .kamma, .patimokkha, .rule:not(.patimokkha *):has(.segment), .suttanta, .jataka):not(span)'
+      let titled = false
+
+      function titleLines() {
+        if (titled || !highlighter.checked) return
+        titled = true
+        for (const el of document.querySelectorAll(`main ${MARKED}`)) {
+          const label = getComputedStyle(el)
+            .getPropertyValue('--mark-label')
+            .trim()
+            .replace(/^(['"])(.*)\1$/, '$2')
+          if (!label) continue
+          const line = document.createElement('span')
+          line.className = 'mark-line'
+          line.title = label
+          line.setAttribute('aria-hidden', 'true')
+          el.append(line)
+        }
+      }
+
+      titleLines()
+      highlighter.addEventListener('change', titleLines)
+    }
+  </script>
+
+  <script>
+    /**
+     * Note Button State
+     *
+     * Safari doesn't focus a button on click, so :focus alone never lit it.
+     */
+    'use strict'
+
+    document.addEventListener(
+      'toggle',
+      e => {
+        const note = e.target as HTMLElement
+        if (!note.matches?.('main > article[popover]')) return
+        document
+          .querySelector(`button[popovertarget="${CSS.escape(note.id)}"]`)
+          ?.setAttribute(
+            'aria-expanded',
+            String((e as ToggleEvent).newState === 'open')
+          )
       },
       true
     )
+  </script>
 
-    main.addEventListener('pointerover', event => {
-      if (isLzh || !toggle.checked) return
-      const text = (event.target as Element).closest?.(TEXT)
-      if (text) wordsOf(text)
-    })
+  <script>
+    import { setUpSimplify } from '~/utils/simplify'
 
-    // Asked on press, as the click only comes once the button is back up. Not
-    // on touch, where a press is as likely the start of a scroll
-    main.addEventListener('pointerdown', event => {
-      if (event.pointerType === 'touch' || !toggle.checked) return
-      const word = isLzh
-        ? charAt(event)
-        : (event.target as Element).closest?.<HTMLElement>(`${TEXT} .word`)
-      if (word) lookUp(queryOf(word))
-    })
+    const simplifier = document.getElementById('simplifier')
+    const main = document.querySelector('main')
+    if (simplifier instanceof HTMLInputElement && main)
+      setUpSimplify(simplifier, main)
+  </script>
 
-    popover.addEventListener('click', event => {
-      const button = (event.target as Element).closest<HTMLElement>('button')
-      if (button?.hasAttribute('data-close')) popover.hidePopover()
-      else if (button?.hasAttribute('data-help'))
-        setHelp(button.getAttribute('aria-expanded') !== 'true')
-      else if (button?.dataset.step) go(Number(button.dataset.step))
-    })
-
-    // Before it hides, as that takes focus out of it
-    popover.addEventListener('beforetoggle', event => {
-      if ((event as ToggleEvent).newState !== 'closed') return
-      if (current && popover.contains(document.activeElement)) {
-        elementOf(current)
-          .closest<HTMLElement>(TEXT)
-          ?.focus({ preventScroll: true })
-      }
-      clearHighlight()
-      current = null
-      latest++
-    })
-
-    document.addEventListener('keydown', event => {
-      const target = event.target as Element
-      // A segment tabbed to
-      if (event.key === 'Enter' && target.matches?.(TEXT)) {
-        const word = toggle.checked && firstWord(target)
-        if (word) {
-          event.preventDefault()
-          show(word)
-          popover.focus({ preventScroll: true })
-        }
-        return
-      }
-      if (!popover.matches(':popover-open')) return
-      if (event.ctrlKey || event.metaKey || event.altKey) return
-      if (target.closest?.('input, textarea, select')) return
-      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-        event.preventDefault()
-        go(event.key === 'ArrowLeft' ? -1 : 1)
-      }
-      if (event.key === 'Tab') tabOut(event)
-    })
+  <script>
+    import { icon } from '~/constants/heroicons'
+    import { original } from '~/utils/simplify'
 
     /**
-     * Out of either end of the sheet to the segments either side of the word,
-     * as if it came straight after it rather than at the end of the page
+     * Word Lookup
+     *
+     * Shows what a root word means in a sheet along the bottom while "Word
+     * lookup" is on, asking the server about one word at a time. ← and → or the
+     * sheet's arrows go to the words either side, and Esc or a tap elsewhere
+     * closes it. Its row stays hidden without JS, or without popovers to show
+     * the answers in.
+     *
+     * Each Pāli word gets a span as its segment is first pointed at or reached,
+     * for its highlight, and a Chinese character is found where it was tapped.
+     * From the keyboard each segment's root text is a tab stop while it's on,
+     * and Enter looks up its first word and takes focus to the sheet.
      */
-    function tabOut(event: KeyboardEvent) {
-      if (!current || !popover.contains(document.activeElement)) return
-      const focusable = [
-        ...popover.querySelectorAll<HTMLElement>('a[href], button'),
-      ].filter(el => !el.closest('[hidden]'))
-      const edge = event.shiftKey
-        ? [popover, focusable[0]].includes(
-            document.activeElement as HTMLElement
-          )
-        : document.activeElement === focusable.at(-1)
-      if (!edge) return
-      const text = elementOf(current).closest<HTMLElement>(TEXT)
-      const index = [...texts].indexOf(text!)
-      const next = event.shiftKey ? text : texts[index + 1]
-      if (!next) return
-      event.preventDefault()
-      next.focus()
+    type LookupEntry = {
+      d: string | string[]
+      g?: string
+      x?: string | string[]
+      p?: string
     }
-  }
-</script>
+    type PaliMatch = { base: string; entry?: LookupEntry; meaning?: string }
+    type LzhMatch = { term: string; entry: LookupEntry }
+    /** A Pāli word's span, or a Range of one Chinese character */
+    type Word = HTMLElement | Range
 
-<script>
-  import { icon } from '~/constants/heroicons'
+    const toggle = document.getElementById('rooter-look-up')
+    const popover = document.getElementById('definition')
+    const main = document.querySelector('main')
+    if (
+      toggle instanceof HTMLInputElement &&
+      popover &&
+      main &&
+      'popover' in HTMLElement.prototype
+    )
+      setUpLookup(toggle, popover, main)
 
-  /**
-   * Text-to-Speech Player
-   *
-   * Provides speech synthesis controls for reading article content aloud.
-   * Features include play/pause/stop controls, navigation between segments,
-   * voice selection, pitch/rate adjustment, auto-scrolling, and click-to-jump.
-   *
-   * Handles both segmented text (via span.text elements) and non-segmented
-   * content by manually extracting visible text-containing elements, which are
-   * whole blocks and so get split into sentences with Intl.Segmenter.
-   *
-   * @requires SpeechSynthesis API
-   *
-   * @example
-   * // Access debug state
-   * window._scx_listen.getState()
-   *
-   * @example
-   * // What the last computeVisibleText() found, one item an utterance
-   * window._scx_listen.items()
-   *
-   * @example
-   * // Cancel all playback
-   * window._scx_listen.cancel()
-   */
-  ;('use strict')
-
-  // Configurable constants
-  const TIMEOUT_MS = 60
-  const CLASS_HIGHLIGHT = 'tts-highlight'
-  const CLASS_CLICKABLE = 'tts-clickable'
-  const CLASS_SENTENCES = 'tts-sentences'
-  const HIGHLIGHT_NAME = 'tts-current'
-  const HOVER_HIGHLIGHT_NAME = 'tts-hover'
-  const WORD_HIGHLIGHT_NAME = 'tts-word'
-  const ICON_PLAY = icon('play', 'mini')
-  const ICON_PAUSE = icon('pause', 'mini')
-  const ICON_RESUME = icon('play', 'mini')
-
-  const synth = window.speechSynthesis
-  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
-
-  // The Custom Highlight API draws a range without touching the DOM. Without
-  // it the whole element a sentence is in gets the class instead
-  const canHighlightRanges =
-    typeof CSS !== 'undefined' &&
-    !!CSS.highlights &&
-    typeof Highlight === 'function'
-
-  // state
-  let voices = []
-  let visibleTextSpans = []
-  let visibleTextContent = []
-  // The sentence each item covers in non segmented texts, null in segmented ones
-  let visibleTextRanges = []
-  // Where each character of a sentence is in the DOM, for the word being
-  // read, null in segmented texts
-  let visibleTextPoints = []
-  // The same for the segment being read, made on its first word
-  let segmentPoints = null
-  let currentIndex = 0
-  let isCancelled = false
-  let isPlaying = false // denotes an active session (playing or paused)
-  // Kept here rather than read off synth.paused, as browsers disagree on it
-  // after a cancel - Chrome stays paused, Safari and Firefox don't
-  let isPaused = false
-  let currentUtterance = null
-  let sessionId = 0
-
-  // DOM
-  const menuButton = document.getElementById('listen-menu-button')
-  const rootMenuEl = document.getElementById('listen-menu')
-  const LABEL_PLAY = rootMenuEl.dataset.labelPlay
-  const LABEL_PAUSE = rootMenuEl.dataset.labelPause
-  const LABEL_RESUME = LABEL_PLAY
-  const LABEL_DEFAULT = rootMenuEl.dataset.labelDefault
-  const LABEL_ONLINE = rootMenuEl.dataset.labelOnline
-  const voiceSelect = document.getElementById('voice-select')
-  const noVoicesEl = document.getElementById('no-voices')
-  const pitch = document.getElementById('pitch')
-  const pitchValue = document.getElementById('pitch-value')
-  const rate = document.getElementById('rate')
-  const rateValue = document.getElementById('rate-value')
-
-  const prevBtn = document.getElementById('prev')
-  const playPauseBtn = document.getElementById('playpause')
-  const playPauseBtnIcon = playPauseBtn.getElementsByTagName('span')[0]
-  // The inner span, so setting its text leaves the key hint beside it
-  const playPauseBtnLabel = playPauseBtn.querySelector('span span')
-  const nextBtn = document.getElementById('next')
-  const stopBtn = document.getElementById('stop')
-  const autoScrollToggle = document.getElementById('auto-scroll')
-
-  const rootFirst = document.getElementById('rooter-first')
-
-  // basic sanity
-  if (!rootMenuEl) {
-    console.warn('listen.js: required controls missing; aborting init.')
-  } else {
-    // enable all the controls (they are disabled by default to show fallback text if user has JS turned off)
-    rootMenuEl.style.maxWidth = '100vw'
-    // A class, not inline styles, so CSS can still hide the rows while playing
-    rootMenuEl.classList.add('scripted')
-
-    // A button, as a <details> would keep it beside the select
-    const voiceInfoButton = document.getElementById('voice-info-button')
-    const voiceInfo = document.getElementById('voice-info')
-    voiceInfoButton?.addEventListener('click', () => {
-      if (!voiceInfo) return
-      voiceInfo.hidden = !voiceInfo.hidden
-      voiceInfoButton.setAttribute('aria-expanded', String(!voiceInfo.hidden))
-    })
-
-    const articleEl = document.querySelector('main > article, main > section')
-
-    const textLang =
-      rootMenuEl?.dataset?.textLang ||
-      document.querySelector('main > article')?.lang ||
-      document.documentElement.lang ||
-      undefined
-    let sentenceSegmenter = null
-    let wordSegmenter = null
-    try {
-      sentenceSegmenter = new Intl.Segmenter(textLang, {
-        granularity: 'sentence',
-      })
-      wordSegmenter = new Intl.Segmenter(textLang, { granularity: 'word' })
-    } catch (e) {}
-
-    // A block can be a whole <ol> or a <div> wrapping the lot, so the units
-    // inside it have to be told apart - two list items are not one sentence
-    const BLOCK_TAGS = new Set([
-      'ADDRESS',
-      'ARTICLE',
-      'ASIDE',
-      'BLOCKQUOTE',
-      'CAPTION',
-      'DD',
-      'DIV',
-      'DL',
-      'DT',
-      'FIELDSET',
-      'FIGCAPTION',
-      'FIGURE',
-      'FOOTER',
-      'FORM',
-      'H1',
-      'H2',
-      'H3',
-      'H4',
-      'H5',
-      'H6',
-      'HEADER',
-      'LI',
-      'MAIN',
-      'NAV',
-      'OL',
-      'P',
-      'PRE',
-      'SECTION',
-      'TABLE',
-      'TBODY',
-      'TD',
-      'TFOOT',
-      'TH',
-      'THEAD',
-      'TR',
-      'UL',
-    ])
-
-    /** The nearest block level element a text node sits in, within the block */
-    function blockAncestor(element, root) {
-      let el = element
-      while (el && el !== root) {
-        if (BLOCK_TAGS.has(el.tagName)) return el
-        el = el.parentElement
-      }
-      return root
-    }
-
-    /**
-     * The sentences of a block of non segmented text, each with the Range it
-     * covers so it can be highlighted. Sentences run across inline elements
-     * (ie a PTS ref mid sentence), so it's done on the text nodes, not the
-     * elements
-     */
-    function splitIntoSentences(block) {
-      const nodes = []
-      let text = ''
-      let lastOwner = null
-      const walker = document.createTreeWalker(
-        block,
-        NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT
-      )
-      while (walker.nextNode()) {
-        const node = walker.currentNode
-        if (node.nodeType === Node.ELEMENT_NODE) {
-          // A line break ends a line of verse, which rarely has punctuation of
-          // its own to break on
-          if (node.tagName === 'BR' && text && !text.endsWith('\n')) {
-            text += '\n'
-          }
-          continue
-        }
-        const parent = node.parentElement
-        // skip reference links and anything hidden
-        if (!parent || parent.closest('.ref') || parent.offsetParent === null)
-          continue
-        // A newline is a mandatory sentence break, so each list item, cell or
-        // nested block ends up its own unit instead of running into the next -
-        // they often have no punctuation to break on. It belongs to no text
-        // node, and trimming the segment takes it off again
-        const owner = blockAncestor(parent, block)
-        if (lastOwner && owner !== lastOwner && !text.endsWith('\n')) {
-          text += '\n'
-        }
-        lastOwner = owner
-        nodes.push({ node, start: text.length })
-        text += node.data
-      }
-
-      const pointAt = (offset, isEnd) => pointIn(nodes, offset, isEnd)
-
-      let pieces
-      if (sentenceSegmenter) {
-        pieces = Array.from(sentenceSegmenter.segment(text), s => [
-          s.index,
-          s.segment,
-        ])
-      } else {
-        // Without a segmenter a block is read whole, as it used to be, but the
-        // blocks inside it are still worth keeping apart
-        pieces = []
-        let at = 0
-        for (const part of text.split('\n')) {
-          pieces.push([at, part])
-          at += part.length + 1
-        }
-      }
-
-      return pieces.flatMap(([index, segment]) => {
-        const trimmed = segment.trim()
-        if (!trimmed) return []
-        const start = index + segment.length - segment.trimStart().length
-        const end = index + segment.trimEnd().length
-        const startPoint = pointAt(start, false)
-        const endPoint = pointAt(end, true)
-        if (!startPoint || !endPoint) return []
-        const range = document.createRange()
-        range.setStart(...startPoint)
-        range.setEnd(...endPoint)
-        const at = (offset, isEnd) => pointAt(start + offset, isEnd)
-        return [{ text: trimmed.replace(/\n/g, ' '), range, at }]
-      })
-    }
-
-    /** The text node and offset in it of an offset into their joined text */
-    function pointIn(nodes, offset, isEnd) {
-      const found = nodes.find(({ node, start }) =>
-        isEnd
-          ? offset <= start + node.data.length
-          : offset < start + node.data.length
-      )
-      return found ? [found.node, offset - found.start] : null
-    }
-
-    /**
-     * The same for a segment, whose text is read without its newlines, so
-     * each character the voice gets is mapped to where it is
-     */
-    function spanPoints(span) {
-      const points = []
-      const walker = document.createTreeWalker(span, NodeFilter.SHOW_TEXT)
-      while (walker.nextNode()) {
-        const node = walker.currentNode
-        for (let i = 0; i < node.data.length; i++) {
-          if (node.data[i] !== '\n') points.push([node, i])
-        }
-      }
-      return (offset, isEnd) => {
-        if (!isEnd) return points[offset] ?? null
-        const last = points[offset - 1]
-        return last ? [last[0], last[1] + 1] : null
-      }
-    }
-
-    function computeVisibleText() {
-      // for segmented texts
-      visibleTextSpans = Array.from(
-        document.querySelectorAll(
-          'main > article span.text, main > section span.text'
-        )
-      ).filter(s => s.offsetParent !== null && s.textContent)
-
-      visibleTextContent = visibleTextSpans?.map(s =>
-        s.textContent.replace(/\n/g, '')
-      )
-      // A segment is already one unit, so there is nothing to split
-      visibleTextRanges = visibleTextSpans.map(() => null)
-      visibleTextPoints = visibleTextSpans.map(() => null)
-
-      // If rooter-first is checked, reorder spans within each segment to match CSS grid display order
-      if (rootFirst && rootFirst.checked && visibleTextSpans.length > 0) {
-        const segments = new Map()
-
-        // Group spans by their parent segment
-        visibleTextSpans.forEach((span, index) => {
-          const segment = span.closest('.segment')
-          if (segment) {
-            if (!segments.has(segment)) {
-              segments.set(segment, [])
-            }
-            segments.get(segment).push({ span, index })
-          }
-        })
-
-        // For each segment, if it has both translation and root text, swap their order
-        segments.forEach((items, segment) => {
-          if (items.length >= 2) {
-            const translationItem = items.find(item =>
-              item.span.closest('.translation')
-            )
-            const rootItem = items.find(item => item.span.closest('.root'))
-
-            // If both exist, swap them in the arrays
-            if (translationItem && rootItem) {
-              const tempSpan = visibleTextSpans[translationItem.index]
-              const tempContent = visibleTextContent[translationItem.index]
-
-              visibleTextSpans[translationItem.index] =
-                visibleTextSpans[rootItem.index]
-              visibleTextContent[translationItem.index] =
-                visibleTextContent[rootItem.index]
-
-              visibleTextSpans[rootItem.index] = tempSpan
-              visibleTextContent[rootItem.index] = tempContent
-            }
-          }
-        })
-      }
-
-      // fallback for messy DOM in non segmented texts
-      if (!visibleTextSpans.length || !visibleTextContent.length) {
-        const textContainingElements = [
-          'div',
-          'span',
-          'p',
-          'blockquote',
-          'pre',
-          'address',
-          'h1',
-          'h2',
-          'h3',
-          'h4',
-          'h5',
-          'h6',
-          'ul',
-          'ol',
-          'li',
-          'dl',
-          'dt',
-          'dd',
-          'a',
-          'abbr',
-          'b',
-          'strong',
-          'i',
-          'em',
-          'mark',
-          'small',
-          'del',
-          'ins',
-          'sub',
-          'sup',
-          'code',
-          'kbd',
-          'samp',
-          'var',
-          'cite',
-          'dfn',
-          'q',
-          's',
-          'u',
-          'time',
-          'data',
-          'bdi',
-          'bdo',
-          'ruby',
-          'rt',
-          'rp',
-          'table',
-          'caption',
-          'thead',
-          'tbody',
-          'tfoot',
-          'tr',
-          'th',
-          'td',
-          'colgroup',
-          'col',
-          'form',
-          'label',
-          'button',
-        ]
-        const selector = textContainingElements
-          .map(e => `main > article ${e}`)
-          .join(', ')
-        const allVisibleElements = Array.from(
-          document.querySelectorAll(selector)
-        ).filter(s => s.offsetParent !== null && s.textContent)
-
-        const blocks = allVisibleElements.filter(el => {
-          // avoid duplicates
-          return !allVisibleElements.some(
-            other => other !== el && other.contains(el)
-          )
-        })
-
-        // Each block is a whole paragraph or more, so it's split into
-        // sentences to be read and skipped one at a time
-        visibleTextSpans = []
-        visibleTextContent = []
-        visibleTextRanges = []
-        visibleTextPoints = []
-        blocks.forEach(block => {
-          splitIntoSentences(block).forEach(({ text, range, at }) => {
-            visibleTextSpans.push(block)
-            visibleTextContent.push(text)
-            visibleTextRanges.push(range)
-            visibleTextPoints.push(at)
-          })
-        })
-      }
-    }
-
-    // Changed in place, as Safari doesn't repaint what a replaced one covered
-    const itemHighlight = canHighlightRanges ? new Highlight() : null
-    if (itemHighlight) {
-      // above the hover
-      itemHighlight.priority = 1
-      CSS.highlights.set(HIGHLIGHT_NAME, itemHighlight)
-    }
-    const wordHighlight = canHighlightRanges ? new Highlight() : null
-    if (wordHighlight) {
-      // above the sentence
-      wordHighlight.priority = 2
-      CSS.highlights.set(WORD_HIGHLIGHT_NAME, wordHighlight)
-    }
-
-    /** Chrome's Google voices don't say which word, so keep the sentence */
-    function highlightWord(index, charIndex, charLength) {
-      if (!wordHighlight) return
-      const text = visibleTextContent[index]
-      if (!text || !(charIndex >= 0) || charIndex >= text.length) return
-      // Safari gives no length, so it's the word the index is in
-      let end = charIndex + (charLength || 0)
-      if (!charLength) {
-        const word = wordSegmenter?.segment(text).containing(charIndex)
-        if (!word) return
-        end = word.index + word.segment.length
-      }
-      let at = visibleTextPoints[index]
-      if (!at) {
-        if (segmentPoints?.index !== index) {
-          segmentPoints = { index, at: spanPoints(visibleTextSpans[index]) }
-        }
-        at = segmentPoints.at
-      }
-      const startPoint = at(charIndex, false)
-      const endPoint = at(Math.min(end, text.length), true)
-      if (!startPoint || !endPoint) return
-      try {
-        const range = document.createRange()
-        range.setStart(...startPoint)
-        range.setEnd(...endPoint)
-        wordHighlight.clear()
-        wordHighlight.add(range)
-      } catch (e) {}
-    }
-
-    // Highlights just the sentence where the browser can, otherwise the whole
-    // element it's in
-    function highlightItem(index) {
-      const range = visibleTextRanges[index]
-      if (range && itemHighlight) {
-        itemHighlight.clear()
-        itemHighlight.add(range)
-      } else {
-        visibleTextSpans[index]?.classList.add(CLASS_HIGHLIGHT)
-      }
-    }
-
-    function clearHighlight() {
-      if (canHighlightRanges) {
-        itemHighlight.clear()
-        wordHighlight.clear()
-      }
-      segmentPoints = null
-      visibleTextSpans.forEach(s => s.classList.remove(CLASS_HIGHLIGHT))
-    }
-
-    function updateClickableSpans() {
-      if (!visibleTextSpans || !visibleTextSpans.length) return
-      if (isPlaying) {
-        visibleTextSpans.forEach((s, i) => {
-          s.classList.add(CLASS_CLICKABLE)
-          // its sentences get the hover instead of the whole element
-          if (visibleTextRanges[i] && canHighlightRanges) {
-            s.classList.add(CLASS_SENTENCES)
-          }
-        })
-      } else {
-        visibleTextSpans.forEach(s =>
-          s.classList.remove(CLASS_CLICKABLE, CLASS_SENTENCES)
-        )
-        clearHover()
-      }
-    }
-
-    function setNavControlsEnabled(enabled) {
-      if (prevBtn) prevBtn.disabled = !enabled
-      if (nextBtn) nextBtn.disabled = !enabled
-      if (stopBtn) stopBtn.disabled = !enabled
-    }
-
-    function closeMenuOnTouch() {
-      if (!matchMedia('(hover: none)').matches) return
-      // Older browsers have no popovers, and show the menu on hover instead
-      if (rootMenuEl.matches?.(':popover-open')) rootMenuEl.hidePopover()
-    }
-
-    // The controls' top, not the menu's, as the rest closes once one is used
-    function readingMiddle() {
-      const bar = rootMenuEl.closest('fieldset')
-      if (!bar || getComputedStyle(bar).position !== 'fixed') {
-        return window.innerHeight / 2
-      }
-      const controls = rootMenuEl
-        .querySelector('.tts-controls')
-        ?.getBoundingClientRect()
-      const bottom = controls?.height
-        ? controls.top
-        : bar.getBoundingClientRect().top
-      return bottom / 2
-    }
-
-    function ensureVisible(index) {
-      if (!autoScrollToggle) return
-      if (!autoScrollToggle.checked) return
-      const el = visibleTextSpans[index]
-      if (!el) return
-      // a sentence is centred itself, as its paragraph can be taller than the
-      // screen
-      const range = visibleTextRanges[index]?.getBoundingClientRect()
-      const rect = range?.height ? range : el.getBoundingClientRect()
-      window.scrollBy({
-        top: rect.top + rect.height / 2 - readingMiddle(),
-        behavior: reducedMotion.matches ? 'auto' : 'smooth',
-      })
-    }
-
-    function updatePlayPauseLabel() {
-      if (isPaused) {
-        playPauseBtnLabel.textContent = LABEL_RESUME
-        playPauseBtnIcon.innerHTML = ICON_RESUME
-        return
-      }
-      if (isPlaying) {
-        playPauseBtnLabel.textContent = LABEL_PAUSE
-        playPauseBtnIcon.innerHTML = ICON_PAUSE
-        return
-      }
-      playPauseBtnLabel.textContent = LABEL_PLAY
-      playPauseBtnIcon.innerHTML = ICON_PLAY
-    }
-
-    // Text languages whose voices go by another code: Literary Chinese,
-    // Classical Tibetan, and Norwegian, as Bokmål
-    const VOICE_LANGS = {
-      lzh: 'zh',
-      xct: 'bo',
-      no: 'nb',
-    }
-    // Where a language's regions are not just accents. zh-HK voices speak
-    // Cantonese, so Mandarin first, the mainland's and then Taiwan's
-    const VOICE_REGIONS = { zh: ['zh-cn', 'zh-tw'] }
-    // Android writes en_US for en-US
-    const tag = lang => (lang || '').replace('_', '-').toLowerCase()
-
-    function populateVoiceList() {
-      voices =
-        typeof synth?.getVoices === 'function' ? synth.getVoices().slice() : []
-
-      // Group voices by language
-      const byLang = new Map()
-      for (const v of voices) {
-        const lang = v.lang || 'unknown'
-        if (!byLang.has(lang)) byLang.set(lang, [])
-        byLang.get(lang).push(v)
-      }
-
-      // Older browsers can't name them, so get the code
-      const uiLang = document.documentElement.lang || undefined
-      let langNames = null
-      try {
-        langNames = new Intl.DisplayNames(uiLang, {
-          type: 'language',
-          languageDisplay: 'standard',
-        })
-      } catch (e) {}
-      const langLabel = lang => {
-        try {
-          return langNames?.of(lang.replace('_', '-')) ?? lang
-        } catch (e) {
-          return lang
-        }
-      }
-      const langs = Array.from(byLang.keys()).sort((a, b) =>
-        langLabel(a).localeCompare(langLabel(b), uiLang)
-      )
-
-      // Sort voices within each language by name
-      for (const [, list] of byLang) {
-        list.sort((a, b) => {
-          const an = (a.name || '').toUpperCase()
-          const bn = (b.name || '').toUpperCase()
-          if (an < bn) return -1
-          if (an === bn) return 0
-          return 1
-        })
-      }
-
-      // Determine preferred voice to select: saved, then text language, then
-      // default voice, then browser lang
-      const defaultVoice = voices.find(v => v.default)
-      const textLang = rootMenuEl?.dataset?.textLang ?? ''
-      const browserLang = (
-        navigator.language ||
-        navigator.userLanguage ||
-        ''
-      ).toString()
-      const primaryBrowserLang = browserLang.split('-')[0]
-      // Saved by the prefs script, while the device still has it
-      const savedName = voiceSelect.dataset.saved
-      let suitableVoiceName = voices.some(v => v.name === savedName)
-        ? savedName
-        : null
-
-      // Then try to match text language. Voices go by the two-letter code
-      // where there is one, and a voice for the modern language reads the
-      // classical one, as zh-CN does Taisho Chinese. Within the language:
-      // 1. A voice in a language the browser asks for, in the reader's order
-      //    of preference (navigator.languages). So a UK reader gets en-GB, a
-      //    Brazilian reader pt-BR, and a Taiwanese reader zh-TW on Taisho
-      //    texts
-      // 2. The device's default voice, if it's in that language
-      // 3. The main region from VOICE_REGIONS, only Chinese for now
-      // 4. Any voice in the language
-      if (!suitableVoiceName && textLang) {
-        const speechLang = VOICE_LANGS[textLang] ?? textLang
-        const textLangVoices = voices.filter(
-          v => tag(v.lang).split('-')[0] === speechLang
-        )
-        const inRegions = regions =>
-          regions
-            .map(r => textLangVoices.find(v => tag(v.lang) === r))
-            .find(Boolean)
-        const voice =
-          inRegions((navigator.languages ?? [browserLang]).map(tag)) ??
-          textLangVoices.find(v => v.default) ??
-          inRegions(VOICE_REGIONS[speechLang] ?? []) ??
-          textLangVoices[0]
-        suitableVoiceName = voice?.name ?? null
-      }
-
-      // Fall back to default voice
-      if (!suitableVoiceName && defaultVoice) {
-        suitableVoiceName = defaultVoice.name
-      }
-
-      // Fall back to browser language
-      if (!suitableVoiceName && browserLang) {
-        // find first voice matching full lang, then primary subtag
-        let found = voices.find(v => v.lang === browserLang)
-        if (!found)
-          found = voices.find(
-            v => v.lang && v.lang.startsWith(primaryBrowserLang)
-          )
-        if (found) suitableVoiceName = found.name
-      }
-
-      // Build select with optgroups per language
-      voiceSelect.innerHTML = ''
-      for (const lang of langs) {
-        const group = document.createElement('optgroup')
-        group.label = langLabel(lang)
-        const list = byLang.get(lang) || []
-        for (const v of list) {
-          const opt = document.createElement('option')
-          // Online voices send the text away to be read, as Chrome's Google
-          // ones and Edge's Natural ones do, so they're marked as such
-          opt.textContent = `${v.name}${v.default ? ` -- ${LABEL_DEFAULT}` : ''}${v.localService === false ? ` -- ${LABEL_ONLINE}` : ''}`
-          opt.setAttribute('data-name', v.name)
-          opt.setAttribute('data-lang', v.lang)
-          group.appendChild(opt)
-        }
-        voiceSelect.appendChild(group)
-      }
-
-      // Select initial option if present, otherwise preserve previous selection or pick first
-      let selIndex = 0
-      if (suitableVoiceName) {
-        for (let i = 0; i < voiceSelect.options.length; i++) {
-          if (
-            voiceSelect.options[i].getAttribute('data-name') ===
-            suitableVoiceName
-          ) {
-            selIndex = i
-            break
-          }
-        }
-      } else {
-        selIndex =
-          voiceSelect.selectedIndex >= 0 ? voiceSelect.selectedIndex : 0
-      }
-      voiceSelect.selectedIndex = Math.min(
-        selIndex,
-        Math.max(0, voiceSelect.options.length - 1)
-      )
-
-      // No voices means the device has none installed, not that anything here
-      // is broken. Checked on every fill, as Chrome hands back none at first
-      // and the rest a moment later
-      const hasVoices = voices.length > 0
-      if (noVoicesEl) noVoicesEl.hidden = hasVoices
-      // What ONLINE means, only where there's a voice marked so
-      const voiceInfoOnline = document.getElementById('voice-info-online')
-      if (voiceInfoOnline)
-        voiceInfoOnline.hidden = !voices.some(v => v.localService === false)
-      voiceSelect.disabled = !hasVoices
-      playPauseBtn.disabled = !hasVoices
-    }
-    populateVoiceList()
-    if (typeof synth !== 'undefined' && synth.onvoiceschanged !== undefined) {
-      synth.onvoiceschanged = populateVoiceList
-    }
-
-    const EM_DASH = '—'
-    const SPACE_OR_DASH = /[\s—]/
-
-    /**
-     * The text as the voice gets it, with spaces round a dash between words.
-     * Voices take "sabbath—the" for one word, and say when it starts but not
-     * when "the" does. Spaced, they still pause at it. Where each character
-     * came from is kept, for the word being read
-     */
-    function speakable(text) {
-      let spoken = ''
-      const from = []
-      for (let i = 0; i < text.length; i++) {
-        const prev = text[i - 1]
-        const next = text[i + 1]
-        const isDash = text[i] === EM_DASH
-        // a run of dashes, as in Chinese, is spaced as one
-        if (isDash && prev && /\S/.test(prev) && prev !== EM_DASH) {
-          spoken += ' '
-          from.push(i)
-        }
-        spoken += text[i]
-        from.push(i)
-        if (isDash && next && /\S/.test(next) && next !== EM_DASH) {
-          spoken += ' '
-          from.push(i + 1)
-        }
-      }
-      return { spoken, from }
-    }
-
-    // Speak chain with session protection
-    function speakNext() {
-      const mySession = sessionId
-      if (currentIndex >= visibleTextContent.length) {
-        finishPlayback()
-        return
-      }
-      const text = visibleTextContent[currentIndex]
-      if (!text || isCancelled) {
-        finishPlayback()
-        return
-      }
-
-      const { spoken, from } = speakable(text)
-      const utter = new SpeechSynthesisUtterance(spoken)
-      utter._session = mySession
-      currentUtterance = utter
-
-      utter.onstart = () => {
-        if (utter._session !== sessionId) return
-        highlightItem(currentIndex)
-        ensureVisible(currentIndex)
-        // immediate label update when speech starts
-        updatePlayPauseLabel()
-      }
-
-      utter.onboundary = ev => {
-        if (utter._session !== sessionId || ev.name !== 'word') return
-        let start = ev.charIndex
-        // Safari gives no length, so highlightWord finds the word itself
-        let end = start + (ev.charLength || 1)
-        // Some voices take the dash, or the space by it, in with a word
-        while (start < end && SPACE_OR_DASH.test(spoken[start])) start++
-        while (end > start && SPACE_OR_DASH.test(spoken[end - 1])) end--
-        // the dash's own
-        if (start === end) return
-        const length = ev.charLength ? from[end - 1] + 1 - from[start] : 0
-        highlightWord(currentIndex, from[start], length)
-      }
-
-      utter.onend = () => {
-        if (utter._session !== sessionId) return
-        clearHighlight()
-        currentUtterance = null
-        if (isCancelled) {
-          finishPlayback()
-          return
-        }
-        currentIndex += 1
-        // If paused between utterances, don't auto-advance
-        if (isPaused) {
-          updatePlayPauseLabel()
-          return
-        }
-        speakNext()
-      }
-
-      utter.onerror = ev => {
-        if (utter._session !== sessionId) return
-        console.error('SpeechSynthesisUtterance error', ev)
-        clearHighlight()
-        currentUtterance = null
-        currentIndex += 1
-        if (!isCancelled) speakNext()
-      }
-
-      // set voice
-      const selected =
-        voiceSelect.selectedOptions && voiceSelect.selectedOptions[0]
-          ? voiceSelect.selectedOptions[0].getAttribute('data-name')
+    function setUpLookup(
+      toggle: HTMLInputElement,
+      popover: HTMLElement,
+      main: HTMLElement
+    ) {
+      const isLzh = toggle.dataset.from === 'lzh'
+      // The root text: a root page's own, or a translation's beside it
+      const TEXT = ".segment > :is(.translation, .root)[translate='no'] > .text"
+      const HAN = /\p{Script=Han}/u
+      const WORD = isLzh
+        ? /\p{Script=Han}/gu
+        : /[\p{L}\p{M}­‧]+(?:[’'”][\p{L}\p{M}­‧]+)*/gu
+      // The sheet's height in text.css, so a word under it gets scrolled up
+      const SHEET = 0.3
+      const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
+      const rangeHighlight =
+        typeof CSS !== 'undefined' &&
+        CSS.highlights &&
+        typeof Highlight === 'function'
+          ? new Highlight()
           : null
-      if (selected) {
-        const v = voices.find(x => x.name === selected)
-        if (v) utter.voice = v
-      }
-      utter.pitch = pitch ? Number(pitch.value) : 1
-      utter.rate = rate ? Number(rate.value) : 1
+      if (rangeHighlight) CSS.highlights.set('lookup', rangeHighlight)
 
-      try {
-        synth.speak(utter)
-      } catch (err) {
-        console.error('synth.speak threw', err)
-      }
-    }
+      const texts = main.querySelectorAll<HTMLElement>(TEXT)
+      const wrapped = new WeakSet<Element>()
+      // Answers so far, by what was asked, so going back over a word doesn't
+      // ask again
+      const answers = new Map<
+        string,
+        Promise<PaliMatch[] | LzhMatch[] | null>
+      >()
+      let current: Word | null = null
+      let latest = 0
 
-    // Controls
-    function startSessionFrom(index = 0) {
-      if (!visibleTextContent.length || !visibleTextSpans.length) return
-      sessionId += 1
-      isCancelled = false
-      isPlaying = true
-      isPaused = false
-      currentIndex = Math.max(0, Math.min(index, visibleTextContent.length - 1))
-      playPauseBtnLabel.textContent = LABEL_PAUSE
-      playPauseBtnIcon.innerHTML = ICON_PAUSE
-      setNavControlsEnabled(true)
-      updateClickableSpans()
-      speakNext()
-    }
+      // Shown now, as it does nothing without JS
+      toggle.closest('li')!.hidden = false
+      popover.tabIndex = -1
 
-    // Chrome stays paused through a cancel, which would hold back whatever is
-    // spoken next, so it's let go of here
-    function cancelSpeech() {
-      try {
-        synth.cancel()
-        if (synth.paused) synth.resume()
-      } catch (e) {}
-    }
-
-    function pauseSession() {
-      if (!isPlaying || isPaused) return
-      isPaused = true
-      try {
-        synth.pause()
-      } catch (err) {
-        console.error('pause failed', err)
-      }
-      updatePlayPauseLabel()
-    }
-
-    function resumeSession() {
-      if (!isPaused) return
-      isPaused = false
-      try {
-        synth.resume()
-      } catch (err) {
-        console.error('resume failed', err)
-      }
-      // Skipped or ended while paused, so there's nothing to resume and the
-      // new item is read from its start
-      if (!currentUtterance) speakNext()
-      updatePlayPauseLabel()
-    }
-
-    // While paused this only moves the highlight, to be read from on resume
-    function skipTo(index) {
-      if (!visibleTextContent.length) return
-      sessionId += 1
-      const mySession = sessionId
-      isCancelled = true
-      cancelSpeech()
-      currentUtterance = null
-      clearHighlight()
-      // set now, so a key held down or pressed again goes on from here
-      currentIndex = index
-      if (isPaused) {
-        isCancelled = false
-        highlightItem(currentIndex)
-        ensureVisible(currentIndex)
-        return
-      }
-      setTimeout(() => {
-        if (mySession !== sessionId) return
-        isCancelled = false
-        speakNext()
-      }, TIMEOUT_MS)
-    }
-
-    function prevSpan() {
-      skipTo(Math.max(0, currentIndex - 1))
-    }
-
-    function nextSpan() {
-      skipTo(Math.min(visibleTextContent.length - 1, currentIndex + 1))
-    }
-
-    function finishPlayback() {
-      sessionId += 1
-      clearHighlight()
-      visibleTextSpans.forEach(s =>
-        s.classList.remove(CLASS_CLICKABLE, CLASS_SENTENCES)
-      )
-      isPlaying = false
-      isPaused = false
-      currentUtterance = null
-      currentIndex = 0
-      playPauseBtnLabel.textContent = LABEL_PLAY
-      playPauseBtnIcon.innerHTML = ICON_PLAY
-      setNavControlsEnabled(false)
-      updateClickableSpans()
-    }
-
-    function stopSession() {
-      // Cancel any ongoing speech and reset UI/state.
-      sessionId += 1
-      isCancelled = true
-      cancelSpeech()
-      clearHighlight()
-      currentUtterance = null
-      isPlaying = false
-      isPaused = false
-      currentIndex = 0
-      playPauseBtnLabel.textContent = LABEL_PLAY
-      playPauseBtnIcon.innerHTML = ICON_PLAY
-      setNavControlsEnabled(false)
-      updateClickableSpans()
-    }
-
-    /**
-     * Where a fresh start reads from - the item in the middle of the screen,
-     * so it goes on from wherever the reader has scrolled to, or the first
-     * one while the start of the text is still on screen
-     */
-    function startIndex() {
-      const middle = readingMiddle()
-      let closest = 0
-      let closestDistance = Infinity
-      let seenFirst = false
-      for (let i = 0; i < visibleTextSpans.length; i++) {
-        const rect = (
-          visibleTextRanges[i] || visibleTextSpans[i]
-        ).getBoundingClientRect()
-        if (!rect.height) continue
-        if (!seenFirst) {
-          seenFirst = true
-          if (rect.bottom > 0) return 0
+      // Tab stops only while it's on
+      function setTabbable() {
+        for (const text of texts) {
+          if (toggle.checked) {
+            text.tabIndex = 0
+            text.setAttribute('aria-describedby', 'definition-hint')
+          } else {
+            text.removeAttribute('tabindex')
+            text.removeAttribute('aria-describedby')
+          }
         }
-        // the first in reading order, as side by side texts put two items at
-        // the same height
-        if (rect.top <= middle && rect.bottom >= middle) return i
-        const distance = Math.min(
-          Math.abs(rect.top - middle),
-          Math.abs(rect.bottom - middle)
+      }
+      setTabbable()
+
+      toggle.addEventListener('change', () => {
+        setTabbable()
+        if (!toggle.checked && popover.matches(':popover-open'))
+          popover.hidePopover()
+      })
+
+      /**
+       * Ask the server about one word at a time, as it's tapped. Looking up
+       * every word on the page in one go is more than a Worker gets the CPU
+       * time for.
+       */
+      function lookUp(query: string) {
+        if (!answers.has(query)) answers.set(query, fetchAnswer(query))
+        return answers.get(query)!
+      }
+
+      async function fetchAnswer(
+        query: string
+      ): Promise<PaliMatch[] | LzhMatch[] | null> {
+        const params = new URLSearchParams({
+          from: toggle.dataset.from ?? '',
+          to: toggle.dataset.to ?? '',
+          [isLzh ? 'text' : 'word']: query,
+        })
+        try {
+          const res = await fetch(`/api/lookup?${params}`)
+          if (!res.ok) throw new Error()
+          return await res.json()
+        } catch {
+          // Not knowing isn't an answer, so the next tap asks again
+          answers.delete(query)
+          return null
+        }
+      }
+
+      /** A Pāli word as the dictionary has it */
+      function cleanWord(word: string) {
+        return word.replace(/[­‧]/g, '').toLowerCase()
+      }
+
+      /**
+       * The Chinese characters around one, up to 3 each way within its run, as
+       * the server finds every term in them
+       */
+      function contextOf(char: Range) {
+        const node = char.startContainer as Text
+        const { data } = node
+        let { startOffset: start, endOffset: end } = char
+        for (let i = 0; i < 3; i++) {
+          const before = [...data.slice(Math.max(0, start - 2), start)].at(-1)
+          if (!before || !HAN.test(before)) break
+          start -= before.length
+        }
+        for (let i = 0; i < 3; i++) {
+          const after =
+            end < data.length
+              ? String.fromCodePoint(data.codePointAt(end)!)
+              : ''
+          if (!after || !HAN.test(after)) break
+          end += after.length
+        }
+        return rangeOf(node, start, end)
+      }
+
+      /**
+       * What to ask the server about a word. Chinese in traditional characters,
+       * as the dictionary has them, where they've been simplified
+       */
+      function queryOf(word: Word) {
+        if (!(word instanceof Range)) return cleanWord(word.textContent ?? '')
+        const context = contextOf(word)
+        return original(context.startContainer as Text).slice(
+          context.startOffset,
+          context.endOffset
         )
-        if (distance < closestDistance) {
-          closest = i
-          closestDistance = distance
-        }
-        // everything after is further down
-        if (rect.top > middle) break
       }
-      return closest
-    }
 
-    // single button behavior
-    function togglePlayPause() {
-      if (isPaused) return resumeSession()
-      if (isPlaying) return pauseSession()
-      // What's visible now is what the session reads, whatever the view does
-      // after
-      computeVisibleText()
-      startSessionFrom(startIndex())
-    }
+      function caretAt(x: number, y: number) {
+        if (document.caretPositionFromPoint) {
+          const position = document.caretPositionFromPoint(x, y)
+          return (
+            position && { node: position.offsetNode, offset: position.offset }
+          )
+        }
+        const range = document.caretRangeFromPoint?.(x, y)
+        return (
+          range && { node: range.startContainer, offset: range.startOffset }
+        )
+      }
 
-    // wire listeners
-    if (prevBtn) prevBtn.addEventListener('click', prevSpan)
-    playPauseBtn.addEventListener('click', togglePlayPause)
-    if (nextBtn) nextBtn.addEventListener('click', nextSpan)
-    if (stopBtn) stopBtn.addEventListener('click', stopSession)
-    const controlsEl = rootMenuEl.querySelector('.tts-controls')
-    controlsEl?.addEventListener('click', closeMenuOnTouch)
+      function rangeOf(node: Node, start: number, end: number) {
+        const range = document.createRange()
+        range.setStart(node, start)
+        range.setEnd(node, end)
+        return range
+      }
 
-    if (menuButton && 'IntersectionObserver' in window) {
-      new IntersectionObserver(([entry]) =>
-        rootMenuEl.classList.toggle('detached', !entry.isIntersecting)
-      ).observe(menuButton)
-    }
+      /** The Chinese character tapped */
+      function charAt(event: MouseEvent) {
+        const caret = caretAt(event.clientX, event.clientY)
+        if (!(caret?.node instanceof Text)) return null
+        if (!caret.node.parentElement?.closest(TEXT)) return null
+        // The caret can be either side of it
+        const { data } = caret.node
+        for (const offset of [caret.offset, caret.offset - 1]) {
+          if (offset >= 0 && HAN.test(data[offset] ?? '')) {
+            return rangeOf(caret.node, offset, offset + 1)
+          }
+        }
+        return null
+      }
 
-    // The controls sit outside the open menu, so a tap there light dismisses it
-    // This disables that behaviour and can't be done in CSS
-    let keepOpen = false
-    controlsEl?.addEventListener('pointerdown', () => {
-      keepOpen = matchMedia('(hover: none)').matches
-    })
-    controlsEl?.addEventListener('click', () => (keepOpen = false))
-    for (const type of ['pointerdown', 'keydown'] as const) {
-      document.addEventListener(
-        type,
-        e => {
-          if (!controlsEl?.contains(e.target as Node)) keepOpen = false
+      /** The text nodes of the root text, in order */
+      function walker() {
+        return document.createTreeWalker(main, NodeFilter.SHOW_TEXT, {
+          acceptNode: node =>
+            node.parentElement?.closest(TEXT)
+              ? NodeFilter.FILTER_ACCEPT
+              : NodeFilter.FILTER_SKIP,
+        })
+      }
+
+      /**
+       * A segment's Pāli words, each in a span, as Safari leaves a replaced
+       * highlight's range painted. One segment at a time, as Safari is slow to
+       * take thousands of new elements at once
+       */
+      function wordsOf(text: Element) {
+        if (!wrapped.has(text)) {
+          wrapped.add(text)
+          const nodes: Text[] = []
+          const walk = document.createTreeWalker(text, NodeFilter.SHOW_TEXT)
+          while (walk.nextNode()) nodes.push(walk.currentNode as Text)
+          for (const node of nodes) wrap(node)
+        }
+        return [...text.querySelectorAll<HTMLElement>('.word')]
+      }
+
+      function wrap(node: Text) {
+        const fragment = document.createDocumentFragment()
+        let at = 0
+        for (const match of node.data.matchAll(WORD)) {
+          if (match.index > at)
+            fragment.append(node.data.slice(at, match.index))
+          const span = document.createElement('span')
+          span.className = 'word'
+          span.textContent = match[0]
+          fragment.append(span)
+          at = match.index + match[0].length
+        }
+        if (!at) return
+        if (at < node.data.length) fragment.append(node.data.slice(at))
+        node.replaceWith(fragment)
+      }
+
+      /** The word before or after the one shown, or null at either end */
+      function step(direction: number) {
+        if (!current) return null
+        return current instanceof Range
+          ? stepChar(current, direction)
+          : stepWord(current, direction)
+      }
+
+      function stepChar(char: Range, direction: number) {
+        const walk = walker()
+        let node: Node | null = char.startContainer
+        walk.currentNode = node
+        while (node) {
+          const matches = [...(node as Text).data.matchAll(WORD)]
+          const candidates =
+            node === char.startContainer
+              ? matches.filter(match =>
+                  direction > 0
+                    ? match.index >= char.endOffset
+                    : match.index + match[0].length <= char.startOffset
+                )
+              : matches
+          const match = direction > 0 ? candidates[0] : candidates.at(-1)
+          if (match) {
+            return rangeOf(node, match.index, match.index + match[0].length)
+          }
+          node = direction > 0 ? walk.nextNode() : walk.previousNode()
+        }
+        return null
+      }
+
+      /** The Pāli word either side, in the next segment with any at the end */
+      function stepWord(word: HTMLElement, direction: number) {
+        const text = word.closest(TEXT)!
+        const own = wordsOf(text)
+        const near = own[own.indexOf(word) + direction]
+        if (near) return near
+        for (
+          let i = [...texts].indexOf(text as HTMLElement) + direction;
+          texts[i];
+          i += direction
+        ) {
+          const words = wordsOf(texts[i])
+          if (words.length) return words[direction > 0 ? 0 : words.length - 1]
+        }
+        return null
+      }
+
+      /** The first word of a segment's text, for one tabbed to */
+      function firstWord(text: Element): Word | null {
+        if (!isLzh) return wordsOf(text)[0] ?? null
+        const walk = walker()
+        walk.currentNode = text
+        for (
+          let node = walk.nextNode();
+          node && text.contains(node);
+          node = walk.nextNode()
+        ) {
+          const match = (node as Text).data.matchAll(WORD).next().value
+          if (match)
+            return rangeOf(node, match.index, match.index + match[0].length)
+        }
+        return null
+      }
+
+      function paint(word: Word) {
+        if (word instanceof Range) rangeHighlight?.add(word)
+        else word.classList.add('looked-up')
+      }
+
+      function clearHighlight() {
+        if (current instanceof HTMLElement)
+          current.classList.remove('looked-up')
+        rangeHighlight?.clear()
+      }
+
+      /** The element a word is in */
+      const elementOf = (word: Word) =>
+        word instanceof Range ? word.startContainer.parentElement! : word
+
+      const escape = (text: string) =>
+        text.replace(/[&<>"]/g, char => `&#${char.charCodeAt(0)};`)
+
+      const definePath = (word: string) => `/define/${encodeURIComponent(word)}`
+
+      function defineLink(word: string) {
+        const label = popover.dataset.full?.replace('{word}', word) ?? word
+        return `<a href="${definePath(word)}" aria-label="${escape(label)}">${icon('bookOpen')}</a>`
+      }
+
+      function paliHtml(word: string, found: PaliMatch[], lang: string) {
+        const matches = found.length ? found : [{ base: word, meaning: '?' }]
+        // The word already heads the sheet, so one match of it alone needs no
+        // heading of its own
+        const headed = !(matches.length === 1 && matches[0].base === word)
+        return matches
+          .map(match => {
+            const dt = headed
+              ? `<dt><dfn lang="${lang}" translate="no">${escape(match.base)} ${defineLink(match.base)}</dfn></dt>`
+              : ''
+            let dd = ''
+            if (match.entry) {
+              const { d, g, x } = match.entry
+              if (g) dd += `<span class="grammar">${g}</span>`
+              dd += `<ol class="definition">${[d]
+                .flat()
+                .map(d => `<li>${d}</li>`)
+                .join('')}</ol>`
+              if (x) {
+                const see = popover.dataset.see ?? '{word}'
+                dd += `<ul class="xr">${[x]
+                  .flat()
+                  .map(
+                    x =>
+                      `<li><a href="${definePath(x)}">${escape(see.replace('{word}', x))}</a></li>`
+                  )
+                  .join('')}</ul>`
+              }
+            } else {
+              dd = escape(match.meaning ?? '?')
+            }
+            return `<dl>${dt}<dd>${dd}</dd></dl>`
+          })
+          .join('')
+      }
+
+      function lzhHtml(terms: LzhMatch[]) {
+        if (!terms.length) return '<ol><li>?</li></ol>'
+        return `<ol>${terms
+          .map(({ term, entry }) => {
+            const defs = [entry.d].flat().join('; ')
+            return `<li><b lang="lzh">${escape(term)}</b>${entry.p ? ` (${escape(entry.p)})` : ''} ${defs} ${defineLink(term)}</li>`
+          })
+          .join('')}</ol>`
+      }
+
+      /** Scrolls the word up out from under the sheet */
+      function keepInSight(word: Word) {
+        const rect = word.getBoundingClientRect()
+        if (rect.bottom <= innerHeight * (1 - SHEET) && rect.top >= 0) return
+        elementOf(word).scrollIntoView({
+          block: 'center',
+          behavior: reducedMotion.matches ? 'auto' : 'smooth',
+        })
+      }
+
+      /**
+       * Opens the sheet on the word at once, its answer following once the
+       * server has it. The nav stays, so a button keeps its focus from word to
+       * word
+       */
+      function open(word: string, lang: string) {
+        setHelp(false)
+        const section = popover.querySelector(':scope > div')!
+        section.setAttribute('aria-busy', 'true')
+        section.innerHTML = `<dfn lang="${lang}" translate="no">${escape(word)}</dfn>`
+        const book = popover.querySelector<HTMLAnchorElement>('nav > a')
+        if (book) {
+          book.href = definePath(word)
+          book.setAttribute(
+            'aria-label',
+            popover.dataset.full?.replace('{word}', word) ?? word
+          )
+        }
+        if (!popover.matches(':popover-open')) popover.showPopover()
+      }
+
+      /** The help in place of the answer, or the answer back */
+      function setHelp(shown: boolean) {
+        popover
+          .querySelector('[data-help]')
+          ?.setAttribute('aria-expanded', String(shown))
+        popover.querySelector(':scope > div')!.hidden = shown
+        popover.querySelector<HTMLElement>('#definition-help')!.hidden = !shown
+      }
+
+      async function show(word: Word) {
+        const search = ++latest
+        clearHighlight()
+        current = word
+        const query = queryOf(word)
+        const text = elementOf(word).closest(TEXT)
+        const lang = text?.parentElement?.getAttribute('lang') ?? ''
+        paint(word instanceof Range ? contextOf(word) : word)
+        open(word instanceof Range ? word.toString() : query, escape(lang))
+        keepInSight(word)
+
+        const busy = word instanceof Range ? text : word
+        busy?.setAttribute('aria-busy', 'true')
+        const answer = await lookUp(query)
+        busy?.removeAttribute('aria-busy')
+        if (search !== latest || !toggle.checked) return
+
+        const section = popover.querySelector(':scope > div')!
+        section.insertAdjacentHTML(
+          'beforeend',
+          !answer
+            ? `<p>${escape(popover.dataset.failed ?? '')}</p>`
+            : isLzh
+              ? lzhHtml(answer as LzhMatch[])
+              : paliHtml(query, answer as PaliMatch[], escape(lang))
+        )
+        section.removeAttribute('aria-busy')
+      }
+
+      function go(direction: number) {
+        const word = step(direction)
+        if (word) show(word)
+      }
+
+      // In the capture phase, so a tap on a word isn't also taken by listen as
+      // one to read from
+      main.addEventListener(
+        'click',
+        event => {
+          const target = event.target
+          if (!toggle.checked || !(target instanceof Element)) return
+          if (!target.closest(TEXT) || target.closest('a[href], button')) return
+          // Not a tap but the end of selecting text, which has to stay selectable
+          if (!getSelection()?.isCollapsed) return
+          const word = isLzh
+            ? charAt(event)
+            : target.closest<HTMLElement>('.word')
+          if (!word) return
+          event.preventDefault()
+          event.stopPropagation()
+          show(word)
         },
         true
       )
-    }
-    document.addEventListener(
-      'beforetoggle',
-      e => {
-        const p = e.target as HTMLElement
-        if (!keepOpen || (e as ToggleEvent).newState !== 'closed') return
-        if (p === rootMenuEl) return
-        const top = p.scrollTop
-        // Next frame, as it is still open during beforetoggle
-        requestAnimationFrame(() => {
-          if (p.matches(':popover-open')) return
-          p.showPopover()
-          p.scrollTop = top
-        })
-      },
-      true
-    )
 
-    // The element of visibleTextSpans the target is in, if any
-    function itemElementAt(target) {
-      // for segmented texts this will work
-      let element =
-        target && target.closest ? target.closest('span.text') : null
-      if (element) return element
+      main.addEventListener('pointerover', event => {
+        if (isLzh || !toggle.checked) return
+        const text = (event.target as Element).closest?.(TEXT)
+        if (text) wordsOf(text)
+      })
 
-      // for non-segmented texts, check if it's one of the visibleTextSpans
-      // ignore reference links
-      if (!target || !target.closest || target.closest('.ref')) return null
+      // Asked on press, as the click only comes once the button is back up. Not
+      // on touch, where a press is as likely the start of a scroll
+      main.addEventListener('pointerdown', event => {
+        if (event.pointerType === 'touch' || !toggle.checked) return
+        const word = isLzh
+          ? charAt(event)
+          : (event.target as Element).closest?.<HTMLElement>(`${TEXT} .word`)
+        if (word) lookUp(queryOf(word))
+      })
 
-      element = target
-      // Walk up the tree to find if we're inside a visibleTextSpan
-      while (element && !visibleTextSpans.includes(element)) {
-        element = element.parentElement
-        if (element === articleEl) return null
+      popover.addEventListener('click', event => {
+        const button = (event.target as Element).closest<HTMLElement>('button')
+        if (button?.hasAttribute('data-close')) popover.hidePopover()
+        else if (button?.hasAttribute('data-help'))
+          setHelp(button.getAttribute('aria-expanded') !== 'true')
+        else if (button?.dataset.step) go(Number(button.dataset.step))
+      })
+
+      // Before it hides, as that takes focus out of it
+      popover.addEventListener('beforetoggle', event => {
+        if ((event as ToggleEvent).newState !== 'closed') return
+        if (current && popover.contains(document.activeElement)) {
+          elementOf(current)
+            .closest<HTMLElement>(TEXT)
+            ?.focus({ preventScroll: true })
+        }
+        clearHighlight()
+        current = null
+        latest++
+      })
+
+      document.addEventListener('keydown', event => {
+        const target = event.target as Element
+        // A segment tabbed to
+        if (event.key === 'Enter' && target.matches?.(TEXT)) {
+          const word = toggle.checked && firstWord(target)
+          if (word) {
+            event.preventDefault()
+            show(word)
+            popover.focus({ preventScroll: true })
+          }
+          return
+        }
+        if (!popover.matches(':popover-open')) return
+        if (event.ctrlKey || event.metaKey || event.altKey) return
+        if (target.closest?.('input, textarea, select')) return
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+          event.preventDefault()
+          go(event.key === 'ArrowLeft' ? -1 : 1)
+        }
+        if (event.key === 'Tab') tabOut(event)
+      })
+
+      /**
+       * Out of either end of the sheet to the segments either side of the word,
+       * as if it came straight after it rather than at the end of the page
+       */
+      function tabOut(event: KeyboardEvent) {
+        if (!current || !popover.contains(document.activeElement)) return
+        const focusable = [
+          ...popover.querySelectorAll<HTMLElement>('a[href], button'),
+        ].filter(el => !el.closest('[hidden]'))
+        const edge = event.shiftKey
+          ? [popover, focusable[0]].includes(
+              document.activeElement as HTMLElement
+            )
+          : document.activeElement === focusable.at(-1)
+        if (!edge) return
+        const text = elementOf(current).closest<HTMLElement>(TEXT)
+        const index = [...texts].indexOf(text!)
+        const next = event.shiftKey ? text : texts[index + 1]
+        if (!next) return
+        event.preventDefault()
+        next.focus()
       }
-      return element
     }
+  </script>
+
+  <script>
+    import { icon } from '~/constants/heroicons'
 
     /**
-     * A non segmented paragraph holds several sentences, so the one under the
-     * pointer is found from where it is
+     * Text-to-Speech Player
+     *
+     * Provides speech synthesis controls for reading article content aloud.
+     * Features include play/pause/stop controls, navigation between segments,
+     * voice selection, pitch/rate adjustment, auto-scrolling, and click-to-jump.
+     *
+     * Handles both segmented text (via span.text elements) and non-segmented
+     * content by manually extracting visible text-containing elements, which are
+     * whole blocks and so get split into sentences with Intl.Segmenter.
+     *
+     * @requires SpeechSynthesis API
+     *
+     * @example
+     * // Access debug state
+     * window._scx_listen.getState()
+     *
+     * @example
+     * // What the last computeVisibleText() found, one item an utterance
+     * window._scx_listen.items()
+     *
+     * @example
+     * // Cancel all playback
+     * window._scx_listen.cancel()
      */
-    function indexAtPoint(element, ev) {
-      const first = visibleTextSpans.indexOf(element)
-      if (first < 0 || !visibleTextRanges[first]) return first
+    ;('use strict')
 
-      let node, offset
-      if (document.caretPositionFromPoint) {
-        const pos = document.caretPositionFromPoint(ev.clientX, ev.clientY)
-        node = pos?.offsetNode
-        offset = pos?.offset
-      } else if (document.caretRangeFromPoint) {
-        const range = document.caretRangeFromPoint(ev.clientX, ev.clientY)
-        node = range?.startContainer
-        offset = range?.startOffset
+    // Configurable constants
+    const TIMEOUT_MS = 60
+    const CLASS_HIGHLIGHT = 'tts-highlight'
+    const CLASS_CLICKABLE = 'tts-clickable'
+    const CLASS_SENTENCES = 'tts-sentences'
+    const HIGHLIGHT_NAME = 'tts-current'
+    const HOVER_HIGHLIGHT_NAME = 'tts-hover'
+    const WORD_HIGHLIGHT_NAME = 'tts-word'
+    const ICON_PLAY = icon('play', 'mini')
+    const ICON_PAUSE = icon('pause', 'mini')
+    const ICON_RESUME = icon('play', 'mini')
+
+    const synth = window.speechSynthesis
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
+
+    // The Custom Highlight API draws a range without touching the DOM. Without
+    // it the whole element a sentence is in gets the class instead
+    const canHighlightRanges =
+      typeof CSS !== 'undefined' &&
+      !!CSS.highlights &&
+      typeof Highlight === 'function'
+
+    // state
+    let voices = []
+    let visibleTextSpans = []
+    let visibleTextContent = []
+    // The sentence each item covers in non segmented texts, null in segmented ones
+    let visibleTextRanges = []
+    // Where each character of a sentence is in the DOM, for the word being
+    // read, null in segmented texts
+    let visibleTextPoints = []
+    // The same for the segment being read, made on its first word
+    let segmentPoints = null
+    let currentIndex = 0
+    let isCancelled = false
+    let isPlaying = false // denotes an active session (playing or paused)
+    // Kept here rather than read off synth.paused, as browsers disagree on it
+    // after a cancel - Chrome stays paused, Safari and Firefox don't
+    let isPaused = false
+    let currentUtterance = null
+    let sessionId = 0
+
+    // DOM
+    const menuButton = document.getElementById('listen-menu-button')
+    const rootMenuEl = document.getElementById('listen-menu')
+    const LABEL_PLAY = rootMenuEl.dataset.labelPlay
+    const LABEL_PAUSE = rootMenuEl.dataset.labelPause
+    const LABEL_RESUME = LABEL_PLAY
+    const LABEL_DEFAULT = rootMenuEl.dataset.labelDefault
+    const LABEL_ONLINE = rootMenuEl.dataset.labelOnline
+    const voiceSelect = document.getElementById('voice-select')
+    const noVoicesEl = document.getElementById('no-voices')
+    const pitch = document.getElementById('pitch')
+    const pitchValue = document.getElementById('pitch-value')
+    const rate = document.getElementById('rate')
+    const rateValue = document.getElementById('rate-value')
+
+    const prevBtn = document.getElementById('prev')
+    const playPauseBtn = document.getElementById('playpause')
+    const playPauseBtnIcon = playPauseBtn.getElementsByTagName('span')[0]
+    // The inner span, so setting its text leaves the key hint beside it
+    const playPauseBtnLabel = playPauseBtn.querySelector('span span')
+    const nextBtn = document.getElementById('next')
+    const stopBtn = document.getElementById('stop')
+    const autoScrollToggle = document.getElementById('auto-scroll')
+
+    const rootFirst = document.getElementById('rooter-first')
+
+    // basic sanity
+    if (!rootMenuEl) {
+      console.warn('listen.js: required controls missing; aborting init.')
+    } else {
+      // enable all the controls (they are disabled by default to show fallback text if user has JS turned off)
+      rootMenuEl.style.maxWidth = '100vw'
+      // A class, not inline styles, so CSS can still hide the rows while playing
+      rootMenuEl.classList.add('scripted')
+
+      // A button, as a <details> would keep it beside the select
+      const voiceInfoButton = document.getElementById('voice-info-button')
+      const voiceInfo = document.getElementById('voice-info')
+      voiceInfoButton?.addEventListener('click', () => {
+        if (!voiceInfo) return
+        voiceInfo.hidden = !voiceInfo.hidden
+        voiceInfoButton.setAttribute('aria-expanded', String(!voiceInfo.hidden))
+      })
+
+      const articleEl = document.querySelector('main > article, main > section')
+
+      const textLang =
+        rootMenuEl?.dataset?.textLang ||
+        document.querySelector('main > article')?.lang ||
+        document.documentElement.lang ||
+        undefined
+      let sentenceSegmenter = null
+      let wordSegmenter = null
+      try {
+        sentenceSegmenter = new Intl.Segmenter(textLang, {
+          granularity: 'sentence',
+        })
+        wordSegmenter = new Intl.Segmenter(textLang, { granularity: 'word' })
+      } catch (e) {}
+
+      // A block can be a whole <ol> or a <div> wrapping the lot, so the units
+      // inside it have to be told apart - two list items are not one sentence
+      const BLOCK_TAGS = new Set([
+        'ADDRESS',
+        'ARTICLE',
+        'ASIDE',
+        'BLOCKQUOTE',
+        'CAPTION',
+        'DD',
+        'DIV',
+        'DL',
+        'DT',
+        'FIELDSET',
+        'FIGCAPTION',
+        'FIGURE',
+        'FOOTER',
+        'FORM',
+        'H1',
+        'H2',
+        'H3',
+        'H4',
+        'H5',
+        'H6',
+        'HEADER',
+        'LI',
+        'MAIN',
+        'NAV',
+        'OL',
+        'P',
+        'PRE',
+        'SECTION',
+        'TABLE',
+        'TBODY',
+        'TD',
+        'TFOOT',
+        'TH',
+        'THEAD',
+        'TR',
+        'UL',
+      ])
+
+      /** The nearest block level element a text node sits in, within the block */
+      function blockAncestor(element, root) {
+        let el = element
+        while (el && el !== root) {
+          if (BLOCK_TAGS.has(el.tagName)) return el
+          el = el.parentElement
+        }
+        return root
       }
-      if (!node) return first
 
-      let last = first
-      for (let i = first; visibleTextSpans[i] === element; i++) {
-        last = i
-        try {
-          // the first sentence not wholly before the click, so a click between
-          // two picks the next
-          if (visibleTextRanges[i].comparePoint(node, offset) <= 0) return i
-        } catch (e) {
-          return first
+      /**
+       * The sentences of a block of non segmented text, each with the Range it
+       * covers so it can be highlighted. Sentences run across inline elements
+       * (ie a PTS ref mid sentence), so it's done on the text nodes, not the
+       * elements
+       */
+      function splitIntoSentences(block) {
+        const nodes = []
+        let text = ''
+        let lastOwner = null
+        const walker = document.createTreeWalker(
+          block,
+          NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT
+        )
+        while (walker.nextNode()) {
+          const node = walker.currentNode
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            // A line break ends a line of verse, which rarely has punctuation of
+            // its own to break on
+            if (node.tagName === 'BR' && text && !text.endsWith('\n')) {
+              text += '\n'
+            }
+            continue
+          }
+          const parent = node.parentElement
+          // skip reference links and anything hidden
+          if (!parent || parent.closest('.ref') || parent.offsetParent === null)
+            continue
+          // A newline is a mandatory sentence break, so each list item, cell or
+          // nested block ends up its own unit instead of running into the next -
+          // they often have no punctuation to break on. It belongs to no text
+          // node, and trimming the segment takes it off again
+          const owner = blockAncestor(parent, block)
+          if (lastOwner && owner !== lastOwner && !text.endsWith('\n')) {
+            text += '\n'
+          }
+          lastOwner = owner
+          nodes.push({ node, start: text.length })
+          text += node.data
+        }
+
+        const pointAt = (offset, isEnd) => pointIn(nodes, offset, isEnd)
+
+        let pieces
+        if (sentenceSegmenter) {
+          pieces = Array.from(sentenceSegmenter.segment(text), s => [
+            s.index,
+            s.segment,
+          ])
+        } else {
+          // Without a segmenter a block is read whole, as it used to be, but the
+          // blocks inside it are still worth keeping apart
+          pieces = []
+          let at = 0
+          for (const part of text.split('\n')) {
+            pieces.push([at, part])
+            at += part.length + 1
+          }
+        }
+
+        return pieces.flatMap(([index, segment]) => {
+          const trimmed = segment.trim()
+          if (!trimmed) return []
+          const start = index + segment.length - segment.trimStart().length
+          const end = index + segment.trimEnd().length
+          const startPoint = pointAt(start, false)
+          const endPoint = pointAt(end, true)
+          if (!startPoint || !endPoint) return []
+          const range = document.createRange()
+          range.setStart(...startPoint)
+          range.setEnd(...endPoint)
+          const at = (offset, isEnd) => pointAt(start + offset, isEnd)
+          return [{ text: trimmed.replace(/\n/g, ' '), range, at }]
+        })
+      }
+
+      /** The text node and offset in it of an offset into their joined text */
+      function pointIn(nodes, offset, isEnd) {
+        const found = nodes.find(({ node, start }) =>
+          isEnd
+            ? offset <= start + node.data.length
+            : offset < start + node.data.length
+        )
+        return found ? [found.node, offset - found.start] : null
+      }
+
+      /**
+       * The same for a segment, whose text is read without its newlines, so
+       * each character the voice gets is mapped to where it is
+       */
+      function spanPoints(span) {
+        const points = []
+        const walker = document.createTreeWalker(span, NodeFilter.SHOW_TEXT)
+        while (walker.nextNode()) {
+          const node = walker.currentNode
+          for (let i = 0; i < node.data.length; i++) {
+            if (node.data[i] !== '\n') points.push([node, i])
+          }
+        }
+        return (offset, isEnd) => {
+          if (!isEnd) return points[offset] ?? null
+          const last = points[offset - 1]
+          return last ? [last[0], last[1] + 1] : null
         }
       }
-      return last
-    }
 
-    /**
-     * Hovering a non segmented paragraph shows which sentence a click would
-     * jump to, as segmented texts do with .tts-clickable:hover. The hover is
-     * drawn on the sentence's Range, as it has no element of its own
-     */
-    let hoverFrame = null
-    function clearHover() {
-      if (canHighlightRanges) CSS.highlights.delete(HOVER_HIGHLIGHT_NAME)
-    }
-    if (articleEl && canHighlightRanges) {
-      articleEl.addEventListener('mousemove', ev => {
-        if (hoverFrame) return
-        hoverFrame = requestAnimationFrame(() => {
-          hoverFrame = null
-          const element = isPlaying ? itemElementAt(ev.target) : null
-          const range = element && visibleTextRanges[indexAtPoint(element, ev)]
-          if (range) {
-            CSS.highlights.set(HOVER_HIGHLIGHT_NAME, new Highlight(range))
-          } else {
-            clearHover()
+      function computeVisibleText() {
+        // for segmented texts
+        visibleTextSpans = Array.from(
+          document.querySelectorAll(
+            'main > article span.text, main > section span.text'
+          )
+        ).filter(s => s.offsetParent !== null && s.textContent)
+
+        visibleTextContent = visibleTextSpans?.map(s =>
+          s.textContent.replace(/\n/g, '')
+        )
+        // A segment is already one unit, so there is nothing to split
+        visibleTextRanges = visibleTextSpans.map(() => null)
+        visibleTextPoints = visibleTextSpans.map(() => null)
+
+        // If rooter-first is checked, reorder spans within each segment to match CSS grid display order
+        if (rootFirst && rootFirst.checked && visibleTextSpans.length > 0) {
+          const segments = new Map()
+
+          // Group spans by their parent segment
+          visibleTextSpans.forEach((span, index) => {
+            const segment = span.closest('.segment')
+            if (segment) {
+              if (!segments.has(segment)) {
+                segments.set(segment, [])
+              }
+              segments.get(segment).push({ span, index })
+            }
+          })
+
+          // For each segment, if it has both translation and root text, swap their order
+          segments.forEach((items, segment) => {
+            if (items.length >= 2) {
+              const translationItem = items.find(item =>
+                item.span.closest('.translation')
+              )
+              const rootItem = items.find(item => item.span.closest('.root'))
+
+              // If both exist, swap them in the arrays
+              if (translationItem && rootItem) {
+                const tempSpan = visibleTextSpans[translationItem.index]
+                const tempContent = visibleTextContent[translationItem.index]
+
+                visibleTextSpans[translationItem.index] =
+                  visibleTextSpans[rootItem.index]
+                visibleTextContent[translationItem.index] =
+                  visibleTextContent[rootItem.index]
+
+                visibleTextSpans[rootItem.index] = tempSpan
+                visibleTextContent[rootItem.index] = tempContent
+              }
+            }
+          })
+        }
+
+        // fallback for messy DOM in non segmented texts
+        if (!visibleTextSpans.length || !visibleTextContent.length) {
+          const textContainingElements = [
+            'div',
+            'span',
+            'p',
+            'blockquote',
+            'pre',
+            'address',
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+            'ul',
+            'ol',
+            'li',
+            'dl',
+            'dt',
+            'dd',
+            'a',
+            'abbr',
+            'b',
+            'strong',
+            'i',
+            'em',
+            'mark',
+            'small',
+            'del',
+            'ins',
+            'sub',
+            'sup',
+            'code',
+            'kbd',
+            'samp',
+            'var',
+            'cite',
+            'dfn',
+            'q',
+            's',
+            'u',
+            'time',
+            'data',
+            'bdi',
+            'bdo',
+            'ruby',
+            'rt',
+            'rp',
+            'table',
+            'caption',
+            'thead',
+            'tbody',
+            'tfoot',
+            'tr',
+            'th',
+            'td',
+            'colgroup',
+            'col',
+            'form',
+            'label',
+            'button',
+          ]
+          const selector = textContainingElements
+            .map(e => `main > article ${e}`)
+            .join(', ')
+          const allVisibleElements = Array.from(
+            document.querySelectorAll(selector)
+          ).filter(s => s.offsetParent !== null && s.textContent)
+
+          const blocks = allVisibleElements.filter(el => {
+            // avoid duplicates
+            return !allVisibleElements.some(
+              other => other !== el && other.contains(el)
+            )
+          })
+
+          // Each block is a whole paragraph or more, so it's split into
+          // sentences to be read and skipped one at a time
+          visibleTextSpans = []
+          visibleTextContent = []
+          visibleTextRanges = []
+          visibleTextPoints = []
+          blocks.forEach(block => {
+            splitIntoSentences(block).forEach(({ text, range, at }) => {
+              visibleTextSpans.push(block)
+              visibleTextContent.push(text)
+              visibleTextRanges.push(range)
+              visibleTextPoints.push(at)
+            })
+          })
+        }
+      }
+
+      // Changed in place, as Safari doesn't repaint what a replaced one covered
+      const itemHighlight = canHighlightRanges ? new Highlight() : null
+      if (itemHighlight) {
+        // above the hover
+        itemHighlight.priority = 1
+        CSS.highlights.set(HIGHLIGHT_NAME, itemHighlight)
+      }
+      const wordHighlight = canHighlightRanges ? new Highlight() : null
+      if (wordHighlight) {
+        // above the sentence
+        wordHighlight.priority = 2
+        CSS.highlights.set(WORD_HIGHLIGHT_NAME, wordHighlight)
+      }
+
+      /** Chrome's Google voices don't say which word, so keep the sentence */
+      function highlightWord(index, charIndex, charLength) {
+        if (!wordHighlight) return
+        const text = visibleTextContent[index]
+        if (!text || !(charIndex >= 0) || charIndex >= text.length) return
+        // Safari gives no length, so it's the word the index is in
+        let end = charIndex + (charLength || 0)
+        if (!charLength) {
+          const word = wordSegmenter?.segment(text).containing(charIndex)
+          if (!word) return
+          end = word.index + word.segment.length
+        }
+        let at = visibleTextPoints[index]
+        if (!at) {
+          if (segmentPoints?.index !== index) {
+            segmentPoints = { index, at: spanPoints(visibleTextSpans[index]) }
           }
+          at = segmentPoints.at
+        }
+        const startPoint = at(charIndex, false)
+        const endPoint = at(Math.min(end, text.length), true)
+        if (!startPoint || !endPoint) return
+        try {
+          const range = document.createRange()
+          range.setStart(...startPoint)
+          range.setEnd(...endPoint)
+          wordHighlight.clear()
+          wordHighlight.add(range)
+        } catch (e) {}
+      }
+
+      // Highlights just the sentence where the browser can, otherwise the whole
+      // element it's in
+      function highlightItem(index) {
+        const range = visibleTextRanges[index]
+        if (range && itemHighlight) {
+          itemHighlight.clear()
+          itemHighlight.add(range)
+        } else {
+          visibleTextSpans[index]?.classList.add(CLASS_HIGHLIGHT)
+        }
+      }
+
+      function clearHighlight() {
+        if (canHighlightRanges) {
+          itemHighlight.clear()
+          wordHighlight.clear()
+        }
+        segmentPoints = null
+        visibleTextSpans.forEach(s => s.classList.remove(CLASS_HIGHLIGHT))
+      }
+
+      function updateClickableSpans() {
+        if (!visibleTextSpans || !visibleTextSpans.length) return
+        if (isPlaying) {
+          visibleTextSpans.forEach((s, i) => {
+            s.classList.add(CLASS_CLICKABLE)
+            // its sentences get the hover instead of the whole element
+            if (visibleTextRanges[i] && canHighlightRanges) {
+              s.classList.add(CLASS_SENTENCES)
+            }
+          })
+        } else {
+          visibleTextSpans.forEach(s =>
+            s.classList.remove(CLASS_CLICKABLE, CLASS_SENTENCES)
+          )
+          clearHover()
+        }
+      }
+
+      function setNavControlsEnabled(enabled) {
+        if (prevBtn) prevBtn.disabled = !enabled
+        if (nextBtn) nextBtn.disabled = !enabled
+        if (stopBtn) stopBtn.disabled = !enabled
+      }
+
+      function closeMenuOnTouch() {
+        if (!matchMedia('(hover: none)').matches) return
+        // Older browsers have no popovers, and show the menu on hover instead
+        if (rootMenuEl.matches?.(':popover-open')) rootMenuEl.hidePopover()
+      }
+
+      // The controls' top, not the menu's, as the rest closes once one is used
+      function readingMiddle() {
+        const bar = rootMenuEl.closest('fieldset')
+        if (!bar || getComputedStyle(bar).position !== 'fixed') {
+          return window.innerHeight / 2
+        }
+        const controls = rootMenuEl
+          .querySelector('.tts-controls')
+          ?.getBoundingClientRect()
+        const bottom = controls?.height
+          ? controls.top
+          : bar.getBoundingClientRect().top
+        return bottom / 2
+      }
+
+      function ensureVisible(index) {
+        if (!autoScrollToggle) return
+        if (!autoScrollToggle.checked) return
+        const el = visibleTextSpans[index]
+        if (!el) return
+        // a sentence is centred itself, as its paragraph can be taller than the
+        // screen
+        const range = visibleTextRanges[index]?.getBoundingClientRect()
+        const rect = range?.height ? range : el.getBoundingClientRect()
+        window.scrollBy({
+          top: rect.top + rect.height / 2 - readingMiddle(),
+          behavior: reducedMotion.matches ? 'auto' : 'smooth',
         })
-      })
-      articleEl.addEventListener('mouseleave', clearHover)
-    }
+      }
 
-    // allow clicking any visibleTextSpans to jump/start speaking from there
-    if (articleEl)
-      articleEl.addEventListener('click', ev => {
-        // Only allow click-to-jump once playback has already started
-        if (!isPlaying) return
+      function updatePlayPauseLabel() {
+        if (isPaused) {
+          playPauseBtnLabel.textContent = LABEL_RESUME
+          playPauseBtnIcon.innerHTML = ICON_RESUME
+          return
+        }
+        if (isPlaying) {
+          playPauseBtnLabel.textContent = LABEL_PAUSE
+          playPauseBtnIcon.innerHTML = ICON_PAUSE
+          return
+        }
+        playPauseBtnLabel.textContent = LABEL_PLAY
+        playPauseBtnIcon.innerHTML = ICON_PLAY
+      }
 
-        const clickedElement = itemElementAt(ev.target)
-        if (!clickedElement) return
+      // Text languages whose voices go by another code: Literary Chinese,
+      // Classical Tibetan, and Norwegian, as Bokmål
+      const VOICE_LANGS = {
+        lzh: 'zh',
+        xct: 'bo',
+        no: 'nb',
+      }
+      // Where a language's regions are not just accents. zh-HK voices speak
+      // Cantonese, so Mandarin first, the mainland's and then Taiwan's
+      const VOICE_REGIONS = { zh: ['zh-cn', 'zh-tw'] }
+      // Android writes en_US for en-US
+      const tag = lang => (lang || '').replace('_', '-').toLowerCase()
 
-        // -1 for text shown since the session started, which isn't read
-        const idx = indexAtPoint(clickedElement, ev)
-        if (idx < 0) return
+      function populateVoiceList() {
+        voices =
+          typeof synth?.getVoices === 'function'
+            ? synth.getVoices().slice()
+            : []
 
-        // cancel current session/utterances and start from clicked index
+        // Group voices by language
+        const byLang = new Map()
+        for (const v of voices) {
+          const lang = v.lang || 'unknown'
+          if (!byLang.has(lang)) byLang.set(lang, [])
+          byLang.get(lang).push(v)
+        }
+
+        // Older browsers can't name them, so get the code
+        const uiLang = document.documentElement.lang || undefined
+        let langNames = null
+        try {
+          langNames = new Intl.DisplayNames(uiLang, {
+            type: 'language',
+            languageDisplay: 'standard',
+          })
+        } catch (e) {}
+        const langLabel = lang => {
+          try {
+            return langNames?.of(lang.replace('_', '-')) ?? lang
+          } catch (e) {
+            return lang
+          }
+        }
+        const langs = Array.from(byLang.keys()).sort((a, b) =>
+          langLabel(a).localeCompare(langLabel(b), uiLang)
+        )
+
+        // Sort voices within each language by name
+        for (const [, list] of byLang) {
+          list.sort((a, b) => {
+            const an = (a.name || '').toUpperCase()
+            const bn = (b.name || '').toUpperCase()
+            if (an < bn) return -1
+            if (an === bn) return 0
+            return 1
+          })
+        }
+
+        // Determine preferred voice to select: saved, then text language, then
+        // default voice, then browser lang
+        const defaultVoice = voices.find(v => v.default)
+        const textLang = rootMenuEl?.dataset?.textLang ?? ''
+        const browserLang = (
+          navigator.language ||
+          navigator.userLanguage ||
+          ''
+        ).toString()
+        const primaryBrowserLang = browserLang.split('-')[0]
+        // Saved by the prefs script, while the device still has it
+        const savedName = voiceSelect.dataset.saved
+        let suitableVoiceName = voices.some(v => v.name === savedName)
+          ? savedName
+          : null
+
+        // Then try to match text language. Voices go by the two-letter code
+        // where there is one, and a voice for the modern language reads the
+        // classical one, as zh-CN does Taisho Chinese. Within the language:
+        // 1. A voice in a language the browser asks for, in the reader's order
+        //    of preference (navigator.languages). So a UK reader gets en-GB, a
+        //    Brazilian reader pt-BR, and a Taiwanese reader zh-TW on Taisho
+        //    texts
+        // 2. The device's default voice, if it's in that language
+        // 3. The main region from VOICE_REGIONS, only Chinese for now
+        // 4. Any voice in the language
+        if (!suitableVoiceName && textLang) {
+          const speechLang = VOICE_LANGS[textLang] ?? textLang
+          const textLangVoices = voices.filter(
+            v => tag(v.lang).split('-')[0] === speechLang
+          )
+          const inRegions = regions =>
+            regions
+              .map(r => textLangVoices.find(v => tag(v.lang) === r))
+              .find(Boolean)
+          const voice =
+            inRegions((navigator.languages ?? [browserLang]).map(tag)) ??
+            textLangVoices.find(v => v.default) ??
+            inRegions(VOICE_REGIONS[speechLang] ?? []) ??
+            textLangVoices[0]
+          suitableVoiceName = voice?.name ?? null
+        }
+
+        // Fall back to default voice
+        if (!suitableVoiceName && defaultVoice) {
+          suitableVoiceName = defaultVoice.name
+        }
+
+        // Fall back to browser language
+        if (!suitableVoiceName && browserLang) {
+          // find first voice matching full lang, then primary subtag
+          let found = voices.find(v => v.lang === browserLang)
+          if (!found)
+            found = voices.find(
+              v => v.lang && v.lang.startsWith(primaryBrowserLang)
+            )
+          if (found) suitableVoiceName = found.name
+        }
+
+        // Build select with optgroups per language
+        voiceSelect.innerHTML = ''
+        for (const lang of langs) {
+          const group = document.createElement('optgroup')
+          group.label = langLabel(lang)
+          const list = byLang.get(lang) || []
+          for (const v of list) {
+            const opt = document.createElement('option')
+            // Online voices send the text away to be read, as Chrome's Google
+            // ones and Edge's Natural ones do, so they're marked as such
+            opt.textContent = `${v.name}${v.default ? ` -- ${LABEL_DEFAULT}` : ''}${v.localService === false ? ` -- ${LABEL_ONLINE}` : ''}`
+            opt.setAttribute('data-name', v.name)
+            opt.setAttribute('data-lang', v.lang)
+            group.appendChild(opt)
+          }
+          voiceSelect.appendChild(group)
+        }
+
+        // Select initial option if present, otherwise preserve previous selection or pick first
+        let selIndex = 0
+        if (suitableVoiceName) {
+          for (let i = 0; i < voiceSelect.options.length; i++) {
+            if (
+              voiceSelect.options[i].getAttribute('data-name') ===
+              suitableVoiceName
+            ) {
+              selIndex = i
+              break
+            }
+          }
+        } else {
+          selIndex =
+            voiceSelect.selectedIndex >= 0 ? voiceSelect.selectedIndex : 0
+        }
+        voiceSelect.selectedIndex = Math.min(
+          selIndex,
+          Math.max(0, voiceSelect.options.length - 1)
+        )
+
+        // No voices means the device has none installed, not that anything here
+        // is broken. Checked on every fill, as Chrome hands back none at first
+        // and the rest a moment later
+        const hasVoices = voices.length > 0
+        if (noVoicesEl) noVoicesEl.hidden = hasVoices
+        // What ONLINE means, only where there's a voice marked so
+        const voiceInfoOnline = document.getElementById('voice-info-online')
+        if (voiceInfoOnline)
+          voiceInfoOnline.hidden = !voices.some(v => v.localService === false)
+        voiceSelect.disabled = !hasVoices
+        playPauseBtn.disabled = !hasVoices
+      }
+      populateVoiceList()
+      if (typeof synth !== 'undefined' && synth.onvoiceschanged !== undefined) {
+        synth.onvoiceschanged = populateVoiceList
+      }
+
+      const EM_DASH = '—'
+      const SPACE_OR_DASH = /[\s—]/
+
+      /**
+       * The text as the voice gets it, with spaces round a dash between words.
+       * Voices take "sabbath—the" for one word, and say when it starts but not
+       * when "the" does. Spaced, they still pause at it. Where each character
+       * came from is kept, for the word being read
+       */
+      function speakable(text) {
+        let spoken = ''
+        const from = []
+        for (let i = 0; i < text.length; i++) {
+          const prev = text[i - 1]
+          const next = text[i + 1]
+          const isDash = text[i] === EM_DASH
+          // a run of dashes, as in Chinese, is spaced as one
+          if (isDash && prev && /\S/.test(prev) && prev !== EM_DASH) {
+            spoken += ' '
+            from.push(i)
+          }
+          spoken += text[i]
+          from.push(i)
+          if (isDash && next && /\S/.test(next) && next !== EM_DASH) {
+            spoken += ' '
+            from.push(i + 1)
+          }
+        }
+        return { spoken, from }
+      }
+
+      // Speak chain with session protection
+      function speakNext() {
+        const mySession = sessionId
+        if (currentIndex >= visibleTextContent.length) {
+          finishPlayback()
+          return
+        }
+        const text = visibleTextContent[currentIndex]
+        if (!text || isCancelled) {
+          finishPlayback()
+          return
+        }
+
+        const { spoken, from } = speakable(text)
+        const utter = new SpeechSynthesisUtterance(spoken)
+        utter._session = mySession
+        currentUtterance = utter
+
+        utter.onstart = () => {
+          if (utter._session !== sessionId) return
+          highlightItem(currentIndex)
+          ensureVisible(currentIndex)
+          // immediate label update when speech starts
+          updatePlayPauseLabel()
+        }
+
+        utter.onboundary = ev => {
+          if (utter._session !== sessionId || ev.name !== 'word') return
+          let start = ev.charIndex
+          // Safari gives no length, so highlightWord finds the word itself
+          let end = start + (ev.charLength || 1)
+          // Some voices take the dash, or the space by it, in with a word
+          while (start < end && SPACE_OR_DASH.test(spoken[start])) start++
+          while (end > start && SPACE_OR_DASH.test(spoken[end - 1])) end--
+          // the dash's own
+          if (start === end) return
+          const length = ev.charLength ? from[end - 1] + 1 - from[start] : 0
+          highlightWord(currentIndex, from[start], length)
+        }
+
+        utter.onend = () => {
+          if (utter._session !== sessionId) return
+          clearHighlight()
+          currentUtterance = null
+          if (isCancelled) {
+            finishPlayback()
+            return
+          }
+          currentIndex += 1
+          // If paused between utterances, don't auto-advance
+          if (isPaused) {
+            updatePlayPauseLabel()
+            return
+          }
+          speakNext()
+        }
+
+        utter.onerror = ev => {
+          if (utter._session !== sessionId) return
+          console.error('SpeechSynthesisUtterance error', ev)
+          clearHighlight()
+          currentUtterance = null
+          currentIndex += 1
+          if (!isCancelled) speakNext()
+        }
+
+        // set voice
+        const selected =
+          voiceSelect.selectedOptions && voiceSelect.selectedOptions[0]
+            ? voiceSelect.selectedOptions[0].getAttribute('data-name')
+            : null
+        if (selected) {
+          const v = voices.find(x => x.name === selected)
+          if (v) utter.voice = v
+        }
+        utter.pitch = pitch ? Number(pitch.value) : 1
+        utter.rate = rate ? Number(rate.value) : 1
+
+        try {
+          synth.speak(utter)
+        } catch (err) {
+          console.error('synth.speak threw', err)
+        }
+      }
+
+      // Controls
+      function startSessionFrom(index = 0) {
+        if (!visibleTextContent.length || !visibleTextSpans.length) return
+        sessionId += 1
+        isCancelled = false
+        isPlaying = true
+        isPaused = false
+        currentIndex = Math.max(
+          0,
+          Math.min(index, visibleTextContent.length - 1)
+        )
+        playPauseBtnLabel.textContent = LABEL_PAUSE
+        playPauseBtnIcon.innerHTML = ICON_PAUSE
+        setNavControlsEnabled(true)
+        updateClickableSpans()
+        speakNext()
+      }
+
+      // Chrome stays paused through a cancel, which would hold back whatever is
+      // spoken next, so it's let go of here
+      function cancelSpeech() {
+        try {
+          synth.cancel()
+          if (synth.paused) synth.resume()
+        } catch (e) {}
+      }
+
+      function pauseSession() {
+        if (!isPlaying || isPaused) return
+        isPaused = true
+        try {
+          synth.pause()
+        } catch (err) {
+          console.error('pause failed', err)
+        }
+        updatePlayPauseLabel()
+      }
+
+      function resumeSession() {
+        if (!isPaused) return
+        isPaused = false
+        try {
+          synth.resume()
+        } catch (err) {
+          console.error('resume failed', err)
+        }
+        // Skipped or ended while paused, so there's nothing to resume and the
+        // new item is read from its start
+        if (!currentUtterance) speakNext()
+        updatePlayPauseLabel()
+      }
+
+      // While paused this only moves the highlight, to be read from on resume
+      function skipTo(index) {
+        if (!visibleTextContent.length) return
+        sessionId += 1
+        const mySession = sessionId
+        isCancelled = true
+        cancelSpeech()
+        currentUtterance = null
+        clearHighlight()
+        // set now, so a key held down or pressed again goes on from here
+        currentIndex = index
+        if (isPaused) {
+          isCancelled = false
+          highlightItem(currentIndex)
+          ensureVisible(currentIndex)
+          return
+        }
+        setTimeout(() => {
+          if (mySession !== sessionId) return
+          isCancelled = false
+          speakNext()
+        }, TIMEOUT_MS)
+      }
+
+      function prevSpan() {
+        skipTo(Math.max(0, currentIndex - 1))
+      }
+
+      function nextSpan() {
+        skipTo(Math.min(visibleTextContent.length - 1, currentIndex + 1))
+      }
+
+      function finishPlayback() {
+        sessionId += 1
+        clearHighlight()
+        visibleTextSpans.forEach(s =>
+          s.classList.remove(CLASS_CLICKABLE, CLASS_SENTENCES)
+        )
+        isPlaying = false
+        isPaused = false
+        currentUtterance = null
+        currentIndex = 0
+        playPauseBtnLabel.textContent = LABEL_PLAY
+        playPauseBtnIcon.innerHTML = ICON_PLAY
+        setNavControlsEnabled(false)
+        updateClickableSpans()
+      }
+
+      function stopSession() {
+        // Cancel any ongoing speech and reset UI/state.
         sessionId += 1
         isCancelled = true
         cancelSpeech()
         clearHighlight()
+        currentUtterance = null
+        isPlaying = false
+        isPaused = false
+        currentIndex = 0
+        playPauseBtnLabel.textContent = LABEL_PLAY
+        playPauseBtnIcon.innerHTML = ICON_PLAY
+        setNavControlsEnabled(false)
+        updateClickableSpans()
+      }
 
-        setTimeout(() => {
-          isCancelled = false
-          // reuse existing start logic to initialize state and begin speaking
-          startSessionFrom(idx)
-        }, TIMEOUT_MS)
-      })
-
-    if (pitch) {
-      pitchValue.textContent = pitch.valueAsNumber.toFixed(1)
-      pitch.addEventListener(
-        'change',
-        () => (pitchValue.textContent = pitch.valueAsNumber.toFixed(1))
-      )
-    }
-    if (rate) {
-      rateValue.textContent = rate.valueAsNumber.toFixed(1)
-      rate.addEventListener(
-        'change',
-        () => (rateValue.textContent = rate.valueAsNumber.toFixed(1))
-      )
-    }
-
-    // initial nav state
-    setNavControlsEnabled(false)
-
-    // debug helper
-    window._scx_listen = {
-      getState() {
-        return {
-          isPlaying,
-          isCancelled,
-          currentIndex,
-          sessionId,
-          isPaused,
-          paused: synth.paused,
-          speaking: synth.speaking,
+      /**
+       * Where a fresh start reads from - the item in the middle of the screen,
+       * so it goes on from wherever the reader has scrolled to, or the first
+       * one while the start of the text is still on screen
+       */
+      function startIndex() {
+        const middle = readingMiddle()
+        let closest = 0
+        let closestDistance = Infinity
+        let seenFirst = false
+        for (let i = 0; i < visibleTextSpans.length; i++) {
+          const rect = (
+            visibleTextRanges[i] || visibleTextSpans[i]
+          ).getBoundingClientRect()
+          if (!rect.height) continue
+          if (!seenFirst) {
+            seenFirst = true
+            if (rect.bottom > 0) return 0
+          }
+          // the first in reading order, as side by side texts put two items at
+          // the same height
+          if (rect.top <= middle && rect.bottom >= middle) return i
+          const distance = Math.min(
+            Math.abs(rect.top - middle),
+            Math.abs(rect.bottom - middle)
+          )
+          if (distance < closestDistance) {
+            closest = i
+            closestDistance = distance
+          }
+          // everything after is further down
+          if (rect.top > middle) break
         }
-      },
-      items() {
-        return visibleTextContent.slice()
-      },
-      cancel() {
-        sessionId += 1
-        isCancelled = true
-        try {
-          synth.cancel()
-        } catch (e) {}
-      },
+        return closest
+      }
+
+      // single button behavior
+      function togglePlayPause() {
+        if (isPaused) return resumeSession()
+        if (isPlaying) return pauseSession()
+        // What's visible now is what the session reads, whatever the view does
+        // after
+        computeVisibleText()
+        startSessionFrom(startIndex())
+      }
+
+      // wire listeners
+      if (prevBtn) prevBtn.addEventListener('click', prevSpan)
+      playPauseBtn.addEventListener('click', togglePlayPause)
+      if (nextBtn) nextBtn.addEventListener('click', nextSpan)
+      if (stopBtn) stopBtn.addEventListener('click', stopSession)
+      const controlsEl = rootMenuEl.querySelector('.tts-controls')
+      controlsEl?.addEventListener('click', closeMenuOnTouch)
+
+      if (menuButton && 'IntersectionObserver' in window) {
+        new IntersectionObserver(([entry]) =>
+          rootMenuEl.classList.toggle('detached', !entry.isIntersecting)
+        ).observe(menuButton)
+      }
+
+      // The controls sit outside the open menu, so a tap there light dismisses it
+      // This disables that behaviour and can't be done in CSS
+      let keepOpen = false
+      controlsEl?.addEventListener('pointerdown', () => {
+        keepOpen = matchMedia('(hover: none)').matches
+      })
+      controlsEl?.addEventListener('click', () => (keepOpen = false))
+      for (const type of ['pointerdown', 'keydown'] as const) {
+        document.addEventListener(
+          type,
+          e => {
+            if (!controlsEl?.contains(e.target as Node)) keepOpen = false
+          },
+          true
+        )
+      }
+      document.addEventListener(
+        'beforetoggle',
+        e => {
+          const p = e.target as HTMLElement
+          if (!keepOpen || (e as ToggleEvent).newState !== 'closed') return
+          if (p === rootMenuEl) return
+          const top = p.scrollTop
+          // Next frame, as it is still open during beforetoggle
+          requestAnimationFrame(() => {
+            if (p.matches(':popover-open')) return
+            p.showPopover()
+            p.scrollTop = top
+          })
+        },
+        true
+      )
+
+      // The element of visibleTextSpans the target is in, if any
+      function itemElementAt(target) {
+        // for segmented texts this will work
+        let element =
+          target && target.closest ? target.closest('span.text') : null
+        if (element) return element
+
+        // for non-segmented texts, check if it's one of the visibleTextSpans
+        // ignore reference links
+        if (!target || !target.closest || target.closest('.ref')) return null
+
+        element = target
+        // Walk up the tree to find if we're inside a visibleTextSpan
+        while (element && !visibleTextSpans.includes(element)) {
+          element = element.parentElement
+          if (element === articleEl) return null
+        }
+        return element
+      }
+
+      /**
+       * A non segmented paragraph holds several sentences, so the one under the
+       * pointer is found from where it is
+       */
+      function indexAtPoint(element, ev) {
+        const first = visibleTextSpans.indexOf(element)
+        if (first < 0 || !visibleTextRanges[first]) return first
+
+        let node, offset
+        if (document.caretPositionFromPoint) {
+          const pos = document.caretPositionFromPoint(ev.clientX, ev.clientY)
+          node = pos?.offsetNode
+          offset = pos?.offset
+        } else if (document.caretRangeFromPoint) {
+          const range = document.caretRangeFromPoint(ev.clientX, ev.clientY)
+          node = range?.startContainer
+          offset = range?.startOffset
+        }
+        if (!node) return first
+
+        let last = first
+        for (let i = first; visibleTextSpans[i] === element; i++) {
+          last = i
+          try {
+            // the first sentence not wholly before the click, so a click between
+            // two picks the next
+            if (visibleTextRanges[i].comparePoint(node, offset) <= 0) return i
+          } catch (e) {
+            return first
+          }
+        }
+        return last
+      }
+
+      /**
+       * Hovering a non segmented paragraph shows which sentence a click would
+       * jump to, as segmented texts do with .tts-clickable:hover. The hover is
+       * drawn on the sentence's Range, as it has no element of its own
+       */
+      let hoverFrame = null
+      function clearHover() {
+        if (canHighlightRanges) CSS.highlights.delete(HOVER_HIGHLIGHT_NAME)
+      }
+      if (articleEl && canHighlightRanges) {
+        articleEl.addEventListener('mousemove', ev => {
+          if (hoverFrame) return
+          hoverFrame = requestAnimationFrame(() => {
+            hoverFrame = null
+            const element = isPlaying ? itemElementAt(ev.target) : null
+            const range =
+              element && visibleTextRanges[indexAtPoint(element, ev)]
+            if (range) {
+              CSS.highlights.set(HOVER_HIGHLIGHT_NAME, new Highlight(range))
+            } else {
+              clearHover()
+            }
+          })
+        })
+        articleEl.addEventListener('mouseleave', clearHover)
+      }
+
+      // allow clicking any visibleTextSpans to jump/start speaking from there
+      if (articleEl)
+        articleEl.addEventListener('click', ev => {
+          // Only allow click-to-jump once playback has already started
+          if (!isPlaying) return
+
+          const clickedElement = itemElementAt(ev.target)
+          if (!clickedElement) return
+
+          // -1 for text shown since the session started, which isn't read
+          const idx = indexAtPoint(clickedElement, ev)
+          if (idx < 0) return
+
+          // cancel current session/utterances and start from clicked index
+          sessionId += 1
+          isCancelled = true
+          cancelSpeech()
+          clearHighlight()
+
+          setTimeout(() => {
+            isCancelled = false
+            // reuse existing start logic to initialize state and begin speaking
+            startSessionFrom(idx)
+          }, TIMEOUT_MS)
+        })
+
+      if (pitch) {
+        pitchValue.textContent = pitch.valueAsNumber.toFixed(1)
+        pitch.addEventListener(
+          'change',
+          () => (pitchValue.textContent = pitch.valueAsNumber.toFixed(1))
+        )
+      }
+      if (rate) {
+        rateValue.textContent = rate.valueAsNumber.toFixed(1)
+        rate.addEventListener(
+          'change',
+          () => (rateValue.textContent = rate.valueAsNumber.toFixed(1))
+        )
+      }
+
+      // initial nav state
+      setNavControlsEnabled(false)
+
+      // debug helper
+      window._scx_listen = {
+        getState() {
+          return {
+            isPlaying,
+            isCancelled,
+            currentIndex,
+            sessionId,
+            isPaused,
+            paused: synth.paused,
+            speaking: synth.speaking,
+          }
+        },
+        items() {
+          return visibleTextContent.slice()
+        },
+        cancel() {
+          sessionId += 1
+          isCancelled = true
+          try {
+            synth.cancel()
+          } catch (e) {}
+        },
+      }
     }
-  }
-</script>
+  </script>
+</Layout>
