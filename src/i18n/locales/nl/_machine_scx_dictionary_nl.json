@@ -1,7 +1,10 @@
 {
   "dictionary:define": "Definiëren",
   "dictionary:description": "Pali-Nederlands woordenboek",
+  "dictionary:foundInDictionaries": "Gevonden in {count} woordenboeken",
+  "dictionary:foundInDictionary": "Gevonden in {count} woordenboek",
   "dictionary:link": "Link",
+  "dictionary:otherWords": "Andere woorden",
   "dictionary:pronunciation": "Uitspraak:",
   "dictionary:searchPlaceholder": "Pali woord zoeken…"
 }

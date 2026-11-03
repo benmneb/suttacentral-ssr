@@ -10,5 +10,7 @@
   "interface:pagesAbout": "අප ගැන",
   "interface:furtherReading": "වැඩිදුර කියවීම",
   "interface:suttaCentralEdition": "මුද්‍රිත ආකාරයෙන් සහ නොබැඳි කියවීම සඳහා ඩිජිටල් ආකෘති කිහිපයකින් ලබා ගත හැකි SuttaCentral සංස්කරණයක්",
-  "interface:translationCount": "පරිවර්තන ({language}): {count}"
+  "interface:translationCount": "පරිවර්තන ({language}): {count}",
+  "interface:externalLink": "බාහිර සබැඳිය",
+  "interface:skipToMain": "ප්‍රධාන අන්තර්ගතයට යන්න"
 }

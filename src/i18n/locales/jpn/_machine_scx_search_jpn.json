@@ -1,4 +1,5 @@
 {
+  "search:closeSearch": "検索を閉じる",
   "search:failedFor": "検索に失敗しました：",
   "search:pagination": "検索ページネーション"
 }

@@ -2,5 +2,6 @@
   "error:goHome": "Pojdi na domačo stran",
   "error:searchForSomething": "Išči nekaj",
   "error:shouldBePageHere": "Bi morala biti tu stran?",
-  "error:reportIt": "Prijavi"
+  "error:reportIt": "Prijavi",
+  "error:reportMissingPage": "Prijavi manjkajočo stran"
 }

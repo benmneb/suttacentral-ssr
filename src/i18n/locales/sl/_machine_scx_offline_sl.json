@@ -1,0 +1,11 @@
+{
+  "offline:editionsDescription": "Cele knjige prevodov kot datoteke ePub, PDF ali HTML ali v tiskani obliki.",
+  "offline:kiwixZim": "Kiwix ZIM",
+  "offline:kiwixZimDescription": "Celotno spletišče kot ena datoteka za {kiwix}, brezplačni bralnik brez povezave za telefone, tablice in računalnike.",
+  "offline:nativeApps": "Domorodne aplikacije",
+  "offline:nativeAppsDescription": "Celotno spletišče kot aplikacija za namestitev v macOS, Windows, Linux ali Android, ki se odpre kot vsaka druga.",
+  "offline:siteArchive": "Arhiv spletišča",
+  "offline:siteArchiveDescription": "Celotno spletišče kot preproste datoteke HTML za prenos, ki delujejo na vsakem računalniku ali pametnem telefonu z lokalnim spletnim strežnikom.",
+  "offline:webApp": "Spletna aplikacija (PWA)",
+  "offline:webAppDescription": "Namestite SuttaCentral.net kot aplikacijo in si shranite izbrana besedila za branje brez povezave. Potrebuje JavaScript in posodobljen brskalnik, namestitev pa ni vedno zanesljiva."
+}

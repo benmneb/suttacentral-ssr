@@ -1,7 +1,10 @@
 {
   "dictionary:define": "Định nghĩa",
   "dictionary:description": "Từ điển Pali-Việt",
+  "dictionary:foundInDictionaries": "Có trong {count} từ điển",
+  "dictionary:foundInDictionary": "Có trong {count} từ điển",
   "dictionary:link": "Liên kết",
+  "dictionary:otherWords": "Từ khác",
   "dictionary:pronunciation": "Phát âm:",
   "dictionary:searchPlaceholder": "Tìm kiếm từ Pali…"
 }

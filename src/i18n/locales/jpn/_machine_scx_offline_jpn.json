@@ -1,0 +1,11 @@
+{
+  "offline:editionsDescription": "翻訳書を一冊まるごと、ePub・PDF・HTML ファイル、または印刷版で。",
+  "offline:kiwixZim": "Kiwix ZIM",
+  "offline:kiwixZimDescription": "サイト全体を、電話・タブレット・コンピューター向けの無料オフラインリーダー {kiwix} 用の一つのファイルとして。",
+  "offline:nativeApps": "ネイティブアプリ",
+  "offline:nativeAppsDescription": "サイト全体を macOS、Windows、Linux、Android にインストールできるアプリとして提供します。ほかのアプリと同じように開けます。",
+  "offline:siteArchive": "サイトアーカイブ",
+  "offline:siteArchiveDescription": "サイト全体をダウンロード用のシンプルな HTML ファイルとして提供します。ローカルのウェブサーバーがあれば、どのコンピューターやスマートフォンでも動作します。",
+  "offline:webApp": "ウェブアプリ（PWA）",
+  "offline:webAppDescription": "SuttaCentral.net をアプリとしてインストールし、選んだテキストをオフラインで読めるように保存できます。JavaScript と最新のブラウザーが必要で、インストールがうまくいかないこともあります。"
+}

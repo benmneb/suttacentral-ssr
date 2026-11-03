@@ -1,0 +1,11 @@
+{
+  "offline:editionsDescription": "整本译本，提供 ePub、PDF 或 HTML 文件，或印刷版。",
+  "offline:kiwixZim": "Kiwix ZIM",
+  "offline:kiwixZimDescription": "整个网站打包为一个文件，供 {kiwix} 使用；它是适用于手机、平板和电脑的免费离线阅读器。",
+  "offline:nativeApps": "原生应用",
+  "offline:nativeAppsDescription": "整个网站作为可安装在 macOS、Windows、Linux 或 Android 上的应用，像其他应用一样打开。",
+  "offline:siteArchive": "网站存档",
+  "offline:siteArchiveDescription": "整个网站的纯 HTML 文件供下载，在任何装有本地网页服务器的电脑或智能手机上都能使用。",
+  "offline:webApp": "网页应用（PWA）",
+  "offline:webAppDescription": "将 SuttaCentral.net 安装为应用，并保存您选择的经文以便离线阅读。需要 JavaScript 和较新的浏览器，安装可能不太可靠。"
+}

@@ -1,3 +1,22 @@
 {
-  "map:indexOfPlaces": "지명 색인"
+  "map:exitFullScreen": "전체 화면 종료",
+  "map:fullScreen": "전체 화면",
+  "map:indexOfPlaces": "지명 색인",
+  "map:layers": "레이어",
+  "map:moveDown": "아래로 이동",
+  "map:moveLeft": "왼쪽으로 이동",
+  "map:moveRight": "오른쪽으로 이동",
+  "map:moveUp": "위로 이동",
+  "map:pan": "이동",
+  "map:panHow": "드래그, 화살표, 또는 {keys}",
+  "map:posterAlt": "손으로 그린 잠부디빠 지도",
+  "map:presentDay": "현재",
+  "map:reset": "초기화",
+  "map:skipMap": "지도 건너뛰기",
+  "map:view": "보기",
+  "map:viewOnFullMap": "전체 지도에서 보기",
+  "map:zoom": "확대/축소",
+  "map:zoomHow": "더블 클릭/탭, {ctrl}/{cmd} + 스크롤, 핀치, 또는 {keys}",
+  "map:zoomIn": "확대",
+  "map:zoomOut": "축소"
 }

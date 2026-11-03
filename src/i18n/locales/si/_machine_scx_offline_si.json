@@ -1,0 +1,11 @@
+{
+  "offline:editionsDescription": "පරිවර්තනවල සම්පූර්ණ පොත්, ePub, PDF හෝ HTML ගොනු ලෙස, හෝ මුද්‍රිතව.",
+  "offline:kiwixZim": "Kiwix ZIM",
+  "offline:kiwixZimDescription": "මුළු අඩවියම {kiwix} සඳහා එක් ගොනුවක් ලෙස; එය දුරකථන, ටැබ්ලට් සහ පරිගණක සඳහා නොමිලේ ලැබෙන නොබැඳි කියවනයකි.",
+  "offline:nativeApps": "ස්වදේශීය යෙදුම්",
+  "offline:nativeAppsDescription": "මුළු අඩවියම macOS, Windows, Linux හෝ Android මත ස්ථාපනය කළ හැකි යෙදුමක් ලෙස, වෙනත් ඕනෑම යෙදුමක් මෙන් විවෘත වේ.",
+  "offline:siteArchive": "අඩවි සංරක්ෂිතය",
+  "offline:siteArchiveDescription": "මුළු අඩවියම බාගත කිරීමට සරල HTML ගොනු ලෙස, දේශීය වෙබ් සේවාදායකයක් සමඟ ඕනෑම පරිගණකයක හෝ ස්මාර්ට් දුරකථනයක ක්‍රියා කරයි.",
+  "offline:webApp": "වෙබ් යෙදුම (PWA)",
+  "offline:webAppDescription": "SuttaCentral.net යෙදුමක් ලෙස ස්ථාපනය කර ඔබ තෝරන පාඨ නොබැඳි ලෙස කියවීමට තබා ගන්න. JavaScript සහ යාවත්කාලීන බ්‍රවුසරයක් අවශ්‍ය වන අතර, ස්ථාපනය සැමවිටම විශ්වාසදායක නොවිය හැක."
+}

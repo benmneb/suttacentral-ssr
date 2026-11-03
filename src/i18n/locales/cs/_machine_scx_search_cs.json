@@ -1,4 +1,5 @@
 {
+  "search:closeSearch": "Zavřít vyhledávání",
   "search:failedFor": "Vyhledávání se nezdařilo pro",
   "search:pagination": "Stránkování vyhledávání"
 }

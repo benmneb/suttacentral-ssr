@@ -1,7 +1,9 @@
 {
+  "footer:accessibility": "Dostopnost",
   "footer:openAnalytics": "Odprta analitika",
   "footer:openSource": "Odprta koda",
   "footer:renderedIn": "Ta stran je bila upodobljena v {time}s",
+  "footer:sendFeedback": "Pošlji povratne informacije",
   "footer:tagline": "Hiter in minimalističen alternativni vmesnik za SuttaCentral.net",
   "footer:viewPageOn": "Ogled te strani na"
 }

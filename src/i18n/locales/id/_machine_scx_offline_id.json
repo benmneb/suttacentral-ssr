@@ -1,0 +1,11 @@
+{
+  "offline:editionsDescription": "Buku terjemahan utuh, sebagai berkas ePub, PDF, atau HTML, atau versi cetak.",
+  "offline:kiwixZim": "Kiwix ZIM",
+  "offline:kiwixZimDescription": "Seluruh situs dalam satu berkas untuk {kiwix}, pembaca luring gratis untuk ponsel, tablet, dan komputer.",
+  "offline:nativeApps": "Aplikasi native",
+  "offline:nativeAppsDescription": "Seluruh situs sebagai aplikasi untuk dipasang di macOS, Windows, Linux, atau Android, yang dibuka seperti aplikasi lainnya.",
+  "offline:siteArchive": "Arsip situs",
+  "offline:siteArchiveDescription": "Seluruh situs sebagai berkas HTML biasa untuk diunduh, yang berjalan di komputer atau ponsel pintar apa pun dengan server web lokal.",
+  "offline:webApp": "Aplikasi web (PWA)",
+  "offline:webAppDescription": "Pasang SuttaCentral.net sebagai aplikasi dan simpan teks pilihan Anda untuk dibaca secara luring. Memerlukan JavaScript dan peramban terbaru, dan pemasangannya bisa tidak andal."
+}

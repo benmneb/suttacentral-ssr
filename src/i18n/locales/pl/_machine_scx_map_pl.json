@@ -1,3 +1,22 @@
 {
-  "map:indexOfPlaces": "Indeks miejsc"
+  "map:exitFullScreen": "Zamknij pełny ekran",
+  "map:fullScreen": "Pełny ekran",
+  "map:indexOfPlaces": "Indeks miejsc",
+  "map:layers": "Warstwy",
+  "map:moveDown": "Przesuń w dół",
+  "map:moveLeft": "Przesuń w lewo",
+  "map:moveRight": "Przesuń w prawo",
+  "map:moveUp": "Przesuń w górę",
+  "map:pan": "Przesuwanie",
+  "map:panHow": "przeciąganie, lub strzałki, lub {keys}",
+  "map:posterAlt": "Ręcznie rysowana mapa Dżambudipy",
+  "map:presentDay": "Współcześnie",
+  "map:reset": "Resetuj",
+  "map:skipMap": "Pomiń mapę",
+  "map:view": "Widok",
+  "map:viewOnFullMap": "Pokaż na pełnej mapie",
+  "map:zoom": "Powiększanie",
+  "map:zoomHow": "dwukrotne kliknięcie/stuknięcie, lub {ctrl}/{cmd} i przewijanie, lub uszczypnięcie, lub {keys}",
+  "map:zoomIn": "Powiększ",
+  "map:zoomOut": "Pomniejsz"
 }

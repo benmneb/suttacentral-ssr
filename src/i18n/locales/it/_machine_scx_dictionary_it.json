@@ -1,7 +1,10 @@
 {
   "dictionary:define": "Definisci",
   "dictionary:description": "Dizionario Pali-Italiano",
+  "dictionary:foundInDictionaries": "Trovato in {count} dizionari",
+  "dictionary:foundInDictionary": "Trovato in {count} dizionario",
   "dictionary:link": "Link",
+  "dictionary:otherWords": "Altre parole",
   "dictionary:pronunciation": "Pronuncia:",
   "dictionary:searchPlaceholder": "Ricerca parola Pali…"
 }

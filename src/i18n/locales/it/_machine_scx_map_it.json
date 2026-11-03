@@ -1,3 +1,22 @@
 {
-  "map:indexOfPlaces": "Indice dei luoghi"
+  "map:exitFullScreen": "Esci da schermo intero",
+  "map:fullScreen": "Schermo intero",
+  "map:indexOfPlaces": "Indice dei luoghi",
+  "map:layers": "Livelli",
+  "map:moveDown": "Sposta in basso",
+  "map:moveLeft": "Sposta a sinistra",
+  "map:moveRight": "Sposta a destra",
+  "map:moveUp": "Sposta in alto",
+  "map:pan": "Spostamento",
+  "map:panHow": "trascina, o le frecce, o {keys}",
+  "map:posterAlt": "Mappa di Jambudīpa disegnata a mano",
+  "map:presentDay": "Oggi",
+  "map:reset": "Ripristina",
+  "map:skipMap": "Salta la mappa",
+  "map:view": "Vista",
+  "map:viewOnFullMap": "Vedi sulla mappa completa",
+  "map:zoom": "Zoom",
+  "map:zoomHow": "doppio clic/tocco, o {ctrl}/{cmd} e scorrimento, o pizzico, o {keys}",
+  "map:zoomIn": "Ingrandisci",
+  "map:zoomOut": "Riduci"
 }

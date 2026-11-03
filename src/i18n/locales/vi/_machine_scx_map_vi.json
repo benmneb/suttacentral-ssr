@@ -1,3 +1,22 @@
 {
-  "map:indexOfPlaces": "Danh mục địa danh"
+  "map:exitFullScreen": "Thoát toàn màn hình",
+  "map:fullScreen": "Toàn màn hình",
+  "map:indexOfPlaces": "Danh mục địa danh",
+  "map:layers": "Lớp",
+  "map:moveDown": "Xuống dưới",
+  "map:moveLeft": "Sang trái",
+  "map:moveRight": "Sang phải",
+  "map:moveUp": "Lên trên",
+  "map:pan": "Di chuyển",
+  "map:panHow": "kéo, hoặc các mũi tên, hoặc {keys}",
+  "map:posterAlt": "Bản đồ Diêm-phù-đề vẽ tay",
+  "map:presentDay": "Ngày nay",
+  "map:reset": "Đặt lại",
+  "map:skipMap": "Bỏ qua bản đồ",
+  "map:view": "Hiển thị",
+  "map:viewOnFullMap": "Xem trên bản đồ đầy đủ",
+  "map:zoom": "Thu phóng",
+  "map:zoomHow": "nhấp/chạm đúp, hoặc {ctrl}/{cmd} và cuộn, hoặc chụm hai ngón, hoặc {keys}",
+  "map:zoomIn": "Phóng to",
+  "map:zoomOut": "Thu nhỏ"
 }

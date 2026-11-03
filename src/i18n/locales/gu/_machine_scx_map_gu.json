@@ -1,3 +1,22 @@
 {
-  "map:indexOfPlaces": "સ્થળોની અનુક્રમણિકા"
+  "map:exitFullScreen": "પૂર્ણ સ્ક્રીનમાંથી બહાર નીકળો",
+  "map:fullScreen": "પૂર્ણ સ્ક્રીન",
+  "map:indexOfPlaces": "સ્થળોની અનુક્રમણિકા",
+  "map:layers": "સ્તરો",
+  "map:moveDown": "નીચે ખસેડો",
+  "map:moveLeft": "ડાબે ખસેડો",
+  "map:moveRight": "જમણે ખસેડો",
+  "map:moveUp": "ઉપર ખસેડો",
+  "map:pan": "ખસેડવું",
+  "map:panHow": "ખેંચો, અથવા તીરો, અથવા {keys}",
+  "map:posterAlt": "જંબુદીપનો હાથે દોરેલો નકશો",
+  "map:presentDay": "વર્તમાન",
+  "map:reset": "ફરી સેટ કરો",
+  "map:skipMap": "નકશો છોડી દો",
+  "map:view": "દૃશ્ય",
+  "map:viewOnFullMap": "પૂરા નકશા પર જુઓ",
+  "map:zoom": "ઝૂમ",
+  "map:zoomHow": "બે વાર ક્લિક/ટૅપ, અથવા {ctrl}/{cmd} અને સ્ક્રોલ, અથવા પિંચ, અથવા {keys}",
+  "map:zoomIn": "મોટું કરો",
+  "map:zoomOut": "નાનું કરો"
 }

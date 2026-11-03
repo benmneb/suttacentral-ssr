@@ -10,5 +10,7 @@
   "interface:pagesAbout": "Sobre",
   "interface:furtherReading": "Leituras adicionais",
   "interface:suttaCentralEdition": "Uma edição SuttaCentral disponível impressa e em vários formatos digitais para leitura offline",
-  "interface:translationCount": "Traduções ({language}): {count}"
+  "interface:translationCount": "Traduções ({language}): {count}",
+  "interface:externalLink": "link externo",
+  "interface:skipToMain": "Ir para o conteúdo principal"
 }

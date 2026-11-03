@@ -1,7 +1,10 @@
 {
   "dictionary:define": "정의",
   "dictionary:description": "빠알리어-한국어 사전",
+  "dictionary:foundInDictionaries": "사전 {count}개에서 찾음",
+  "dictionary:foundInDictionary": "사전 {count}개에서 찾음",
   "dictionary:link": "링크",
+  "dictionary:otherWords": "다른 단어",
   "dictionary:pronunciation": "발음:",
   "dictionary:searchPlaceholder": "빠알리어 검색…"
 }

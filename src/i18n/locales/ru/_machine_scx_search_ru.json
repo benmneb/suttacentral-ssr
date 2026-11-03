@@ -1,4 +1,5 @@
 {
+  "search:closeSearch": "Закрыть поиск",
   "search:failedFor": "Не удалось выполнить поиск по запросу",
   "search:pagination": "Постраничный поиск"
 }

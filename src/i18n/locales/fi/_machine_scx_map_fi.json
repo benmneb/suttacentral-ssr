@@ -1,3 +1,22 @@
 {
-  "map:indexOfPlaces": "Paikkaluettelo"
+  "map:exitFullScreen": "Poistu koko näytöstä",
+  "map:fullScreen": "Koko näyttö",
+  "map:indexOfPlaces": "Paikkaluettelo",
+  "map:layers": "Tasot",
+  "map:moveDown": "Siirrä alas",
+  "map:moveLeft": "Siirrä vasemmalle",
+  "map:moveRight": "Siirrä oikealle",
+  "map:moveUp": "Siirrä ylös",
+  "map:pan": "Siirto",
+  "map:panHow": "vetäminen, tai nuolet, tai {keys}",
+  "map:posterAlt": "Käsin piirretty kartta Jambudīpasta",
+  "map:presentDay": "Nykyaika",
+  "map:reset": "Palauta",
+  "map:skipMap": "Ohita kartta",
+  "map:view": "Näkymä",
+  "map:viewOnFullMap": "Näytä koko kartalla",
+  "map:zoom": "Zoomaus",
+  "map:zoomHow": "kaksoisnapsautus/-napautus, tai {ctrl}/{cmd} ja vieritys, tai nipistys, tai {keys}",
+  "map:zoomIn": "Lähennä",
+  "map:zoomOut": "Loitonna"
 }

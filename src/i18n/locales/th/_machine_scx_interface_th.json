@@ -10,5 +10,7 @@
   "interface:pagesAbout": "เกี่ยวกับ",
   "interface:furtherReading": "อ่านเพิ่มเติม",
   "interface:suttaCentralEdition": "ฉบับ SuttaCentral ที่มีทั้งฉบับพิมพ์และรูปแบบดิจิทัลหลายรูปแบบสำหรับอ่านแบบออฟไลน์",
-  "interface:translationCount": "คำแปล ({language}): {count}"
+  "interface:translationCount": "คำแปล ({language}): {count}",
+  "interface:externalLink": "ลิงก์ภายนอก",
+  "interface:skipToMain": "ข้ามไปยังเนื้อหาหลัก"
 }

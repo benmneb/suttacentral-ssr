@@ -1,7 +1,10 @@
 {
   "dictionary:define": "व्याख्या करा",
   "dictionary:description": "पाली-मराठी शब्दकोश",
+  "dictionary:foundInDictionaries": "{count} शब्दकोशांमध्ये सापडले",
+  "dictionary:foundInDictionary": "{count} शब्दकोशात सापडले",
   "dictionary:link": "दुवा",
+  "dictionary:otherWords": "इतर शब्द",
   "dictionary:pronunciation": "उच्चार:",
   "dictionary:searchPlaceholder": "पाली शब्द शोधा…"
 }

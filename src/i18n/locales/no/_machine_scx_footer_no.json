@@ -1,7 +1,9 @@
 {
+  "footer:accessibility": "Tilgjengelighet",
   "footer:openAnalytics": "Åpen analyse",
   "footer:openSource": "Åpen kildekode",
   "footer:renderedIn": "Denne siden ble gjengitt på {time}s",
+  "footer:sendFeedback": "Send tilbakemelding",
   "footer:tagline": "Et raskt og minimalistisk alternativt grensesnitt for SuttaCentral.net",
   "footer:viewPageOn": "Se denne siden på"
 }

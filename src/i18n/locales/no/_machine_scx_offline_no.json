@@ -1,0 +1,11 @@
+{
+  "offline:editionsDescription": "Hele bøker med oversettelser, som ePub-, PDF- eller HTML-filer, eller på trykk.",
+  "offline:kiwixZim": "Kiwix ZIM",
+  "offline:kiwixZimDescription": "Hele nettstedet som én fil for {kiwix}, den gratis frakoblede leseren for telefoner, nettbrett og datamaskiner.",
+  "offline:nativeApps": "Native apper",
+  "offline:nativeAppsDescription": "Hele nettstedet som en app å installere på macOS, Windows, Linux eller Android, som åpnes som alle andre.",
+  "offline:siteArchive": "Nettstedsarkiv",
+  "offline:siteArchiveDescription": "Hele nettstedet som enkle HTML-filer å laste ned, som virker på alle datamaskiner og smarttelefoner med en lokal nettserver.",
+  "offline:webApp": "Nettapp (PWA)",
+  "offline:webAppDescription": "Installer SuttaCentral.net som en app og behold tekstene du velger for lesing uten nett. Krever JavaScript og en oppdatert nettleser, og installeringen kan være upålitelig."
+}

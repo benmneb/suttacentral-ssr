@@ -1,0 +1,11 @@
+{
+  "offline:editionsDescription": "Celé knihy překladů jako soubory ePub, PDF nebo HTML, nebo v tištěné podobě.",
+  "offline:kiwixZim": "Kiwix ZIM",
+  "offline:kiwixZimDescription": "Celý web jako jeden soubor pro {kiwix}, bezplatnou offline čtečku pro telefony, tablety a počítače.",
+  "offline:nativeApps": "Nativní aplikace",
+  "offline:nativeAppsDescription": "Celý web jako aplikace k instalaci na macOS, Windows, Linux nebo Android, která se otevírá jako každá jiná.",
+  "offline:siteArchive": "Archiv webu",
+  "offline:siteArchiveDescription": "Celý web jako prosté soubory HTML ke stažení, které fungují na jakémkoli počítači nebo chytrém telefonu s místním webovým serverem.",
+  "offline:webApp": "Webová aplikace (PWA)",
+  "offline:webAppDescription": "Nainstalujte si SuttaCentral.net jako aplikaci a uložte si vybrané texty ke čtení offline. Vyžaduje JavaScript a aktuální prohlížeč a instalace nemusí vždy fungovat spolehlivě."
+}

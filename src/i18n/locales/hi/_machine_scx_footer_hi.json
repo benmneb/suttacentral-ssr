@@ -1,7 +1,9 @@
 {
+  "footer:accessibility": "सुगम्यता",
   "footer:openAnalytics": "ओपन एनालिटिक्स",
   "footer:openSource": "ओपन सोर्स",
   "footer:renderedIn": "यह पेज {time}s में रेंडर हुआ",
+  "footer:sendFeedback": "प्रतिक्रिया भेजें",
   "footer:tagline": "SuttaCentral.net के लिए तेज़ और न्यूनतम वैकल्पिक इंटरफ़ेस",
   "footer:viewPageOn": "यह पेज देखें"
 }

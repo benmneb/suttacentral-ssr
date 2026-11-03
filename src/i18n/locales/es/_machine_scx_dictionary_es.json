@@ -1,7 +1,10 @@
 {
   "dictionary:define": "Definir",
   "dictionary:description": "Diccionario Pali-Español",
+  "dictionary:foundInDictionaries": "Encontrado en {count} diccionarios",
+  "dictionary:foundInDictionary": "Encontrado en {count} diccionario",
   "dictionary:link": "Enlace",
+  "dictionary:otherWords": "Otras palabras",
   "dictionary:pronunciation": "Pronunciación:",
   "dictionary:searchPlaceholder": "Búsqueda de palabra Pali…"
 }

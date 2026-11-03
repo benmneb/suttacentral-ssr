@@ -10,5 +10,7 @@
   "interface:pagesAbout": "Tentang",
   "interface:furtherReading": "Bacaan lanjutan",
   "interface:suttaCentralEdition": "Edisi SuttaCentral yang tersedia dalam versi cetak dan berbagai format digital untuk dibaca secara luring",
-  "interface:translationCount": "Terjemahan ({language}): {count}"
+  "interface:translationCount": "Terjemahan ({language}): {count}",
+  "interface:externalLink": "tautan eksternal",
+  "interface:skipToMain": "Langsung ke konten utama"
 }

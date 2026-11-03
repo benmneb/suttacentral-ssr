@@ -10,5 +10,7 @@
   "interface:pagesAbout": "このサイトについて",
   "interface:furtherReading": "関連資料",
   "interface:suttaCentralEdition": "印刷版と、オフラインで読める複数のデジタル形式で提供されている SuttaCentral 版",
-  "interface:translationCount": "翻訳（{language}）：{count}"
+  "interface:translationCount": "翻訳（{language}）：{count}",
+  "interface:externalLink": "外部リンク",
+  "interface:skipToMain": "本文へスキップ"
 }

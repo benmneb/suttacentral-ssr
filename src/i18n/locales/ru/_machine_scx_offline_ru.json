@@ -1,0 +1,11 @@
+{
+  "offline:editionsDescription": "Целые книги переводов в виде файлов ePub, PDF или HTML, а также в печатном виде.",
+  "offline:kiwixZim": "Kiwix ZIM",
+  "offline:kiwixZimDescription": "Весь сайт одним файлом для {kiwix} — бесплатной офлайн-читалки для телефонов, планшетов и компьютеров.",
+  "offline:nativeApps": "Нативные приложения",
+  "offline:nativeAppsDescription": "Весь сайт в виде приложения для macOS, Windows, Linux или Android, которое открывается как любое другое.",
+  "offline:siteArchive": "Архив сайта",
+  "offline:siteArchiveDescription": "Весь сайт в виде простых HTML-файлов для скачивания, которые работают на любом компьютере или смартфоне с локальным веб-сервером.",
+  "offline:webApp": "Веб-приложение (PWA)",
+  "offline:webAppDescription": "Установите SuttaCentral.net как приложение и сохраните выбранные тексты для чтения офлайн. Нужны JavaScript и современный браузер, и установка не всегда срабатывает."
+}

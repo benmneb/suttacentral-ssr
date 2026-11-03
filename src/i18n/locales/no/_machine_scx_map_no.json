@@ -1,3 +1,22 @@
 {
-  "map:indexOfPlaces": "Stedsregister"
+  "map:exitFullScreen": "Avslutt fullskjerm",
+  "map:fullScreen": "Fullskjerm",
+  "map:indexOfPlaces": "Stedsregister",
+  "map:layers": "Lag",
+  "map:moveDown": "Flytt ned",
+  "map:moveLeft": "Flytt til venstre",
+  "map:moveRight": "Flytt til høyre",
+  "map:moveUp": "Flytt opp",
+  "map:pan": "Flytt",
+  "map:panHow": "dra, eller pilene, eller {keys}",
+  "map:posterAlt": "Håndtegnet kart over Jambudīpa",
+  "map:presentDay": "I dag",
+  "map:reset": "Tilbakestill",
+  "map:skipMap": "Hopp over kartet",
+  "map:view": "Visning",
+  "map:viewOnFullMap": "Vis på hele kartet",
+  "map:zoom": "Zoom",
+  "map:zoomHow": "dobbeltklikk/-trykk, eller {ctrl}/{cmd} og rull, eller knip, eller {keys}",
+  "map:zoomIn": "Zoom inn",
+  "map:zoomOut": "Zoom ut"
 }

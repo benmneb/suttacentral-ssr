@@ -1,0 +1,11 @@
+{
+  "offline:editionsDescription": "Całe książki z przekładami, jako pliki ePub, PDF lub HTML, albo w druku.",
+  "offline:kiwixZim": "Kiwix ZIM",
+  "offline:kiwixZimDescription": "Cała witryna jako jeden plik dla {kiwix}, darmowego czytnika offline na telefony, tablety i komputery.",
+  "offline:nativeApps": "Aplikacje natywne",
+  "offline:nativeAppsDescription": "Cała witryna jako aplikacja do zainstalowania na macOS, Windows, Linux lub Android, która otwiera się jak każda inna.",
+  "offline:siteArchive": "Archiwum witryny",
+  "offline:siteArchiveDescription": "Cała witryna jako zwykłe pliki HTML do pobrania, działające na każdym komputerze lub smartfonie z lokalnym serwerem WWW.",
+  "offline:webApp": "Aplikacja internetowa (PWA)",
+  "offline:webAppDescription": "Zainstaluj SuttaCentral.net jako aplikację i zachowaj wybrane teksty do czytania offline. Wymaga JavaScriptu i aktualnej przeglądarki, a instalacja bywa zawodna."
+}

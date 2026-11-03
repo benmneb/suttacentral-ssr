@@ -1,7 +1,10 @@
 {
   "dictionary:define": "Definer",
   "dictionary:description": "Pali-norsk ordbok",
+  "dictionary:foundInDictionaries": "Funnet i {count} ordbøker",
+  "dictionary:foundInDictionary": "Funnet i {count} ordbok",
   "dictionary:link": "Lenke",
+  "dictionary:otherWords": "Andre ord",
   "dictionary:pronunciation": "Uttale:",
   "dictionary:searchPlaceholder": "Pali-ordsøk…"
 }

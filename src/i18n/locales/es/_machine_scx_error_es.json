@@ -2,5 +2,6 @@
   "error:goHome": "Ir al inicio",
   "error:searchForSomething": "Buscar algo",
   "error:shouldBePageHere": "¿Debería haber una página aquí?",
-  "error:reportIt": "Reportar"
+  "error:reportIt": "Reportar",
+  "error:reportMissingPage": "Informar de una página que falta"
 }

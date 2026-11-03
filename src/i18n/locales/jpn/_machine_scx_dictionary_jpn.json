@@ -1,7 +1,10 @@
 {
   "dictionary:define": "定義",
   "dictionary:description": "パーリ語-日本語辞典",
+  "dictionary:foundInDictionaries": "{count} 件の辞書に収録",
+  "dictionary:foundInDictionary": "{count} 件の辞書に収録",
   "dictionary:link": "リンク",
+  "dictionary:otherWords": "ほかの語",
   "dictionary:pronunciation": "発音：",
   "dictionary:searchPlaceholder": "パーリ語検索…"
 }

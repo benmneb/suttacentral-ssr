@@ -1,7 +1,10 @@
 {
   "dictionary:define": "Definisi",
   "dictionary:description": "Kamus Pali-Indonesia",
+  "dictionary:foundInDictionaries": "Ditemukan di {count} kamus",
+  "dictionary:foundInDictionary": "Ditemukan di {count} kamus",
   "dictionary:link": "Tautan",
+  "dictionary:otherWords": "Kata lain",
   "dictionary:pronunciation": "Pengucapan:",
   "dictionary:searchPlaceholder": "Pencarian kata Pali…"
 }

@@ -1,7 +1,10 @@
 {
   "dictionary:define": "Определить",
   "dictionary:description": "Пали-русский словарь",
+  "dictionary:foundInDictionaries": "Найдено в словарях: {count}",
+  "dictionary:foundInDictionary": "Найдено в словарях: {count}",
   "dictionary:link": "Ссылка",
+  "dictionary:otherWords": "Другие слова",
   "dictionary:pronunciation": "Произношение:",
   "dictionary:searchPlaceholder": "Поиск слова на Пали…"
 }

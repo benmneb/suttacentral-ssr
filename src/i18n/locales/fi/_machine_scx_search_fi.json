@@ -1,4 +1,5 @@
 {
+  "search:closeSearch": "Sulje haku",
   "search:failedFor": "Haku epäonnistui hakusanalla",
   "search:pagination": "Hakusivutus"
 }

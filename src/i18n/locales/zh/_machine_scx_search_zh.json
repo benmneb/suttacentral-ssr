@@ -1,4 +1,5 @@
 {
+  "search:closeSearch": "关闭搜索",
   "search:failedFor": "搜索失败：",
   "search:pagination": "搜索分页"
 }

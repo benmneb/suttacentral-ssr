@@ -10,5 +10,7 @@
   "interface:pagesAbout": "O projektu",
   "interface:furtherReading": "Další četba",
   "interface:suttaCentralEdition": "Edice SuttaCentral dostupná v tištěné podobě a v několika digitálních formátech pro čtení offline",
-  "interface:translationCount": "Překlady ({language}): {count}"
+  "interface:translationCount": "Překlady ({language}): {count}",
+  "interface:externalLink": "externí odkaz",
+  "interface:skipToMain": "Přejít na hlavní obsah"
 }

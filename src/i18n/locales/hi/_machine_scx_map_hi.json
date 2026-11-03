@@ -1,3 +1,22 @@
 {
-  "map:indexOfPlaces": "स्थानों की अनुक्रमणिका"
+  "map:exitFullScreen": "पूर्ण स्क्रीन से बाहर निकलें",
+  "map:fullScreen": "पूर्ण स्क्रीन",
+  "map:indexOfPlaces": "स्थानों की अनुक्रमणिका",
+  "map:layers": "परतें",
+  "map:moveDown": "नीचे ले जाएँ",
+  "map:moveLeft": "बाएँ ले जाएँ",
+  "map:moveRight": "दाएँ ले जाएँ",
+  "map:moveUp": "ऊपर ले जाएँ",
+  "map:pan": "खिसकाएँ",
+  "map:panHow": "खींचें, या तीर, या {keys}",
+  "map:posterAlt": "जम्बुदीप का हाथ से बना नक्शा",
+  "map:presentDay": "वर्तमान",
+  "map:reset": "रीसेट",
+  "map:skipMap": "नक्शा छोड़ें",
+  "map:view": "दृश्य",
+  "map:viewOnFullMap": "पूरे नक्शे पर देखें",
+  "map:zoom": "ज़ूम",
+  "map:zoomHow": "डबल क्लिक/टैप, या {ctrl}/{cmd} और स्क्रॉल, या पिंच, या {keys}",
+  "map:zoomIn": "ज़ूम इन",
+  "map:zoomOut": "ज़ूम आउट"
 }

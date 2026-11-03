@@ -1,3 +1,22 @@
 {
-  "map:indexOfPlaces": "地名索引"
+  "map:exitFullScreen": "退出全屏",
+  "map:fullScreen": "全屏",
+  "map:indexOfPlaces": "地名索引",
+  "map:layers": "图层",
+  "map:moveDown": "向下移动",
+  "map:moveLeft": "向左移动",
+  "map:moveRight": "向右移动",
+  "map:moveUp": "向上移动",
+  "map:pan": "平移",
+  "map:panHow": "拖动，或方向箭头，或 {keys}",
+  "map:posterAlt": "手绘阎浮提地图",
+  "map:presentDay": "现今",
+  "map:reset": "重置",
+  "map:skipMap": "跳过地图",
+  "map:view": "视图",
+  "map:viewOnFullMap": "在完整地图上查看",
+  "map:zoom": "缩放",
+  "map:zoomHow": "双击或轻点两下，或按住 {ctrl}/{cmd} 滚动，或双指捏合，或 {keys}",
+  "map:zoomIn": "放大",
+  "map:zoomOut": "缩小"
 }

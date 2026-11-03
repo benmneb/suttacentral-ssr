@@ -1,7 +1,9 @@
 {
+  "footer:accessibility": "Saavutettavuus",
   "footer:openAnalytics": "Avoin analytiikka",
   "footer:openSource": "Avoin lähdekoodi",
   "footer:renderedIn": "Tämä sivu renderöitiin {time}s",
+  "footer:sendFeedback": "Lähetä palautetta",
   "footer:tagline": "Nopea ja minimalistinen vaihtoehtoinen käyttöliittymä SuttaCentral.netille",
   "footer:viewPageOn": "Katso tämä sivu"
 }

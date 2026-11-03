@@ -1,7 +1,10 @@
 {
   "dictionary:define": "Zdefiniuj",
   "dictionary:description": "Słownik Pali-Polski",
+  "dictionary:foundInDictionaries": "Znaleziono w słownikach: {count}",
+  "dictionary:foundInDictionary": "Znaleziono w słownikach: {count}",
   "dictionary:link": "Link",
+  "dictionary:otherWords": "Inne słowa",
   "dictionary:pronunciation": "Wymowa:",
   "dictionary:searchPlaceholder": "Wyszukiwanie słów Pali…"
 }

@@ -1,7 +1,9 @@
 {
+  "footer:accessibility": "ಪ್ರವೇಶಸಾಧ್ಯತೆ",
   "footer:openAnalytics": "ತೆರೆದ ವಿಶ್ಲೇಷಣೆ",
   "footer:openSource": "ಓಪನ್ ಸೋರ್ಸ್",
   "footer:renderedIn": "ಈ ಪುಟ {time}s ನಲ್ಲಿ ರೆಂಡರ್ ಆಗಿದೆ",
+  "footer:sendFeedback": "ಪ್ರತಿಕ್ರಿಯೆ ಕಳುಹಿಸಿ",
   "footer:tagline": "SuttaCentral.net ಗಾಗಿ ವೇಗದ ಮತ್ತು ಕನಿಷ್ಠ ಪರ್ಯಾಯ ಇಂಟರ್ಫೇಸ್",
   "footer:viewPageOn": "ಈ ಪುಟವನ್ನು ನೋಡಿ"
 }

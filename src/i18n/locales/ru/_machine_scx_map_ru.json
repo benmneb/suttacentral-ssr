@@ -1,3 +1,22 @@
 {
-  "map:indexOfPlaces": "Указатель мест"
+  "map:exitFullScreen": "Выйти из полноэкранного режима",
+  "map:fullScreen": "Во весь экран",
+  "map:indexOfPlaces": "Указатель мест",
+  "map:layers": "Слои",
+  "map:moveDown": "Сдвинуть вниз",
+  "map:moveLeft": "Сдвинуть влево",
+  "map:moveRight": "Сдвинуть вправо",
+  "map:moveUp": "Сдвинуть вверх",
+  "map:pan": "Перемещение",
+  "map:panHow": "перетаскивание, или стрелки, или {keys}",
+  "map:posterAlt": "Рисованная от руки карта Джамбудипы",
+  "map:presentDay": "Наши дни",
+  "map:reset": "Сбросить",
+  "map:skipMap": "Пропустить карту",
+  "map:view": "Вид",
+  "map:viewOnFullMap": "Показать на полной карте",
+  "map:zoom": "Масштаб",
+  "map:zoomHow": "двойной щелчок/касание, или {ctrl}/{cmd} и прокрутка, или щипок, или {keys}",
+  "map:zoomIn": "Приблизить",
+  "map:zoomOut": "Отдалить"
 }

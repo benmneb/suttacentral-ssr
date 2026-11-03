@@ -10,5 +10,7 @@
   "interface:pagesAbout": "Om",
   "interface:furtherReading": "Videre lesning",
   "interface:suttaCentralEdition": "En SuttaCentral-utgave tilgjengelig på trykk og i flere digitale formater for lesing uten nett",
-  "interface:translationCount": "Oversettelser ({language}): {count}"
+  "interface:translationCount": "Oversettelser ({language}): {count}",
+  "interface:externalLink": "ekstern lenke",
+  "interface:skipToMain": "Hopp til hovedinnholdet"
 }

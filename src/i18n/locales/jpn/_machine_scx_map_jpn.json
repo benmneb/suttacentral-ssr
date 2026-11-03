@@ -1,3 +1,22 @@
 {
-  "map:indexOfPlaces": "地名索引"
+  "map:exitFullScreen": "全画面を終了",
+  "map:fullScreen": "全画面",
+  "map:indexOfPlaces": "地名索引",
+  "map:layers": "レイヤー",
+  "map:moveDown": "下へ移動",
+  "map:moveLeft": "左へ移動",
+  "map:moveRight": "右へ移動",
+  "map:moveUp": "上へ移動",
+  "map:pan": "移動",
+  "map:panHow": "ドラッグ、矢印、または {keys}",
+  "map:posterAlt": "手描きのジャンブディーパ地図",
+  "map:presentDay": "現代",
+  "map:reset": "リセット",
+  "map:skipMap": "地図をスキップ",
+  "map:view": "表示",
+  "map:viewOnFullMap": "全体地図で見る",
+  "map:zoom": "ズーム",
+  "map:zoomHow": "ダブルクリック／ダブルタップ、{ctrl}／{cmd} を押しながらスクロール、ピンチ、または {keys}",
+  "map:zoomIn": "拡大",
+  "map:zoomOut": "縮小"
 }

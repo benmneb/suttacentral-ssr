@@ -1,3 +1,22 @@
 {
-  "map:indexOfPlaces": "Rejstřík míst"
+  "map:exitFullScreen": "Ukončit celou obrazovku",
+  "map:fullScreen": "Celá obrazovka",
+  "map:indexOfPlaces": "Rejstřík míst",
+  "map:layers": "Vrstvy",
+  "map:moveDown": "Posunout dolů",
+  "map:moveLeft": "Posunout doleva",
+  "map:moveRight": "Posunout doprava",
+  "map:moveUp": "Posunout nahoru",
+  "map:pan": "Posun",
+  "map:panHow": "tažení, nebo šipky, nebo {keys}",
+  "map:posterAlt": "Ručně kreslená mapa Džambudípy",
+  "map:presentDay": "Současnost",
+  "map:reset": "Obnovit",
+  "map:skipMap": "Přeskočit mapu",
+  "map:view": "Zobrazení",
+  "map:viewOnFullMap": "Zobrazit na celé mapě",
+  "map:zoom": "Přiblížení",
+  "map:zoomHow": "dvojité kliknutí/klepnutí, nebo {ctrl}/{cmd} a kolečko, nebo roztažení prsty, nebo {keys}",
+  "map:zoomIn": "Přiblížit",
+  "map:zoomOut": "Oddálit"
 }

@@ -1,7 +1,10 @@
 {
   "dictionary:define": "Määritä",
   "dictionary:description": "Paali-suomi-sanakirja",
+  "dictionary:foundInDictionaries": "Löytyi sanakirjoista: {count}",
+  "dictionary:foundInDictionary": "Löytyi sanakirjoista: {count}",
   "dictionary:link": "Linkki",
+  "dictionary:otherWords": "Muita sanoja",
   "dictionary:pronunciation": "Ääntäminen:",
   "dictionary:searchPlaceholder": "Paali-sanan haku…"
 }

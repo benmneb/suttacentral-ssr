@@ -10,5 +10,7 @@
   "interface:pagesAbout": "Tietoa",
   "interface:furtherReading": "Lisälukemista",
   "interface:suttaCentralEdition": "SuttaCentral-laitos, saatavilla painettuna ja useissa digitaalisissa muodoissa offline-lukemista varten",
-  "interface:translationCount": "Käännökset ({language}): {count}"
+  "interface:translationCount": "Käännökset ({language}): {count}",
+  "interface:externalLink": "ulkoinen linkki",
+  "interface:skipToMain": "Siirry pääsisältöön"
 }

@@ -1,7 +1,9 @@
 {
+  "footer:accessibility": "Aksesibilitas",
   "footer:openAnalytics": "Analitik terbuka",
   "footer:openSource": "Sumber terbuka",
   "footer:renderedIn": "Halaman ini dirender dalam {time}d",
+  "footer:sendFeedback": "Kirim masukan",
   "footer:tagline": "Antarmuka alternatif yang cepat dan minimalis untuk SuttaCentral.net",
   "footer:viewPageOn": "Lihat halaman ini di"
 }

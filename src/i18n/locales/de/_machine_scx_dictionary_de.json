@@ -1,7 +1,10 @@
 {
   "dictionary:define": "Definieren",
   "dictionary:description": "Pali-Deutsch-Wörterbuch",
+  "dictionary:foundInDictionaries": "In {count} Wörterbüchern gefunden",
+  "dictionary:foundInDictionary": "In {count} Wörterbuch gefunden",
   "dictionary:link": "Link",
+  "dictionary:otherWords": "Weitere Wörter",
   "dictionary:pronunciation": "Aussprache:",
   "dictionary:searchPlaceholder": "Pali-Wortsuche…"
 }

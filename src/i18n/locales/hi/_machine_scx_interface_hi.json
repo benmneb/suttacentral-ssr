@@ -10,5 +10,7 @@
   "interface:pagesAbout": "हमारे बारे में",
   "interface:furtherReading": "अतिरिक्त पठन",
   "interface:suttaCentralEdition": "SuttaCentral संस्करण, मुद्रित रूप में और ऑफ़लाइन पढ़ने के लिए कई डिजिटल प्रारूपों में उपलब्ध",
-  "interface:translationCount": "अनुवाद ({language}): {count}"
+  "interface:translationCount": "अनुवाद ({language}): {count}",
+  "interface:externalLink": "बाहरी लिंक",
+  "interface:skipToMain": "मुख्य सामग्री पर जाएँ"
 }

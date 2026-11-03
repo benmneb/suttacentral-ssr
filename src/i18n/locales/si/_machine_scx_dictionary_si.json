@@ -1,7 +1,10 @@
 {
   "dictionary:define": "අර්ථ දක්වන්න",
   "dictionary:description": "පාලි-සිංහල ශබ්දකෝෂය",
+  "dictionary:foundInDictionaries": "ශබ්දකෝෂ {count}ක හමු විය",
+  "dictionary:foundInDictionary": "ශබ්දකෝෂ {count}ක හමු විය",
   "dictionary:link": "සබැඳිය",
+  "dictionary:otherWords": "වෙනත් වචන",
   "dictionary:pronunciation": "උච්චාරණය:",
   "dictionary:searchPlaceholder": "පාලි වචන සෙවීම…"
 }

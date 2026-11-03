@@ -1,7 +1,10 @@
 {
   "dictionary:define": "ವ್ಯಾಖ್ಯಾನಿಸಿ",
   "dictionary:description": "ಪಾಲಿ-ಕನ್ನಡ ನಿಘಂಟು",
+  "dictionary:foundInDictionaries": "{count} ನಿಘಂಟುಗಳಲ್ಲಿ ಸಿಕ್ಕಿದೆ",
+  "dictionary:foundInDictionary": "{count} ನಿಘಂಟಿನಲ್ಲಿ ಸಿಕ್ಕಿದೆ",
   "dictionary:link": "ಲಿಂಕ್",
+  "dictionary:otherWords": "ಇತರ ಪದಗಳು",
   "dictionary:pronunciation": "ಉಚ್ಚಾರಣೆ:",
   "dictionary:searchPlaceholder": "ಪಾಲಿ ಪದ ಹುಡುಕಿ…"
 }

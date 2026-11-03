@@ -1,7 +1,9 @@
 {
+  "footer:accessibility": "Accessibilità",
   "footer:openAnalytics": "Analitiche aperte",
   "footer:openSource": "Open source",
   "footer:renderedIn": "Questa pagina è stata renderizzata in {time}s",
+  "footer:sendFeedback": "Invia un commento",
   "footer:tagline": "Un'interfaccia alternativa veloce e minimalista per SuttaCentral.net",
   "footer:viewPageOn": "Vedi questa pagina su"
 }

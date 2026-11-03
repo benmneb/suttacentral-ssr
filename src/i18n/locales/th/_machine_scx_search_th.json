@@ -1,4 +1,5 @@
 {
+  "search:closeSearch": "ปิดการค้นหา",
   "search:failedFor": "การค้นหาล้มเหลวสำหรับ",
   "search:pagination": "การแบ่งหน้าผลการค้นหา"
 }
