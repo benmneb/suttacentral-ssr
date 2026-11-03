@@ -5,12 +5,8 @@ import TextMetaContent from '~/components/text-meta-content.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { fetchEditions } from '~/utils/editions'
-import { generateChapterJsonLd, generateTextMetaJsonLd } from '~/utils/json-ld'
-import {
-  rangeSuttaTitle,
-  softHyphenateTitle,
-  uidToAcronym,
-} from '~/utils/strings'
+import { chapterMetadata, suttaplexMetadata } from '~/utils/json-ld'
+import { softHyphenateTitle, uidToAcronym } from '~/utils/strings'
 
 const { chapter } = Astro.params
 const userLanguage = Astro.locals.userLanguage
@@ -123,25 +119,24 @@ if (!previous?.uid && !next?.uid) {
 const isPatimokkha = lowerChapter?.endsWith('-pm')
 const isList = suttaplexData.length > 1
 
-const origin = Astro.site?.origin ?? ''
-const jsonLd =
+const metadata =
   suttaplexData.length === 1
-    ? generateTextMetaJsonLd(suttaplexData[0], crumbsData, origin)
-    : generateChapterJsonLd(suttaplexData, lowerChapter!, crumbsData, origin)
+    ? suttaplexMetadata(
+        userLanguage,
+        suttaplexData[0],
+        lowerChapter!,
+        modifiedCrumbsData,
+        isIndividualRangeSutta
+      )
+    : chapterMetadata(
+        userLanguage,
+        suttaplexData,
+        lowerChapter!,
+        modifiedCrumbsData
+      )
 ---
 
-<Layout
-  title={isIndividualRangeSutta
-    ? rangeSuttaTitle(suttaplexData[0].title, lowerChapter!)
-    : `${
-        suttaplexData[0]?.translated_name ||
-        suttaplexData[0]?.original_title ||
-        lowerChapter
-      }${suttaplexData[0]?.translated_title ? `—${suttaplexData[0].translated_title}` : ''}`}
-  description={suttaplexData[0]?.blurb?.replace(/<[^>]*>/g, '')}
-  breadcrumbs={modifiedCrumbsData}
-  jsonLd={jsonLd}
->
+<Layout {...metadata} breadcrumbs={modifiedCrumbsData}>
   <main id="main">
     <ol>
       {

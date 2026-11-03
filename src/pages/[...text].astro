@@ -11,7 +11,7 @@ import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getViewPrefs } from '~/utils/cookies'
 import { langTag, langTagsIn } from '~/utils/language'
-import { generateTextJsonLd } from '~/utils/json-ld'
+import { textMetadata } from '~/utils/json-ld'
 import {
   referenceEditionName,
   referenceEditions,
@@ -883,25 +883,26 @@ const tocStyle = tocNumberWidth
   ? `--toc-number-width: ${tocNumberWidth.toFixed(1)}ch`
   : undefined
 
-const origin = Astro.site?.origin ?? ''
-const jsonLd = generateTextJsonLd(
+const metadata = textMetadata(userLanguage, {
   suttasData,
-  suttaplexData,
-  modifiedCrumbsData,
-  origin
-)
+  suttaplexEntry: suttaplexData[0],
+  publication: publicationData?.[0],
+  crumbs: modifiedCrumbsData,
+  lang: language,
+  authorUid,
+  uid: lowerAcronym,
+  workUid: hasChapterPage ? lowerAcronym : suttaplexData[0].uid,
+  acronym: isRangeSutta ? displayedAcronym : suttaplexData[0].acronym,
+  isIndividualRangeSutta: isRangeSutta && lowerAcronym !== suttaplexData[0].uid,
+})
 ---
 
 <Layout
-  title={isRangeSutta
-    ? `${displayedAcronym}—${suttasData.translation.author || suttasData.root_text.author}`
-    : `${suttaplexData[0].acronym}: ${suttaplexData[0].original_title}—${suttasData.translation.author || suttasData.root_text.author}`}
-  description={suttaplexData[0]?.blurb?.replace(/<[^>]*>/g, '')}
+  {...metadata}
   breadcrumbs={modifiedCrumbsData}
-  jsonLd={jsonLd}
   ogType="article"
   ogData={{
-    'article:author': suttasData.translation?.author,
+    'article:author': isRootText ? undefined : suttasData.translation?.author,
     'article:published_time': suttaplexData[0]?.translations?.find(
       t => t.author_uid === authorUid
     )?.publication_date,

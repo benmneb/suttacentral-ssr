@@ -1,542 +1,553 @@
 import { siteMetaData } from '~/constants/meta-data'
-import { langTag } from '~/utils/language'
+import { t } from '~/i18n'
+import { getLanguageName, langTag } from '~/utils/language'
+import {
+  languageName as siteLanguageName,
+  rangeSuttaTitle,
+  uidToAcronym,
+} from '~/utils/strings'
+
+const SC_ORIGIN = 'https://suttacentral.net'
 
 interface Breadcrumb {
   url?: string
   title: string
 }
 
-function getPublisherSchema() {
+/** What a page gives `Layout` for its meta description, Open Graph tags and JSON-LD */
+export interface PageMetadata {
+  title: string
+  description: string
+  jsonLd: string
+}
+
+/** A path on this site as a full URL, encoded as the browser has it */
+export function absoluteUrl(path: string) {
+  return new URL(`/${path.replace(/^\/+/, '')}`, siteMetaData.origin).href
+}
+
+/** The same page on .net */
+function scUrl(path: string) {
+  return new URL(`/${path.replace(/^\/+/, '')}`, SC_ORIGIN).href
+}
+
+export function textFromHtml(html?: string | null) {
+  return String(html ?? '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;|&#160;| /gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'")
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+export function excerpt(text: string, length = 160) {
+  if (text.length <= length) return text
+  const shortened = text.slice(0, length - 1)
+  const boundary = shortened.lastIndexOf(' ')
+  return `${shortened.slice(0, boundary > 0 ? boundary : shortened.length)}…`
+}
+
+/** "Mūlapariyāyasutta (The Root of All Things)", or just the one where there's no other */
+function withTranslatedTitle(original?: string, translated?: string) {
+  const name = textFromHtml(original)
+  const translation = textFromHtml(translated)
+  if (!name) return translation
+  return translation && translation !== name ? `${name} (${translation})` : name
+}
+
+/** A text or collection's title as its page has it, eg "Mūlapariyāyavagga—The Root of All Things", or its acronym if untitled */
+function menuTitle(node: any) {
+  const name = textFromHtml(node.original_title || node.root_name)
+  const translated = textFromHtml(node.translated_title || node.translated_name)
+  return (
+    [name, translated].filter(Boolean).join('—') || textFromHtml(node.acronym)
+  )
+}
+
+/** The site, as every page's `isPartOf` */
+export function website() {
   return {
-    '@type': 'Organization',
-    '@id': '/#organization',
-    name: 'SuttaCentral',
-    url: '/',
-    description: 'Early Buddhist texts, translations, and parallels',
-    foundingDate: '2012',
-    sameAs: ['https://suttacentral.net', 'https://github.com/suttacentral'],
+    '@type': 'WebSite',
+    '@id': `${absoluteUrl('/')}#website`,
+    name: siteMetaData.title,
+    url: absoluteUrl('/'),
   }
 }
 
-function buildBreadcrumbList(
-  breadcrumbs: Breadcrumb[],
-  currentPath: string,
-  origin: string
+export const SUTTACENTRAL = {
+  '@type': 'Organization',
+  name: 'SuttaCentral',
+  url: SC_ORIGIN,
+}
+
+// Wikipedia articles, as `sameAs`, so search engines can tell who each translator is
+const TRANSLATOR_PAGES: Record<string, string> = {
+  analayo: 'https://en.wikipedia.org/wiki/Bhikkhu_Analayo',
+  beal: 'https://en.wikipedia.org/wiki/Samuel_Beal',
+  bodhi: 'https://en.wikipedia.org/wiki/Bhikkhu_Bodhi',
+  buddharakkhita: 'https://en.wikipedia.org/wiki/Acharya_Buddharakkhita',
+  chalmers: 'https://en.wikipedia.org/wiki/Robert_Chalmers,_1st_Baron_Chalmers',
+  horner: 'https://en.wikipedia.org/wiki/Isaline_Blew_Horner',
+  narada: 'https://en.wikipedia.org/wiki/Narada_Maha_Thera',
+  nyanamoli: 'https://en.wikipedia.org/wiki/Ñāṇamoli_Bhikkhu',
+  rockhill: 'https://en.wikipedia.org/wiki/William_Woodville_Rockhill',
+  rouse: 'https://en.wikipedia.org/wiki/W._H._D._Rouse',
+  sujato: 'https://en.wikipedia.org/wiki/Bhante_Sujato',
+  thanissaro: 'https://en.wikipedia.org/wiki/Ṭhānissaro_Bhikkhu',
+  tw_rhysdavids: 'https://en.wikipedia.org/wiki/Thomas_William_Rhys_Davids',
+  woodward: 'https://en.wikipedia.org/wiki/F._L._Woodward',
+}
+
+/** A translator, linked to their Wikipedia article if they have one */
+function person(name: string, uid: string) {
+  return {
+    '@type': 'Person',
+    name: textFromHtml(name),
+    identifier: uid,
+    ...(TRANSLATOR_PAGES[uid] && { sameAs: TRANSLATOR_PAGES[uid] }),
+  }
+}
+
+/** The edition a root text comes from, which SuttaCentral lists where a translation has its translator */
+function edition(name: string, uid: string) {
+  return { '@type': 'CreativeWork', name: textFromHtml(name), identifier: uid }
+}
+
+/** The work a text is an edition or translation of, as its suttaplex page describes it */
+function workId(uid: string) {
+  return `${absoluteUrl(uid)}#work`
+}
+
+/** A text, as distinct from the page it's on */
+function textId(path: string) {
+  return `${absoluteUrl(path)}#text`
+}
+
+/** The page's crumbs from Home, the last being the page itself. A crumb with no page is left out, as each needs an `item` */
+export function breadcrumbList(
+  locale: string,
+  crumbs: Breadcrumb[],
+  path: string
 ) {
   const items = [
-    {
-      '@type': 'ListItem',
-      position: 1,
-      name: 'Home',
-      item: origin,
-    },
-  ]
-
-  breadcrumbs?.forEach((crumb, index) => {
-    items.push({
-      '@type': 'ListItem',
-      position: index + 2,
-      name: crumb.title,
-      // The last crumb is the page itself, so it has nowhere to point
-      ...(crumb.url && { item: `${origin}${crumb.url}` }),
-    })
-  })
-
+    { title: t(locale, 'interface:home'), url: '/' },
+    ...crumbs.map((crumb, i) => ({
+      title: crumb.title,
+      url: i === crumbs.length - 1 ? path : crumb.url,
+    })),
+  ].filter(crumb => crumb.url)
   return {
     '@type': 'BreadcrumbList',
-    itemListElement: items,
+    itemListElement: items.map((crumb, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: textFromHtml(crumb.title),
+      item: absoluteUrl(crumb.url!),
+    })),
   }
 }
 
-function formatName(rootName?: string, translatedName?: string): string {
-  if (rootName && translatedName) {
-    return `${rootName}—${translatedName}`
-  }
-  return rootName || translatedName || ''
-}
-
-export function generateIndexJsonLd(tipitaka: any[], origin: string) {
-  return JSON.stringify(
-    {
-      '@context': 'https://schema.org',
-      '@type': 'WebSite',
-      '@id': '/#website',
-      name: siteMetaData.title,
-      alternateName: 'SCX',
-      description: `${siteMetaData.description} - Early Buddhist texts, translations, and parallels. The largest collection of Buddhist suttas available in translation.`,
-      url: '/',
-      sameAs: ['https://suttacentral.net', 'https://suttacentral.express'],
-      inLanguage: 'en',
-      keywords: [
-        'Buddhism',
-        'Buddhist texts',
-        'Pāli Canon',
-        'Tipitaka',
-        'suttas',
-        'dharma',
-        'ancient texts',
-        'translations',
-      ],
-      about: {
-        '@type': 'Thing',
-        name: 'Buddhist Canon',
-        description:
-          'The Tipitaka (Three Baskets) - the traditional term for the Buddhist canon',
-      },
-      mainEntity: {
-        '@type': 'CollectionPage',
-        name: 'Tipitaka—the Three Baskets of the Buddhist canon',
-        description:
-          'Collection of the three main divisions of the Buddhist canon: Vinaya Pitaka, Sutta Pitaka, and Abhidhamma Pitaka',
-        hasPart: tipitaka.map(item => ({
-          '@type': 'Collection',
-          '@id': `/pitaka/${item.uid}`,
-          name: formatName(item.root_name, item.translated_name),
-          description: item.blurb,
-          url: `${origin}/pitaka/${item.uid}`,
-          sameAs: [
-            `https://suttacentral.net/pitaka/${item.uid}`,
-            `https://suttacentral.express/pitaka/${item.uid}`,
-          ],
-          identifier: item.uid,
-          isPartOf: {
-            '@id': '/#website',
-          },
-        })),
-      },
-      publisher: getPublisherSchema(),
-      breadcrumb: {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          {
-            '@type': 'ListItem',
-            position: 1,
-            name: 'Home',
-            item: origin,
-          },
-        ],
-      },
-    },
-    null,
-    2
+export function jsonLd(data: Record<string, any>) {
+  return (
+    JSON.stringify({ '@context': 'https://schema.org', ...data })
+      // A "</script>" in any text would end the script element early
+      .replace(/</g, '\\u003c')
   )
 }
 
-export function generateChapterJsonLd(
-  suttaplexData: any[],
-  chapter: string,
-  breadcrumbs: Breadcrumb[],
-  origin: string
-) {
-  const entry = suttaplexData[0]
-  const currentPath = `/${chapter}`
+/** A language's name: SuttaCentral's own for the root languages, as Intl doesnt know them all */
+function languageName(lang: string, locale: string) {
+  const key = `interface:${lang}`
+  const name = t(locale, key)
+  return name === key
+    ? getLanguageName(langTag(lang), locale)
+    : siteLanguageName(name)
+}
 
-  return JSON.stringify(
-    {
-      '@context': 'https://schema.org',
-      '@type': 'CollectionPage',
-      '@id': currentPath,
-      name: formatName(
-        entry.original_title || entry.root_name,
-        entry.translated_title || entry.translated_name
-      ),
-      description:
-        entry.blurb || 'Collection of Buddhist texts and translations',
-      url: `${origin}${currentPath}`,
-      sameAs: [
-        `https://suttacentral.net${currentPath}`,
-        `https://suttacentral.express${currentPath}`,
-      ],
-      identifier: entry.uid,
-      inLanguage: [
+export function homeMetadata(locale: string, tipitaka: any[]): PageMetadata {
+  const title = textFromHtml(t(locale, 'home:1'))
+  const description = `${siteMetaData.description}. ${t(locale, 'meta:homeDescription')}`
+  const { maintainer, mirrors, source } = siteMetaData
+  const home = absoluteUrl('/')
+  return {
+    title,
+    description,
+    jsonLd: jsonLd({
+      '@graph': [
         {
-          '@type': 'Language',
-          name: 'English',
-          alternateName: 'en',
+          ...website(),
+          alternateName: 'SCX',
+          sameAs: [source, ...mirrors],
+          description,
+          inLanguage: langTag(locale),
+          isBasedOn: {
+            '@type': 'WebSite',
+            name: 'SuttaCentral',
+            url: SC_ORIGIN,
+          },
+          maintainer: { '@type': 'Person', ...maintainer },
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: {
+              '@type': 'EntryPoint',
+              urlTemplate: `${absoluteUrl('/search')}?query={search_term_string}`,
+            },
+            'query-input': 'required name=search_term_string',
+          },
         },
-        ...(entry.root_lang
-          ? [
-              {
-                '@type': 'Language',
-                name: entry.root_lang,
-                alternateName: entry.root_lang,
-              },
-            ]
-          : []),
-      ],
-      about: {
-        '@type': 'Thing',
-        name: 'Buddhist Literature',
-        description: 'Ancient Buddhist texts, suttas, and modern translations',
-      },
-      isPartOf: {
-        '@type': 'WebSite',
-        '@id': '/#website',
-        name: 'SuttaCentral',
-      },
-      ...(suttaplexData.length > 1 && {
-        hasPart: suttaplexData.slice(1).map(child => ({
-          '@type': 'CreativeWork',
-          '@id': `/${child.uid}`,
-          name: formatName(
-            child.original_title || child.root_name,
-            child.translated_title || child.translated_name
-          ),
-          description: child.blurb,
-          identifier: child.uid,
-          sameAs: [
-            `https://suttacentral.net/${child.uid}`,
-            `https://suttacentral.express/${child.uid}`,
-          ],
-          ...(child.acronym && {
-            alternateName: child.acronym,
-          }),
+        {
+          '@type': 'CollectionPage',
+          '@id': home,
+          name: title,
+          description,
+          url: home,
+          sameAs: SC_ORIGIN,
+          inLanguage: langTag(locale),
+          isPartOf: { '@id': website()['@id'] },
           about: {
             '@type': 'Thing',
-            name: 'Buddhist Teaching',
-            description: 'Ancient Buddhist discourse or text',
+            name: 'Tipiṭaka',
+            description: 'The three baskets of the Buddhist canon',
           },
-          ...(child.translations?.length && {
-            workTranslation: child.translations.map((translation: any) => ({
-              '@type': 'CreativeWork',
-              name: `${child.original_title || child.root_name} - ${translation.author || translation.author_uid}`,
-              inLanguage: langTag(translation.lang),
-              translator: {
-                '@type': 'Person',
-                name: translation.author || translation.author_uid,
-              },
-              ...(translation.publication_date && {
-                datePublished: translation.publication_date,
-              }),
-              url: `${origin}/${child.uid}/${translation.lang}/${translation.author_uid}`,
-              sameAs: [
-                `https://suttacentral.net/${child.uid}/${translation.lang}/${translation.author_uid}`,
-                `https://suttacentral.express/${child.uid}/${translation.lang}/${translation.author_uid}`,
-              ],
-            })),
-          }),
-          isPartOf: {
-            '@id': currentPath,
-          },
-        })),
-      }),
-      breadcrumb: buildBreadcrumbList(breadcrumbs, currentPath, origin),
-      publisher: getPublisherSchema(),
-      mainEntityOfPage: {
-        '@type': 'WebPage',
-        '@id': currentPath,
-      },
-    },
-    null,
-    2
-  )
-}
-
-export function generateTextMetaJsonLd(
-  entry: any,
-  breadcrumbs: Breadcrumb[],
-  origin: string
-) {
-  const currentPath = `/${entry.uid}`
-
-  return JSON.stringify(
-    {
-      '@context': 'https://schema.org',
-      '@type': 'AboutPage',
-      '@id': currentPath,
-      name: formatName(
-        entry.original_title || entry.root_name,
-        entry.translated_title || entry.translated_name
-      ),
-      description:
-        entry.blurb ||
-        'Information about available translations and editions of this Buddhist text',
-      url: `${origin}${currentPath}`,
-      sameAs: [
-        `https://suttacentral.net${currentPath}`,
-        `https://suttacentral.express${currentPath}`,
-      ],
-      identifier: entry.uid,
-      inLanguage: 'en',
-      about: {
-        '@type': 'CreativeWork',
-        '@id': `/${entry.uid}/#work`,
-        name: entry.original_title || entry.root_name,
-        alternateName: [
-          entry.translated_title || entry.translated_name,
-          entry.acronym,
-        ].filter(Boolean),
-        description: entry.blurb,
-        identifier: entry.uid,
-        ...(entry.translations?.length && {
-          workTranslation: entry.translations.map((translation: any) => ({
-            '@type': 'CreativeWork',
-            '@id': `/${entry.uid}/${translation.lang}/${translation.author_uid}`,
-            name: `${entry.original_title || entry.root_name} - ${translation.author || translation.author_uid}`,
-            inLanguage: {
-              '@type': 'Language',
-              name: translation.lang_name || translation.lang,
-              alternateName: langTag(translation.lang),
-            },
-            url: `${origin}/${entry.uid}/${translation.lang}/${translation.author_uid}`,
-            sameAs: [
-              `https://suttacentral.net/${entry.uid}/${translation.lang}/${translation.author_uid}`,
-              `https://suttacentral.express/${entry.uid}/${translation.lang}/${translation.author_uid}`,
-            ],
-            genre: translation.is_root ? 'Root Text' : 'Translation',
-            ...(translation.author && {
-              [translation.is_root ? 'editor' : 'translator']: {
-                '@type': 'Person',
-                name: translation.author
-                  .replace(/&nbsp;|&#160;|\u00A0/g, ' ')
-                  .trim(),
-                identifier: translation.author_uid,
-              },
-            }),
-            ...(translation.publication_date && {
-              datePublished: translation.publication_date,
-            }),
-            translationOfWork: {
-              '@id': `/${entry.uid}/#work`,
-            },
+          hasPart: tipitaka.map(item => ({
+            '@type': 'Collection',
+            '@id': absoluteUrl(`/pitaka/${item.uid}`),
+            name: menuTitle(item),
+            ...(item.blurb && { description: textFromHtml(item.blurb) }),
+            url: absoluteUrl(`/pitaka/${item.uid}`),
+            sameAs: scUrl(`/pitaka/${item.uid}`),
           })),
-        }),
-        about: {
-          '@type': 'Thing',
-          name: 'Buddhist Teaching',
-          description: 'Ancient Buddhist discourse or text from the Pāli Canon',
         },
-      },
-      isPartOf: {
-        '@type': 'WebSite',
-        '@id': '/#website',
-        name: 'SuttaCentral',
-      },
-      breadcrumb: buildBreadcrumbList(breadcrumbs, currentPath, origin),
-      publisher: getPublisherSchema(),
-      mainEntityOfPage: {
-        '@type': 'WebPage',
-        '@id': currentPath,
-      },
-    },
-    null,
-    2
+      ],
+    }),
+  }
+}
+
+/** A collection's description: its blurb, or else which collection it is */
+function collectionDescription(locale: string, node: any) {
+  return (
+    textFromHtml(node.blurb) ||
+    t(locale, 'meta:collection', {
+      name: withTranslatedTitle(
+        node.original_title || node.root_name,
+        node.translated_title || node.translated_name
+      ),
+    })
   )
 }
 
-export function generatePitakaJsonLd(
-  data: any,
-  breadcrumbs: Breadcrumb[],
-  origin: string
-) {
-  const currentPath =
-    breadcrumbs[breadcrumbs.length - 1]?.url || `/pitaka/${data.uid}`
-
-  return JSON.stringify(
-    {
-      '@context': 'https://schema.org',
+/** A /pitaka page, which lists the collections under it */
+export function pitakaMetadata(
+  locale: string,
+  menuData: any,
+  path: string,
+  crumbs: Breadcrumb[]
+): PageMetadata {
+  const url = absoluteUrl(path)
+  const title = menuTitle(menuData)
+  const description = collectionDescription(locale, menuData)
+  return {
+    title,
+    description,
+    jsonLd: jsonLd({
       '@type': 'CollectionPage',
-      '@id': currentPath,
-      name: formatName(
-        data.original_title || data.root_name,
-        data.translated_title || data.translated_name
-      ),
-      description: data.blurb,
-      url: `${origin}${currentPath}`,
-      sameAs: [
-        `https://suttacentral.net${currentPath}`,
-        `https://suttacentral.express${currentPath}`,
-      ],
-      identifier: data.uid,
-      inLanguage: [
-        {
-          '@type': 'Language',
-          name: 'English',
-          alternateName: 'en',
-        },
-        ...(data.root_lang
-          ? [
-              {
-                '@type': 'Language',
-                name: data.root_lang,
-                alternateName: data.root_lang,
-              },
-            ]
-          : []),
-      ],
-      about: {
-        '@type': 'Thing',
-        name: 'Buddhist Literature',
-        description: 'Ancient Buddhist texts and modern translations',
-      },
-      isPartOf: {
-        '@type': 'WebSite',
-        '@id': '/#website',
-        name: 'SuttaCentral',
-      },
-      ...(data.children?.length && {
-        hasPart: data.children.map((child: any) => {
-          const childHasDirectLink = !!child._scx_href
-          const childPath = childHasDirectLink
-            ? child._scx_href
-            : `${currentPath}/${child.uid}`
-
+      '@id': url,
+      name: title,
+      description,
+      url,
+      sameAs: scUrl(path),
+      identifier: menuData.uid,
+      inLanguage: langTag(locale),
+      isPartOf: website(),
+      publisher: SUTTACENTRAL,
+      about: { '@type': 'Thing', name: 'Buddhism' },
+      breadcrumb: breadcrumbList(locale, crumbs, path),
+      ...(menuData.children?.length && {
+        hasPart: menuData.children.map((child: any) => {
+          const childUrl = absoluteUrl(
+            child._scx_href ?? `${path}/${child.uid}`
+          )
           return {
             '@type': 'Collection',
-            '@id': childPath,
-            name: formatName(
-              child.original_title || child.root_name,
-              child.translated_title || child.translated_name
-            ),
-            description: child.blurb,
-            url: `${origin}${childPath}`,
-            sameAs: childHasDirectLink
-              ? [
-                  `https://suttacentral.net${child._scx_href}`,
-                  `https://suttacentral.express${child._scx_href}`,
-                ]
-              : [
-                  `https://suttacentral.net${currentPath}/${child.uid}`,
-                  `https://suttacentral.express${currentPath}/${child.uid}`,
-                ],
-            identifier: child.uid,
-            isPartOf: {
-              '@id': currentPath,
-            },
+            '@id': childUrl,
+            name: menuTitle(child),
+            url: childUrl,
           }
         }),
       }),
-      breadcrumb: buildBreadcrumbList(breadcrumbs, currentPath, origin),
-      publisher: getPublisherSchema(),
-      mainEntityOfPage: {
-        '@type': 'WebPage',
-        '@id': currentPath,
-      },
-    },
-    null,
-    2
-  )
+    }),
+  }
 }
 
-export function generateTextJsonLd(
-  suttasData: any,
+/** A chapter's page, which lists its texts */
+export function chapterMetadata(
+  locale: string,
   suttaplexData: any[],
-  breadcrumbs: Breadcrumb[],
-  origin: string
-) {
-  const entry = suttaplexData[0]
-  const translation = suttasData.translation
-  const isRootText = translation?.lang === entry?.root_lang
-  const currentPath = `/${entry.uid}/${translation?.lang}/${translation?.author_uid}`
-
-  return JSON.stringify(
-    {
-      '@context': 'https://schema.org',
-      '@type': 'CreativeWork',
-      '@id': currentPath,
-      name: entry.original_title || entry.root_name,
-      alternateName: [
-        entry.acronym,
-        entry.translated_title || entry.translated_name,
-      ].filter(Boolean),
-      description:
-        entry.blurb || 'Buddhist text from the Pāli Canon with translation',
-      url: `${origin}${currentPath}`,
-      sameAs: [
-        `https://suttacentral.net${currentPath}`,
-        `https://suttacentral.express${currentPath}`,
-      ],
+  uid: string,
+  crumbs: Breadcrumb[]
+): PageMetadata {
+  const [entry, ...children] = suttaplexData
+  const path = `/${uid}`
+  const url = absoluteUrl(path)
+  const title = menuTitle(entry) || uid
+  const description = collectionDescription(locale, entry)
+  return {
+    title,
+    description,
+    jsonLd: jsonLd({
+      '@type': 'CollectionPage',
+      '@id': url,
+      name: title,
+      description,
+      url,
+      sameAs: scUrl(path),
       identifier: entry.uid,
-      inLanguage: {
-        '@type': 'Language',
-        name: translation?.lang_name || translation?.lang,
-        alternateName: translation?.lang && langTag(translation.lang),
-      },
-      genre: isRootText ? 'Root Text' : 'Translation',
-      ...(translation?.author && {
-        [isRootText ? 'editor' : 'translator']: {
-          '@type': 'Person',
-          name: translation.author.replace(/&nbsp;|&#160;|\u00A0/g, ' ').trim(),
-          identifier: translation.author_uid,
-        },
+      inLanguage: langTag(locale),
+      isPartOf: website(),
+      publisher: SUTTACENTRAL,
+      about: { '@type': 'Thing', name: 'Buddhism' },
+      breadcrumb: breadcrumbList(locale, crumbs, path),
+      ...(children.length && {
+        hasPart: children.map(child => ({
+          '@type': 'CreativeWork',
+          '@id':
+            child.type === 'leaf' ? workId(child.uid) : absoluteUrl(child.uid),
+          name: menuTitle(child),
+          ...(child.acronym && { alternateName: textFromHtml(child.acronym) }),
+          url: absoluteUrl(child.uid),
+        })),
       }),
-      ...(translation?.publication_date && {
+    }),
+  }
+}
+
+/**
+ * A text's suttaplex page, which describes the work, with its root editions and translations
+ * @param uid - The page's uid, which for a sutta of a range isn't the suttaplex's own
+ */
+export function suttaplexMetadata(
+  locale: string,
+  entry: any,
+  uid: string,
+  crumbs: Breadcrumb[],
+  isIndividualRangeSutta: boolean
+): PageMetadata {
+  const path = `/${uid}`
+  const url = absoluteUrl(path)
+  const acronym = isIndividualRangeSutta
+    ? uidToAcronym(uid)
+    : textFromHtml(entry.acronym)
+  const workName = textFromHtml(entry.original_title || entry.root_name)
+  const translatedName = textFromHtml(
+    entry.translated_title || entry.translated_name
+  )
+  const title = isIndividualRangeSutta
+    ? rangeSuttaTitle(entry.title, uid)
+    : menuTitle(entry) || uid
+  const blurb = textFromHtml(entry.blurb)
+  const description =
+    blurb ||
+    t(locale, 'meta:suttaplex', {
+      name: isIndividualRangeSutta
+        ? acronym
+        : `${acronym} ${withTranslatedTitle(workName, translatedName)}`.trim(),
+    })
+  const translations: any[] = entry.translations ?? []
+
+  const editionOf = (translation: any) => {
+    const textUid =
+      isIndividualRangeSutta && translation.segmented ? uid : entry.uid
+    const textPath = `/${textUid}/${translation.lang}/${translation.author_uid}`
+    const author = textFromHtml(translation.author || translation.author_uid)
+    const work = isIndividualRangeSutta ? acronym : workName || acronym
+    return {
+      '@type': 'CreativeWork',
+      '@id': textId(textPath),
+      name: author ? `${work}—${author}` : work,
+      url: absoluteUrl(textPath),
+      sameAs: scUrl(textPath),
+      inLanguage: langTag(translation.lang),
+      ...(author &&
+        (translation.is_root
+          ? { isBasedOn: edition(author, translation.author_uid) }
+          : { translator: person(author, translation.author_uid) })),
+      ...(translation.publication_date && {
         datePublished: translation.publication_date,
       }),
-      ...(!isRootText && {
-        translationOfWork: {
-          '@type': 'CreativeWork',
-          name: entry.root_name || entry.original_title,
-          inLanguage: langTag(entry.root_lang),
-          about: {
-            '@type': 'Thing',
-            name: 'Buddhist Teaching',
-            description: 'Ancient Buddhist discourse or text',
-          },
-        },
-      }),
-      about: [
-        {
-          '@type': 'Thing',
-          name: 'Buddhism',
-          description: 'Buddhist philosophy and teachings',
-        },
-        {
-          '@type': 'Thing',
-          name: 'Buddhist Literature',
-          description: 'Ancient Buddhist texts and modern translations',
-        },
-        ...(suttasData.segmented
-          ? [
-              {
-                '@type': 'Thing',
-                name: 'Segmented Text',
-                description:
-                  'Text divided into numbered segments for reference',
-              },
-            ]
-          : []),
-      ],
-      isPartOf: {
-        '@type': 'WebSite',
-        '@id': '/#website',
-        name: 'SuttaCentral',
-      },
-      breadcrumb: buildBreadcrumbList(breadcrumbs, currentPath, origin),
-      publisher: getPublisherSchema(),
-      mainEntityOfPage: {
-        '@type': 'WebPage',
-        '@id': currentPath,
-      },
-      ...(translation?.previous?.uid && {
-        hasPreviousItem: {
-          '@type': 'CreativeWork',
-          name: translation.previous.name,
-          url: `${origin}/${translation.previous.uid}/${translation.previous.lang}/${translation.previous.author_uid}`,
-          sameAs: [
-            `https://suttacentral.net/${translation.previous.uid}/${translation.previous.lang}/${translation.previous.author_uid}`,
-            `https://suttacentral.express/${translation.previous.uid}/${translation.previous.lang}/${translation.previous.author_uid}`,
-          ],
-        },
-      }),
-      ...(translation?.next?.uid && {
-        hasNextItem: {
-          '@type': 'CreativeWork',
-          name: translation.next.name,
-          url: `${origin}/${translation.next.uid}/${translation.next.lang}/${translation.next.author_uid}`,
-          sameAs: [
-            `https://suttacentral.net/${translation.next.uid}/${translation.next.lang}/${translation.next.author_uid}`,
-            `https://suttacentral.express/${translation.next.uid}/${translation.next.lang}/${translation.next.author_uid}`,
-          ],
-        },
-      }),
-      license: {
+    }
+  }
+  const roots = translations.filter(translation => translation.is_root)
+  const others = translations.filter(translation => !translation.is_root)
+
+  return {
+    title,
+    description,
+    jsonLd: jsonLd({
+      '@type': 'ItemPage',
+      '@id': url,
+      name: title,
+      description,
+      url,
+      sameAs: scUrl(path),
+      inLanguage: langTag(locale),
+      isPartOf: website(),
+      breadcrumb: breadcrumbList(locale, crumbs, path),
+      mainEntity: {
         '@type': 'CreativeWork',
-        name: 'Public Domain',
-        description: 'This work is in the public domain',
+        '@id': workId(uid),
+        name: isIndividualRangeSutta ? acronym : workName,
+        ...(!isIndividualRangeSutta && {
+          alternateName: [translatedName, acronym].filter(Boolean),
+        }),
+        ...(blurb && { description: blurb }),
+        identifier: uid,
+        url,
+        sameAs: scUrl(path),
+        ...(entry.root_lang && { inLanguage: langTag(entry.root_lang) }),
+        publisher: SUTTACENTRAL,
+        about: { '@type': 'Thing', name: 'Buddhism' },
+        ...(roots.length && { workExample: roots.map(editionOf) }),
+        ...(others.length && { workTranslation: others.map(editionOf) }),
       },
-    },
-    null,
-    2
+    }),
+  }
+}
+
+/**
+ * The licence the text's info popover gives: its publication's own, or else the one its legacy footer links to
+ * @returns The licence's URL
+ */
+function licenseOf(publication: any, html?: string) {
+  const own = publication?.license?.license_url
+  if (own) return own.trim()
+  const footer = html?.match(/<footer[\s\S]*<\/footer>/i)?.[0]
+  if (!footer) return
+  const links = [...footer.matchAll(/<a\b[^>]*>/gi)].map(([tag]) => ({
+    href: tag.match(/\bhref=["']([^"']+)["']/i)?.[1],
+    rel: tag.match(/\brel=["']([^"']+)["']/i)?.[1],
+  }))
+  const license =
+    links.find(link => link.href && /\blicense\b/i.test(link.rel ?? '')) ??
+    links.find(link =>
+      /creativecommons\.org\/(?:licenses|publicdomain)\//i.test(link.href ?? '')
+    )
+  return license?.href
+}
+
+interface TextPage {
+  suttasData: any
+  suttaplexEntry: any
+  publication: any
+  crumbs: Breadcrumb[]
+  /** The text's language and author, as in its path */
+  lang: string
+  authorUid: string
+  /** The uid in its path */
+  uid: string
+  /** The suttaplex page of the work it's a text of */
+  workUid: string
+  /** The acronym the page shows, eg "AN 1.3" for a sutta of a range */
+  acronym: string
+  /** A sutta of a range, which has no name of its own, only the range's */
+  isIndividualRangeSutta: boolean
+}
+
+/** A root text or translation's page, eg "MN 1: Mūlapariyāyasutta (The Root of All Things)—Bhikkhu Sujato" */
+export function textMetadata(
+  locale: string,
+  {
+    suttasData,
+    suttaplexEntry: entry,
+    publication,
+    crumbs,
+    lang,
+    authorUid,
+    uid,
+    workUid,
+    acronym: shownAcronym,
+    isIndividualRangeSutta,
+  }: TextPage
+): PageMetadata {
+  const acronym = textFromHtml(shownAcronym)
+  const path = `/${uid}/${lang}/${authorUid}`
+  const url = absoluteUrl(path)
+  const text = suttasData.translation ?? suttasData.root_text
+  const isRoot = lang === entry.root_lang
+  const author = textFromHtml(text?.author)
+  const translatedTitle = textFromHtml(
+    isRoot ? entry.translated_title || entry.translated_name : text?.title
   )
+  const titles = isRoot
+    ? textFromHtml(entry.original_title) || translatedTitle
+    : withTranslatedTitle(entry.original_title, translatedTitle)
+  const title = `${acronym}${!isIndividualRangeSutta && titles ? `: ${titles}` : ''}${author ? `—${author}` : ''}`
+  const name = isIndividualRangeSutta
+    ? t(locale, 'meta:rangeSutta', { acronym, range: titles })
+    : `${acronym} ${titles}`.trim()
+  const language = languageName(lang, locale)
+  const description =
+    textFromHtml(entry.blurb) ||
+    t(
+      locale,
+      `meta:${isRoot ? 'rootText' : 'translation'}${author ? 'By' : ''}`,
+      { name, language, author }
+    )
+  const license = licenseOf(publication, text?.text)
+  const publicationDate = entry.translations?.find(
+    (translation: any) =>
+      translation.lang === lang && translation.author_uid === authorUid
+  )?.publication_date
+
+  const work = {
+    '@type': 'CreativeWork',
+    '@id': workId(workUid),
+    name: isIndividualRangeSutta
+      ? acronym
+      : textFromHtml(entry.root_name || entry.original_title),
+    url: absoluteUrl(workUid),
+    inLanguage: langTag(entry.root_lang),
+  }
+  // A WebPage around the text, as only a WebPage takes a breadcrumb
+  return {
+    title,
+    description,
+    jsonLd: jsonLd({
+      '@type': 'WebPage',
+      '@id': url,
+      name: title,
+      description,
+      url,
+      sameAs: scUrl(path),
+      inLanguage: langTag(lang),
+      isPartOf: website(),
+      breadcrumb: breadcrumbList(locale, crumbs, path),
+      mainEntity: {
+        '@type': 'CreativeWork',
+        '@id': textId(path),
+        name: isIndividualRangeSutta
+          ? acronym
+          : textFromHtml(entry.original_title) || translatedTitle,
+        ...(!isIndividualRangeSutta && {
+          alternateName: [acronym, translatedTitle].filter(Boolean),
+        }),
+        url,
+        sameAs: scUrl(path),
+        identifier: uid,
+        inLanguage: langTag(lang),
+        ...(author &&
+          (isRoot
+            ? { isBasedOn: edition(author, authorUid) }
+            : { translator: person(author, authorUid) })),
+        ...(publicationDate && { datePublished: publicationDate }),
+        publisher: SUTTACENTRAL,
+        ...(license && { license }),
+        about: { '@type': 'Thing', name: 'Buddhism' },
+        ...(isRoot ? { exampleOfWork: work } : { translationOfWork: work }),
+      },
+    }),
+  }
 }

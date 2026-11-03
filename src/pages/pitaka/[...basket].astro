@@ -5,7 +5,7 @@ import Icon from '~/components/icon.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { fetchEditions } from '~/utils/editions'
-import { generatePitakaJsonLd } from '~/utils/json-ld'
+import { pitakaMetadata } from '~/utils/json-ld'
 import { getLanguageName } from '~/utils/language'
 
 const { pathname } = Astro.url
@@ -57,8 +57,7 @@ const [crumbsData, shortcutsData, editions] = await Promise.all([
   ),
 ])
 
-const origin = Astro.site?.origin ?? ''
-const jsonLd = generatePitakaJsonLd(menuData, crumbsData, origin)
+const metadata = pitakaMetadata(userLanguage, menuData, pathname, crumbsData)
 
 const userLanguageName = getLanguageName(userLanguage)
 
@@ -89,12 +88,7 @@ function cardDetails(child: any) {
 }
 ---
 
-<Layout
-  title={`${menuData.root_name}${menuData.root_name && menuData.translated_name ? '—' : ''}${menuData.translated_name || ''}`}
-  description={menuData.blurb?.replace(/<[^>]*>/g, '')}
-  breadcrumbs={crumbsData}
-  jsonLd={jsonLd}
->
+<Layout {...metadata} breadcrumbs={crumbsData}>
   <main id="main">
     <h1>
       <RootTitle

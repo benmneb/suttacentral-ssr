@@ -7,6 +7,7 @@ import SiteHeader from '~/components/site-header.astro'
 import SitePages from '~/components/site-pages.astro'
 import { siteMetaData } from '~/constants/meta-data'
 import { t } from '~/i18n'
+import { textFromHtml } from '~/utils/json-ld'
 import { langTag } from '~/utils/language'
 
 const pathname = Astro.url.pathname
@@ -38,11 +39,14 @@ const {
 const pageTitle = title
   ? `${title} @ ${siteMetaData.title}`
   : siteMetaData.title
-const pageDescription = description || siteMetaData.description
+const shareTitle = title || siteMetaData.title
+const pageDescription = textFromHtml(description) || siteMetaData.description
 // Without the query, which only holds settings or a search
-const canonicalUrl = canonical || Astro.url.origin + Astro.url.pathname
-const shareUrl = canonical || Astro.url.href
-const imageUrl = new URL(ogImage || '/og-image2.jpg', Astro.site).href
+const canonicalUrl = canonical || siteMetaData.origin + Astro.url.pathname
+const shareUrl =
+  canonical || siteMetaData.origin + Astro.url.pathname + Astro.url.search
+const isError = ['/404', '/500'].includes(Astro.routePattern)
+const imageUrl = new URL(ogImage || '/og-image2.jpg', siteMetaData.origin).href
 // Here, not in icons.css, as the alt text is in the reader's language
 const externalLinkAlt = JSON.stringify(
   ` (${t(userLanguage, 'interface:externalLink')})`
@@ -64,7 +68,7 @@ const externalLinkAlt = JSON.stringify(
     />
     <link rel="apple-touch-icon" sizes="250x250" href="/favicon-250x250.png" />
     <link rel="sitemap" href="/sitemap.xml" />
-    <link rel="canonical" href={canonicalUrl} />
+    {!isError && <link rel="canonical" href={canonicalUrl} />}
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={pageDescription} />
     <meta
@@ -79,13 +83,23 @@ const externalLinkAlt = JSON.stringify(
     />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <title>{pageTitle}</title>
-    <meta property="og:title" content={pageTitle} />
+    <meta property="og:title" content={shareTitle} />
     <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={shareUrl} />
     <meta property="og:site_name" content={siteMetaData.title} />
     <meta property="og:type" content={ogType || 'website'} />
     <meta property="og:locale" content={langTag(userLanguage)} />
     <meta property="og:image" content={imageUrl} />
+    {
+      !ogImage && (
+        <>
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:image:type" content="image/jpeg" />
+          <meta property="og:image:alt" content={siteMetaData.title} />
+        </>
+      )
+    }
     {
       Object.entries(ogData)
         .filter(([k, v]) => v)
@@ -100,7 +114,7 @@ const externalLinkAlt = JSON.stringify(
         )
     }
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:title" content={shareTitle} />
     <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={imageUrl} />
     <style

@@ -2,7 +2,7 @@
 import RootTitle from '~/components/root-title.astro'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
-import { generateIndexJsonLd } from '~/utils/json-ld'
+import { homeMetadata } from '~/utils/json-ld'
 
 const userLanguage = Astro.locals.userLanguage
 
@@ -11,8 +11,7 @@ const tipitakaResponse = await fetch(
 )
 const tipitakaData = await tipitakaResponse.json()
 
-const origin = Astro.site?.origin ?? ''
-const jsonLd = generateIndexJsonLd(tipitakaData, origin)
+const metadata = homeMetadata(userLanguage, tipitakaData)
 
 // eg "Tipiṭaka—the Three Baskets of the Buddhist canon", some locales spaced
 const [homeRoot, homeTranslation, ...rest] = t(userLanguage, 'home:1').split(
@@ -21,7 +20,7 @@ const [homeRoot, homeTranslation, ...rest] = t(userLanguage, 'home:1').split(
 const homeIsPair = !!homeTranslation && !rest.length
 ---
 
-<Layout jsonLd={jsonLd} title={t(userLanguage, 'home:1')}>
+<Layout {...metadata}>
   <main id="main">
     {
       homeIsPair ? (

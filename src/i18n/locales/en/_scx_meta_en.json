@@ -1,0 +1,10 @@
+{
+  "meta:collection": "Buddhist texts and translations in {name}.",
+  "meta:homeDescription": "Early Buddhist texts, translations, and parallels. The largest collection of Buddhist suttas available in translation.",
+  "meta:rangeSutta": "{acronym} from {range}",
+  "meta:rootText": "{name}, the {language} text.",
+  "meta:rootTextBy": "{name}, the {language} text from {author}.",
+  "meta:suttaplex": "Translations and parallels of {name}.",
+  "meta:translation": "{name}, translated into {language}.",
+  "meta:translationBy": "{name}, translated into {language} by {author}."
+}
