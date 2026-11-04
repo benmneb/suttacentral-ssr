@@ -84,8 +84,10 @@ details {
   }
 
   .parallel-notes {
+    display: inline;
+
     > summary {
-      display: block;
+      display: inline;
       padding: 0;
       margin: 0;
 

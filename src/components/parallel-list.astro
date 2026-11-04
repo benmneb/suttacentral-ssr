@@ -101,18 +101,20 @@ const notesLabel = t(userLanguage, 'viewoption:notes')
             <span>{label}</span>
           )}
           {hasNotes ? (
-            <details class="parallel-notes">
-              <summary class="text-refs" title={notesLabel}>
-                <TextRefs {...refs} userLanguage={userLanguage} />
-                <Icon name="informationCircle" />
-                <span class="sr-only">{notesLabel}</span>
-              </summary>
-              {remarks.map(remark => (
-                <p set:html={remark} />
-              ))}
-              {full && <p>{full}</p>}
-              {to.biblio && <p set:html={to.biblio} />}
-            </details>
+            <div class="text-refs">
+              <TextRefs {...refs} userLanguage={userLanguage} />
+              <details class="parallel-notes">
+                <summary title={notesLabel}>
+                  <Icon name="informationCircle" />
+                  <span class="sr-only">{notesLabel}</span>
+                </summary>
+                {remarks.map(remark => (
+                  <p set:html={remark} />
+                ))}
+                {full && <p>{full}</p>}
+                {to.biblio && <p set:html={to.biblio} />}
+              </details>
+            </div>
           ) : (
             hasRefs && (
               <p class="text-refs">
