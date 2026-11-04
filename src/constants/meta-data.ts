@@ -11,7 +11,7 @@ export const siteMetaData = {
   ],
   analytics: `${UMAMI_ORIGIN}/share/O7XCxmZWdFUE9kVC`,
   accessibility:
-    'https://git.sr.ht/~benmneb/suttacentral-ssr/tree/main/item/ACCESSIBILITY.md',
+    'https://git.sr.ht/~benmneb/suttacentral-ssr/tree/main/item/ACCESSIBILITY.md#accessibility',
   feedback: 'mailto:feedback@suttacentral.now',
   maintainer: { name: 'sankhato', url: 'https://sr.ht/~benmneb' },
 }
