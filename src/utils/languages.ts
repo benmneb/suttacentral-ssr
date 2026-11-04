@@ -39,7 +39,7 @@ async function fetchLanguages(): Promise<Language[]> {
 
 /**
  * Every language SuttaCentral has, which every page's search form lists. Kept
- * for an hour per worker instance and per data centre, as it rarely changes
+ * for a day per worker instance and per data centre, as it rarely changes
  */
 export function getLanguages(): Promise<Language[]> {
   if (!languages || Date.now() - fetchedAt > MAX_AGE * 1000) {
