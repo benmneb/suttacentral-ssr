@@ -57,8 +57,7 @@ details {
   margin-bottom: 0.5rem;
   list-style-type: none;
 
-  &::before {
-    content: '';
+  > .parallel-type {
     position: absolute;
     inset-inline-start: -1.5em;
     inset-block-start: 0.25em;
@@ -70,6 +69,10 @@ details {
     forced-color-adjust: none;
     forced-color-adjust: preserve-parent-color;
     print-color-adjust: exact;
+
+    &[title] {
+      cursor: help;
+    }
   }
 
   .root-title > span {
@@ -111,9 +114,6 @@ details {
       font-size: small;
     }
   }
-}
-.parallel-list > li[title] {
-  cursor: help;
 }
 
 /* See lazy-parallels.astro */

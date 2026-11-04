@@ -77,11 +77,15 @@ const notesLabel = t(userLanguage, 'viewoption:notes')
       const typeName = typeTitles ? parallelTypeName(userLanguage, type) : ''
 
       return (
-        <li
-          class={`parallel-list-item-${type}`}
-          title={typeTitles ? parallelTypeTitle(userLanguage, type) : undefined}
-        >
-          {typeName && <span class="sr-only">{`${typeName}: `}</span>}
+        <li class={`parallel-list-item-${type}`}>
+          <span
+            class="parallel-type"
+            title={
+              typeTitles ? parallelTypeTitle(userLanguage, type) : undefined
+            }
+          >
+            {typeName && <span class="sr-only">{`${typeName}: `}</span>}
+          </span>
           {titled ? (
             <RootTitle
               root={to.original_title}
