@@ -1,19 +1,9 @@
 ---
-import { SC_API } from '~/constants/urls'
 import { getSearchLanguages } from '~/utils/cookies'
 import { getAllPreferredLanguages } from '~/utils/language'
+import { getLanguages, type Language } from '~/utils/languages'
 
-interface Language {
-  uid: string
-  name: string
-  iso_code: string
-  is_root: boolean
-  localized: boolean
-  localized_percent: number
-}
-
-const languageResponse = await fetch(`${SC_API}/languages?all=true`)
-const languageData: Language[] = await languageResponse.json()
+const languageData = await getLanguages()
 
 const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguages = getAllPreferredLanguages(acceptLanguage)

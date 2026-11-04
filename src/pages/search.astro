@@ -13,14 +13,14 @@ import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getSearchLanguages, setSearchLanguages } from '~/utils/cookies'
 import { getAllPreferredLanguages } from '~/utils/language'
+import { getLanguages } from '~/utils/languages'
 import { expandUid } from '~/utils/strings'
 
 const { searchParams } = Astro.url
 const acceptLanguage = Astro.request.headers.get('accept-language')
 const userLanguage = Astro.locals.userLanguage
 
-const langResponse = await fetch(`${SC_API}/languages?all=true`)
-const langData = await langResponse.json()
+const langData = await getLanguages()
 
 const userLanguages = getAllPreferredLanguages(acceptLanguage)
 
