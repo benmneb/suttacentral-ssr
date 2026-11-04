@@ -42,6 +42,7 @@ body main:has(article) {
 
           img {
             max-width: 200px;
+            height: auto;
             border-radius: var(--rounding);
             box-shadow: 0 4px 12px var(--shadow-color);
           }
@@ -124,6 +125,7 @@ body main:has(article) {
 
         img {
           width: 150px;
+          height: auto;
           border-radius: var(--rounding);
         }
 
@@ -167,6 +169,7 @@ body main:has(article) {
 
           img {
             width: 80px;
+            height: auto;
             flex-shrink: 0;
           }
 

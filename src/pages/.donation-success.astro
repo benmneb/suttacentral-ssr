@@ -1,4 +1,5 @@
 ---
+import '~/assets/figure.css'
 import { SC_IMG } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
@@ -13,19 +14,21 @@ const title = t(userLanguage, 'interface:donationSuccessTitle')
     <article>
       <h1 set:html={t(userLanguage, 'donations:success1')} />
       <p set:html={t(userLanguage, 'donations:success2')} />
-      <picture>
-        <source
-          srcset={`${SC_IMG}/static-pages/novice_reading.avif`}
-          type="image/avif"
-        />
-        <img
-          alt={t(userLanguage, 'donations:successAltText')}
-          class="image-home-full"
-          src={`${SC_IMG}/static-pages/novice_reading.jpg`}
-          width="100%"
-          height="auto"
-        />
-      </picture>
+      <figure>
+        <picture>
+          <source
+            srcset={`${SC_IMG}/static-pages/novice_reading.avif`}
+            type="image/avif"
+          />
+          <img
+            alt={t(userLanguage, 'donations:successAltText')}
+            class="image-home-full"
+            src={`${SC_IMG}/static-pages/novice_reading.jpg`}
+            width="3800"
+            height="2536"
+          />
+        </picture>
+      </figure>
       <p set:html={t(userLanguage, 'donations:success3')} />
       <p set:html={t(userLanguage, 'donations:success4')} />
       <blockquote>

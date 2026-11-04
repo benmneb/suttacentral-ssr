@@ -29,11 +29,12 @@ body main:has(article) {
       align-self: center;
 
       img {
-        width: 100%;
-        max-width: 400px;
+        width: 400px;
+        max-width: 100%;
+        height: auto;
         border-radius: var(--rounding);
         object-fit: cover;
-        flex: 1 1 300px;
+        flex: 0 1 auto;
       }
 
       > div {
@@ -113,6 +114,7 @@ body main:has(article) {
           img {
             float: left;
             width: 160px;
+            height: auto;
             margin-right: 1rem;
             margin-bottom: 0.5rem;
             border-radius: var(--rounding);

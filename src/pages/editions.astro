@@ -90,6 +90,8 @@ function getBlurb(textUid: string): string | undefined {
         <img
           src={`${SC_IMG}/publication-pages/editions-kn-wet.jpg`}
           alt="Stack of SuttaCentral edition books"
+          width="1008"
+          height="1344"
         />
       </header>
 
@@ -114,6 +116,9 @@ function getBlurb(textUid: string): string | undefined {
                 <img
                   src={`${SC_IMG}/publication-pages/${edition.publication.text_uid}-book.jpg`}
                   alt={`Cover art for ${edition.publication.translation_title}`}
+                  width="574"
+                  height="823"
+                  loading="lazy"
                 />
                 <figcaption set:html={getBlurb(edition.publication.text_uid)} />
               </figure>

@@ -284,6 +284,8 @@ const metadata = matter
               <img
                 src={`${SC_IMG}/publication-pages/${uid}-book.jpg`}
                 alt={`Cover art for ${translationTitle}`}
+                width="574"
+                height="823"
               />
               <figcaption>Paperback edition of {translationTitle}</figcaption>
             </figure>
@@ -401,6 +403,9 @@ const metadata = matter
                 <img
                   src={`${SC_IMG}/publication-pages/${creator.creator_uid}.jpg`}
                   alt={`Photo of ${publication.creator_name}`}
+                  width="150"
+                  height="150"
+                  loading="lazy"
                 />
                 <figcaption>
                   Bhante {toSentenceCase(creator.creator_uid)}
@@ -431,7 +436,13 @@ const metadata = matter
               <dd>
                 <p>{publication.license_statement}</p>
                 <div class="license">
-                  <img src={`${SC_IMG}/publication-pages/cc-zero.svg`} alt="" />
+                  <img
+                    src={`${SC_IMG}/publication-pages/cc-zero.svg`}
+                    alt=""
+                    width="64"
+                    height="64"
+                    loading="lazy"
+                  />
                   <p>
                     <a
                       rel="license"
