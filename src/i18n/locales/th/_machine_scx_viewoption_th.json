@@ -1,4 +1,5 @@
 {
+  "viewoption:applyScript": "ใช้",
   "viewoption:autoScroll": "เลื่อนอัตโนมัติ",
   "viewoption:comments": "หมายเหตุ",
   "viewoption:fullDefinitions": "ความหมายทั้งหมดของ {word}",

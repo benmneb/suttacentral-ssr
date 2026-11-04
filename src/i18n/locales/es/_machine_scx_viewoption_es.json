@@ -1,4 +1,5 @@
 {
+  "viewoption:applyScript": "Aplicar",
   "viewoption:autoScroll": "Desplazamiento automático",
   "viewoption:comments": "Notas",
   "viewoption:fullDefinitions": "Definiciones completas de {word}",

@@ -1,4 +1,5 @@
 {
+  "viewoption:applyScript": "Применить",
   "viewoption:autoScroll": "Автопрокрутка",
   "viewoption:comments": "Примечания",
   "viewoption:fullDefinitions": "Полные определения слова {word}",

@@ -1009,8 +1009,12 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
     :has(#rooter-side),
     :has(#rooter-first),
     :has(#rooter-look-up),
-    :has(#simplifier)
+    :has(#simplifier),
+    :has(#rooter-script),
+    :has(#rooter-script-select),
+    .script-apply
   ),
+&:not(:has(#rooter-script:checked)) #views-menu > li:has(#rooter-script-select),
 &:not(:has(#segmenter:checked))
   #views-menu
   > li:is(
@@ -1026,6 +1030,13 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
 
 @media not all and (min-width: 600px) {
   #views-menu > li:is(:has(#commenter-side), :has(#rooter-side)) {
+    display: none;
+  }
+}
+
+/* Only without JS, as the script submits the select itself */
+@media (scripting: enabled) {
+  #views-menu > li.script-apply {
     display: none;
   }
 }
@@ -1265,10 +1276,18 @@ input[type='range'] {
 }
 
 #voice-select,
+#rooter-script-select,
 #rate,
 #pitch {
   flex: 1;
   min-width: 0;
+}
+
+/* Takes the width the other rows give the menu, never widening it */
+#rooter-script-select {
+  width: 0;
+  /* The labels' size, so the em indent lines up with theirs */
+  font: inherit;
 }
 
 #rate-value,
@@ -1949,6 +1968,14 @@ aside {
       > li.sub-sub > label {
         padding-inline-start: calc(0.7rem + 2.5em);
       }
+
+      > li.sub > select {
+        margin-inline-start: calc(0.5rem + 1.25em);
+      }
+
+      > li.sub-sub > select {
+        margin-inline-start: calc(0.7rem + 2.5em);
+      }
     }
 
     :is(#views-menu, #listen-menu) > li.pressed {
@@ -2447,7 +2474,7 @@ article,
 :where(main > p) {
   overflow-wrap: break-word;
 
-  [lang='pi'] {
+  [lang|='pi'] {
     overflow-wrap: anywhere;
   }
 

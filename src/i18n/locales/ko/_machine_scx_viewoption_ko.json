@@ -1,4 +1,5 @@
 {
+  "viewoption:applyScript": "적용",
   "viewoption:autoScroll": "자동 스크롤",
   "viewoption:comments": "주석",
   "viewoption:fullDefinitions": "{word}의 전체 정의",

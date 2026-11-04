@@ -28,3 +28,16 @@ export function getViewPrefs(
     | undefined
   return cookieValue ?? {}
 }
+
+/** Same lifetime and scope as the text page script gives the cookie */
+export function setViewPref(
+  cookies: AstroCookies,
+  key: string,
+  value: boolean | string
+): void {
+  cookies.set(
+    VIEW_PREFS_KEY,
+    JSON.stringify({ ...getViewPrefs(cookies), [key]: value }),
+    { path: '/', maxAge: 60 * 60 * 24 * 365 * 2, sameSite: 'lax' }
+  )
+}

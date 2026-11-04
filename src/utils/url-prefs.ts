@@ -1,3 +1,4 @@
+import { paliScriptOf } from '~/constants/pali-scripts'
 import { referenceEditions } from '~/constants/reference-editions'
 
 /**
@@ -5,14 +6,14 @@ import { referenceEditions } from '~/constants/reference-editions'
  * Values are .net's own, from `_setTextViewState` in sc-text-bilara.js
  */
 export function getUrlViewPrefs(params: URLSearchParams): {
-  prefs: Record<string, boolean>
+  prefs: Record<string, boolean | string>
   // Which param set each, so changing one undoes the whole param
   sources: Record<string, string>
 } {
-  const prefs: Record<string, boolean> = {}
+  const prefs: Record<string, boolean | string> = {}
   const sources: Record<string, string> = {}
   const get = (name: string) => params.get(name)?.toLowerCase()
-  const set = (param: string, values: Record<string, boolean>) => {
+  const set = (param: string, values: Record<string, boolean | string>) => {
     Object.assign(prefs, values)
     for (const key in values) sources[key] = param
   }
@@ -48,6 +49,11 @@ export function getUrlViewPrefs(params: URLSearchParams): {
         'commenter-side': true,
       })
       break
+  }
+
+  const script = get('script')
+  if (script === 'latin' || paliScriptOf(script)) {
+    set('script', { script: paliScriptOf(script)?.id ?? 'latin' })
   }
 
   const highlight = get('highlight')

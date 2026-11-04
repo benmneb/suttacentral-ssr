@@ -1,0 +1,56 @@
+---
+import Icon from '~/components/icon.astro'
+import { PALI_SCRIPTS } from '~/constants/pali-scripts'
+import { t } from '~/i18n'
+
+interface Props {
+  userLanguage: string
+  /** The script the root text is shown in, if not Latin */
+  script?: string
+  /** Under the root text option, rather than on its own */
+  nested?: boolean
+}
+
+const { userLanguage, script, nested } = Astro.props
+const subClass = nested ? 'sub sub-sub' : 'sub'
+---
+
+<li class={nested ? 'sub' : undefined}>
+  <label for="rooter-script">
+    <span class="with-icon">
+      <Icon name="globeAlt" />
+      <span>{t(userLanguage, 'viewoption:changePaliScript').trim()}</span>
+    </span>
+  </label>
+  <input
+    type="checkbox"
+    id="rooter-script"
+    name="pali-script-on"
+    form="script-form"
+    checked={!!script}
+    aria-controls="rooter-script-select"
+  />
+</li>
+<li class={subClass}>
+  <select
+    id="rooter-script-select"
+    name="pali-script"
+    form="script-form"
+    aria-label={t(userLanguage, 'viewoption:changePaliScriptLabel').trim()}
+    data-script={script ?? 'latin'}
+  >
+    <option value="latin" lang="en">Latin</option>
+    {
+      PALI_SCRIPTS.map(({ id, label }) => (
+        <option value={id} lang="en" selected={id === script}>
+          {label}
+        </option>
+      ))
+    }
+  </select>
+</li>
+<li class={`${subClass} script-apply`}>
+  <button type="submit" form="script-form">
+    {t(userLanguage, 'viewoption:applyScript')}
+  </button>
+</li>

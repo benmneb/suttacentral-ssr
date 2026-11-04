@@ -2,15 +2,17 @@
 import '~/assets/text.css'
 import '~/assets/text-icons.css'
 import ParallelList from '~/components/parallel-list.astro'
+import PaliScriptOptions from '~/components/pali-script-options.astro'
 import PublicationInfo from '~/components/publication-info.astro'
 import TextMetaContent from '~/components/text-meta-content.astro'
 import Icon from '~/components/icon.astro'
 import { icon } from '~/constants/heroicons'
 import { AVAILABLE_LOOKUPS } from '~/constants/lookup'
+import { paliScriptOf } from '~/constants/pali-scripts'
 import { SC_API, SC_IMG } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
-import { getViewPrefs } from '~/utils/cookies'
+import { getViewPrefs, setViewPref } from '~/utils/cookies'
 import { langTag, langTagsIn } from '~/utils/language'
 import { textMetadata } from '~/utils/json-ld'
 import {
@@ -39,6 +41,18 @@ import {
 import { getUrlViewPrefs } from '~/utils/url-prefs'
 
 const { text } = Astro.params
+
+// The script form, which saves and comes back to a clean URL
+if (Astro.url.searchParams.has('pali-script')) {
+  const on = Astro.url.searchParams.has('pali-script-on')
+  const script = paliScriptOf(Astro.url.searchParams.get('pali-script'))
+  setViewPref(Astro.cookies, 'script', (on && script?.id) || 'latin')
+  const cleanUrl = new URL(Astro.url)
+  for (const param of ['pali-script', 'pali-script-on', 'script'])
+    cleanUrl.searchParams.delete(param)
+  return Astro.redirect(cleanUrl.pathname + cleanUrl.search)
+}
+
 // A .net link's settings win over the reader's for this page only
 const { prefs: urlPrefs, sources: urlSources } = getUrlViewPrefs(
   Astro.url.searchParams
@@ -117,11 +131,28 @@ for (const text of [
 let bilaraData: any = {}
 let displayedUid: string | null = null // which bilara document gets rendered
 let keyPrefixes: string[] = [] // all of them in the response, in order
+let paliScript =
+  suttasData.segmented && suttasData.suttaplex?.root_lang === 'pli'
+    ? paliScriptOf(viewPrefs.script)
+    : undefined
 if (suttasData.segmented) {
-  const bilaraResponse = await fetch(
-    `${SC_API}/bilarasuttas/${suttasData.range_uid ?? lowerAcronym}/${authorUid}?lang=${language}`
-  )
+  const bilaraUid = suttasData.range_uid ?? lowerAcronym
+  const [bilaraResponse, transliterated] = await Promise.all([
+    fetch(`${SC_API}/bilarasuttas/${bilaraUid}/${authorUid}?lang=${language}`),
+    paliScript &&
+      fetch(
+        `${SC_API}/transliterated_sutta/${bilaraUid}/${paliScript.id}/${paliScript.options ?? 'null'}`
+      )
+        .then(r => (r.ok ? r.json() : null))
+        .catch(() => null),
+  ])
   bilaraData = await bilaraResponse.json()
+
+  if (transliterated && bilaraData.root_text) {
+    for (const key in bilaraData.root_text) {
+      if (key in transliterated) bilaraData.root_text[key] = transliterated[key]
+    }
+  } else paliScript = undefined
 
   if (bilaraData.msg === 'Not Found') {
     Astro.response.status = 404
@@ -270,7 +301,12 @@ const hasPublicationInfo = !hasLegacyInfo && !!publicationData?.[0]
 const hasInfo = hasLegacyInfo || hasPublicationInfo
 
 const rootLang = suttasData.suttaplex?.root_lang
-const availableLangs = rootLang ? AVAILABLE_LOOKUPS[rootLang] : null
+// Not with another script, as the dictionaries look up Latin words
+const availableLangs =
+  rootLang && !paliScript ? AVAILABLE_LOOKUPS[rootLang] : null
+const canChangeScript = isSegmented && rootLang === 'pli'
+const scriptTag = (tag: string) =>
+  paliScript ? `${tag}-${paliScript.tag}` : tag
 const lookupTargetLang = availableLangs?.includes(userLanguage)
   ? userLanguage
   : 'en'
@@ -672,7 +708,7 @@ ${renderReferences(key, ref)}
         text
           ? `
       <!-- This is not a translation, its the root text, the class is so it's not \`display: none\` by default. -->
-      <span class="translation" lang="${langTag(suttasData.root_text.lang)}" translate="no">
+      <span class="translation" lang="${scriptTag(langTag(suttasData.root_text.lang))}" translate="no">
         <span class="text">${isHeading ? softHyphenateTitle(text) : text}</span>
         ${
           comment
@@ -749,7 +785,7 @@ ${renderReferences(key, ref)}
       ${
         rootText
           ? `
-      <span class="root" lang="${langTag(suttasData.suttaplex.root_lang)}" translate="no" hidden>
+      <span class="root" lang="${scriptTag(langTag(suttasData.suttaplex.root_lang))}" translate="no" hidden>
         <span class="text">${isHeading ? softHyphenateTitle(rootText) : rootText}</span>
         ${
           variant
@@ -1077,6 +1113,7 @@ const metadata = textMetadata(userLanguage, {
                       checked={viewPrefs.rooter ?? false}
                       aria-controls={[
                         'rooter-side rooter-first',
+                        canChangeScript && 'rooter-script',
                         availableLangs && 'rooter-look-up',
                         rootLang === 'lzh' && 'simplifier',
                       ]
@@ -1119,6 +1156,13 @@ const metadata = textMetadata(userLanguage, {
                       checked={viewPrefs['rooter-first'] ?? false}
                     />
                   </li>
+                  {canChangeScript && (
+                    <PaliScriptOptions
+                      userLanguage={userLanguage}
+                      script={paliScript?.id}
+                      nested
+                    />
+                  )}
                   {availableLangs && (
                     <li class="sub" hidden>
                       <label for="rooter-look-up">
@@ -1173,6 +1217,14 @@ const metadata = textMetadata(userLanguage, {
                     </li>
                   )}
                 </>
+              )
+            }
+            {
+              isRootText && canChangeScript && (
+                <PaliScriptOptions
+                  userLanguage={userLanguage}
+                  script={paliScript?.id}
+                />
               )
             }
             {
@@ -1463,6 +1515,7 @@ const metadata = textMetadata(userLanguage, {
               />
             </li>
           </ul>
+          {canChangeScript && <form id="script-form" method="get" hidden />}
         </li>
         <li>
           <button
@@ -2271,6 +2324,59 @@ const metadata = textMetadata(userLanguage, {
     viewsMenu?.addEventListener('keydown', rememberAnchor)
     viewsMenu?.addEventListener('change', restoreAnchor)
 
+    // Another script is another page from the server, so the place is kept
+    // across the load
+    const SCRIPT_SPOT = 'script-spot'
+    const scriptBox = document.getElementById('rooter-script')
+    const scriptSelect = document.getElementById('rooter-script-select')
+
+    function submitScript() {
+      if (!(scriptSelect instanceof HTMLSelectElement)) return
+      rememberAnchor()
+      if (anchor) {
+        const { el, top } = anchor
+        try {
+          sessionStorage.setItem(
+            SCRIPT_SPOT,
+            JSON.stringify({
+              path: location.pathname,
+              id: el.closest('.segment').id,
+              kind: el.parentElement.classList.contains('root')
+                ? 'root'
+                : 'translation',
+              top,
+            })
+          )
+        } catch {}
+      }
+      scriptSelect.form?.requestSubmit()
+    }
+
+    scriptSelect?.addEventListener('change', submitScript)
+    scriptBox?.addEventListener('change', () => {
+      if (
+        scriptBox instanceof HTMLInputElement &&
+        !scriptBox.checked &&
+        scriptSelect?.dataset.script !== 'latin'
+      )
+        submitScript()
+    })
+
+    function restoreScriptSpot() {
+      let spot = null
+      try {
+        spot = JSON.parse(sessionStorage.getItem(SCRIPT_SPOT) ?? 'null')
+        sessionStorage.removeItem(SCRIPT_SPOT)
+      } catch {}
+      if (spot?.path !== location.pathname) return
+      const el = document
+        .getElementById(spot.id)
+        ?.querySelector(`:scope > .${spot.kind} > .text`)
+      if (!el) return
+      anchor = { el, top: spot.top }
+      restoreAnchor()
+    }
+
     // Reader views go by the hidden attribute, not CSS
     const rooter = document.getElementById('rooter')
     let rootsShown = false
@@ -2290,6 +2396,8 @@ const metadata = textMetadata(userLanguage, {
 
     syncRoots()
     viewsMenu?.addEventListener('change', syncRoots)
+    // After the roots show, which moves everything
+    restoreScriptSpot()
 
     // References on always shows something
     const segmenter = document.getElementById('segmenter')

@@ -17,7 +17,8 @@ export const UNLISTED_PAGES = ['/search?query=metta', MISSING_PAGE]
 
 export const SAMPLE_PAGES = [
   '/',
-  // Texts: segmented, long, range, legacy, vinaya, root Pāli and Chinese
+  // Texts: segmented, long, range, legacy, vinaya, root Pāli and Chinese, Pāli
+  // in another script
   '/mn1/en/sujato',
   '/mn10/en/sujato',
   '/dn16/en/sujato',
@@ -29,6 +30,7 @@ export const SAMPLE_PAGES = [
   '/pli-tv-bu-vb-pj1/en/brahmali',
   '/mn1/pli/ms',
   '/ma1/lzh/sct',
+  '/mn1/en/sujato?script=Sinhala',
   // Navigation
   '/pitaka/sutta',
   '/pitaka/sutta/middle/mn',
