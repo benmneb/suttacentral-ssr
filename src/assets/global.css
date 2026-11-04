@@ -93,7 +93,8 @@ body > main:focus {
 :where(:focus-visible) {
   outline: var(--focus-ring);
   outline-offset: 2px;
-  z-index: 11;
+  /* 0 just so it goes above elements with no z-index, ie breadcrumbs ::after's */
+  z-index: 0;
 }
 
 /* Opacity too, as Firefox fades placeholders */

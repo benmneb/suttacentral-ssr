@@ -449,6 +449,8 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
   border: none;
   background: none;
   outline: none;
+  /* Not lifted when focused, which would bring the tint over the text */
+  z-index: auto;
   /* Spans the text for the tint, so only the bracket takes clicks */
   pointer-events: none;
 
