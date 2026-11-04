@@ -13,13 +13,14 @@ interface Props {
 
 const { userLanguage, script, nested } = Astro.props
 const subClass = nested ? 'sub sub-sub' : 'sub'
+const label = t(userLanguage, 'viewoption:changePaliScript').trim()
 ---
 
 <li class={nested ? 'sub' : undefined}>
   <label for="rooter-script">
     <span class="with-icon">
       <Icon name="globeAlt" />
-      <span>{t(userLanguage, 'viewoption:changePaliScript').trim()}</span>
+      <span data-label={label}><span>{label}</span></span>
     </span>
   </label>
   <input

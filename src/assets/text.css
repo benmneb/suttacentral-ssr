@@ -1283,11 +1283,62 @@ input[type='range'] {
   min-width: 0;
 }
 
+/* Widens the menu up to 10em, by its copy in ::after, and wraps past that */
+#views-menu label[for='rooter-script'] > .with-icon {
+  flex: 1;
+
+  > span {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    > span {
+      width: 0;
+      min-width: 100%;
+    }
+
+    &::after {
+      content: attr(data-label);
+      max-width: 10em;
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+    }
+  }
+}
+
 /* Takes the width the other rows give the menu, never widening it */
 #rooter-script-select {
   width: 0;
   /* The labels' size, so the em indent lines up with theirs */
   font: inherit;
+}
+
+/* On the first line of the wrapped label, where one line sits when the row's
+   min-height centres it */
+#views-menu > li:has(> #rooter-script) {
+  --row-height: 1.75rem;
+  align-items: flex-start;
+
+  @media (pointer: coarse) {
+    --row-height: 2.75rem;
+  }
+
+  > label {
+    align-items: flex-start;
+    padding-block: calc((var(--row-height) - 1lh) / 2);
+  }
+
+  .icon {
+    align-self: flex-start;
+    margin-block-start: calc((1lh - 1em) / 2);
+  }
+
+  > input {
+    position: relative;
+    top: calc(var(--row-height) / 2);
+    translate: 0 -50%;
+  }
 }
 
 #rate-value,
