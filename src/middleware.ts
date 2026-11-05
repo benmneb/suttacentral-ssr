@@ -4,6 +4,7 @@ import { ISO_CODES, PITAKA_BASKETS } from '~/constants/iso-codes'
 import { hasLocale, loadLocale } from '~/i18n'
 import { getPreferredLanguage } from '~/utils/language'
 import { getLanguages } from '~/utils/languages'
+import { withRenderTime } from '~/utils/render-time'
 
 // Paths .net moved, so old links and bookmarks still land somewhere
 const MOVED: Record<string, string> = {
@@ -70,14 +71,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return context.redirect(target + context.url.search, 301)
   }
 
-  if (!Object.hasOwn(context.locals, 'renderTime')) {
-    Object.defineProperty(context.locals, 'renderTime', {
-      get() {
-        return ((performance.now() - startTime) / 1000).toFixed(2)
-      },
-    })
-  }
-
   // Pages translate as they render, so have the strings ready. English is
   // what `t` falls back to. The API has nothing to translate
   if (!path.startsWith('/api/')) {
@@ -89,7 +82,5 @@ export const onRequest = defineMiddleware(async (context, next) => {
     ])
   }
 
-  const response = await next()
-
-  return response
+  return withRenderTime(await next(), startTime)
 })

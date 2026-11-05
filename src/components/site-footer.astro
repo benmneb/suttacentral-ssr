@@ -2,9 +2,9 @@
 import { siteMetaData } from '~/constants/meta-data'
 import { SC_ORIGIN } from '~/constants/urls'
 import { t } from '~/i18n'
+import { RENDER_TIME } from '~/utils/render-time'
 
 const pathname = Astro.originPathname.replace(/\/$/, '') + Astro.url.search
-const renderTime = Astro.locals.renderTime
 
 const userLanguage = Astro.locals.userLanguage
 ---
@@ -15,7 +15,7 @@ const userLanguage = Astro.locals.userLanguage
     {t(userLanguage, 'footer:viewPageOn')}
     <a href={`${SC_ORIGIN}${pathname}`} rel="external">SuttaCentral.net</a>
   </p>
-  <p>{t(userLanguage, 'footer:renderedIn').replace('{time}', renderTime)}</p>
+  <p>{t(userLanguage, 'footer:renderedIn').replace('{time}', RENDER_TIME)}</p>
   <ul>
     <li>
       <a href={siteMetaData.source} rel="external"
