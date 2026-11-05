@@ -1384,6 +1384,10 @@ input[type='range'] {
   }
 }
 
+[popover]:is(#info, #parallels) {
+  outline-offset: 0;
+}
+
 @media only screen and (max-width: 600px) {
   [popover]:is(#info, #parallels) {
     background-color: light-dark(var(--offwhite-dim), var(--bg-alt-1));

@@ -2559,6 +2559,8 @@ const metadata = textMetadata(userLanguage, {
         removeEventListener('scroll', placeRows)
     })
 
+    const focusedBefore = new Map<HTMLElement, Element | null>()
+
     for (const id of ['info-button', 'parallels-button']) {
       const button = document.getElementById(id)
       const panel = document.getElementById(
@@ -2570,24 +2572,37 @@ const metadata = textMetadata(userLanguage, {
         if ((e as ToggleEvent).newState === 'open') {
           place()
           addEventListener('scroll', place, { passive: true })
-        } else removeEventListener('scroll', place)
+          return
+        }
+        removeEventListener('scroll', place)
+        if (!focusedBefore.has(panel)) return
+        const before = focusedBefore.get(panel)
+        focusedBefore.delete(panel)
+        const active = document.activeElement
+        if (active !== button && !panel.contains(active)) return
+        if (before instanceof HTMLElement && before !== document.body)
+          before.focus()
+        else if (active instanceof HTMLElement) active.blur()
       })
     }
 
     function togglePanel(id: string) {
+      const button = document.getElementById(id)
       const panel = document.getElementById(
-        document.getElementById(id)?.getAttribute('popovertarget') ?? ''
+        button?.getAttribute('popovertarget') ?? ''
       )
-      if (!panel?.showPopover) return
+      if (!button || !panel?.showPopover) return
       if (panel.matches(':popover-open')) return panel.hidePopover()
-      panel.showPopover()
-      const setting = [
-        ...panel.querySelectorAll<HTMLElement>('input, select'),
-      ].find(hasRoom)
-      if (setting) return setting.focus()
-      // Not its first link, which can be far enough down to scroll it
-      panel.tabIndex = -1
-      panel.focus()
+      const before = document.activeElement
+      // The source lets Tab go from the button into the panel, as after a click
+      panel.showPopover({ source: button })
+      if (panel !== viewsMenu) {
+        focusedBefore.set(panel, before)
+        return button.focus({ preventScroll: true })
+      }
+      ;[...panel.querySelectorAll<HTMLElement>('input, select')]
+        .find(hasRoom)
+        ?.focus()
     }
 
     // Like .net's toast: the menu comes up for a moment with just the rows a key
