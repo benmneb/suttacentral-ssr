@@ -1,11 +1,15 @@
 {
+  "offline:allReleases": "Kaikki julkaisut",
+  "offline:download": "Lataa",
   "offline:editionsDescription": "Kokonaisia käännöskirjoja ePub-, PDF- tai HTML-tiedostoina tai painettuina.",
   "offline:kiwixZim": "Kiwix ZIM",
   "offline:kiwixZimDescription": "Koko sivusto yhtenä tiedostona {kiwix}-sovellukselle, joka on ilmainen offline-lukija puhelimille, tableteille ja tietokoneille.",
+  "offline:latestRelease": "Versio {version}, päivitetty {date}",
   "offline:nativeApps": "Natiivisovellukset",
-  "offline:nativeAppsDescription": "Koko sivusto sovelluksena macOS-, Windows-, Linux- tai Android-laitteelle, ja se avautuu kuten mikä tahansa muu sovellus.",
+  "offline:nativeAppsDescription": "Koko sivusto asennettavana sovelluksena, joka avautuu kuten mikä tahansa muu sovellus.",
+  "offline:otherDownloads": "Muut lataukset",
   "offline:siteArchive": "Sivustoarkisto",
-  "offline:siteArchiveDescription": "Koko sivusto ladattavina HTML-tiedostoina, jotka toimivat millä tahansa tietokoneella tai älypuhelimella paikallisen verkkopalvelimen kanssa.",
+  "offline:siteArchiveDescription": "Koko sivusto ladattavina HTML-tiedostoina, jotka toimivat millä tahansa tietokoneella tai älypuhelimella paikallisen verkkopalvelimen kautta.",
   "offline:webApp": "Verkkosovellus (PWA)",
   "offline:webAppDescription": "Asenna SuttaCentral.net sovellukseksi ja säilytä valitsemasi tekstit luettaviksi ilman verkkoyhteyttä. Vaatii JavaScriptin ja ajantasaisen selaimen, ja asennus voi olla epäluotettava."
 }

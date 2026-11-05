@@ -1,11 +1,15 @@
 {
+  "offline:allReleases": "Tutte le versioni",
+  "offline:download": "Scarica",
   "offline:editionsDescription": "Interi libri di traduzioni, come file ePub, PDF o HTML, o in stampa.",
   "offline:kiwixZim": "Kiwix ZIM",
   "offline:kiwixZimDescription": "L’intero sito in un unico file per {kiwix}, il lettore offline gratuito per telefoni, tablet e computer.",
+  "offline:latestRelease": "Versione {version}, aggiornata il {date}",
   "offline:nativeApps": "App native",
-  "offline:nativeAppsDescription": "L’intero sito come app da installare su macOS, Windows, Linux o Android, che si apre come qualsiasi altra.",
+  "offline:nativeAppsDescription": "L’intero sito come app da installare, che si apre come qualsiasi altra.",
+  "offline:otherDownloads": "Altri download",
   "offline:siteArchive": "Archivio del sito",
-  "offline:siteArchiveDescription": "L’intero sito come semplici file HTML da scaricare, che funzionano su qualsiasi computer o smartphone con un server web locale.",
+  "offline:siteArchiveDescription": "L’intero sito come semplici file HTML da scaricare, che funzionano su qualsiasi computer o smartphone tramite un server web locale.",
   "offline:webApp": "App web (PWA)",
   "offline:webAppDescription": "Installa SuttaCentral.net come app e conserva i testi che scegli per leggerli offline. Richiede JavaScript e un browser aggiornato, e l’installazione può non essere affidabile."
 }

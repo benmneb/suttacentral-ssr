@@ -1,11 +1,15 @@
 {
+  "offline:allReleases": "Tất cả các bản phát hành",
+  "offline:download": "Tải xuống",
   "offline:editionsDescription": "Trọn bộ sách dịch, dưới dạng tệp ePub, PDF hoặc HTML, hoặc bản in.",
   "offline:kiwixZim": "Kiwix ZIM",
   "offline:kiwixZimDescription": "Toàn bộ trang web trong một tệp cho {kiwix}, trình đọc ngoại tuyến miễn phí cho điện thoại, máy tính bảng và máy tính.",
+  "offline:latestRelease": "Phiên bản {version}, cập nhật ngày {date}",
   "offline:nativeApps": "Ứng dụng gốc",
-  "offline:nativeAppsDescription": "Toàn bộ trang web dưới dạng ứng dụng để cài trên macOS, Windows, Linux hoặc Android, mở như mọi ứng dụng khác.",
+  "offline:nativeAppsDescription": "Toàn bộ trang web dưới dạng ứng dụng để cài đặt, mở như mọi ứng dụng khác.",
+  "offline:otherDownloads": "Tải xuống khác",
   "offline:siteArchive": "Bản lưu trữ trang web",
-  "offline:siteArchiveDescription": "Toàn bộ trang web dưới dạng tệp HTML thuần để tải về, chạy được trên mọi máy tính hoặc điện thoại thông minh có máy chủ web cục bộ.",
+  "offline:siteArchiveDescription": "Toàn bộ trang web dưới dạng tệp HTML thuần để tải về, chạy được trên mọi máy tính hoặc điện thoại thông minh qua máy chủ web cục bộ.",
   "offline:webApp": "Ứng dụng web (PWA)",
   "offline:webAppDescription": "Cài đặt SuttaCentral.net như một ứng dụng và lưu các văn bản bạn chọn để đọc ngoại tuyến. Cần JavaScript và trình duyệt cập nhật, và việc cài đặt có thể không ổn định."
 }

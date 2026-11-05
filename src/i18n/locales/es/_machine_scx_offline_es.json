@@ -1,11 +1,15 @@
 {
+  "offline:allReleases": "Todas las versiones",
+  "offline:download": "Descargar",
   "offline:editionsDescription": "Libros completos de traducciones, en archivos ePub, PDF o HTML, o impresos.",
   "offline:kiwixZim": "Kiwix ZIM",
   "offline:kiwixZimDescription": "Todo el sitio en un solo archivo para {kiwix}, el lector sin conexión gratuito para teléfonos, tabletas y ordenadores.",
+  "offline:latestRelease": "Versión {version}, actualizada el {date}",
   "offline:nativeApps": "Aplicaciones nativas",
-  "offline:nativeAppsDescription": "Todo el sitio como una aplicación para instalar en macOS, Windows, Linux o Android, que se abre como cualquier otra.",
+  "offline:nativeAppsDescription": "Todo el sitio como una aplicación para instalar, que se abre como cualquier otra.",
+  "offline:otherDownloads": "Otras descargas",
   "offline:siteArchive": "Archivo del sitio",
-  "offline:siteArchiveDescription": "Todo el sitio como archivos HTML sencillos para descargar, que funcionan en cualquier ordenador o teléfono inteligente con un servidor web local.",
+  "offline:siteArchiveDescription": "Todo el sitio como archivos HTML sencillos para descargar, que funcionan en cualquier ordenador o teléfono inteligente a través de un servidor web local.",
   "offline:webApp": "Aplicación web (PWA)",
   "offline:webAppDescription": "Instale SuttaCentral.net como aplicación y guarde los textos que elija para leerlos sin conexión. Necesita JavaScript y un navegador actualizado, y la instalación puede fallar."
 }

@@ -1,11 +1,15 @@
 {
+  "offline:allReleases": "Alle Versionen",
+  "offline:download": "Herunterladen",
   "offline:editionsDescription": "Ganze Bücher mit Übersetzungen als ePub-, PDF- oder HTML-Dateien oder gedruckt.",
   "offline:kiwixZim": "Kiwix ZIM",
   "offline:kiwixZimDescription": "Die ganze Website als eine Datei für {kiwix}, den kostenlosen Offline-Reader für Telefone, Tablets und Computer.",
+  "offline:latestRelease": "Version {version}, aktualisiert am {date}",
   "offline:nativeApps": "Native Apps",
-  "offline:nativeAppsDescription": "Die ganze Website als App zum Installieren unter macOS, Windows, Linux oder Android, die sich wie jede andere öffnen lässt.",
+  "offline:nativeAppsDescription": "Die ganze Website als App zum Installieren, die sich wie jede andere öffnen lässt.",
+  "offline:otherDownloads": "Weitere Downloads",
   "offline:siteArchive": "Website-Archiv",
-  "offline:siteArchiveDescription": "Die ganze Website als einfache HTML-Dateien zum Herunterladen, die auf jedem Computer oder Smartphone mit einem lokalen Webserver laufen.",
+  "offline:siteArchiveDescription": "Die ganze Website als einfache HTML-Dateien zum Herunterladen, die auf jedem Computer oder Smartphone über einen lokalen Webserver laufen.",
   "offline:webApp": "Web-App (PWA)",
   "offline:webAppDescription": "Installieren Sie SuttaCentral.net als App und behalten Sie die Texte Ihrer Wahl zum Offline-Lesen. Braucht JavaScript und einen aktuellen Browser, und die Installation klappt nicht immer zuverlässig."
 }

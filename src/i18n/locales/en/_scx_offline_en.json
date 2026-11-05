@@ -3,9 +3,13 @@
   "offline:webAppDescription": "Install SuttaCentral.net as an app and keep the texts you choose for reading offline. Needs JavaScript and an up to date browser, and can be unreliable to install.",
   "offline:editionsDescription": "Whole books of translations, as ePub, PDF or HTML files, or in print.",
   "offline:siteArchive": "Site archive",
-  "offline:siteArchiveDescription": "The whole site as plain HTML files to download, which work on any computer or smartphone with a local web server.",
+  "offline:siteArchiveDescription": "The whole site as plain HTML files to download, which work on any computer or smartphone via a local web server.",
   "offline:nativeApps": "Native apps",
-  "offline:nativeAppsDescription": "The whole site as an app to install on macOS, Windows, Linux or Android, which opens like any other.",
+  "offline:nativeAppsDescription": "The whole site as an app to install, which opens like any other.",
   "offline:kiwixZim": "Kiwix ZIM",
-  "offline:kiwixZimDescription": "The whole site as one file for {kiwix}, the free offline reader for phones, tablets and computers."
+  "offline:kiwixZimDescription": "The whole site as one file for {kiwix}, the free offline reader for phones, tablets and computers.",
+  "offline:latestRelease": "Version {version}, updated {date}",
+  "offline:allReleases": "All releases",
+  "offline:download": "Download",
+  "offline:otherDownloads": "Other downloads"
 }

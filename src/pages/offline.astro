@@ -1,24 +1,105 @@
 ---
+import '~/assets/details.css'
 import '~/assets/offline-icons.css'
 import Icon from '~/components/icon.astro'
-import { SC_ORIGIN } from '~/constants/urls'
+import type { IconName } from '~/constants/heroicons'
+import { SC_ORIGIN, SCX_STATIC_REPO } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { sitePageMetadata } from '~/utils/json-ld'
+import { getScxRelease, type AssetKind } from '~/utils/scx-release'
 
 const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'interface:offlineTitle')
 
-const scxStaticReleases =
-  'https://codeberg.org/benmneb/suttacentral-static/releases/latest'
+const scxReleases = `${SCX_STATIC_REPO}/releases`
+
+const release = await getScxRelease()
+
+const scxGroups = (
+  [
+    {
+      kind: 'archive',
+      icon: 'archiveBoxArrowDown',
+      title: t(userLanguage, 'offline:siteArchive'),
+      description: t(userLanguage, 'offline:siteArchiveDescription'),
+    },
+    {
+      kind: 'app',
+      icon: 'computerDesktop',
+      title: t(userLanguage, 'offline:nativeApps'),
+      description: t(userLanguage, 'offline:nativeAppsDescription'),
+    },
+    {
+      kind: 'kiwix',
+      icon: 'documentArrowDown',
+      title: t(userLanguage, 'offline:kiwixZim'),
+      description: t(userLanguage, 'offline:kiwixZimDescription', {
+        kiwix: '<a href="https://kiwix.org" rel="external">Kiwix</a>',
+      }),
+    },
+    {
+      kind: 'other',
+      icon: 'document',
+      title: t(userLanguage, 'offline:otherDownloads'),
+    },
+  ] satisfies {
+    kind: AssetKind
+    icon: IconName
+    title: string
+    description?: string
+  }[]
+)
+  .map(group => ({
+    ...group,
+    assets: release?.assets[group.kind] ?? [],
+    details: release?.details[group.kind] ?? [],
+  }))
+  .filter(({ assets }) => assets.length > 0)
+
+// A language code Intl doesnt know would throw
+function intl<T>(format: (locale?: string) => T): T {
+  try {
+    return format(userLanguage)
+  } catch {
+    return format()
+  }
+}
+
+function formatSize(bytes: number): string {
+  const [unit, value] =
+    bytes >= 1e9
+      ? ['gigabyte', bytes / 1e9]
+      : bytes >= 1e6
+        ? ['megabyte', bytes / 1e6]
+        : ['kilobyte', bytes / 1e3]
+  return intl(
+    locale =>
+      new Intl.NumberFormat(locale, {
+        style: 'unit',
+        unit,
+        maximumFractionDigits: unit === 'gigabyte' ? 1 : 0,
+      })
+  ).format(value as number)
+}
+
+const releaseInfo =
+  release &&
+  t(userLanguage, 'offline:latestRelease', {
+    version: release.version,
+    date: `<time datetime="${release.date.toISOString().slice(0, 10)}">${intl(
+      locale =>
+        new Intl.DateTimeFormat(locale, { dateStyle: 'long', timeZone: 'UTC' })
+    ).format(release.date)}</time>`,
+  })
 ---
 
 <Layout {...sitePageMetadata(userLanguage, '/offline', title)}>
   <main id="main">
     <article>
       <h1>{title}</h1>
-      <h2>SuttaCentral</h2>
+      <h2>SuttaCentral <a href={SC_ORIGIN}></a></h2>
       <ul>
         <li>
           <a href={`${SC_ORIGIN}/offline`} rel="external">
@@ -35,39 +116,58 @@ const scxStaticReleases =
           <p>{t(userLanguage, 'offline:editionsDescription')}</p>
         </li>
       </ul>
-      <h2 id="scx-offline">SuttaCentral Express</h2>
-      <ul>
-        <li>
-          <a href={scxStaticReleases}>
-            <Icon name="archiveBoxArrowDown" />
-            {t(userLanguage, 'offline:siteArchive')}
-          </a>
-          <p>{t(userLanguage, 'offline:siteArchiveDescription')}</p>
-        </li>
-        <li>
-          <a href={scxStaticReleases}>
-            <Icon name="computerDesktop" />
-            {t(userLanguage, 'offline:nativeApps')}
-          </a>
-          <p>{t(userLanguage, 'offline:nativeAppsDescription')}</p>
-        </li>
-        <li>
-          <a href={scxStaticReleases}>
-            <Icon name="documentArrowDown" />
-            {t(userLanguage, 'offline:kiwixZim')}
-          </a>
-          <p
-            set:html={t(userLanguage, 'offline:kiwixZimDescription', {
-              kiwix: '<a href="https://kiwix.org" rel="external">Kiwix</a>',
-            })}
-          />
-        </li>
-      </ul>
+      <h2 id="scx-offline">
+        SuttaCentral Express <a href="https://suttacentral.express"></a>
+      </h2>
+      <p class="release">
+        {release && <Fragment set:html={releaseInfo} />}
+      </p>
+      {
+        scxGroups.length > 0 && (
+          <ul class="release-assets">
+            {scxGroups.map(group => (
+              <li>
+                <h3>
+                  <Icon name={group.icon} />
+                  {group.title}
+                </h3>
+                {group.description && <p set:html={group.description} />}
+                <ul>
+                  {group.assets.map((asset, i) => (
+                    <li>
+                      <a
+                        href={asset.url}
+                        download
+                        aria-describedby={`scx-${group.kind}-${i}`}
+                      >
+                        {asset.platform ?? t(userLanguage, 'offline:download')}
+                      </a>{' '}
+                      <span id={`scx-${group.kind}-${i}`}>
+                        {asset.format}, {formatSize(asset.size)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                {group.details.map(html => (
+                  <Fragment set:html={html} />
+                ))}
+              </li>
+            ))}
+          </ul>
+        )
+      }
+      <p class="all-releases">
+        <a href={scxReleases}>{t(userLanguage, 'offline:allReleases')}</a>
+      </p>
     </article>
   </main>
 </Layout>
 
 <style>
+  h2 > a {
+    font-size: smaller;
+  }
+
   ul {
     list-style: none;
     padding: 0;
@@ -83,7 +183,7 @@ const scxStaticReleases =
     align-items: center;
   }
 
-  a > :global(.icon:first-child) {
+  :is(a, h3) > :global(.icon:first-child) {
     margin-inline-end: 0.375rem;
   }
 
@@ -91,5 +191,67 @@ const scxStaticReleases =
     margin: 0;
     padding-inline-start: calc(1em + 0.375rem);
     color: var(--text-color-secondary);
+
+    &.release,
+    &.all-releases {
+      padding: 0;
+    }
+  }
+
+  .release-assets > li {
+    > h3 {
+      display: flex;
+      align-items: center;
+      margin: 0;
+      font-size: inherit;
+      font-weight: inherit;
+    }
+
+    > ul,
+    > :global(details) {
+      padding-inline-start: calc(1em + 0.375rem);
+    }
+
+    > ul {
+      margin-block: 0.25rem;
+
+      > li + li {
+        margin-top: 0.25rem;
+      }
+
+      span {
+        color: var(--text-color-secondary);
+      }
+    }
+
+    > :global(details) {
+      ul {
+        padding-inline-start: 1.25rem;
+
+        > :global(li) {
+          list-style-type: disc;
+        }
+      }
+
+      /* Wrapped, as a scrolling <pre> would need a tabindex marked doesnt give it */
+      pre {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        padding: 0.5rem;
+        border-radius: var(--rounding);
+        background-color: var(--background-color-secondary);
+      }
+
+      code {
+        background-color: var(--background-color-secondary);
+        padding: 0.1rem 0.2rem;
+        border-radius: var(--rounding);
+      }
+    }
+  }
+
+  /* An #id, to outdo the external link icon's :is(main, aside, #site-pages) */
+  :global(#main a[href][download]::after) {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8.75 2.75a.75.75 0 0 0-1.5 0v5.69L5.03 6.22a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 0 0-1.06-1.06L8.75 8.44V2.75Z'/%3E %3Cpath d='M3.5 9.75a.75.75 0 0 0-1.5 0v1.5A2.75 2.75 0 0 0 4.75 14h6.5A2.75 2.75 0 0 0 14 11.25v-1.5a.75.75 0 0 0-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5Z'/%3E%3C/svg%3E");
   }
 </style>

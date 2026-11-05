@@ -1,11 +1,15 @@
 {
+  "offline:allReleases": "બધી આવૃત્તિઓ",
+  "offline:download": "ડાઉનલોડ કરો",
   "offline:editionsDescription": "અનુવાદોનાં આખાં પુસ્તકો, ePub, PDF કે HTML ફાઇલો તરીકે અથવા છાપેલાં.",
   "offline:kiwixZim": "Kiwix ZIM",
   "offline:kiwixZimDescription": "આખી સાઇટ {kiwix} માટે એક ફાઇલ તરીકે, જે ફોન, ટૅબ્લેટ અને કમ્પ્યુટર માટેનું મફત ઑફલાઇન રીડર છે.",
+  "offline:latestRelease": "આવૃત્તિ {version}, {date} ના રોજ અપડેટ",
   "offline:nativeApps": "નેટિવ ઍપ્સ",
-  "offline:nativeAppsDescription": "આખી સાઇટ macOS, Windows, Linux કે Android પર ઇન્સ્ટોલ કરવાની ઍપ તરીકે, જે બીજી કોઈપણ ઍપની જેમ ખૂલે છે.",
+  "offline:nativeAppsDescription": "આખી સાઇટ ઇન્સ્ટોલ કરવાની ઍપ તરીકે, જે બીજી કોઈપણ ઍપની જેમ ખૂલે છે.",
+  "offline:otherDownloads": "અન્ય ડાઉનલોડ",
   "offline:siteArchive": "સાઇટ આર્કાઇવ",
-  "offline:siteArchiveDescription": "આખી સાઇટ ડાઉનલોડ કરવા માટે સાદી HTML ફાઇલો તરીકે, જે સ્થાનિક વેબ સર્વર સાથે કોઈપણ કમ્પ્યુટર કે સ્માર્ટફોન પર ચાલે છે.",
+  "offline:siteArchiveDescription": "આખી સાઇટ ડાઉનલોડ કરવા માટે સાદી HTML ફાઇલો તરીકે, જે સ્થાનિક વેબ સર્વર દ્વારા કોઈપણ કમ્પ્યુટર કે સ્માર્ટફોન પર ચાલે છે.",
   "offline:webApp": "વેબ ઍપ (PWA)",
   "offline:webAppDescription": "SuttaCentral.net ને ઍપ તરીકે ઇન્સ્ટોલ કરો અને તમે પસંદ કરેલા ગ્રંથો ઑફલાઇન વાંચવા માટે રાખો. તેને JavaScript અને અદ્યતન બ્રાઉઝર જોઈએ, અને ઇન્સ્ટોલ કરવું ક્યારેક અવિશ્વસનીય હોઈ શકે."
 }
