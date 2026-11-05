@@ -13,20 +13,22 @@ const userLanguage = Astro.locals.userLanguage
   <p>{t(userLanguage, 'footer:tagline')}</p>
   <p>
     {t(userLanguage, 'footer:viewPageOn')}
-    <a href={`${SC_ORIGIN}${pathname}`}>SuttaCentral.net</a>
+    <a href={`${SC_ORIGIN}${pathname}`} rel="external">SuttaCentral.net</a>
   </p>
   <p>{t(userLanguage, 'footer:renderedIn').replace('{time}', renderTime)}</p>
   <ul>
     <li>
-      <a href={siteMetaData.source}>{t(userLanguage, 'footer:openSource')}</a>
+      <a href={siteMetaData.source} rel="external"
+        >{t(userLanguage, 'footer:openSource')}</a
+      >
     </li>
     <li>
-      <a href={siteMetaData.analytics}
+      <a href={siteMetaData.analytics} rel="external"
         >{t(userLanguage, 'footer:openAnalytics')}</a
       >
     </li>
     <li>
-      <a href={siteMetaData.accessibility}
+      <a href={siteMetaData.accessibility} rel="external"
         >{t(userLanguage, 'footer:accessibility')}</a
       >
     </li>

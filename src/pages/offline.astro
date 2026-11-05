@@ -12,6 +12,8 @@ import { getScxRelease, type AssetKind } from '~/utils/scx-release'
 const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'interface:offlineTitle')
+// An aria-label overrides the icon's alt text, so it carries it instead
+const externalLink = ` (${t(userLanguage, 'interface:externalLink')})`
 
 const scxReleases = `${SCX_STATIC_REPO}/releases`
 
@@ -99,7 +101,12 @@ const releaseInfo =
   <main id="main">
     <article>
       <h1>{title}</h1>
-      <h2>SuttaCentral <a href={SC_ORIGIN}></a></h2>
+      <h2>
+        SuttaCentral <a
+          href={SC_ORIGIN}
+          rel="external"
+          aria-label={`SuttaCentral.net${externalLink}`}></a>
+      </h2>
       <ul>
         <li>
           <a href={`${SC_ORIGIN}/offline`} rel="external">
@@ -117,7 +124,10 @@ const releaseInfo =
         </li>
       </ul>
       <h2 id="scx-offline">
-        SuttaCentral Express <a href="https://suttacentral.express"></a>
+        SuttaCentral Express <a
+          href="https://suttacentral.express"
+          rel="external"
+          aria-label={`SuttaCentral.express${externalLink}`}></a>
       </h2>
       <p class="release">
         {release && <Fragment set:html={releaseInfo} />}
@@ -157,7 +167,9 @@ const releaseInfo =
         )
       }
       <p class="all-releases">
-        <a href={scxReleases}>{t(userLanguage, 'offline:allReleases')}</a>
+        <a href={scxReleases} rel="external"
+          >{t(userLanguage, 'offline:allReleases')}</a
+        >
       </p>
     </article>
   </main>

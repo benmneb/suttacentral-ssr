@@ -313,9 +313,9 @@ const lookupTargetLang = availableLangs?.includes(userLanguage)
 // Not for the other languages, whose dictionaries come from elsewhere
 const lookupSource =
   rootLang === 'lzh'
-    ? '<a href="http://www.buddhism-dict.net/ddb/">Digital Dictionary of Buddhism</a>'
+    ? '<a href="http://www.buddhism-dict.net/ddb/" rel="external">Digital Dictionary of Buddhism</a>'
     : lookupTargetLang === 'en'
-      ? '<a href="https://digitalpalidictionary.github.io/">Digital Pāḷi Dictionary</a>'
+      ? '<a href="https://digitalpalidictionary.github.io/" rel="external">Digital Pāḷi Dictionary</a>'
       : null
 
 function isHeadingHTML(html: string): boolean {

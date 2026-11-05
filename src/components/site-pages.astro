@@ -23,7 +23,12 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '')
               {currentPath === href ? (
                 <span aria-current="page">{t(userLanguage, label)}</span>
               ) : (
-                <a href={href}>{t(userLanguage, label)}</a>
+                <a
+                  href={href}
+                  rel={href.startsWith('http') ? 'external' : undefined}
+                >
+                  {t(userLanguage, label)}
+                </a>
               )}
             </li>
           ))}

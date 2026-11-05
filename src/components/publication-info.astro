@@ -20,6 +20,9 @@ type Row = {
 const filled = (value: unknown) =>
   value != null && value !== false && String(value).trim() !== ''
 
+const external = (href: string) =>
+  /^https?:/.test(href) ? 'external' : undefined
+
 const sections = (
   [
     [
@@ -139,7 +142,9 @@ const sections = (
                 <dt>{t(userLanguage, label)}</dt>
                 <dd property={property}>
                   {type === 'link' ? (
-                    <a href={value}>{value}</a>
+                    <a href={value} rel={external(value)}>
+                      {value}
+                    </a>
                   ) : type === 'date' ? (
                     <time datetime={value}>{value}</time>
                   ) : (
@@ -165,7 +170,9 @@ const sections = (
         )}
         {filled(license.license_url) && (
           <p>
-            <a href={license.license_url}>{license.license_url}</a>
+            <a href={license.license_url} rel={external(license.license_url)}>
+              {license.license_url}
+            </a>
           </p>
         )}
         {filled(license.license_statement) && (
