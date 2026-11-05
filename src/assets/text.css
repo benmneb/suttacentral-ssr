@@ -2291,6 +2291,11 @@ aside {
         right: anchor(right);
       }
 
+      #views-menu.detached:popover-open {
+        top: var(--past-tts, 0px);
+        position-visibility: always;
+      }
+
       #contents-menu:popover-open {
         min-width: anchor-size(width);
       }

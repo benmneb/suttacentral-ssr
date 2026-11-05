@@ -1340,10 +1340,10 @@ const metadata = textMetadata(userLanguage, {
                     <kbd
                       aria-hidden="true"
                       title={t(userLanguage, 'viewoption:hotkeyToggle', {
-                        key: 'O',
+                        key: 'U',
                       })}
                     >
-                      O
+                      U
                     </kbd>
                   </label>
                   <input
@@ -2207,8 +2207,9 @@ const metadata = textMetadata(userLanguage, {
     /**
      * View Settings and Listen Hotkeys
      *
-     * Toggles view settings from the keyboard, unless that's turned off, and
-     * keeps the reading position when a view setting changes.
+     * Toggles view settings and opens their menu from the keyboard, unless
+     * that's turned off, and keeps the reading position when a view setting
+     * changes.
      * Unlike accounting for this with notes view, this layout shift fix
      * is not possible in CSS without a big refactor, so it's handled here.
      * Also lets Esc hide the menus and panels hovering shows, and titles each
@@ -2224,7 +2225,7 @@ const metadata = textMetadata(userLanguage, {
       c: ['simplifier'],
       r: ['segmenter'],
       i: ['illustrator'],
-      o: ['highlighter'],
+      u: ['highlighter'],
       p: ['paralleler'],
       s: ['positioner'],
     }
@@ -2495,8 +2496,10 @@ const metadata = textMetadata(userLanguage, {
       return new Map([...inputs].map(el => [el, el.checked]))
     }
 
+    let viewsOpen = false
+
     function clearShownRows() {
-      removeEventListener('scroll', placeRows)
+      if (!viewsOpen) removeEventListener('scroll', placeRows)
       viewsMenu?.style.removeProperty('--past-tts')
       for (const menu of [viewsMenu, listenMenu]) {
         menu?.classList.remove('toast')
@@ -2518,6 +2521,25 @@ const metadata = textMetadata(userLanguage, {
         'detached',
         bottom < 0 || top > document.documentElement.clientHeight
       )
+    }
+
+    // Not on toggle, which comes after it has shown where the bar was
+    viewsMenu?.addEventListener('beforetoggle', e => {
+      viewsOpen = (e as ToggleEvent).newState === 'open'
+      if (viewsOpen) {
+        placeRows()
+        addEventListener('scroll', placeRows, { passive: true })
+      } else if (!viewsMenu?.classList.contains('toast'))
+        removeEventListener('scroll', placeRows)
+    })
+
+    function toggleViewsMenu() {
+      if (!viewsMenu) return
+      if (viewsOpen) return viewsMenu.hidePopover()
+      viewsMenu.showPopover?.()
+      ;[...viewsMenu.querySelectorAll<HTMLElement>('input, select')]
+        .find(hasRoom)
+        ?.focus()
     }
 
     // Like .net's toast: the menu comes up for a moment with just the rows a key
@@ -2609,6 +2631,7 @@ const metadata = textMetadata(userLanguage, {
     const finePointer = matchMedia('(any-pointer: fine)')
 
     const shortcuts = [
+      ['o', 'views-button'],
       ...Object.entries(VIEW_SETTINGS).map(([key, ids]) => [key, ids[0]]),
       ...Object.entries(SUB_SETTINGS),
       ...Object.entries(LISTEN_CONTROLS),
@@ -2643,7 +2666,8 @@ const metadata = textMetadata(userLanguage, {
       )
         return
       const key = e.key.toLowerCase()
-      if (VIEW_SETTINGS[key] || SUB_SETTINGS[key]) {
+      if (key === 'o') toggleViewsMenu()
+      else if (VIEW_SETTINGS[key] || SUB_SETTINGS[key]) {
         const before = checkedStates()
         if (VIEW_SETTINGS[key]) cycle(VIEW_SETTINGS[key])
         else toggleSub(SUB_SETTINGS[key])
