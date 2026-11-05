@@ -1311,10 +1311,10 @@ const metadata = textMetadata(userLanguage, {
                     <kbd
                       aria-hidden="true"
                       title={t(userLanguage, 'viewoption:hotkeyToggle', {
-                        key: 'I',
+                        key: 'G',
                       })}
                     >
-                      I
+                      G
                     </kbd>
                   </label>
                   <input
@@ -1367,10 +1367,10 @@ const metadata = textMetadata(userLanguage, {
                     <kbd
                       aria-hidden="true"
                       title={t(userLanguage, 'viewoption:hotkeyToggle', {
-                        key: 'P',
+                        key: 'X',
                       })}
                     >
-                      P
+                      X
                     </kbd>
                   </label>
                   <input
@@ -1518,10 +1518,10 @@ const metadata = textMetadata(userLanguage, {
                 <kbd
                   aria-hidden="true"
                   title={t(userLanguage, 'viewoption:hotkeyToggle', {
-                    key: 'S',
+                    key: 'B',
                   })}
                 >
-                  S
+                  B
                 </kbd>
               </label>
               <input
@@ -2207,15 +2207,21 @@ const metadata = textMetadata(userLanguage, {
     /**
      * View Settings and Listen Hotkeys
      *
-     * Toggles view settings and opens their menu from the keyboard, unless
-     * that's turned off, and keeps the reading position when a view setting
-     * changes.
+     * Toggles view settings and opens the bar's menus and panels from the
+     * keyboard, unless that's turned off, and keeps the reading position when a
+     * view setting changes.
      * Unlike accounting for this with notes view, this layout shift fix
      * is not possible in CSS without a big refactor, so it's handled here.
      * Also lets Esc hide the menus and panels hovering shows, and titles each
      * highlighting line.
      */
     'use strict'
+
+    const PANELS = {
+      i: 'info-button',
+      o: 'views-button',
+      p: 'parallels-button',
+    }
 
     const VIEW_SETTINGS = {
       n: ['commenter', 'commenter-inline', 'commenter-side'],
@@ -2224,10 +2230,10 @@ const metadata = textMetadata(userLanguage, {
       d: ['rooter-look-up'],
       c: ['simplifier'],
       r: ['segmenter'],
-      i: ['illustrator'],
+      g: ['illustrator'],
       u: ['highlighter'],
-      p: ['paralleler'],
-      s: ['positioner'],
+      x: ['paralleler'],
+      b: ['positioner'],
     }
 
     // One turned on turns on what it's under too, or the key would do nothing
@@ -2514,13 +2520,16 @@ const metadata = textMetadata(userLanguage, {
       rowsTimer = setTimeout(clearShownRows, 1500)
     }
 
-    function placeRows() {
-      if (!viewsMenu || !viewsButton) return
-      const { top, bottom } = viewsButton.getBoundingClientRect()
-      viewsMenu.classList.toggle(
+    function detach(panel: HTMLElement, button: HTMLElement) {
+      const { top, bottom } = button.getBoundingClientRect()
+      panel.classList.toggle(
         'detached',
         bottom < 0 || top > document.documentElement.clientHeight
       )
+    }
+
+    function placeRows() {
+      if (viewsMenu && viewsButton) detach(viewsMenu, viewsButton)
     }
 
     // Not on toggle, which comes after it has shown where the bar was
@@ -2533,13 +2542,35 @@ const metadata = textMetadata(userLanguage, {
         removeEventListener('scroll', placeRows)
     })
 
-    function toggleViewsMenu() {
-      if (!viewsMenu) return
-      if (viewsOpen) return viewsMenu.hidePopover()
-      viewsMenu.showPopover?.()
-      ;[...viewsMenu.querySelectorAll<HTMLElement>('input, select')]
-        .find(hasRoom)
-        ?.focus()
+    for (const id of ['info-button', 'parallels-button']) {
+      const button = document.getElementById(id)
+      const panel = document.getElementById(
+        button?.getAttribute('popovertarget') ?? ''
+      )
+      if (!button || !panel) continue
+      const place = () => detach(panel, button)
+      panel.addEventListener('beforetoggle', e => {
+        if ((e as ToggleEvent).newState === 'open') {
+          place()
+          addEventListener('scroll', place, { passive: true })
+        } else removeEventListener('scroll', place)
+      })
+    }
+
+    function togglePanel(id: string) {
+      const panel = document.getElementById(
+        document.getElementById(id)?.getAttribute('popovertarget') ?? ''
+      )
+      if (!panel?.showPopover) return
+      if (panel.matches(':popover-open')) return panel.hidePopover()
+      panel.showPopover()
+      const setting = [
+        ...panel.querySelectorAll<HTMLElement>('input, select'),
+      ].find(hasRoom)
+      if (setting) return setting.focus()
+      // Not its first link, which can be far enough down to scroll it
+      panel.tabIndex = -1
+      panel.focus()
     }
 
     // Like .net's toast: the menu comes up for a moment with just the rows a key
@@ -2631,7 +2662,7 @@ const metadata = textMetadata(userLanguage, {
     const finePointer = matchMedia('(any-pointer: fine)')
 
     const shortcuts = [
-      ['o', 'views-button'],
+      ...Object.entries(PANELS),
       ...Object.entries(VIEW_SETTINGS).map(([key, ids]) => [key, ids[0]]),
       ...Object.entries(SUB_SETTINGS),
       ...Object.entries(LISTEN_CONTROLS),
@@ -2666,7 +2697,7 @@ const metadata = textMetadata(userLanguage, {
       )
         return
       const key = e.key.toLowerCase()
-      if (key === 'o') toggleViewsMenu()
+      if (PANELS[key]) togglePanel(PANELS[key])
       else if (VIEW_SETTINGS[key] || SUB_SETTINGS[key]) {
         const before = checkedStates()
         if (VIEW_SETTINGS[key]) cycle(VIEW_SETTINGS[key])

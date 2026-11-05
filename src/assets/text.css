@@ -1404,6 +1404,11 @@ input[type='range'] {
     box-shadow: 0 0.6rem 1rem -0.4rem var(--shadow-color);
   }
 
+  [popover]:is(#info, #parallels).detached:popover-open {
+    top: var(--past-tts, 0px);
+    position-visibility: always;
+  }
+
   @media (hover: hover) {
     aside:has(#info-button:hover) ~ main #info:not(.dismissed),
     aside:has(#parallels-button:hover) ~ main #parallels:not(.dismissed),
@@ -2480,7 +2485,7 @@ aside {
     aside
       fieldset
       :is(#contents-menu, #views-menu, #listen-menu):not(.detached),
-    [popover]:is(#info, #parallels) {
+    [popover]:is(#info, #parallels):not(.detached) {
       position: fixed;
       inset: auto;
       position-area: bottom span-left;
@@ -2494,7 +2499,7 @@ aside {
     }
 
     /* Less their padding, as max-height is the content box's */
-    [popover]:is(#info, #parallels) {
+    [popover]:is(#info, #parallels):not(.detached) {
       max-height: calc(100% - var(--past-tts, 0px) - 2.5rem);
     }
   }
