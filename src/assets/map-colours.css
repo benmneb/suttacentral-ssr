@@ -10,4 +10,8 @@
   --map-marker-green: light-dark(#3b763b, var(--aqua));
   --map-marker-grey: light-dark(#717171, var(--gray-dim));
   --map-marker-red: light-dark(#b30309, var(--red));
+
+  @supports (color: color-mix(in srgb, red, red)) {
+    --map-river: color-mix(in srgb, var(--blue) 45%, var(--map-land));
+  }
 }

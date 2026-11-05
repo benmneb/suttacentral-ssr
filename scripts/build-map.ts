@@ -421,7 +421,7 @@ const svg = [
   }),
   `<path id="land" style="fill: var(--map-land); stroke: var(--map-coast); stroke-width: 0.75px; ${LINE}" d="${areas(land)}"/>`,
   `<path id="borders" style="fill: none; stroke: var(--map-coast); stroke-width: 0.5px; stroke-dasharray: 4 3; ${LINE}" d="${lines(borders)}"/>`,
-  `<path id="rivers" style="fill: none; stroke: var(--map-river); stroke-width: 1px; ${LINE}" d="${lines(rivers)}"/>`,
+  `<path id="rivers" style="fill: none; stroke: var(--map-river); stroke-width: 0.75px; ${LINE}" d="${lines(rivers)}"/>`,
   ...outlines.map(
     ({ id, shape }) =>
       `<path id="${id.replace('place', 'shape')}" style="${LINE}" d="${shape.d}"/>`
