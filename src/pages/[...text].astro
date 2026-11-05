@@ -1357,10 +1357,10 @@ const metadata = textMetadata(userLanguage, {
                     <kbd
                       aria-hidden="true"
                       title={t(userLanguage, 'viewoption:hotkeyToggle', {
-                        key: 'U',
+                        key: 'Z',
                       })}
                     >
-                      U
+                      Z
                     </kbd>
                   </label>
                   <input
@@ -2235,9 +2235,11 @@ const metadata = textMetadata(userLanguage, {
     'use strict'
 
     const PANELS = {
+      u: 'contents-button',
       i: 'info-button',
       o: 'views-button',
       p: 'parallels-button',
+      '[': 'listen-menu-button',
     }
 
     const VIEW_SETTINGS = {
@@ -2248,7 +2250,7 @@ const metadata = textMetadata(userLanguage, {
       c: ['simplifier'],
       r: ['segmenter'],
       g: ['illustrator'],
-      u: ['highlighter'],
+      z: ['highlighter'],
       x: ['paralleler'],
       b: ['positioner'],
     }
@@ -2561,7 +2563,12 @@ const metadata = textMetadata(userLanguage, {
 
     const focusedBefore = new Map<HTMLElement, Element | null>()
 
-    for (const id of ['info-button', 'parallels-button']) {
+    for (const id of [
+      'contents-button',
+      'info-button',
+      'parallels-button',
+      'listen-menu-button',
+    ]) {
       const button = document.getElementById(id)
       const panel = document.getElementById(
         button?.getAttribute('popovertarget') ?? ''

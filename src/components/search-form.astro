@@ -283,7 +283,7 @@ const userLanguage = Astro.locals.userLanguage
   // As on .net, unless a text's Hot keys setting is off
   function hotkey(event: KeyboardEvent) {
     if (event.metaKey || event.ctrlKey || event.altKey) return false
-    if (!['/', 's', 'S'].includes(event.key)) return false
+    if (!['/', 's', 'S', ']'].includes(event.key)) return false
     const shortcutter = document.getElementById('shortcutter')
     if (shortcutter instanceof HTMLInputElement && !shortcutter.checked)
       return false
