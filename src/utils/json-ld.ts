@@ -10,6 +10,7 @@ import {
 } from '~/utils/strings'
 
 interface Breadcrumb {
+  uid?: string
   url?: string
   title: string
 }
@@ -138,7 +139,8 @@ export function breadcrumbList(
   const items = [
     { title: t(locale, 'interface:home'), url: '/' },
     ...crumbs.map((crumb, i) => ({
-      title: crumb.title,
+      // The API leaves some untitled, eg t765-dvikavarga-1
+      title: crumb.title || crumb.uid || '',
       url: i === crumbs.length - 1 ? path : crumb.url,
     })),
   ].filter(crumb => crumb.url)

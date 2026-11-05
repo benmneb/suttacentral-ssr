@@ -7,6 +7,7 @@ import map from '~/constants/map.json'
 import { SC_API, SC_ORIGIN } from '~/constants/urls'
 import { t } from '~/i18n'
 import { langTag } from '~/utils/language'
+import { mendNcped, tidyDictionaryHtml } from '~/utils/dictionary-html'
 import { closeHeadingGaps, defineHref } from '~/utils/strings'
 import Layout from '~/layouts/Layout.astro'
 import { defineMetadata } from '~/utils/json-ld'
@@ -59,9 +60,9 @@ function splitAtMap(html: string) {
 // Each id once on the page, as PTS gives each of a word's homonyms the word as its id, eg ambho
 const ids = new Set<string>()
 
-/** An entry's HTML with no type='α', which isn't a list type HTML has, no id already used and no heading gaps */
+/** An entry's HTML with its slips mended, no type='α', which isn't a list type HTML has, no id already used and no heading gaps */
 function tidyEntry(html: string) {
-  return closeHeadingGaps(html)
+  return closeHeadingGaps(tidyDictionaryHtml(html))
     .replaceAll(SC_ORIGIN, '')
     .replaceAll(" type='α'", '')
     .replace(/ id=(['"])(.*?)\1/g, (match, _, id) =>
@@ -74,7 +75,7 @@ const PARTS = ['grammar', 'html', 'definition', 'xr', 'pronunciation'] as const
 
 const entries = dictionaryData.map((entry, i) => {
   const parts = {
-    ...entry,
+    ...(entry.dictname === 'ncped' ? mendNcped(entry) : entry),
     html: entry.text && splitAtMap(tidyEntry(entry.text)),
   }
   return {
@@ -308,6 +309,15 @@ const dictionaryCount = t(
 
         dd > ol {
           padding-left: 1rem;
+        }
+
+        /* A dictionary's dl split where it named a term twice, so read as one */
+        :global(dd > dl:has(+ dl)) {
+          margin-bottom: 0;
+        }
+
+        :global(dd > dl + dl) {
+          margin-top: 0;
         }
       }
 

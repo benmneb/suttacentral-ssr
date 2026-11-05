@@ -18,7 +18,7 @@ export const UNLISTED_PAGES = ['/search?query=metta', MISSING_PAGE]
 export const SAMPLE_PAGES = [
   '/',
   // Texts: segmented, long, range, legacy, vinaya, root Pāli and Chinese, Pāli
-  // in another script
+  // in another script, and some with markup slips in .net's data
   '/mn1/en/sujato',
   '/mn10/en/sujato',
   '/dn16/en/sujato',
@@ -31,6 +31,10 @@ export const SAMPLE_PAGES = [
   '/mn1/pli/ms',
   '/ma1/lzh/sct',
   '/mn1/en/sujato?script=Sinhala',
+  '/an1.378-393/en/sujato',
+  '/patthana1.8/en/narada',
+  '/sn45.33/en/sujato',
+  '/t765.63/lzh/sct',
   // Navigation
   '/pitaka/sutta',
   '/pitaka/sutta/middle/mn',
@@ -38,6 +42,8 @@ export const SAMPLE_PAGES = [
   '/mn-mulapariyayavagga',
   '/mn1',
   '/an1.1-10',
+  // A chapter the API calls a leaf
+  '/lzh-mu-bi-vb-pd',
   // Site pages
   '/abbreviations',
   '/abhidhamma-guide-sujato',
@@ -71,6 +77,7 @@ export const SAMPLE_PAGES = [
   '/vinaya-guide-brahmali',
   '/define/r%C4%81jagaha',
   '/define/dhamma',
+  '/define/vejayanta',
   // In another language
   '/?lang=de',
   '/mn1/en/sujato?lang=de',

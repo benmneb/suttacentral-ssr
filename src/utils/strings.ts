@@ -38,12 +38,14 @@ export function languageName(name: string): string {
 /**
  * A segment's text with bilara's own tags as HTML: <supplied> and <unclear> as
  * the classes legacy texts use, and <j>, which starts a verse's next
- * half-line, as a span closed at the segment's end
+ * half-line, as a span closed at the segment's end. Drops the <reference> and
+ * empty <root> left in sf36:70.27, whose reference is in its references too
  */
 export function bilaraMarkup(text: string): string {
   if (!text?.includes('<')) return text
   let joins = 0
   const html = text
+    .replace(/<reference>[^<]*<\/reference>|<root><\/root>/g, '')
     .replace(/<j>/g, () => {
       joins++
       return '<span class="j">'
@@ -52,6 +54,230 @@ export function bilaraMarkup(text: string): string {
       close ? '</span>' : `<span class="${tag}">`
     )
   return html + '</span>'.repeat(joins)
+}
+
+type BilaraData = {
+  html_text?: Record<string, string>
+  keys_order?: string[]
+}
+
+// Slips in bilara html, as a text's segments joined by \0 so one can span two
+const HTML_SLIPS: [RegExp, string][] = [
+  // vb16's, where every other text has data-counter
+  [/<p counter=/g, '<p data-counter='],
+  // sa1's header list, which its title would be in
+  [/(<header><ul>(?:(?!<\/ul>)[^])*?)(?=<h1)/g, '$1</ul>'],
+  // pli-tv-bu-vb-np10's rule between two items, which a list can't have
+  [/<\/dd>(\0)<hr>/g, '<hr></dd>$1'],
+  // t765's byline, a list item after the header, as the header's last line
+  [
+    /<\/header>(\0)<li class='subheading'>\{\}<\/li>/g,
+    "$1<p class='subheading'>{}</p></header>",
+  ],
+]
+
+const TAGS = /<(\/?)([a-z][a-z0-9]*)\b[^>]*>/g
+const VOID_TAGS = /^(?:area|br|col|embed|hr|img|input|link|meta|source|wbr)$/
+
+/**
+ * A segmented text's html, in place, with `HTML_SLIPS` mended and any end tag
+ * with nothing open to end dropped, as a browser would, eg t765.63's verses,
+ * which end `</span></p></blockquote>` but open only the <p>. Its articles and
+ * sections with no heading of their own become divs, eg dhp4 in dhp1-20, under
+ * dhp3's title, every text of an1.378-393 and the Vinaya's marked passages, eg
+ * <section class='kamma'>, and it closes the article Taishō texts leave open
+ */
+export function tidySegmentedHtml(bilaraData: BilaraData) {
+  const html = bilaraData.html_text
+  const keys = bilaraData.keys_order
+  if (!html || !keys?.length) return
+  const joined = keys.map(key => html[key] ?? '').join('\0')
+  let tidied = joined
+  for (const [slip, mend] of HTML_SLIPS) tidied = tidied.replace(slip, mend)
+
+  type Element = { name: string; at: number; titled: boolean }
+  const open: Element[] = []
+  // Each change as where it starts, where it ends and what goes there
+  const edits: [number, number, string][] = []
+  const isSectioning = (name: string) =>
+    name === 'article' || name === 'section'
+  const unsection = ({ name, at }: Element) =>
+    edits.push([at, at + name.length + 1, '<div'])
+  for (const match of tidied.matchAll(TAGS)) {
+    const [tag, close, name] = match
+    if (VOID_TAGS.test(name)) continue
+    if (!close) {
+      open.push({ name, at: match.index, titled: false })
+      // As the validator counts them, a heading in a nested section isn't the outer one's
+      if (name[0] === 'h' && /^h[1-6]$/.test(name)) {
+        const section = open.findLast(element => isSectioning(element.name))
+        if (section) section.titled = true
+      }
+      continue
+    }
+    const i = open.findLastIndex(element => element.name === name)
+    if (i === -1) {
+      edits.push([match.index, match.index + tag.length, ''])
+      continue
+    }
+    const element = open[i]
+    open.length = i
+    if (isSectioning(name) && !element.titled) {
+      unsection(element)
+      edits.push([match.index, match.index + name.length + 2, '</div'])
+    }
+  }
+  let end = ''
+  for (const element of open.reverse()) {
+    if (!isSectioning(element.name)) continue
+    if (!element.titled) unsection(element)
+    end += `</${element.titled ? element.name : 'div'}>`
+  }
+  if (edits.length) {
+    let from = 0
+    let rebuilt = ''
+    for (const [start, stop, text] of edits.sort(([a], [b]) => a - b)) {
+      rebuilt += tidied.slice(from, start) + text
+      from = stop
+    }
+    tidied = rebuilt + tidied.slice(from)
+  }
+  tidied += end
+  if (tidied === joined) return
+  tidied.split('\0').forEach((text, i) => {
+    if (text !== (html[keys[i]] ?? '')) html[keys[i]] = text
+  })
+}
+
+const LEGACY_TOKENS = /<(\/?)([a-z][a-z0-9]*)\b[^>]*>|<![^>]*>|[^<]+|</g
+const BLOCK_TAGS =
+  /^(?:address|article|aside|blockquote|div|dl|figure|footer|h[1-6]|header|hr|nav|p|pre|section|table)$/
+// Anything but another item or the list's end after an item's end
+const AFTER_ITEM = /<\/li>\s*(?:[^\s<]|<(?!\/?(?:li|ol|ul)\b))/
+
+/** Might `tidyLists` change it? Far quicker to answer than running it */
+function hasListSlips(html: string): boolean {
+  const count = (pattern: RegExp) => html.match(pattern)?.length ?? 0
+  return AFTER_ITEM.test(html) || count(/<[ou]l\b/g) !== count(/<\/[ou]l>/g)
+}
+
+/**
+ * A legacy text with its slips mended: a list with what only an item can hold
+ * (`tidyLists`), a stray comma among a tag's attributes, eg patthana1.23's
+ * `<ol type="1", start="5">`, a URL with %7C for every /, eg sf81's, and an
+ * empty link, eg kv1.1's `<a class='pc' id='pc8' href='#pc8'></a>`, which .net
+ * fills only with paragraph numbers on, made an anchor
+ */
+export function tidyLegacyHtml(html: string): string {
+  let tidied = hasListSlips(html) ? tidyLists(html) : html
+  tidied = tidied
+    .replace(/(<[a-z][^<>]*?['"])\s*,(?=\s)/g, '$1')
+    .replace(/(<a\b[^>]*?)\s+href=(['"])[^'"]*\2([^>]*>\s*<\/a>)/g, '$1$3')
+  if (!tidied.includes('%7C')) return tidied
+  return tidied.replace(
+    /\bhref=(['"])http:%7C%7C([^'"]*)/g,
+    (_, quote, rest) => `href=${quote}http://${rest.replaceAll('%7C', '/')}`
+  )
+}
+
+/**
+ * Lists with only items in them. What follows an item's end tag that isn't
+ * another item goes back into it, as a nested list or a sentence after a stray
+ * </li> was meant to, and a heading or paragraph ends a list left open, eg in
+ * patthana1.8/en/narada. An end tag with nothing open to end goes
+ */
+function tidyLists(html: string): string {
+  const open: string[] = []
+  const out: string[] = []
+  const inList = () => /^[ou]l$/.test(open.at(-1) ?? '')
+  let itemEnd = -1
+  for (const [token, close, name] of html.matchAll(LEGACY_TOKENS)) {
+    if (!name && (!token.trim() || token.startsWith('<!'))) {
+      out.push(token)
+      continue
+    }
+    if (inList() && !close && name !== 'li') {
+      if (BLOCK_TAGS.test(name)) {
+        while (inList()) out.push(`</${open.pop()}>`)
+      } else if (itemEnd !== -1) {
+        out[itemEnd] = ''
+        open.push('li')
+      }
+    }
+    itemEnd = close && name === 'li' && open.at(-1) === 'li' ? out.length : -1
+    out.push(token)
+    if (!name || VOID_TAGS.test(name)) continue
+    if (close) {
+      const i = open.lastIndexOf(name)
+      if (i === -1) out[out.length - 1] = ''
+      else open.length = i
+    } else {
+      // An item, or a paragraph, ends the one before it
+      if (/^(?:li|p)$/.test(name) && open.at(-1) === name) open.pop()
+      open.push(name)
+    }
+  }
+  return out.join('')
+}
+
+const BRACKETED_LINK =
+  /<a href=(['"])([^'"#]*)#([^'"]*[[\]][^'"]*)\1>([^<]*)<\/a>/g
+
+/**
+ * A note with each link that has square brackets in it split into the
+ * Markdown links run together in it, eg SN 45.33's "[SN 47.33:1.1],
+ * [SN 51.2:1.1]" as one link to #1.1], [sn51.2:1.1. The first goes to its own
+ * text, the others to the "<uid>:<segment>" each names
+ */
+export function splitBracketedLinks(html: string): string {
+  if (!html.includes('[') && !html.includes(']')) return html
+  return html.replace(
+    BRACKETED_LINK,
+    (
+      match: string,
+      quote: string,
+      url: string,
+      anchor: string,
+      text: string
+    ) => {
+      const anchors = anchor.split(/\]([^[]*)\[/)
+      const texts = text.split(/\][^[]*\[/)
+      if (anchors.length !== texts.length * 2 - 1) return match
+      const unbracket = (part: string) => part.replace(/[[\]]/g, '')
+      return anchors
+        .map((part, i) => {
+          if (i % 2) return part
+          const target = unbracket(part)
+          const [uid, segment] = i ? target.split(':') : [null, target]
+          const href = uid ? url.replace(/[^/]+(?=\/[a-z]+\/[^/]+$)/, uid) : url
+          return `<a href=${quote}${href}#${segment}${quote}>${unbracket(texts[i / 2])}</a>`
+        })
+        .join('')
+    }
+  )
+}
+
+// The Private Use Area characters in the API's texts, which no font the site uses has
+const PRIVATE_USE: Record<string, string> = {
+  // Word's Symbol font angle brackets, in sa107/en/analayo
+  '': '⟨',
+  '': '⟩',
+  // pdhp414's ṛ
+  '': 'ṛ',
+  // CBETA's gaiji CB00595, CB00596 and CB02213 in Taishō texts, as CBETA normalises them
+  '\u{F0253}': '麨',
+  '\u{F0254}': '䴵',
+  '\u{F08A5}': '爆',
+}
+const PRIVATE_USE_PATTERN = new RegExp(
+  `[${Object.keys(PRIVATE_USE).join('')}]`,
+  'gu'
+)
+
+/** A text with the Private Use Area characters the API has swapped for real ones */
+export function swapPrivateUse(text: string): string {
+  if (!text) return text
+  return text.replace(PRIVATE_USE_PATTERN, char => PRIVATE_USE[char])
 }
 
 /**
@@ -84,33 +310,46 @@ export function closeHeadingGaps(html: string): string {
   })
 }
 
+const SECTIONS_AND_HEADINGS =
+  /<(\/?)(section|article)\b|<(h[1-6])\b[^>]*>((?:(?!<\/h[1-6]>)[\s\S])*)<\/\3>/g
+
 /**
- * Headings with no text unwrapped, and a section one of them opens made a div,
- * as is one that opens with a paragraph, eg the Vinaya's `<section class='suttanta'>`.
- * On a root text's page these are headings only translations fill, eg
- * /ma1/lzh/sct and /pli-tv-bu-vb-pj1/pli/ms
+ * Headings with no text unwrapped, and a section left with none of its own
+ * made a div, as is one that never had one, eg a legacy text's. On a root
+ * text's page these are headings only translations fill, eg /ma1/lzh/sct,
+ * /pli-tv-bu-vb-pj1/pli/ms and /pli-tv-bi-vb-np10/pli/ms
  */
 export function dropEmptyHeadings(html: string): string {
-  const unsectioned = html.replace(
-    /<section\b([^>]*)>(?:(\s*<(h[1-6])\b[^>]*>((?:(?!<\/h[1-6]>)[\s\S])*)<\/\3>)|(?=\s*<p\b))/g,
-    (match, attrs, heading) =>
-      !heading || isEmptyHeading(heading)
-        ? `<div${attrs} data-unsectioned>${heading ?? ''}`
-        : match
-  )
-  const open: string[] = []
-  return unsectioned.replace(
-    /<div([^>]*) data-unsectioned>|<section\b|<\/section>|<(h[1-6])\b[^>]*>((?:(?!<\/h[1-6]>)[\s\S])*)<\/\2>/g,
-    (match, divAttrs, tag, inner) => {
-      if (divAttrs !== undefined) {
-        open.push('div')
-        return `<div${divAttrs}>`
+  type Section = { name: string; tag: number; titled: boolean }
+  const open: Section[] = []
+  const emptied = new Set<number>()
+  const unsectioned = new Set<number>()
+  let tag = 0
+  for (const [match, close, name, heading] of html.matchAll(
+    SECTIONS_AND_HEADINGS
+  )) {
+    const n = tag++
+    // As the validator counts them, a heading in a nested section isn't the outer one's
+    if (heading) {
+      if (isEmptyHeading(match)) emptied.add(n)
+      else if (open.length) open.at(-1)!.titled = true
+    } else if (!close) {
+      open.push({ name, tag: n, titled: false })
+    } else if (open.at(-1)?.name === name) {
+      const section = open.pop()!
+      if (name === 'section' && !section.titled) {
+        unsectioned.add(section.tag).add(n)
       }
-      if (match === '<section') open.push('section')
-      else if (match === '</section>') {
-        return open.pop() === 'div' ? '</div>' : match
-      } else if (tag && isEmptyHeading(match)) return inner
-      return match
+    }
+  }
+  if (!emptied.size && !unsectioned.size) return html
+  tag = 0
+  return html.replace(
+    SECTIONS_AND_HEADINGS,
+    (match, close, _name, heading, inner) => {
+      const n = tag++
+      if (heading) return emptied.has(n) ? inner : match
+      return unsectioned.has(n) ? `<${close}div` : match
     }
   )
 }

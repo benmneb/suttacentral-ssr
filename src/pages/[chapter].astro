@@ -32,8 +32,11 @@ async function fetchShortcuts(): Promise<string[]> {
 async function fetchSiblings() {
   const crumbs = await crumbsPromise
   const parentUid = crumbs.at(-1)?.uid === lowerChapter && crumbs.at(-2)?.uid
-  if (!parentUid) return []
-  const r = await fetch(`${SC_API}/menu/${parentUid}?language=${userLanguage}`)
+  return parentUid ? fetchChildren(parentUid) : []
+}
+
+async function fetchChildren(uid: string) {
+  const r = await fetch(`${SC_API}/menu/${uid}?language=${userLanguage}`)
   return (await r.json())?.[0]?.children ?? []
 }
 
@@ -80,6 +83,25 @@ if (!suttaplexData?.[0]?.uid) {
     Astro.response.statusText = 'Suttaplex UID not found'
     return Astro.rewrite('/404')
   }
+}
+
+// The api lists an empty entry among some chapters' texts, eg lzh-mu-bi-vb-pd's
+suttaplexData = suttaplexData.filter(entry => entry?.uid)
+// And calls those chapters leaves while listing their texts, so their crumbs
+// end with the parent, as a text's do
+if (suttaplexData.length > 1 && suttaplexData[0].type === 'leaf') {
+  const chapterEntry = suttaplexData[0]
+  suttaplexData[0] = { ...chapterEntry, type: 'branch' }
+  const parentUid = crumbsData.at(-1)?.uid
+  if (parentUid) siblings = await fetchChildren(parentUid)
+  crumbsData = [
+    ...crumbsData,
+    {
+      uid: lowerChapter,
+      title: chapterEntry.original_title || chapterEntry.acronym,
+      url: `/${lowerChapter}`,
+    },
+  ]
 }
 
 // The range's own uid has no crumbs, only the range it belongs to

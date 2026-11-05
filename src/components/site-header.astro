@@ -18,7 +18,8 @@ function localiseTitle(title: string): string {
 
 const localisedCrumbs = breadcrumbs?.map(c => ({
   ...c,
-  title: localiseTitle(c.title),
+  // The API leaves some untitled, eg t765-dvikavarga-1
+  title: localiseTitle(c.title) || c.uid,
 }))
 ---
 

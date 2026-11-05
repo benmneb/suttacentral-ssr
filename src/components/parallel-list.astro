@@ -73,7 +73,9 @@ const notesLabel = t(userLanguage, 'viewoption:notes')
       const hasRefs = !!(refs.acronym || refs.language || refs.volpages.length)
       const remarks: string[] =
         parallel.remark?.split(' | ').map((r: string) => r.trim()) ?? []
-      const hasNotes = !!(remarks.length || to.biblio || full)
+      // uf10's has a `clas`, so every text it's a parallel of did
+      const biblio = to.biblio?.replaceAll(' clas=', ' class=')
+      const hasNotes = !!(remarks.length || biblio || full)
       const typeName = typeTitles ? parallelTypeName(userLanguage, type) : ''
 
       return (
@@ -112,7 +114,7 @@ const notesLabel = t(userLanguage, 'viewoption:notes')
                   <p set:html={remark} />
                 ))}
                 {full && <p>{full}</p>}
-                {to.biblio && <p set:html={to.biblio} />}
+                {biblio && <p set:html={biblio} />}
               </details>
             </div>
           ) : (

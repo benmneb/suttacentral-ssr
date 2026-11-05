@@ -35,6 +35,10 @@ import {
   parseUidNumbers,
   rangeUidToAcronym,
   softHyphenateTitle,
+  splitBracketedLinks,
+  swapPrivateUse,
+  tidyLegacyHtml,
+  tidySegmentedHtml,
   toSentenceCase,
   uidIsInRange,
 } from '~/utils/strings'
@@ -161,11 +165,17 @@ if (suttasData.segmented) {
   }
 
   for (const texts of [bilaraData.root_text, bilaraData.translation_text]) {
-    for (const key in texts) texts[key] = bilaraMarkup(texts[key])
+    for (const key in texts)
+      texts[key] = bilaraMarkup(swapPrivateUse(texts[key]))
+  }
+  for (const key in bilaraData.variant_text) {
+    bilaraData.variant_text[key] = swapPrivateUse(bilaraData.variant_text[key])
   }
   // A space left a link dead, as DN 16's "/sn47.14 /en/sujato" once was
   for (const key in bilaraData.comment_text) {
-    bilaraData.comment_text[key] = bilaraData.comment_text[key].replace(
+    bilaraData.comment_text[key] = splitBracketedLinks(
+      swapPrivateUse(bilaraData.comment_text[key])
+    ).replace(
       /href=(['"])([^'"]*\s[^'"]*)\1/g,
       (_: string, quote: string, url: string) =>
         `href=${quote}${url.replace(/\s+/g, '')}${quote}`
@@ -225,6 +235,8 @@ if (suttasData.segmented) {
       )
     }
   }
+
+  tidySegmentedHtml(bilaraData)
 }
 
 const [publicationData, crumbsData, parallelsData] = await Promise.all([
@@ -631,6 +643,9 @@ for (const key of shownKeys) {
   seenRefs.add(ref)
 }
 
+// A printed edition's page can start on two segments, eg t99.2.1a6 on sa1
+const usedReferenceIds = new Set<string>()
+
 /**
  * The reference span for a segment: the SuttaCentral number, then an anchor per
  * id in `reference_text` - "bj10.20, cck12.12, ms9M_53" and so on.
@@ -642,17 +657,18 @@ function renderReferences(key: string, ref: string) {
     .map((id: string) => id.trim())
     .filter(Boolean)
   const id = segmentIds.get(key) ?? ref
-
-  return `
+  const html = `
       <span class="reference" id="${id}" hidden>
         <a href="#${id}" title="${t(userLanguage, 'text:segmentNumber')}">${isMultiTextRange ? key : ref}</a>
         ${ids
           .map(
             (id: string) =>
-              `<a class="ref ${referenceGroup(id)}" id="${id}" href="#${id}" title="${referenceEditionName(id) ?? id}">${id}</a>`
+              `<a class="ref ${referenceGroup(id)}"${usedReferenceIds.has(id) ? '' : ` id="${id}"`} href="#${id}" title="${referenceEditionName(id) ?? id}">${id}</a>`
           )
           .join('')}
       </span>`
+  for (const id of ids) usedReferenceIds.add(id)
+  return html
 }
 
 const renumberHeading = headingRenumberer()
@@ -731,7 +747,7 @@ ${renderIllustrations(key)}
       if (comment) {
         commentsHtml += `
       <article id="comment-${key}" popover style="--anchored-to: --note${commentNote}">
-        ${t(userLanguage, 'viewoption:variant')} ${comment.replace(/https:\/\/suttacentral\.net/g, '')}
+        ${t(userLanguage, 'viewoption:variant')} <span lang="${scriptTag(langTag(suttasData.root_text.lang))}" translate="no">${comment.replace(/https:\/\/suttacentral\.net/g, '')}</span>
       </article>
     `
       }
@@ -815,7 +831,7 @@ ${renderIllustrations(key)}
       if (variant) {
         commentsHtml += `
       <article id="variant-${key}" popover style="--anchored-to: --note${variantNote}">
-        ${t(userLanguage, 'viewoption:variant')} ${variant.replace(/https:\/\/suttacentral\.net/g, '')}
+        ${t(userLanguage, 'viewoption:variant')} <span lang="${scriptTag(langTag(suttasData.suttaplex.root_lang))}" translate="no">${variant.replace(/https:\/\/suttacentral\.net/g, '')}</span>
       </article>
     `
       }
@@ -839,7 +855,7 @@ function getLegacyHTML() {
     )
   }
 
-  const htmlContent = text
+  const htmlContent = swapPrivateUse(tidyLegacyHtml(text))
     .replace(/\n/g, '')
     .replace(
       /class='ref ([^' ]+)/g,
