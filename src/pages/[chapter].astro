@@ -40,12 +40,26 @@ async function fetchChildren(uid: string) {
   return (await r.json())?.[0]?.children ?? []
 }
 
-const suttaplexAbort = new AbortController()
+const fetchesLeft = new AbortController()
+const { signal } = fetchesLeft
 const suttaplexPromise = fetch(
   `${SC_API}/suttaplex/${lowerChapter}?language=${userLanguage}`,
-  { signal: suttaplexAbort.signal }
-)
+  { signal }
+).then(r => r.json())
+// The test text-meta-content shows parallels by, so none are fetched unused
+const parallelsPromise = suttaplexPromise.then(data => {
+  const entries = data?.filter?.(entry => entry?.uid) ?? []
+  const [entry] = entries
+  const showsParallels =
+    entries.length === 1 &&
+    (entry.type === 'leaf' ||
+      (entry.uid.startsWith('pli-tv-') && !!entry.parallel_count))
+  return showsParallels
+    ? fetch(`${SC_API}/parallels/${entry.uid}`, { signal }).then(r => r.json())
+    : undefined
+})
 const crumbsPromise = fetchCrumbs(lowerChapter)
+const editionsPromise = fetchEditions([lowerChapter], userLanguage, { signal })
 let [crumbsData, shortcuts] = await Promise.all([
   crumbsPromise,
   fetchShortcuts(),
@@ -58,15 +72,16 @@ if (
   ownCrumb.url?.startsWith('/pitaka/') &&
   !shortcuts.includes(lowerChapter!)
 ) {
-  suttaplexPromise.catch(() => {})
-  suttaplexAbort.abort()
+  parallelsPromise.catch(() => {})
+  fetchesLeft.abort()
   return Astro.redirect(ownCrumb.url, 302)
 }
 
-let [suttaplexData, siblings, editions] = await Promise.all([
-  suttaplexPromise.then(r => r.json()),
+let [suttaplexData, siblings, editions, parallelsData] = await Promise.all([
+  suttaplexPromise,
   fetchSiblings(),
-  fetchEditions([lowerChapter], userLanguage),
+  editionsPromise,
+  parallelsPromise,
 ])
 let isIndividualRangeSutta = false
 
@@ -176,6 +191,7 @@ const metadata =
               isIndividualRangeSutta={isIndividualRangeSutta}
               inRangeSuttaId={lowerChapter}
               lazyParallels={isList}
+              parallelsData={parallelsData}
               parallelsId={isList ? undefined : 'parallels'}
             />
             {i === 0 && (

@@ -7,6 +7,9 @@ import { sitePageMetadata } from '~/utils/json-ld'
 
 const userLanguage = Astro.locals.userLanguage
 
+const blurbsPromise = fetch(
+  `${SC_API}/publication/edition/blurbs/${userLanguage}`
+).then(r => r.json())
 const editionsResponse = await fetch(`${SC_API}/publication/editions`)
 const editionsData = await editionsResponse.json()
 
@@ -20,9 +23,7 @@ const [webEditionInfoList, blurbs] = await Promise.all([
       fetch(`${SC_API}/publication/edition/${id}`).then(r => r.json())
     )
   ),
-  fetch(`${SC_API}/publication/edition/blurbs/${userLanguage}`).then(r =>
-    r.json()
-  ),
+  blurbsPromise,
 ])
 
 // Sort by predefined order

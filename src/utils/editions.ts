@@ -10,18 +10,25 @@ export interface EditionLink {
   creator: string
 }
 
+type EditionList = { edition_id: string }[]
+
+/** Every edition there is, for a page to start before it has the uids */
+export function fetchEditionList(signal?: AbortSignal): Promise<EditionList> {
+  return fetch(`${SC_API}/publication/editions`, { signal }).then(r => r.json())
+}
+
 /** The SuttaCentral Editions of these collections in the reader's language */
 export async function fetchEditions(
   uids: (string | undefined)[],
-  language: string
+  language: string,
+  { list, signal }: { list?: Promise<EditionList>; signal?: AbortSignal } = {}
 ): Promise<Map<string, EditionLink>> {
   const editions = new Map<string, EditionLink>()
   const collections = uids.filter(uid => !!uid && collectionURL.has(uid))
   if (!collections.length) return editions
 
   try {
-    const response = await fetch(`${SC_API}/publication/editions`)
-    const all: { edition_id: string }[] = await response.json()
+    const all = await (list ?? fetchEditionList(signal))
 
     await Promise.all(
       collections.map(async uid => {
@@ -31,7 +38,10 @@ export async function fetchEditions(
             edition_id.includes('-web_')
         )
         if (!web) return
-        const r = await fetch(`${SC_API}/publication/edition/${web.edition_id}`)
+        const r = await fetch(
+          `${SC_API}/publication/edition/${web.edition_id}`,
+          { signal }
+        )
         const { publication } = await r.json()
         if (!publication) return
         editions.set(uid!, {

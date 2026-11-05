@@ -2,10 +2,11 @@
 import FurtherReading from '~/components/further-reading.astro'
 import RootTitle from '~/components/root-title.astro'
 import Icon from '~/components/icon.astro'
+import { collectionURL } from '~/constants/edition'
 import { SC_API } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
-import { fetchEditions } from '~/utils/editions'
+import { fetchEditionList, fetchEditions } from '~/utils/editions'
 import { pitakaMetadata } from '~/utils/json-ld'
 import { getLanguageName } from '~/utils/language'
 
@@ -14,6 +15,18 @@ const uid = pathname?.split('/').pop()?.toLowerCase()
 
 const userLanguage = Astro.locals.userLanguage
 
+const fetchesLeft = new AbortController()
+const { signal } = fetchesLeft
+const crumbsPromise = fetch(
+  `${SC_API}/navigation_data/${uid}?language=${userLanguage}`,
+  { signal }
+).then(r => r.json())
+const shortcutsPromise = fetch(`${SC_API}/shortcuts`, { signal }).then(r =>
+  r.json()
+)
+const editionListPromise =
+  uid && collectionURL.has(uid) ? fetchEditionList(signal) : undefined
+
 const menuResponse = await fetch(
   `${SC_API}/menu/${uid}?language=${userLanguage}`
 )
@@ -21,10 +34,19 @@ const menuDataJson = await menuResponse.json()
 let menuData = menuDataJson[0]
 
 if (!menuData.uid) {
+  for (const promise of [crumbsPromise, shortcutsPromise, editionListPromise])
+    promise?.catch(() => {})
+  fetchesLeft.abort()
   Astro.response.status = 404
   Astro.response.statusText = 'Menu UID not found'
   return Astro.rewrite('/404')
 }
+
+const editionsPromise = fetchEditions(
+  [menuData.uid, ...menuData.children.map(child => child.uid)],
+  userLanguage,
+  { list: editionListPromise, signal }
+)
 
 const newKids = await Promise.all(
   menuData.children.map(async child => {
@@ -48,14 +70,9 @@ const newKids = await Promise.all(
 menuData.children = newKids
 
 const [crumbsData, shortcutsData, editions] = await Promise.all([
-  fetch(`${SC_API}/navigation_data/${uid}?language=${userLanguage}`).then(r =>
-    r.json()
-  ),
-  fetch(`${SC_API}/shortcuts`).then(r => r.json()),
-  fetchEditions(
-    [menuData.uid, ...menuData.children.map(child => child.uid)],
-    userLanguage
-  ),
+  crumbsPromise,
+  shortcutsPromise,
+  editionsPromise,
 ])
 
 const metadata = pitakaMetadata(userLanguage, menuData, pathname, crumbsData)

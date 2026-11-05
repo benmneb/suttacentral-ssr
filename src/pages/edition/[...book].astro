@@ -17,6 +17,43 @@ if (!uid || !lang || !author) {
   return Astro.redirect('/editions')
 }
 
+const fetchesLeft = new AbortController()
+const { signal } = fetchesLeft
+const fetchJson = (url: string) => fetch(url, { signal }).then(r => r.json())
+
+// Fetch GitHub directory contents for download URLs via SuttaCentral proxy
+type GitHubFile = { name: string; download_url: string }
+type GitHubDirResponse = { contents?: GitHubFile[] }
+const repoUrl = encodeURIComponent(SC_EDITIONS_REPO)
+
+const fetchGitHubDir = (path: string) =>
+  fetch(
+    `${SC_API}/github-directory?repo_url=${repoUrl}&path=${encodeURIComponent(path)}&branch=main`,
+    { signal }
+  )
+    .then(r => (r.ok ? r.json() : { contents: [] }))
+    .then((data: GitHubDirResponse) => data.contents || [])
+    .catch(() => []) as Promise<GitHubFile[]>
+
+const menuPromise = fetchJson(`${SC_API}/menu/${uid}`)
+const creatorBioPromise = matter
+  ? undefined
+  : fetchJson(`${SC_API}/creator_bio`)
+const gitHubPromise = matter
+  ? undefined
+  : Promise.all([
+      fetchGitHubDir(`${lang}/${author}/${uid}/epub`),
+      fetchGitHubDir(`${lang}/${author}/${uid}/html`),
+      fetchGitHubDir(`${lang}/${author}/${uid}/paperback`),
+    ])
+
+/** Stops the fetches a page that ends early would never use */
+function abortFetchesLeft() {
+  for (const promise of [menuPromise, creatorBioPromise])
+    promise?.catch(() => {})
+  fetchesLeft.abort()
+}
+
 const editionsResponse = await fetch(`${SC_API}/publication/editions`)
 const allEditions: Array<{ edition_id: string; uid?: string }> =
   await editionsResponse.json()
@@ -26,6 +63,7 @@ const webEdition = allEditions.find(
 )
 
 if (!webEdition) {
+  abortFetchesLeft()
   Astro.response.status = 404
   Astro.response.statusText = `Edition not found: ${uid}`
   return Astro.rewrite('/404')
@@ -39,7 +77,7 @@ let matterContent: string | null = null
 if (matter) {
   // Matter page, ie /edition/dn/en/sujato/foreword
   const [menuDataRaw, editionData, editionFilesData] = await Promise.all([
-    fetch(`${SC_API}/menu/${uid}`).then(r => r.json()),
+    menuPromise,
     fetch(`${SC_API}/publication/edition/${webEdition.edition_id}`).then(r =>
       r.json()
     ),
@@ -111,7 +149,7 @@ if (matter) {
 
   var [menuDataRaw, webEditionData, paperbackEditionData, creatorBioData] =
     await Promise.all([
-      fetch(`${SC_API}/menu/${uid}`).then(r => r.json()),
+      menuPromise,
       fetch(`${SC_API}/publication/edition/${webEdition.edition_id}`).then(r =>
         r.json()
       ),
@@ -120,11 +158,12 @@ if (matter) {
             `${SC_API}/publication/edition/${paperbackEdition.edition_id}`
           ).then(r => r.json())
         : Promise.resolve(null),
-      fetch(`${SC_API}/creator_bio`).then(r => r.json()),
+      creatorBioPromise,
     ])
 
   var menuData = menuDataRaw?.[0]
   if (!menuData) {
+    abortFetchesLeft()
     Astro.response.status = 404
     Astro.response.statusText = `Collection menu not found: ${uid}`
     return Astro.rewrite('/404')
@@ -134,6 +173,7 @@ if (matter) {
   var edition = webEditionData?.edition
 
   if (!publication) {
+    abortFetchesLeft()
     Astro.response.status = 404
     Astro.response.statusText = `Publication data not found: ${uid}`
     return Astro.rewrite('/404')
@@ -169,24 +209,7 @@ if (matter) {
 
   var volumes = paperbackEditionData?.edition?.volumes || []
 
-  // Fetch GitHub directory contents for download URLs via SuttaCentral proxy
-  type GitHubFile = { name: string; download_url: string }
-  type GitHubDirResponse = { contents?: GitHubFile[] }
-  const repoUrl = encodeURIComponent(SC_EDITIONS_REPO)
-
-  const fetchGitHubDir = (path: string) =>
-    fetch(
-      `${SC_API}/github-directory?repo_url=${repoUrl}&path=${encodeURIComponent(path)}&branch=main`
-    )
-      .then(r => (r.ok ? r.json() : { contents: [] }))
-      .then((data: GitHubDirResponse) => data.contents || [])
-      .catch(() => []) as Promise<GitHubFile[]>
-
-  var [epubFiles, htmlFiles, paperbackFiles] = await Promise.all([
-    fetchGitHubDir(`${lang}/${author}/${uid}/epub`),
-    fetchGitHubDir(`${lang}/${author}/${uid}/html`),
-    fetchGitHubDir(`${lang}/${author}/${uid}/paperback`),
-  ])
+  var [epubFiles, htmlFiles, paperbackFiles] = await gitHubPromise!
 
   // Find specific download files
   var epubFile = epubFiles.find((f: GitHubFile) => f.name.endsWith('.epub'))

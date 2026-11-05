@@ -113,12 +113,49 @@ if (!suttasData.root_text && !suttasData.translation) {
   return Astro.rewrite('/404')
 }
 
-const suttaplexResponse = await fetch(
-  `${SC_API}/suttaplex/${suttasData.range_uid ?? lowerAcronym}?language=${userLanguage}`
+const workUid = suttasData.range_uid ?? lowerAcronym
+const fetchesLeft = new AbortController()
+const fetchJson = (url: string) =>
+  fetch(url, { signal: fetchesLeft.signal }).then(r => r.json())
+
+const suttaplexPromise = fetchJson(
+  `${SC_API}/suttaplex/${workUid}?language=${userLanguage}`
 )
-const suttaplexData = await suttaplexResponse.json()
+let paliScript =
+  suttasData.segmented && suttasData.suttaplex?.root_lang === 'pli'
+    ? paliScriptOf(viewPrefs.script)
+    : undefined
+const bilaraPromise = suttasData.segmented
+  ? Promise.all([
+      fetchJson(
+        `${SC_API}/bilarasuttas/${workUid}/${authorUid}?lang=${language}`
+      ),
+      paliScript &&
+        fetch(
+          `${SC_API}/transliterated_sutta/${workUid}/${paliScript.id}/${paliScript.options ?? 'null'}`,
+          { signal: fetchesLeft.signal }
+        )
+          .then(r => (r.ok ? r.json() : null))
+          .catch(() => null),
+    ])
+  : undefined
+const extrasPromise = Promise.all([
+  fetchJson(`${SC_API}/publication_info/${workUid}/${language}/${authorUid}`),
+  fetchJson(`${SC_API}/navigation_data/${workUid}?language=${userLanguage}`),
+  fetchJson(`${SC_API}/parallels/${workUid}`),
+])
+
+/** Stops the fetches a page that ends early would never use */
+function abortFetchesLeft() {
+  for (const promise of [suttaplexPromise, bilaraPromise, extrasPromise])
+    promise?.catch(() => {})
+  fetchesLeft.abort()
+}
+
+const suttaplexData = await suttaplexPromise
 
 if (!suttaplexData?.[0]?.uid) {
+  abortFetchesLeft()
   Astro.response.status = 404
   Astro.response.statusText = 'Suttaplex UID not found'
   return Astro.rewrite('/404')
@@ -135,22 +172,9 @@ for (const text of [
 let bilaraData: any = {}
 let displayedUid: string | null = null // which bilara document gets rendered
 let keyPrefixes: string[] = [] // all of them in the response, in order
-let paliScript =
-  suttasData.segmented && suttasData.suttaplex?.root_lang === 'pli'
-    ? paliScriptOf(viewPrefs.script)
-    : undefined
-if (suttasData.segmented) {
-  const bilaraUid = suttasData.range_uid ?? lowerAcronym
-  const [bilaraResponse, transliterated] = await Promise.all([
-    fetch(`${SC_API}/bilarasuttas/${bilaraUid}/${authorUid}?lang=${language}`),
-    paliScript &&
-      fetch(
-        `${SC_API}/transliterated_sutta/${bilaraUid}/${paliScript.id}/${paliScript.options ?? 'null'}`
-      )
-        .then(r => (r.ok ? r.json() : null))
-        .catch(() => null),
-  ])
-  bilaraData = await bilaraResponse.json()
+if (bilaraPromise) {
+  let transliterated
+  ;[bilaraData, transliterated] = await bilaraPromise
 
   if (transliterated && bilaraData.root_text) {
     for (const key in bilaraData.root_text) {
@@ -159,6 +183,7 @@ if (suttasData.segmented) {
   } else paliScript = undefined
 
   if (bilaraData.msg === 'Not Found') {
+    abortFetchesLeft()
     Astro.response.status = 404
     Astro.response.statusText = 'Bilara data not found'
     return Astro.rewrite('/404')
@@ -239,15 +264,7 @@ if (suttasData.segmented) {
   tidySegmentedHtml(bilaraData)
 }
 
-const [publicationData, crumbsData, parallelsData] = await Promise.all([
-  fetch(
-    `${SC_API}/publication_info/${suttasData.range_uid ?? lowerAcronym}/${language}/${authorUid}`
-  ).then(r => r.json()),
-  fetch(
-    `${SC_API}/navigation_data/${suttasData.range_uid ?? lowerAcronym}?language=${userLanguage}`
-  ).then(r => r.json()),
-  fetch(`${SC_API}/parallels/${suttaplexData[0].uid}`).then(r => r.json()),
-])
+const [publicationData, crumbsData, parallelsData] = await extrasPromise
 // When true the page shows a whole range document, not one sutta of it, so it
 // should name the range rather than the uid that was asked for
 const isWholeRange = !!displayedUid && displayedUid !== lowerAcronym
