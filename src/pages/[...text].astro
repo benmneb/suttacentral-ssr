@@ -51,8 +51,11 @@ if (Astro.url.searchParams.has('pali-script')) {
   const on = Astro.url.searchParams.has('pali-script-on')
   const script = paliScriptOf(Astro.url.searchParams.get('pali-script'))
   setViewPref(Astro.cookies, 'script', (on && script?.id) || 'latin')
+  // Without JS nothing else saves it, so the Pali would stay hidden
+  if (Astro.url.searchParams.has('rooter'))
+    setViewPref(Astro.cookies, 'rooter', true)
   const cleanUrl = new URL(Astro.url)
-  for (const param of ['pali-script', 'pali-script-on', 'script'])
+  for (const param of ['pali-script', 'pali-script-on', 'rooter', 'script'])
     cleanUrl.searchParams.delete(param)
   return Astro.redirect(cleanUrl.pathname + cleanUrl.search)
 }
@@ -1142,6 +1145,10 @@ const metadata = textMetadata(userLanguage, {
                     <input
                       type="checkbox"
                       id="rooter"
+                      {...(canChangeScript && {
+                        name: 'rooter',
+                        form: 'script-form',
+                      })}
                       {...fromUrl('rooter')}
                       checked={viewPrefs.rooter ?? false}
                       aria-controls={[

@@ -1024,6 +1024,7 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
     .script-apply
   ),
 &:not(:has(#rooter-script:checked)) #views-menu > li:has(#rooter-script-select),
+&:has(#rooter-script:not(:checked):not(:default)) #views-menu > li.script-apply,
 &:not(:has(#segmenter:checked))
   #views-menu
   > li:is(
@@ -1048,6 +1049,12 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
   #views-menu > li.script-apply {
     display: none;
   }
+}
+
+/* Native like the select, as the bar's button look reads as a heading */
+#views-menu > li.script-apply > button {
+  all: revert;
+  font: inherit;
 }
 
 #listen-menu {
@@ -2038,11 +2045,11 @@ aside {
         padding-inline-start: calc(0.7rem + 2.5em);
       }
 
-      > li.sub > select {
+      > li.sub > :is(select, button) {
         margin-inline-start: calc(0.5rem + 1.25em);
       }
 
-      > li.sub-sub > select {
+      > li.sub-sub > :is(select, button) {
         margin-inline-start: calc(0.7rem + 2.5em);
       }
     }
