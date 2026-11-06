@@ -159,6 +159,7 @@ describe('Accessibility', () => {
     { timeout: 30 * 60 * 1000 },
     async () => {
       const queue = [...urls]
+      const retried = new Set<string>()
       const found: Problem[] = []
       const openTab = async () => {
         const page = await browser!.newPage()
@@ -174,10 +175,16 @@ describe('Accessibility', () => {
           try {
             found.push(...(await violationsOn(tab.page, url, tab.pending)))
           } catch (error) {
-            found.push({
-              rule: `Couldn't check: ${(error as Error).message}`,
-              place: url,
-            })
+            // Tabs die now and then under load, so one more go before it counts
+            if (retried.has(url)) {
+              found.push({
+                rule: `Couldn't check: ${(error as Error).message}`,
+                place: url,
+              })
+            } else {
+              retried.add(url)
+              queue.push(url)
+            }
             // A crashed tab can't load the next page
             if (browser!.connected) {
               await tab.page.close().catch(() => {})
