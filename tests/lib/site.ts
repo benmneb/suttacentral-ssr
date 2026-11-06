@@ -90,6 +90,7 @@ export const SAMPLE_PAGES = [
 ]
 
 const CONCURRENCY = 4
+const PAGE_TIMEOUT = 60_000
 
 export type Page = { url: string; status: number; html: string }
 
@@ -116,6 +117,11 @@ export function fetchPages() {
       for (let url; (url = queue.shift()); ) {
         const response = await fetch(`${origin()}${url}`, {
           redirect: 'manual',
+          signal: AbortSignal.timeout(PAGE_TIMEOUT),
+        }).catch(error => {
+          throw new Error(`Couldn't fetch ${url}: ${error.message}`, {
+            cause: error,
+          })
         })
         pages.push({
           url,
