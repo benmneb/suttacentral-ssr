@@ -10,6 +10,7 @@ const title = t(userLanguage, 'subjects:1')
 ---
 
 <Layout {...sitePageMetadata(userLanguage, '/subjects', title)}>
+  <span id="content" tabindex="-1"></span>
   <main id="main">
     <article>
       <h1 set:html={t(userLanguage, 'subjects:1')} />

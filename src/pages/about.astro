@@ -9,6 +9,7 @@ const title = t(userLanguage, 'interface:aboutTitle')
 ---
 
 <Layout {...sitePageMetadata(userLanguage, '/about', title)}>
+  <span id="content" tabindex="-1"></span>
   <main id="main">
     <article>
       <h1 set:html={t(userLanguage, 'about:1')} />

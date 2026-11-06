@@ -29,6 +29,7 @@ const metadata = sitePageMetadata(userLanguage, '/abbreviations', title, {
 ---
 
 <Layout {...metadata}>
+  <span id="content" tabindex="-1"></span>
   <main id="main">
     <article>
       <h1 set:html={t(userLanguage, 'abbreviations:1')} />
