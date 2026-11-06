@@ -1052,7 +1052,7 @@ const metadata = textMetadata(userLanguage, {
             <Icon name="eye" />
           </button>
           <ul
-            class="dropdown"
+            class="dropdown hotkeys-off"
             popover
             aria-labelledby="views-button"
             id="views-menu"
@@ -1574,7 +1574,7 @@ const metadata = textMetadata(userLanguage, {
             <Icon name="speakerWave" />
           </button>
           <ul
-            class="dropdown"
+            class="dropdown hotkeys-off"
             popover
             aria-labelledby="listen-menu-button"
             id="listen-menu"
@@ -1734,7 +1734,8 @@ const metadata = textMetadata(userLanguage, {
             commandfor="search-modal"
             command="show-modal"
             aria-label={t(userLanguage, 'search:search')}
-            title={t(userLanguage, 'header:searchShortcut')}
+            title={t(userLanguage, 'search:search')}
+            data-shortcut={t(userLanguage, 'header:searchShortcut')}
           >
             <Icon name="magnifyingGlass" />
           </button>

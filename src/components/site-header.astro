@@ -62,7 +62,8 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
           commandfor="search-modal"
           command="show-modal"
           aria-label={t(userLanguage, 'search:search')}
-          title={t(userLanguage, 'header:searchShortcut')}
+          title={t(userLanguage, 'search:search')}
+          data-shortcut={t(userLanguage, 'header:searchShortcut')}
         >
           <Icon name="magnifyingGlass" />
         </button>

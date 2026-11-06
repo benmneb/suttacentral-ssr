@@ -321,13 +321,14 @@ const userLanguage = Astro.locals.userLanguage
 
   if (dialog) {
     // Invoker commands and closedby are too new for some browsers
-    if (!('commandForElement' in HTMLButtonElement.prototype)) {
-      document
-        .querySelectorAll('button[commandfor="search-modal"]')
-        .forEach(button =>
+    const invokers = 'commandForElement' in HTMLButtonElement.prototype
+    document
+      .querySelectorAll<HTMLButtonElement>('button[commandfor="search-modal"]')
+      .forEach(button => {
+        if (button.dataset.shortcut) button.title = button.dataset.shortcut
+        if (!invokers)
           button.addEventListener('click', () => dialog.showModal())
-        )
-    }
+      })
     if (!('closedBy' in HTMLDialogElement.prototype)) {
       dialog.addEventListener('click', event => {
         if (event.target === dialog) dialog.close()
