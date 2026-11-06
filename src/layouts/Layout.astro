@@ -136,7 +136,7 @@ const externalLinkAlt = JSON.stringify(
     {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
     <script
       is:inline
-      defer
+      async
       src={`${UMAMI_ORIGIN}/script.js`}
       data-website-id="1e65129e-1d78-4a78-a6d2-a339152f9a1d"
       data-domains={`${siteHost},www.${siteHost}`}
