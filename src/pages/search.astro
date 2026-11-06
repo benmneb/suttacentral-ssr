@@ -68,6 +68,7 @@ if (query) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(languageArray),
+        signal: AbortSignal.timeout(20_000),
       }
     )
     if (!searchResponse.ok) {
