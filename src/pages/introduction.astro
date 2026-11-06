@@ -11,8 +11,8 @@ const title = t(userLanguage, 'introduction:1')
 ---
 
 <Layout {...sitePageMetadata(userLanguage, '/introduction', title)}>
-  <span id="content" tabindex="-1"></span>
-  <main id="main">
+  <span id="main" tabindex="-1"></span>
+  <main>
     <article>
       <h1 set:html={t(userLanguage, 'introduction:1')} />
       <h2 set:html={t(userLanguage, 'introduction:2')} />

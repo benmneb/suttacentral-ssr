@@ -1758,11 +1758,8 @@ const metadata = textMetadata(userLanguage, {
       </p>
     </fieldset>
   </aside>
-  <span id="content" tabindex="-1"></span>
-  <main
-    id="main"
-    style={hasParallels ? `--parallel-lanes: ${lanes.length}` : undefined}
-  >
+  <span id="main" tabindex="-1"></span>
+  <main style={hasParallels ? `--parallel-lanes: ${lanes.length}` : undefined}>
     <Fragment set:html={articleHTML} />
     <Fragment set:html={commentsHtml} />
 

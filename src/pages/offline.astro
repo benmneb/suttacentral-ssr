@@ -98,8 +98,8 @@ const releaseInfo =
 ---
 
 <Layout {...sitePageMetadata(userLanguage, '/offline', title)}>
-  <span id="content" tabindex="-1"></span>
-  <main id="main">
+  <span id="main" tabindex="-1"></span>
+  <main>
     <article>
       <h1>{title}</h1>
       <h2>
@@ -268,7 +268,7 @@ const releaseInfo =
   }
 
   /* An #id, to outdo the external link icon's :is(main, aside, #site-pages) */
-  :global(#main a[href][download]::after) {
+  :global(#main + main a[href][download]::after) {
     mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8.75 2.75a.75.75 0 0 0-1.5 0v5.69L5.03 6.22a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 0 0-1.06-1.06L8.75 8.44V2.75Z'/%3E %3Cpath d='M3.5 9.75a.75.75 0 0 0-1.5 0v1.5A2.75 2.75 0 0 0 4.75 14h6.5A2.75 2.75 0 0 0 14 11.25v-1.5a.75.75 0 0 0-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5Z'/%3E%3C/svg%3E");
   }
 </style>

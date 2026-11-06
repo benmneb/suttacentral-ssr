@@ -16,8 +16,8 @@ const poExample = t(userLanguage, 'numbering:14')
 ---
 
 <Layout {...sitePageMetadata(userLanguage, '/numbering', title)}>
-  <span id="content" tabindex="-1"></span>
-  <main id="main">
+  <span id="main" tabindex="-1"></span>
+  <main>
     <article>
       <h1 set:html={t(userLanguage, 'numbering:1')} />
       <p set:html={t(userLanguage, 'numbering:2')} />

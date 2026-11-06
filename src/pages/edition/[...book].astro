@@ -264,14 +264,14 @@ const metadata = matter
 ---
 
 <Layout {...metadata} breadcrumbs={crumbsData}>
-  <span id="content" tabindex="-1"></span>
+  <span id="main" tabindex="-1"></span>
   {
     matter ? (
-      <main id="main">
+      <main>
         <Fragment set:html={matterContent} />
       </main>
     ) : (
-      <main id="main">
+      <main>
         <article>
           <hgroup>
             <h1>{translationTitle}</h1>

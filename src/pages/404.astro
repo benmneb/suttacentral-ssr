@@ -7,8 +7,8 @@ const userLanguage = Astro.locals.userLanguage
 ---
 
 <Layout title={t(userLanguage, 'error:pageNotFound')}>
-  <span id="content" tabindex="-1"></span>
-  <main id="main">
+  <span id="main" tabindex="-1"></span>
+  <main>
     <h1>{t(userLanguage, 'error:pageNotFound')}</h1>
     <ul>
       <li>
