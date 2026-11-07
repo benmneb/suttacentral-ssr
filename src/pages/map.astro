@@ -50,6 +50,8 @@ const layers = map.layers.map((layer, i) => ({
   onMap: layer.places.some(place => 'shape' in place),
 }))
 
+const posterAvif = `${SC_IMG}/static-pages/jambudipa_map.avif`
+
 const metadata = mapMetadata(userLanguage, title, layers, {
   src: `${SC_IMG}/static-pages/jambudipa_map.jpg`,
   width: 1476,
@@ -112,6 +114,13 @@ const moves = [
 
 <Layout {...metadata}>
   <Fragment slot="head">
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      href={posterAvif}
+      fetchpriority="high"
+    />
     <style is:inline set:html={mapStyles}></style>
   </Fragment>
   <span id="main" tabindex="-1"></span>
@@ -123,16 +132,14 @@ const moves = [
         <h2 id="static-map-heading" set:html={t(userLanguage, 'map:2')} />
         <figure>
           <picture>
-            <source
-              srcset={`${SC_IMG}/static-pages/jambudipa_map.avif`}
-              type="image/avif"
-            />
+            <source srcset={posterAvif} type="image/avif" />
             <img
               alt={t(userLanguage, 'map:posterAlt')}
               class="image-home"
               src={`${SC_IMG}/static-pages/jambudipa_map.jpg`}
               width="1476"
               height="1034"
+              fetchpriority="high"
             />
           </picture>
           <figcaption set:html={t(userLanguage, 'map:3')} />

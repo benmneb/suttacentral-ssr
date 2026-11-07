@@ -8,25 +8,32 @@ import { sitePageMetadata } from '~/utils/json-ld'
 const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'pirivenaPage:title')
+const photo = `${SC_IMG}/static-pages/pirivena-monks-walking`
 ---
 
 <Layout {...sitePageMetadata(userLanguage, '/pirivena-project', title)}>
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    type="image/avif"
+    href={`${photo}.avif`}
+    fetchpriority="high"
+  />
   <span id="main" tabindex="-1"></span>
   <main>
     <article>
       <h1>{t(userLanguage, 'pirivenaPage:title')}</h1>
       <figure>
         <picture>
-          <source
-            srcset={`${SC_IMG}/static-pages/pirivena-monks-walking.avif`}
-            type="image/avif"
-          />
+          <source srcset={`${photo}.avif`} type="image/avif" />
           <img
             class="image-home-full"
-            src={`${SC_IMG}/static-pages/pirivena-monks-walking.jpg`}
+            src={`${photo}.jpg`}
             alt={t(userLanguage, 'pirivenaPage:imageAlt')}
             width="1733"
             height="1155"
+            fetchpriority="high"
           />
         </picture>
         <figcaption>{t(userLanguage, 'pirivenaPage:photoCaption')}</figcaption>

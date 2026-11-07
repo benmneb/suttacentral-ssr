@@ -8,9 +8,18 @@ import { sitePageMetadata } from '~/utils/json-ld'
 const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'introduction:1')
+const manuscript = `${SC_IMG}/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom`
 ---
 
 <Layout {...sitePageMetadata(userLanguage, '/introduction', title)}>
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    type="image/avif"
+    href={`${manuscript}.avif`}
+    fetchpriority="high"
+  />
   <span id="main" tabindex="-1"></span>
   <main>
     <article>
@@ -21,16 +30,14 @@ const title = t(userLanguage, 'introduction:1')
       <p set:html={t(userLanguage, 'introduction:5')} />
       <figure>
         <picture>
-          <source
-            srcset={`${SC_IMG}/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.avif`}
-            type="image/avif"
-          />
+          <source srcset={`${manuscript}.avif`} type="image/avif" />
           <img
             alt={t(userLanguage, 'introduction:6')}
             class="image-home-full"
-            src={`${SC_IMG}/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom.jpg`}
+            src={`${manuscript}.jpg`}
             width="640"
             height="259"
+            fetchpriority="high"
           />
         </picture>
         <figcaption>{t(userLanguage, 'introduction:7')}</figcaption>

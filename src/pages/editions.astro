@@ -46,6 +46,7 @@ const editions = webEditionInfoList.sort(
 )
 
 const title = t(userLanguage, 'publication:editionsToolbarTitle')
+const stack = `${SC_IMG}/publication-pages/editions-kn-wet.jpg`
 
 function getBlurb(textUid: string): string | undefined {
   return blurbs.find((x: { uid: string; blurb: string }) => x.uid === textUid)
@@ -54,6 +55,13 @@ function getBlurb(textUid: string): string | undefined {
 ---
 
 <Layout {...sitePageMetadata(userLanguage, '/editions', title)}>
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href={stack}
+    fetchpriority="high"
+  />
   <span id="main" tabindex="-1"></span>
   <main>
     <article>
@@ -93,10 +101,11 @@ function getBlurb(textUid: string): string | undefined {
           </aside>
         </div>
         <img
-          src={`${SC_IMG}/publication-pages/editions-kn-wet.jpg`}
+          src={stack}
           alt="Stack of SuttaCentral edition books"
           width="1008"
           height="1344"
+          fetchpriority="high"
         />
       </header>
 

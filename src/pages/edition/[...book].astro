@@ -241,6 +241,7 @@ if (matter) {
 }
 
 const bookPath = `/edition/${uid}/${lang}/${author}`
+const cover = `${SC_IMG}/publication-pages/${uid}-book.jpg`
 const metadata = matter
   ? matterMetadata(userLanguage, title, {
       path: `${bookPath}/${matter}`,
@@ -257,13 +258,24 @@ const metadata = matter
       publication,
       crumbs: crumbsData,
       readPath: collectionURL.get(uid) || `/${uid}`,
-      cover: `${SC_IMG}/publication-pages/${uid}-book.jpg`,
+      cover,
       isbn: volumes.map((volume: any) => volume.volume_isbn).filter(Boolean),
       dateModified: lastGeneratedDate,
     })
 ---
 
 <Layout {...metadata} breadcrumbs={crumbsData}>
+  {
+    !matter && (
+      <link
+        slot="head"
+        rel="preload"
+        as="image"
+        href={cover}
+        fetchpriority="high"
+      />
+    )
+  }
   <span id="main" tabindex="-1"></span>
   {
     matter ? (
@@ -306,10 +318,11 @@ const metadata = matter
             </header>
             <figure>
               <img
-                src={`${SC_IMG}/publication-pages/${uid}-book.jpg`}
+                src={cover}
                 alt={`Cover art for ${translationTitle}`}
                 width="574"
                 height="823"
+                fetchpriority="high"
               />
               <figcaption>Paperback edition of {translationTitle}</figcaption>
             </figure>
