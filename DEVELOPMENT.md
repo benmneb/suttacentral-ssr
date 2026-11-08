@@ -121,8 +121,6 @@ TEST_PAGES=/mn1/en/sujato,/about pnpm test
 TEST_ORIGIN=https://suttacentral.now pnpm test
 ```
 
-The build on SourceHut ([`.build.yml`](.build.yml)) runs every test but the accessibility one, last, after the deploy and the mirrors, so .net's data can't hold up a deploy and a failure still sends an email.
-
 ---
 
 ## Internationalisation
