@@ -18,15 +18,19 @@ const userLanguage = Astro.locals.userLanguage
   <p>{t(userLanguage, 'footer:renderedIn').replace('{time}', RENDER_TIME)}</p>
   <ul>
     <li>
-      <a href={siteMetaData.source} rel="external"
+      <a href={siteMetaData.repository.source} rel="external"
         >{t(userLanguage, 'footer:openSource')}</a
       >
     </li>
-    <li>
-      <a href={siteMetaData.analytics} rel="external"
-        >{t(userLanguage, 'footer:openAnalytics')}</a
-      >
-    </li>
+    {
+      siteMetaData.analytics?.shareUrl && (
+        <li>
+          <a href={siteMetaData.analytics.shareUrl} rel="external">
+            {t(userLanguage, 'footer:openAnalytics')}
+          </a>
+        </li>
+      )
+    }
     <li>
       <a href={siteMetaData.accessibility} rel="external"
         >{t(userLanguage, 'footer:accessibility')}</a

@@ -3,7 +3,8 @@ import '~/assets/details.css'
 import '~/assets/offline-icons.css'
 import Icon from '~/components/icon.astro'
 import type { IconName } from '~/constants/heroicons'
-import { SC_ORIGIN, SCX_STATIC_REPO } from '~/constants/urls'
+import { siteMetaData } from '~/constants/meta-data'
+import { SC_ORIGIN } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { sitePageMetadata } from '~/utils/json-ld'
@@ -15,7 +16,7 @@ const title = t(userLanguage, 'interface:offlineTitle')
 // An aria-label overrides the icon's alt text, so it carries it instead
 const externalLink = ` (${t(userLanguage, 'interface:externalLink')})`
 
-const scxReleases = `${SCX_STATIC_REPO}/releases`
+const offline = siteMetaData.offline
 
 const release = await getScxRelease()
 
@@ -124,54 +125,61 @@ const releaseInfo =
           <p>{t(userLanguage, 'offline:editionsDescription')}</p>
         </li>
       </ul>
-      <h2 id="scx-offline">
-        SuttaCentral Express <a
-          href="https://suttacentral.express"
-          rel="external"
-          aria-label={`SuttaCentral.express${externalLink}`}></a>
-      </h2>
-      <p class="release">
-        {release && <Fragment set:html={releaseInfo} />}
-      </p>
       {
-        scxGroups.length > 0 && (
-          <ul class="release-assets">
-            {scxGroups.map(group => (
-              <li>
-                <h3>
-                  <Icon name={group.icon} />
-                  {group.title}
-                </h3>
-                {group.description && <p set:html={group.description} />}
-                <ul>
-                  {group.assets.map((asset, i) => (
-                    <li>
-                      <a
-                        href={asset.url}
-                        download
-                        aria-describedby={`scx-${group.kind}-${i}`}
-                      >
-                        {asset.platform ?? t(userLanguage, 'offline:download')}
-                      </a>{' '}
-                      <span id={`scx-${group.kind}-${i}`}>
-                        {asset.format}, {formatSize(asset.size)}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                {group.details.map(html => (
-                  <Fragment set:html={html} />
+        offline && (
+          <>
+            <h2 id="scx-offline">
+              SuttaCentral Express{' '}
+              <a
+                href="https://suttacentral.express"
+                rel="external"
+                aria-label={`SuttaCentral.express${externalLink}`}
+              />
+            </h2>
+            <p class="release">
+              {release && <Fragment set:html={releaseInfo} />}
+            </p>
+            {scxGroups.length > 0 && (
+              <ul class="release-assets">
+                {scxGroups.map(group => (
+                  <li>
+                    <h3>
+                      <Icon name={group.icon} />
+                      {group.title}
+                    </h3>
+                    {group.description && <p set:html={group.description} />}
+                    <ul>
+                      {group.assets.map((asset, i) => (
+                        <li>
+                          <a
+                            href={asset.url}
+                            download
+                            aria-describedby={`scx-${group.kind}-${i}`}
+                          >
+                            {asset.platform ??
+                              t(userLanguage, 'offline:download')}
+                          </a>{' '}
+                          <span id={`scx-${group.kind}-${i}`}>
+                            {asset.format}, {formatSize(asset.size)}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                    {group.details.map(html => (
+                      <Fragment set:html={html} />
+                    ))}
+                  </li>
                 ))}
-              </li>
-            ))}
-          </ul>
+              </ul>
+            )}
+            <p class="all-releases">
+              <a href={`${offline.repo}/releases`} rel="external">
+                {t(userLanguage, 'offline:allReleases')}
+              </a>
+            </p>
+          </>
         )
       }
-      <p class="all-releases">
-        <a href={scxReleases} rel="external"
-          >{t(userLanguage, 'offline:allReleases')}</a
-        >
-      </p>
     </article>
   </main>
 </Layout>

@@ -1,6 +1,6 @@
 import { waitUntil } from 'cloudflare:workers'
 import { marked } from 'marked'
-import { SCX_STATIC_API } from '~/constants/urls'
+import { siteMetaData } from '~/constants/meta-data'
 
 export type AssetKind = 'archive' | 'app' | 'kiwix' | 'other'
 
@@ -37,7 +37,6 @@ interface CodebergRelease {
   assets: CodebergAsset[]
 }
 
-const RELEASE_URL = `${SCX_STATIC_API}/releases/latest`
 const MAX_AGE = 60 * 60
 
 const OS_NAMES: Record<string, string> = {
@@ -152,17 +151,17 @@ function parseRelease(release: CodebergRelease): ScxRelease {
   }
 }
 
-async function fetchRelease(): Promise<ScxRelease> {
+async function fetchRelease(releaseUrl: string): Promise<ScxRelease> {
   // Not there in every dev setup, where it just goes uncached
   const cache = (globalThis.caches as { default?: Cache } | undefined)?.default
-  const cached = await cache?.match(RELEASE_URL)
+  const cached = await cache?.match(releaseUrl)
   if (cached) return parseRelease(await cached.json())
 
-  const response = await fetch(RELEASE_URL, {
+  const response = await fetch(releaseUrl, {
     headers: { Accept: 'application/json' },
     signal: AbortSignal.timeout(5000),
   })
-  if (!response.ok) throw new Error(`${response.status} for ${RELEASE_URL}`)
+  if (!response.ok) throw new Error(`${response.status} for ${releaseUrl}`)
   const data: CodebergRelease = await response.json()
   const release = parseRelease(data)
   if (cache) {
@@ -172,7 +171,7 @@ async function fetchRelease(): Promise<ScxRelease> {
         'Cache-Control': `public, max-age=${MAX_AGE}`,
       },
     })
-    waitUntil(cache.put(RELEASE_URL, copy))
+    waitUntil(cache.put(releaseUrl, copy))
   }
   return release
 }
@@ -186,9 +185,12 @@ let fetchedAt = 0
  * if Codeberg is down. Kept for an hour per worker instance and per data centre
  */
 export async function getScxRelease(): Promise<ScxRelease | undefined> {
+  if (!siteMetaData.offline) return
+  const releaseUrl = `${siteMetaData.offline.api}/releases/latest`
+
   if (!release || Date.now() - fetchedAt > MAX_AGE * 1000) {
     fetchedAt = Date.now()
-    release = fetchRelease()
+    release = fetchRelease(releaseUrl)
     release.catch(() => (release = undefined))
   }
   try {

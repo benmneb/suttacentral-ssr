@@ -6,13 +6,12 @@ import SiteFooter from '~/components/site-footer.astro'
 import SiteHeader from '~/components/site-header.astro'
 import SitePages from '~/components/site-pages.astro'
 import { siteMetaData } from '~/constants/meta-data'
-import { UMAMI_ORIGIN } from '~/constants/urls'
 import { t } from '~/i18n'
 import { textFromHtml } from '~/utils/json-ld'
 import { langTag } from '~/utils/language'
 
 const pathname = Astro.url.pathname
-const siteHost = new URL(siteMetaData.origin).host
+const analytics = siteMetaData.analytics
 const userLanguage = Astro.locals.userLanguage
 interface Props {
   title?: string
@@ -57,7 +56,8 @@ function ogLocale(tag: string) {
   } catch {}
   return 'en_US'
 }
-const imageUrl = new URL(ogImage || '/og-image2.jpg', siteMetaData.origin).href
+const imageUrl = new URL(ogImage || siteMetaData.ogImage, siteMetaData.origin)
+  .href
 // Here, not in icons.css, as the alt text is in the reader's language
 const externalLinkAlt = JSON.stringify(
   ` (${t(userLanguage, 'interface:externalLink')})`
@@ -134,14 +134,11 @@ const externalLinkAlt = JSON.stringify(
     ></style>
     <slot name="head" />
     {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
-    <script
-      is:inline
-      async
-      src={`${UMAMI_ORIGIN}/script.js`}
-      data-website-id="1e65129e-1d78-4a78-a6d2-a339152f9a1d"
-      data-domains={`${siteHost},www.${siteHost}`}
-      data-exclude-search="true"
-      data-exclude-hash="true"></script>
+    {
+      analytics && (
+        <script is:inline src={analytics.src} {...analytics.attributes} />
+      )
+    }
   </head>
   <body>
     <a class="skip" href="#main">{t(userLanguage, 'interface:skipToMain')}</a>

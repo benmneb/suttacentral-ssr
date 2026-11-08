@@ -175,7 +175,7 @@ function languageName(lang: string, locale: string) {
 export function homeMetadata(locale: string, tipitaka: any[]): PageMetadata {
   const title = textFromHtml(t(locale, 'home:1'))
   const description = `${siteMetaData.description}. ${t(locale, 'meta:homeDescription')}`
-  const { maintainer, mirrors, source } = siteMetaData
+  const { maintainer, repository } = siteMetaData
   const home = absoluteUrl('/')
   return {
     title,
@@ -185,7 +185,7 @@ export function homeMetadata(locale: string, tipitaka: any[]): PageMetadata {
         {
           ...website(),
           alternateName: 'SCX',
-          sameAs: [source, ...mirrors],
+          sameAs: [repository.source, ...repository.mirrors],
           description,
           inLanguage: langTag(locale),
           isBasedOn: {
