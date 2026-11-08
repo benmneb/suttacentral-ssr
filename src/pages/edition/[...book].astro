@@ -3,7 +3,12 @@ import '~/assets/edition.css'
 import '~/assets/matter.css'
 import { collectionURL } from '~/constants/edition'
 import Icon from '~/components/icon.astro'
-import { SC_API, SC_EDITIONS_REPO, SC_IMG } from '~/constants/urls'
+import {
+  editionAuthorPhoto,
+  editionCover,
+  editionLicense,
+} from '~/constants/images'
+import { SC_API, SC_EDITIONS_REPO } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { editionMetadata, matterMetadata } from '~/utils/json-ld'
@@ -241,7 +246,7 @@ if (matter) {
 }
 
 const bookPath = `/edition/${uid}/${lang}/${author}`
-const cover = `${SC_IMG}/publication-pages/${uid}-book.jpg`
+const cover = editionCover(uid)
 const metadata = matter
   ? matterMetadata(userLanguage, title, {
       path: `${bookPath}/${matter}`,
@@ -438,7 +443,7 @@ const metadata = matter
               <h2>The Author</h2>
               <figure>
                 <img
-                  src={`${SC_IMG}/publication-pages/${creator.creator_uid}.jpg`}
+                  src={editionAuthorPhoto(creator.creator_uid)}
                   alt={`Photo of ${publication.creator_name}`}
                   width="150"
                   height="150"
@@ -474,7 +479,7 @@ const metadata = matter
                 <p>{publication.license_statement}</p>
                 <div class="license">
                   <img
-                    src={`${SC_IMG}/publication-pages/cc-zero.svg`}
+                    src={editionLicense}
                     alt=""
                     width="64"
                     height="64"

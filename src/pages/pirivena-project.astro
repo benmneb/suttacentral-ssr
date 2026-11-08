@@ -1,6 +1,9 @@
 ---
 import '~/assets/figure.css'
-import { SC_IMG } from '~/constants/urls'
+import {
+  pirivenaProjectPhotoAvif,
+  pirivenaProjectPhotoJpg,
+} from '~/constants/images'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { sitePageMetadata } from '~/utils/json-ld'
@@ -8,7 +11,6 @@ import { sitePageMetadata } from '~/utils/json-ld'
 const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'pirivenaPage:title')
-const photo = `${SC_IMG}/static-pages/pirivena-monks-walking`
 ---
 
 <Layout {...sitePageMetadata(userLanguage, '/pirivena-project', title)}>
@@ -17,7 +19,7 @@ const photo = `${SC_IMG}/static-pages/pirivena-monks-walking`
     rel="preload"
     as="image"
     type="image/avif"
-    href={`${photo}.avif`}
+    href={pirivenaProjectPhotoAvif}
     fetchpriority="high"
   />
   <span id="main" tabindex="-1"></span>
@@ -26,10 +28,10 @@ const photo = `${SC_IMG}/static-pages/pirivena-monks-walking`
       <h1>{t(userLanguage, 'pirivenaPage:title')}</h1>
       <figure>
         <picture>
-          <source srcset={`${photo}.avif`} type="image/avif" />
+          <source srcset={pirivenaProjectPhotoAvif} type="image/avif" />
           <img
             class="image-home-full"
-            src={`${photo}.jpg`}
+            src={pirivenaProjectPhotoJpg}
             alt={t(userLanguage, 'pirivenaPage:imageAlt')}
             width="1733"
             height="1155"

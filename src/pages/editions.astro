@@ -1,6 +1,7 @@
 ---
 import '~/assets/editions.css'
-import { SC_API, SC_EDITIONS_REPO, SC_IMG } from '~/constants/urls'
+import { editionCover, editionsStack } from '~/constants/images'
+import { SC_API, SC_EDITIONS_REPO } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { sitePageMetadata } from '~/utils/json-ld'
@@ -46,7 +47,6 @@ const editions = webEditionInfoList.sort(
 )
 
 const title = t(userLanguage, 'publication:editionsToolbarTitle')
-const stack = `${SC_IMG}/publication-pages/editions-kn-wet.jpg`
 
 function getBlurb(textUid: string): string | undefined {
   return blurbs.find((x: { uid: string; blurb: string }) => x.uid === textUid)
@@ -59,7 +59,7 @@ function getBlurb(textUid: string): string | undefined {
     slot="head"
     rel="preload"
     as="image"
-    href={stack}
+    href={editionsStack}
     fetchpriority="high"
   />
   <span id="main" tabindex="-1"></span>
@@ -101,7 +101,7 @@ function getBlurb(textUid: string): string | undefined {
           </aside>
         </div>
         <img
-          src={stack}
+          src={editionsStack}
           alt="Stack of SuttaCentral edition books"
           width="1008"
           height="1344"
@@ -128,7 +128,7 @@ function getBlurb(textUid: string): string | undefined {
               </header>
               <figure>
                 <img
-                  src={`${SC_IMG}/publication-pages/${edition.publication.text_uid}-book.jpg`}
+                  src={editionCover(edition.publication.text_uid)}
                   alt={`Cover art for ${edition.publication.translation_title}`}
                   width="574"
                   height="823"

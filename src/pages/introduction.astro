@@ -1,6 +1,13 @@
 ---
 import '~/assets/figure.css'
-import { SC_IMG } from '~/constants/urls'
+import {
+  introductionBirchbarkAvif,
+  introductionBirchbarkJpg,
+  introductionDn20Avif,
+  introductionDn20Jpg,
+  introductionManuscriptAvif,
+  introductionManuscriptJpg,
+} from '~/constants/images'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { sitePageMetadata } from '~/utils/json-ld'
@@ -8,7 +15,6 @@ import { sitePageMetadata } from '~/utils/json-ld'
 const userLanguage = Astro.locals.userLanguage
 
 const title = t(userLanguage, 'introduction:1')
-const manuscript = `${SC_IMG}/static-pages/Life_of_Buddha_Burmese_Manuscript_22_Volume_1_Wellcom`
 ---
 
 <Layout {...sitePageMetadata(userLanguage, '/introduction', title)}>
@@ -17,7 +23,7 @@ const manuscript = `${SC_IMG}/static-pages/Life_of_Buddha_Burmese_Manuscript_22_
     rel="preload"
     as="image"
     type="image/avif"
-    href={`${manuscript}.avif`}
+    href={introductionManuscriptAvif}
     fetchpriority="high"
   />
   <span id="main" tabindex="-1"></span>
@@ -30,11 +36,11 @@ const manuscript = `${SC_IMG}/static-pages/Life_of_Buddha_Burmese_Manuscript_22_
       <p set:html={t(userLanguage, 'introduction:5')} />
       <figure>
         <picture>
-          <source srcset={`${manuscript}.avif`} type="image/avif" />
+          <source srcset={introductionManuscriptAvif} type="image/avif" />
           <img
             alt={t(userLanguage, 'introduction:6')}
             class="image-home-full"
-            src={`${manuscript}.jpg`}
+            src={introductionManuscriptJpg}
             width="640"
             height="259"
             fetchpriority="high"
@@ -49,14 +55,11 @@ const manuscript = `${SC_IMG}/static-pages/Life_of_Buddha_Burmese_Manuscript_22_
       <h2 set:html={t(userLanguage, 'introduction:12')} />
       <figure>
         <picture>
-          <source
-            srcset={`${SC_IMG}/static-pages/birchbark_w400.avif`}
-            type="image/avif"
-          />
+          <source srcset={introductionBirchbarkAvif} type="image/avif" />
           <img
             alt={t(userLanguage, 'introduction:13')}
             class="image-home"
-            src={`${SC_IMG}/static-pages/birchbark_w400.jpg`}
+            src={introductionBirchbarkJpg}
             width="400"
             height="357"
             loading="lazy"
@@ -96,14 +99,11 @@ const manuscript = `${SC_IMG}/static-pages/Life_of_Buddha_Burmese_Manuscript_22_
       <h2 set:html={t(userLanguage, 'introduction:34')} />
       <figure>
         <picture>
-          <source
-            srcset={`${SC_IMG}/static-pages/dn20.avif`}
-            type="image/avif"
-          />
+          <source srcset={introductionDn20Avif} type="image/avif" />
           <img
             alt={t(userLanguage, 'introduction:35')}
             class="image-home"
-            src={`${SC_IMG}/static-pages/dn20.jpg`}
+            src={introductionDn20Jpg}
             width="640"
             height="427"
             loading="lazy"

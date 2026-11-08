@@ -1,6 +1,9 @@
 ---
 import '~/assets/figure.css'
-import { SC_IMG } from '~/constants/urls'
+import {
+  donationSuccessPhotoAvif,
+  donationSuccessPhotoJpg,
+} from '~/constants/images'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 
@@ -17,14 +20,11 @@ const title = t(userLanguage, 'interface:donationSuccessTitle')
       <p set:html={t(userLanguage, 'donations:success2')} />
       <figure>
         <picture>
-          <source
-            srcset={`${SC_IMG}/static-pages/novice_reading.avif`}
-            type="image/avif"
-          />
+          <source srcset={donationSuccessPhotoAvif} type="image/avif" />
           <img
             alt={t(userLanguage, 'donations:successAltText')}
             class="image-home-full"
-            src={`${SC_IMG}/static-pages/novice_reading.jpg`}
+            src={donationSuccessPhotoJpg}
             width="3800"
             height="2536"
           />

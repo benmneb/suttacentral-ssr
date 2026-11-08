@@ -9,7 +9,8 @@ import Icon from '~/components/icon.astro'
 import { icon } from '~/constants/heroicons'
 import { AVAILABLE_LOOKUPS } from '~/constants/lookup'
 import { paliScriptOf } from '~/constants/pali-scripts'
-import { SC_API, SC_IMG } from '~/constants/urls'
+import { optimizedIllustration } from '~/constants/images'
+import { SC_API } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
 import { getViewPrefs, setViewPref } from '~/utils/cookies'
@@ -632,7 +633,7 @@ function renderIllustrations(key: string) {
       const credit = [creator, creation_date].filter(Boolean).join(', ')
       return `
       <span class="illustration" role="figure">
-        <img src="${SC_IMG}/optimized-illustrations/${filename}.avif" alt="${alt.replace(/"/g, '&quot;')}" loading="lazy" decoding="async">
+        <img src="${optimizedIllustration(filename)}" alt="${alt.replace(/"/g, '&quot;')}" loading="lazy" decoding="async">
         ${credit ? `<span class="caption">${credit}</span>` : ''}
       </span>`
     })
