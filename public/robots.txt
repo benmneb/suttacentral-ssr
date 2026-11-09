@@ -49,6 +49,8 @@ User-agent: Diffbot
 User-agent: DuckAssistBot
 User-agent: Echobot Bot
 User-agent: EchoboxBot
+User-agent: ElevenlabsCrawler
+User-agent: ExaSearchBot
 User-agent: FacebookBot
 User-agent: Factset_spyderbot
 User-agent: FirecrawlAgent
@@ -132,6 +134,19 @@ User-agent: YandexAdditional
 User-agent: YandexAdditionalBot
 User-agent: YouBot
 User-agent: ZanistaBot
+Disallow: /
+
+# Block SEO and backlink crawlers
+
+User-agent: AhrefsBot
+User-agent: Barkrowler
+User-agent: BLEXBot
+User-agent: DataForSeoBot
+User-agent: DotBot
+User-agent: MJ12bot
+User-agent: SemrushBot
+User-agent: SERankingBacklinksBot
+User-agent: serpstatbot
 Disallow: /
 
 Sitemap: https://suttacentral.now/sitemap.xml
