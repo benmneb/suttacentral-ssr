@@ -8,7 +8,7 @@ SuttaCentral.now is built HTML first, with CSS where it's needed and JavaScript 
 - Every kind of page passes the W3C's [Nu validator](https://validator.w3.org/nu/) with no errors or warnings, and their JSON-LD fits the schema.org vocabulary. Slips in SuttaCentral's markup are mended as each page renders. The one warning let through is for text in its data that isn't in Unicode Normalization Form C, such as some Bengali names
 - Pages are built and tested to [WCAG 2.2](https://www.w3.org/TR/WCAG22/) AA, with no axe-core violations in light and dark mode or at a phone's width. With more contrast set, text meets AAA contrast ratios. Forced colours and reduced motion are respected throughout. See [ACCESSIBILITY.md](ACCESSIBILITY.md)
 - There's no render-blocking JS, with 0 ms Total Blocking Time and no layout shift
-- CSS is compiled for Chrome 107 and Safari 16, and newer features (popovers, anchor positioning, `:has()`) sit behind `@supports` with a plainer fallback. Without JS, the site still reads and navigates in Chrome 109, the last on Windows 7 and 8.1, and on an iPhone 6
+- CSS is compiled for Chrome 107 and Safari 16, and newer features (popovers, anchor positioning, `:has()`) sit behind `@supports` with a plainer fallback. Without JS, the site still reads and navigates in Chrome 109, the last on Windows 7 and 8.1
 
 [`pnpm test`](#tests) checks validity and accessibility on a sample of every kind of page, in English and another language.
 

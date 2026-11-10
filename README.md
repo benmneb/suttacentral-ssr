@@ -14,7 +14,7 @@ This project fetches data from SuttaCentral's public APIs at request time and se
 - **Minimal JavaScript** — Every text and core feature works without it. About 13kb (gzipped) of optional client-side JS on a text adds inline Pali & Chinese dictionary lookups, text-to-speech via the Web Speech API and hot keys
 - **Valid HTML** — No errors or warnings from the W3C's Nu validator, and schema.org-valid structured data
 - **Accessible** — Built and tested to WCAG 2.2 AA, with AAA contrast when more contrast is set and support for forced colours and reduced motion. See [ACCESSIBILITY.md](ACCESSIBILITY.md)
-- **Legacy supported** — Reads and navigates on an iPhone 6 from 2014 and on Windows 7 from 2009 (Chrome 109), with or without JS. See the [principles](DEVELOPMENT.md#principles)
+- **Legacy supported** — Reads and navigates on Windows 7 from 2009 (Chrome 109), with or without JS. See the [principles](DEVELOPMENT.md#principles)
 
 ## Performance Comparisons
 
