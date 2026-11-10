@@ -4,7 +4,7 @@
 
 SuttaCentral.now is built HTML first, with CSS where it's needed and JavaScript only as an enhancement. Every change is held to these:
 
-- Every page, text and core feature is server-rendered HTML and CSS, and works without JavaScript. Word lookup is the one feature that needs JS. The rest of the optional ~13 kB (gzipped) on a text adds to pages that already work
+- Every page, text and core feature is server-rendered HTML and CSS, and works without JavaScript. Of suttacentral.net's features, only word lookup needs JS here. The rest of the optional ~13 kB (gzipped) on a text adds extras such as text-to-speech and hot keys to pages that already work
 - Every kind of page passes the W3C's [Nu validator](https://validator.w3.org/nu/) with no errors or warnings, and their JSON-LD fits the schema.org vocabulary. Slips in SuttaCentral's markup are mended as each page renders. The one warning let through is for text in its data that isn't in Unicode Normalization Form C, such as some Bengali names
 - Pages are built and tested to [WCAG 2.2](https://www.w3.org/TR/WCAG22/) AA, with no axe-core violations in light and dark mode or at a phone's width. With more contrast set, text meets AAA contrast ratios. Forced colours and reduced motion are respected throughout. See [ACCESSIBILITY.md](ACCESSIBILITY.md)
 - There's no render-blocking JS, with 0 ms Total Blocking Time and no layout shift
@@ -16,7 +16,7 @@ SuttaCentral.now is built HTML first, with CSS where it's needed and JavaScript 
 
 ## Word Lookup Feature
 
-Clicking a root language word (Pali/Chinese) shows DPD dictionary definitions in a HTML popover when the "Word Lookup" checkbox is enabled. It is the one feature that needs JS: without it, or without popovers, its checkbox stays hidden. This is to reduce the HTML payload by up to almost 50% (`/dn1/en/sujato`) for almost every user, who has JS enabled.
+Clicking a root language word (Pali/Chinese) shows DPD dictionary definitions in a HTML popover when the "Word Lookup" checkbox is enabled. It is the one feature carried over from suttacentral.net that needs JS: without it, or without popovers, its checkbox stays hidden. This is to reduce the HTML payload by up to almost 50% (`/dn1/en/sujato`) for almost every user, who has JS enabled.
 
 ### Architecture
 
