@@ -108,7 +108,7 @@ Each file holds up to 40,000 URLs, under the protocol's 50,000. Each URL is the 
 
 Pages are never cached, so every view has SuttaCentral's live data. Their assets are cached for good instead: everything Vite builds into `/_astro/` (styles, scripts and imported files) has a hash in its name, and `@astrojs/cloudflare` gives that path a year's `immutable` `Cache-Control` in the `_headers` it writes at build. There's no additional `_headers` needed in this code.
 
-Files in `public/` keep their names, so Cloudflare serves them with `max-age=0, must-revalidate`, and each view waits on a revalidation. A file pages load belongs in `src/assets/` instead, imported with `?url` when the page links to it rather than inlining it, as [`src/assets/map-base.svg`](src/assets/map-base.svg) is.
+Files in `public/` keep their names, so Cloudflare serves them with `max-age=0, must-revalidate`. Pages load only the favicons from there, which don't hold up rendering. A file a page needs to render belongs in `src/assets/` instead, imported with `?url` when the page links to it rather than inlining it, as [`src/assets/map-base.svg`](src/assets/map-base.svg) is.
 
 ---
 
