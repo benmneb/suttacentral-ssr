@@ -42,6 +42,7 @@ import {
   tidySegmentedHtml,
   toSentenceCase,
   uidIsInRange,
+  uidToTitle,
 } from '~/utils/strings'
 import { getUrlViewPrefs } from '~/utils/url-prefs'
 
@@ -165,6 +166,8 @@ if (!suttaplexData?.[0]?.uid) {
   return Astro.rewrite('/404')
 }
 
+const isRootText = language === suttaplexData[0].root_lang
+
 for (const text of [
   suttasData.root_text,
   suttasData.translation,
@@ -176,6 +179,7 @@ for (const text of [
 let bilaraData: any = {}
 let displayedUid: string | null = null // which bilara document gets rendered
 let keyPrefixes: string[] = [] // all of them in the response, in order
+let numberedKey: string | null = null // where an untitled sutta's number goes
 if (bilaraPromise) {
   let transliterated
   ;[bilaraData, transliterated] = await bilaraPromise
@@ -244,11 +248,13 @@ if (bilaraPromise) {
     null
 
   if (isRangeSutta && displayedUid) {
-    const matchKey = (key: string) =>
-      key.split(':')[0].toLowerCase() === displayedUid ||
+    const isRangeHeader = (key: string) =>
       bilaraData.html_text[key]?.includes("class='range'") ||
       bilaraData.html_text[key]?.includes("class='range-title'") ||
       bilaraData.html_text[key]?.includes("class='subdivision'")
+    const isOwn = (key: string) =>
+      key.split(':')[0].toLowerCase() === displayedUid
+    const matchKey = (key: string) => isOwn(key) || isRangeHeader(key)
     bilaraData.keys_order = bilaraData.keys_order.filter(matchKey)
     for (const prop of [
       'html_text',
@@ -262,6 +268,36 @@ if (bilaraPromise) {
       bilaraData[prop] = Object.fromEntries(
         Object.entries(bilaraData[prop]).filter(([key]) => matchKey(key))
       )
+    }
+
+    // An untitled sutta takes its number as a title, ie a Dhp verse's is Pāli only
+    if (displayedUid === lowerAcronym) {
+      const number = uidToTitle(lowerAcronym)
+      const titleKey = bilaraData.keys_order.find(
+        (key: string) =>
+          isOwn(key) &&
+          bilaraData.html_text[key]?.includes("class='sutta-title'")
+      )
+      const texts = isRootText
+        ? bilaraData.root_text
+        : bilaraData.translation_text
+      if (titleKey && texts) {
+        if (!texts[titleKey]?.trim()) texts[titleKey] = number
+      } else if (!titleKey) {
+        numberedKey =
+          bilaraData.keys_order.find(
+            (key: string) => isOwn(key) && !isRangeHeader(key)
+          ) ?? null
+        if (numberedKey) {
+          bilaraData.html_text[numberedKey] = bilaraData.html_text[
+            numberedKey
+          ].replace(
+            /^(?:<article id=(['"])[^'"]*\1>)?/,
+            (opening: string) =>
+              `${opening}<h2 class='sutta-title'>${number}</h2>`
+          )
+        }
+      }
     }
   }
 
@@ -325,7 +361,6 @@ if (isRangeSutta) {
 }
 
 const isSegmented = !!suttasData.segmented
-const isRootText = language === suttaplexData[0].root_lang
 
 // A legacy text's publication info is its own last <footer>
 const hasLegacyInfo =
@@ -709,6 +744,14 @@ function collectHeading(html: string, key: string, text?: string) {
     if (match[2] && isDropped) continue
     const to = renumberHeading(Number(match[1]))
     if (match.index === heading?.index) level = to
+    else if (key === numberedKey && !match[2]) {
+      toc.push({
+        level: to,
+        href: `#${lowerAcronym}`,
+        html: tocLabel(uidToTitle(lowerAcronym)),
+        isTitle: true,
+      })
+    }
   }
   if (!heading || !text?.trim()) return
   toc.push({
