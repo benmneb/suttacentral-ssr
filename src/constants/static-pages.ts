@@ -1,4 +1,4 @@
-import { icon } from '~/constants/heroicons'
+import { icon } from '~/constants/icons'
 import { SC_ORIGIN } from '~/constants/urls'
 
 /** A static page's path and the translation key of its link text */

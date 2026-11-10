@@ -1,4 +1,4 @@
-/** Heroicons drawn by the masks in icons.css, text-icons.css and offline-icons.css */
+/** Icons drawn by the masks in icons.css and its per-page siblings */
 export type IconName =
   | 'academicCap'
   | 'archiveBoxArrowDown'
@@ -11,7 +11,9 @@ export type IconName =
   | 'arrowsUpDown'
   | 'arrowUp'
   | 'backward'
-  | 'bars'
+  | 'bars3'
+  | 'bars3BottomLeft'
+  | 'bars3BottomRight'
   | 'beaker'
   | 'bolt'
   | 'bookmark'
@@ -63,7 +65,7 @@ export type IconName =
   | 'viewColumns'
   | 'xMark'
 
-/** An icon's markup, micro (16px) or mini (20px) */
+/** An icon's markup, 1em or, with mini, 1.25em */
 export function icon(name: IconName, size?: 'mini'): string {
   return `<i class="icon${size ? ` ${size}` : ''} i-${name}"></i>`
 }

@@ -61,4 +61,4 @@ Donated to the public domain via [CC0](https://creativecommons.org/publicdomain/
 
 Favicon via [thesunshade](https://github.com/thesunshade/citation-helper)
 
-UI icons via [Heroicons](https://heroicons.com) by Tailwind Labs, MIT
+UI icons via [Line 01](https://iconsforfree.com) by Andreas Dittes, CC0
