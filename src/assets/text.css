@@ -1,52 +1,56 @@
 @import url(./_variables.css);
 
-&:has(#commenter:checked) {
-  .segment button[popovertarget] {
-    display: initial;
-  }
-
-  .inline-comment {
-    height: fit-content;
-    margin: 0.5rem;
-    padding: 0.5rem;
-    color: var(--text-color-secondary);
-    background-color: var(--comments-background-color);
-    border-radius: var(--rounding);
-    border: 1px solid var(--comments-border-color);
-    font-weight: initial;
-  }
-
-  /* Inline, as without popovers the note buttons open nothing */
-  @supports not selector(:popover-open) {
-    .inline-comment {
-      display: block;
+aside:has(#commenter:checked) {
+  & ~ main {
+    .segment button[popovertarget] {
+      display: initial;
     }
 
-    .segment button[popovertarget] {
-      display: none;
+    .inline-comment {
+      height: fit-content;
+      margin: 0.5rem;
+      padding: 0.5rem;
+      color: var(--text-color-secondary);
+      background-color: var(--comments-background-color);
+      border-radius: var(--rounding);
+      border: 1px solid var(--comments-border-color);
+      font-weight: initial;
+    }
+
+    /* Inline, as without popovers the note buttons open nothing */
+    @supports not selector(:popover-open) {
+      .inline-comment {
+        display: block;
+      }
+
+      .segment button[popovertarget] {
+        display: none;
+      }
     }
   }
 
   &:has(#commenter-inline:checked) {
-    .inline-comment {
-      display: block;
-    }
+    & ~ main {
+      .inline-comment {
+        display: block;
+      }
 
-    .segment button[popovertarget] {
-      display: none;
+      .segment button[popovertarget] {
+        display: none;
+      }
     }
 
     /* can't use `var(--content-max-width)` in media queries :'( */
     @media (min-width: 600px) {
       &:has(#commenter-side:checked) {
-        main {
+        & ~ main {
           --main-column: 1fr;
         }
-        main ~ nav {
+        & ~ main ~ nav {
           max-width: var(--content-double-width);
         }
 
-        .translation {
+        & ~ main .translation {
           display: grid;
           grid-template-columns: 1fr 1fr;
           column-gap: 1rem;
@@ -56,20 +60,18 @@
           }
         }
 
-        &:has(#rooter:checked) {
-          .root {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            column-gap: 1rem;
+        &:has(#rooter:checked) ~ main .root {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          column-gap: 1rem;
 
-            .inline-comment {
-              margin: 0 0 0.5rem;
-            }
+          .inline-comment {
+            margin: 0 0 0.5rem;
           }
         }
 
-        &:has(#rooter-side:checked) {
-          .segment {
+        &:has(#rooter:checked):has(#rooter-side:checked) {
+          & ~ main .segment {
             grid-template-columns: 2fr 1fr;
 
             .root {
@@ -77,13 +79,11 @@
             }
           }
 
-          &:has(#rooter-first:checked) {
-            .segment {
-              grid-template-columns: 1fr 2fr;
+          &:has(#rooter-first:checked) ~ main .segment {
+            grid-template-columns: 1fr 2fr;
 
-              .root {
-                grid-template-columns: 1fr;
-              }
+            .root {
+              grid-template-columns: 1fr;
             }
           }
         }
@@ -93,12 +93,14 @@
 }
 
 /* With no group picked, the checkbox shows them all */
-&:has(#segmenter:checked) {
+aside:has(#segmenter:checked) {
   &:not(:has(#segmenter-main:not(:checked)))
+    ~ main
     :is(.reference > a:not(.ref), a.ref.main),
-  &:not(:has(#segmenter-pts:not(:checked))) a.ref.pts,
-  &:not(:has(#segmenter-others:not(:checked))) a.ref.others,
+  &:not(:has(#segmenter-pts:not(:checked))) ~ main a.ref.pts,
+  &:not(:has(#segmenter-others:not(:checked))) ~ main a.ref.others,
   &:not(:has(:is(#segmenter-main, #segmenter-pts, #segmenter-others):checked))
+    ~ main
     :is(.reference > a, a.ref) {
     /* Inline-block, so one never breaks across lines */
     &:not(:is(header, h2, h3, h4, h5, h6) .reference > a) {
@@ -138,7 +140,7 @@
 }
 
 /* Hidden lazy images aren't fetched */
-&:not(:has(#illustrator:checked)) .illustration {
+aside:not(:has(#illustrator:checked)) ~ main .illustration {
   display: none;
 }
 
@@ -148,7 +150,7 @@
 }
 
 /* The labels are in the reader's language, from the text page's <head> */
-&:has(#highlighter:checked) {
+aside:has(#highlighter:checked) ~ main {
   /* Labels with no ::before only title the line, from the view settings script */
   .nidana {
     --mark-color: var(--aqua);
@@ -393,22 +395,22 @@ main:has(.segment) {
   --parallel-line: clamp(1px, var(--parallel-step) - 1px, 2px);
 }
 
-&:has(#rooter:checked):has(#rooter-side:checked),
-&:has(#commenter:checked):has(#commenter-inline:checked):has(
+aside:has(#rooter:checked):has(#rooter-side:checked),
+aside:has(#commenter:checked):has(#commenter-inline:checked):has(
     #commenter-side:checked
   ) {
-  main:has(.segment) {
+  & ~ main:has(.segment) {
     --parallel-column: var(--content-double-width-gap);
   }
 }
 
 @supports (anchor-name: --a) {
-  &:has(#paralleler:checked) {
+  aside:has(#paralleler:checked) ~ main {
     .parallel-runs {
       display: block;
     }
 
-    main:has(.segment) {
+    &:has(.segment) {
       --parallel-reserve: clamp(
         0px,
         var(--parallel-want) - var(--parallel-room),
@@ -555,15 +557,15 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
 
 /* A heading only the root fills is empty till the root shows,
    ie /dhp1-20/en/sujato's verse stories and /sn46.57/en/sujato */
-&:not(:has(#rooter:checked))
-  main
+aside:not(:has(#rooter:checked))
+  ~ main
   :is(h1, h2, h3, h4, h5, h6):has(> .segment > .root):not(
     :has(> .segment > .translation)
   ) {
   display: none;
 }
 
-&:has(#rooter:checked) .segment {
+aside:has(#rooter:checked) ~ main .segment {
   display: grid;
   margin-bottom: 0.3rem;
 
@@ -578,7 +580,8 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
 }
 
 /* Not while its row is hidden, as without JS a cookie can still check it */
-&:has(#views-menu > li:not([hidden]) > #rooter-look-up:checked)
+aside:has(#views-menu > li:not([hidden]) > #rooter-look-up:checked)
+  ~ main
   .segment
   > :is(.translation, .root)[translate='no']
   > .text {
@@ -594,18 +597,20 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
   }
 }
 
-&:has(#rooter:checked) {
-  main .endbook,
-  .endvagga,
-  .endkanda {
-    color: unset;
+aside:has(#rooter:checked) {
+  & ~ main {
+    .endbook,
+    .endvagga,
+    .endkanda {
+      color: unset;
+    }
   }
 
   &:has(#rooter-side:checked) {
-    main {
+    & ~ main {
       --main-column: 1fr;
     }
-    main ~ nav {
+    & ~ main ~ nav {
       max-width: var(--content-double-width);
     }
   }
@@ -613,7 +618,7 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
   /* can't use `var(--content-max-width)` in media queries :'( */
   @media (min-width: 600px) {
     &:has(#rooter-side:checked) {
-      .segment {
+      & ~ main .segment {
         display: grid;
         grid-template-columns: 1fr 1fr;
         column-gap: 1rem;
@@ -633,7 +638,7 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
           } */
       }
 
-      &:has(#rooter-first:checked) {
+      &:has(#rooter-first:checked) ~ main {
         .translation {
           grid-column: 2;
         }
@@ -643,7 +648,7 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
       }
 
       &:has(#segmenter:checked) {
-        .segment {
+        & ~ main .segment {
           grid-template-columns: 3rem 1fr 1fr;
 
           .reference {
@@ -664,21 +669,19 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
             grid-column: 3;
           }
         }
-        &:has(#segmenter:checked):has(#rooter-first:checked) {
-          .segment {
-            .translation {
-              grid-column: 3;
-            }
-            .root {
-              grid-column: 2;
-            }
+        &:has(#segmenter:checked):has(#rooter-first:checked) ~ main .segment {
+          .translation {
+            grid-column: 3;
+          }
+          .root {
+            grid-column: 2;
           }
         }
       }
     }
 
-    &:has(#rooter-side:checked)&:has(#rooter-first:checked) {
-      .segment {
+    &:has(#rooter-side:checked):has(#rooter-first:checked) {
+      & ~ main .segment {
         .root {
           grid-column: 1;
         }
@@ -687,23 +690,21 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
         }
       }
 
-      &:has(#segmenter:checked) {
-        .segment {
-          .reference {
-            grid-column: 1;
-          }
-          .root {
-            grid-column: 2;
-          }
-          .translation {
-            grid-column: 3;
-          }
+      &:has(#segmenter:checked) ~ main .segment {
+        .reference {
+          grid-column: 1;
+        }
+        .root {
+          grid-column: 2;
+        }
+        .translation {
+          grid-column: 3;
         }
       }
     }
   }
 
-  &:has(#rooter-first:checked) .segment {
+  &:has(#rooter-first:checked) ~ main .segment {
     .root {
       order: 1;
       grid-column: 1;
@@ -722,10 +723,10 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
 
 /* can't use `var(--content-max-width)` in media queries :'( */
 @media (min-width: 600px) {
-  &:has(#segmenter:checked) {
-    &:has(#commenter:checked)&:has(#commenter-inline:checked) {
+  aside:has(#segmenter:checked) {
+    &:has(#commenter:checked):has(#commenter-inline:checked) {
       &:has(#commenter-side:checked) {
-        .segment {
+        & ~ main .segment {
           display: grid;
           grid-template-columns: 3rem 1fr;
           column-gap: 1rem;
@@ -747,12 +748,12 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
         }
 
         &:has(#rooter:checked) {
-          .root {
+          & ~ main .root {
             grid-column-start: 2;
           }
 
           &:has(#rooter-side:checked) {
-            .segment {
+            & ~ main .segment {
               grid-template-columns: 3rem 2fr 1fr;
 
               .root {
@@ -761,16 +762,14 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
               }
             }
 
-            &:has(#rooter-first:checked) {
-              .segment {
-                grid-template-columns: 3rem 1fr 2fr;
+            &:has(#rooter-first:checked) ~ main .segment {
+              grid-template-columns: 3rem 1fr 2fr;
 
-                .root {
-                  grid-column: 2;
-                }
-                .translation {
-                  grid-column: 3;
-                }
+              .root {
+                grid-column: 2;
+              }
+              .translation {
+                grid-column: 3;
               }
             }
           }
@@ -1008,11 +1007,11 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
 }
 
 /* Flat, not display: none, so the menu doesn't widen as it shows */
-&:not(:has(#commenter:checked)) #views-menu > li:has(#commenter-inline),
-&:not(:has(#commenter:checked):has(#commenter-inline:checked))
+aside:not(:has(#commenter:checked)) #views-menu > li:has(#commenter-inline),
+aside:not(:has(#commenter:checked):has(#commenter-inline:checked))
   #views-menu
   > li:has(#commenter-side),
-&:has(#rooter):not(:has(#rooter:checked))
+aside:has(#rooter):not(:has(#rooter:checked))
   #views-menu
   > li:is(
     :has(#rooter-side),
@@ -1023,9 +1022,13 @@ button[style]:is([popovertarget^='comment-'], [popovertarget^='variant-']) {
     :has(#rooter-script-select),
     .script-apply
   ),
-&:not(:has(#rooter-script:checked)) #views-menu > li:has(#rooter-script-select),
-&:has(#rooter-script:not(:checked):not(:default)) #views-menu > li.script-apply,
-&:not(:has(#segmenter:checked))
+aside:not(:has(#rooter-script:checked))
+  #views-menu
+  > li:has(#rooter-script-select),
+aside:has(#rooter-script:not(:checked):not(:default))
+  #views-menu
+  > li.script-apply,
+aside:not(:has(#segmenter:checked))
   #views-menu
   > li:is(
     :has(#segmenter-main),
