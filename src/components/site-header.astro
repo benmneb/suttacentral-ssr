@@ -56,17 +56,29 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
   <div>
     {
       !pathname.startsWith('/search') && (
-        <button
-          class="icon-button"
-          type="button"
-          commandfor="search-modal"
-          command="show-modal"
-          aria-label={t(userLanguage, 'search:search')}
-          title={t(userLanguage, 'search:search')}
-          data-shortcut={t(userLanguage, 'header:searchShortcut')}
-        >
-          <Icon name="magnifyingGlass" />
-        </button>
+        <>
+          <button
+            class="icon-button"
+            type="button"
+            commandfor="search-modal"
+            command="show-modal"
+            aria-label={t(userLanguage, 'search:search')}
+            title={t(userLanguage, 'search:search')}
+            data-shortcut={t(userLanguage, 'header:searchShortcut')}
+          >
+            <Icon name="magnifyingGlass" />
+          </button>
+          <noscript>
+            <a
+              class="icon-button"
+              href="/search"
+              aria-label={t(userLanguage, 'search:search')}
+              title={t(userLanguage, 'search:search')}
+            >
+              <Icon name="magnifyingGlass" />
+            </a>
+          </noscript>
+        </>
       )
     }
     <button
@@ -151,8 +163,16 @@ const localisedCrumbs = breadcrumbs?.map(c => ({
       anchor-name: --site-pages-button;
     }
 
-    > div > .icon-button {
+    > div > .icon-button,
+    > div > noscript > .icon-button {
       margin-block: -0.3125rem;
+    }
+
+    /* The noscript link instead, as without invoker commands it opens nothing */
+    @media (scripting: none) {
+      > div > button[commandfor='search-modal'] {
+        display: none;
+      }
     }
   }
 </style>
