@@ -15,6 +15,7 @@ This project fetches data from SuttaCentral's public APIs at request time and se
 - **URLs you know and love** — Mirrors SuttaCentral.net URL structure (just change `.net` to `.now`, or use the [browser extension](https://sr.ht/~benmneb/suttacentral-redirect))
 - **Flexible text settings** — Customizable reading preferences for footnotes, root-text views, and reference links
 - **Minimal JavaScript** — Every text and core feature works without it. About 13kb (gzipped) of optional client-side JS on a text adds inline Pali & Chinese dictionary lookups, text-to-speech via the Web Speech API and hot keys
+- **Valid and accessible** — W3C-valid HTML and schema.org structured data, built and tested to WCAG 2.2 AA, with AAA contrast when more contrast is set and support for forced colours. See the [principles](DEVELOPMENT.md#principles)
 
 ## Performance Comparisons
 
