@@ -2365,6 +2365,8 @@ aside {
         outline-offset: -2px;
         display: flex;
         gap: 0.3rem;
+        border-radius: 0;
+
         &:hover {
           background-color: unset;
         }
