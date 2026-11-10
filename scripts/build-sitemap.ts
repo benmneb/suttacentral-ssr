@@ -8,6 +8,8 @@
  * - texts: every translation of every text, in every language
  * - define: every word .net's /api/dictionary_full has an entry for
  *
+ * Search and /parallels pages are noindex, so they're left out.
+ *
  * - public/sitemap.xml: the index of the others
  * - public/sitemap-<group>-<n>.xml: up to 40,000 URLs each, under the
  *   protocol's 50,000

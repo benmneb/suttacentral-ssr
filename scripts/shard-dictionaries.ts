@@ -3,6 +3,9 @@
  * so the lookup endpoint only has to parse the few kilobytes a word needs
  * rather than the whole 21 MB file, which blows the Worker CPU limit.
  *
+ * Served as static assets rather than bundled, as they would take the Worker
+ * past Cloudflare's 25 MB size limit.
+ *
  * The shards are build output, so they are gitignored. `build` and `dev` run
  * this first, or run it alone with: pnpm shard-dicts
  */

@@ -16,7 +16,7 @@ const LOCALES_DIR = join(__dirname, '..', 'src', 'i18n', 'locales')
 const SC_BASE = `${SC_ORIGIN}/localization/elements`
 
 /**
- * File base names to sync from SC.
+ * File base names to sync from SC. Comment one out to keep local changes to it.
  */
 const FILE_BASES = [
   'abbreviations',
