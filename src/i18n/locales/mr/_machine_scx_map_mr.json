@@ -1,4 +1,10 @@
 {
+  "map:arrows": "बाण",
+  "map:ctrlScroll": "{ctrl}/{cmd} आणि स्क्रोल",
+  "map:doubleClick": "दोनदा क्लिक",
+  "map:doubleClickTap": "दोनदा क्लिक/टॅप",
+  "map:doubleTap": "दोनदा टॅप",
+  "map:drag": "ओढा",
   "map:exitFullScreen": "पूर्ण स्क्रीनमधून बाहेर पडा",
   "map:fullScreen": "पूर्ण स्क्रीन",
   "map:indexOfPlaces": "स्थळांची अनुक्रमणिका",
@@ -8,7 +14,7 @@
   "map:moveRight": "उजवीकडे हलवा",
   "map:moveUp": "वर हलवा",
   "map:pan": "हलवा",
-  "map:panHow": "ओढा, किंवा बाण, किंवा {keys}",
+  "map:pinch": "पिंच",
   "map:posterAlt": "जंबुदीपाचा हाताने काढलेला नकाशा",
   "map:presentDay": "सध्याचे",
   "map:reset": "रीसेट करा",
@@ -16,7 +22,6 @@
   "map:view": "दृश्य",
   "map:viewOnFullMap": "पूर्ण नकाशावर पाहा",
   "map:zoom": "झूम",
-  "map:zoomHow": "दोनदा क्लिक/टॅप, किंवा {ctrl}/{cmd} आणि स्क्रोल, किंवा पिंच, किंवा {keys}",
   "map:zoomIn": "मोठे करा",
   "map:zoomOut": "लहान करा"
 }

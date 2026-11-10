@@ -1,4 +1,10 @@
 {
+  "map:arrows": "pilene",
+  "map:ctrlScroll": "{ctrl}/{cmd} og rull",
+  "map:doubleClick": "dobbeltklikk",
+  "map:doubleClickTap": "dobbeltklikk/-trykk",
+  "map:doubleTap": "dobbelttrykk",
+  "map:drag": "dra",
   "map:exitFullScreen": "Avslutt fullskjerm",
   "map:fullScreen": "Fullskjerm",
   "map:indexOfPlaces": "Stedsregister",
@@ -8,7 +14,7 @@
   "map:moveRight": "Flytt til høyre",
   "map:moveUp": "Flytt opp",
   "map:pan": "Flytt",
-  "map:panHow": "dra, eller pilene, eller {keys}",
+  "map:pinch": "knip",
   "map:posterAlt": "Håndtegnet kart over Jambudīpa",
   "map:presentDay": "I dag",
   "map:reset": "Tilbakestill",
@@ -16,7 +22,6 @@
   "map:view": "Visning",
   "map:viewOnFullMap": "Vis på hele kartet",
   "map:zoom": "Zoom",
-  "map:zoomHow": "dobbeltklikk/-trykk, eller {ctrl}/{cmd} og rull, eller knip, eller {keys}",
   "map:zoomIn": "Zoom inn",
   "map:zoomOut": "Zoom ut"
 }

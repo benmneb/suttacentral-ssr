@@ -1,4 +1,10 @@
 {
+  "map:arrows": "les flèches",
+  "map:ctrlScroll": "{ctrl}/{cmd} et molette",
+  "map:doubleClick": "double-clic",
+  "map:doubleClickTap": "double-clic/double-tap",
+  "map:doubleTap": "double-tap",
+  "map:drag": "glisser",
   "map:exitFullScreen": "Quitter le plein écran",
   "map:fullScreen": "Plein écran",
   "map:indexOfPlaces": "Index des lieux",
@@ -8,7 +14,7 @@
   "map:moveRight": "Déplacer vers la droite",
   "map:moveUp": "Déplacer vers le haut",
   "map:pan": "Déplacement",
-  "map:panHow": "glisser, ou les flèches, ou {keys}",
+  "map:pinch": "pincement",
   "map:posterAlt": "Carte de Jambudīpa dessinée à la main",
   "map:presentDay": "Aujourd’hui",
   "map:reset": "Réinitialiser",
@@ -16,7 +22,6 @@
   "map:view": "Affichage",
   "map:viewOnFullMap": "Voir sur la carte complète",
   "map:zoom": "Zoom",
-  "map:zoomHow": "double-clic/double-tap, ou {ctrl}/{cmd} et molette, ou pincement, ou {keys}",
   "map:zoomIn": "Zoom avant",
   "map:zoomOut": "Zoom arrière"
 }

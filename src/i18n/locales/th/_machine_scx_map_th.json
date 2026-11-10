@@ -1,4 +1,10 @@
 {
+  "map:arrows": "ลูกศร",
+  "map:ctrlScroll": "{ctrl}/{cmd} แล้วเลื่อน",
+  "map:doubleClick": "ดับเบิลคลิก",
+  "map:doubleClickTap": "ดับเบิลคลิก/แตะสองครั้ง",
+  "map:doubleTap": "แตะสองครั้ง",
+  "map:drag": "ลาก",
   "map:exitFullScreen": "ออกจากโหมดเต็มหน้าจอ",
   "map:fullScreen": "เต็มหน้าจอ",
   "map:indexOfPlaces": "ดัชนีสถานที่",
@@ -8,7 +14,7 @@
   "map:moveRight": "เลื่อนไปทางขวา",
   "map:moveUp": "เลื่อนขึ้น",
   "map:pan": "เลื่อน",
-  "map:panHow": "ลาก หรือลูกศร หรือ {keys}",
+  "map:pinch": "ใช้สองนิ้วถ่าง/หุบ",
   "map:posterAlt": "แผนที่ชมพูทวีปวาดด้วยมือ",
   "map:presentDay": "ปัจจุบัน",
   "map:reset": "รีเซ็ต",
@@ -16,7 +22,6 @@
   "map:view": "มุมมอง",
   "map:viewOnFullMap": "ดูบนแผนที่ฉบับเต็ม",
   "map:zoom": "ซูม",
-  "map:zoomHow": "ดับเบิลคลิก/แตะสองครั้ง หรือ {ctrl}/{cmd} แล้วเลื่อน หรือใช้สองนิ้วถ่าง/หุบ หรือ {keys}",
   "map:zoomIn": "ขยาย",
   "map:zoomOut": "ย่อ"
 }

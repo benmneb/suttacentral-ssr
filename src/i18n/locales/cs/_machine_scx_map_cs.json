@@ -1,4 +1,10 @@
 {
+  "map:arrows": "šipky",
+  "map:ctrlScroll": "{ctrl}/{cmd} a kolečko",
+  "map:doubleClick": "dvojité kliknutí",
+  "map:doubleClickTap": "dvojité kliknutí/klepnutí",
+  "map:doubleTap": "dvojité klepnutí",
+  "map:drag": "tažení",
   "map:exitFullScreen": "Ukončit celou obrazovku",
   "map:fullScreen": "Celá obrazovka",
   "map:indexOfPlaces": "Rejstřík míst",
@@ -8,7 +14,7 @@
   "map:moveRight": "Posunout doprava",
   "map:moveUp": "Posunout nahoru",
   "map:pan": "Posun",
-  "map:panHow": "tažení, nebo šipky, nebo {keys}",
+  "map:pinch": "roztažení prsty",
   "map:posterAlt": "Ručně kreslená mapa Džambudípy",
   "map:presentDay": "Současnost",
   "map:reset": "Obnovit",
@@ -16,7 +22,6 @@
   "map:view": "Zobrazení",
   "map:viewOnFullMap": "Zobrazit na celé mapě",
   "map:zoom": "Přiblížení",
-  "map:zoomHow": "dvojité kliknutí/klepnutí, nebo {ctrl}/{cmd} a kolečko, nebo roztažení prsty, nebo {keys}",
   "map:zoomIn": "Přiblížit",
   "map:zoomOut": "Oddálit"
 }

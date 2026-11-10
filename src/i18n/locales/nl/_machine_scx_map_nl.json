@@ -1,4 +1,10 @@
 {
+  "map:arrows": "de pijlen",
+  "map:ctrlScroll": "{ctrl}/{cmd} en scrollen",
+  "map:doubleClick": "dubbelklikken",
+  "map:doubleClickTap": "dubbelklikken/-tikken",
+  "map:doubleTap": "dubbeltikken",
+  "map:drag": "slepen",
   "map:exitFullScreen": "Volledig scherm sluiten",
   "map:fullScreen": "Volledig scherm",
   "map:indexOfPlaces": "Index van plaatsen",
@@ -8,7 +14,7 @@
   "map:moveRight": "Naar rechts",
   "map:moveUp": "Naar boven",
   "map:pan": "Verschuiven",
-  "map:panHow": "slepen, of de pijlen, of {keys}",
+  "map:pinch": "knijpen",
   "map:posterAlt": "Met de hand getekende kaart van Jambudīpa",
   "map:presentDay": "Heden",
   "map:reset": "Herstellen",
@@ -16,7 +22,6 @@
   "map:view": "Weergave",
   "map:viewOnFullMap": "Bekijken op de volledige kaart",
   "map:zoom": "Zoomen",
-  "map:zoomHow": "dubbelklikken/-tikken, of {ctrl}/{cmd} en scrollen, of knijpen, of {keys}",
   "map:zoomIn": "Inzoomen",
   "map:zoomOut": "Uitzoomen"
 }

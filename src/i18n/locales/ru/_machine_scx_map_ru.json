@@ -1,4 +1,10 @@
 {
+  "map:arrows": "стрелки",
+  "map:ctrlScroll": "{ctrl}/{cmd} и прокрутка",
+  "map:doubleClick": "двойной щелчок",
+  "map:doubleClickTap": "двойной щелчок/касание",
+  "map:doubleTap": "двойное касание",
+  "map:drag": "перетаскивание",
   "map:exitFullScreen": "Выйти из полноэкранного режима",
   "map:fullScreen": "Во весь экран",
   "map:indexOfPlaces": "Указатель мест",
@@ -8,7 +14,7 @@
   "map:moveRight": "Сдвинуть вправо",
   "map:moveUp": "Сдвинуть вверх",
   "map:pan": "Перемещение",
-  "map:panHow": "перетаскивание, или стрелки, или {keys}",
+  "map:pinch": "щипок",
   "map:posterAlt": "Рисованная от руки карта Джамбудипы",
   "map:presentDay": "Наши дни",
   "map:reset": "Сбросить",
@@ -16,7 +22,6 @@
   "map:view": "Вид",
   "map:viewOnFullMap": "Показать на полной карте",
   "map:zoom": "Масштаб",
-  "map:zoomHow": "двойной щелчок/касание, или {ctrl}/{cmd} и прокрутка, или щипок, или {keys}",
   "map:zoomIn": "Приблизить",
   "map:zoomOut": "Отдалить"
 }

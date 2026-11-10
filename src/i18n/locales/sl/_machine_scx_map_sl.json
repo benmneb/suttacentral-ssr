@@ -1,4 +1,10 @@
 {
+  "map:arrows": "puščice",
+  "map:ctrlScroll": "{ctrl}/{cmd} in drsenje",
+  "map:doubleClick": "dvoklik",
+  "map:doubleClickTap": "dvoklik/dvojni dotik",
+  "map:doubleTap": "dvojni dotik",
+  "map:drag": "vlečenje",
   "map:exitFullScreen": "Zapri celozaslonski način",
   "map:fullScreen": "Celozaslonski način",
   "map:indexOfPlaces": "Kazalo krajev",
@@ -8,7 +14,7 @@
   "map:moveRight": "Premakni desno",
   "map:moveUp": "Premakni gor",
   "map:pan": "Premikanje",
-  "map:panHow": "vlečenje, ali puščice, ali {keys}",
+  "map:pinch": "uščip",
   "map:posterAlt": "Ročno narisan zemljevid Džambudipe",
   "map:presentDay": "Danes",
   "map:reset": "Ponastavi",
@@ -16,7 +22,6 @@
   "map:view": "Pogled",
   "map:viewOnFullMap": "Prikaži na celotnem zemljevidu",
   "map:zoom": "Povečava",
-  "map:zoomHow": "dvoklik/dvojni dotik, ali {ctrl}/{cmd} in drsenje, ali uščip, ali {keys}",
   "map:zoomIn": "Povečaj",
   "map:zoomOut": "Pomanjšaj"
 }

@@ -1,4 +1,10 @@
 {
+  "map:arrows": "las flechas",
+  "map:ctrlScroll": "{ctrl}/{cmd} y desplazar",
+  "map:doubleClick": "doble clic",
+  "map:doubleClickTap": "doble clic/toque",
+  "map:doubleTap": "doble toque",
+  "map:drag": "arrastrar",
   "map:exitFullScreen": "Salir de pantalla completa",
   "map:fullScreen": "Pantalla completa",
   "map:indexOfPlaces": "Índice de lugares",
@@ -8,7 +14,7 @@
   "map:moveRight": "Mover a la derecha",
   "map:moveUp": "Mover hacia arriba",
   "map:pan": "Desplazar",
-  "map:panHow": "arrastrar, o las flechas, o {keys}",
+  "map:pinch": "pellizcar",
   "map:posterAlt": "Mapa de Jambudīpa dibujado a mano",
   "map:presentDay": "Actualidad",
   "map:reset": "Restablecer",
@@ -16,7 +22,6 @@
   "map:view": "Vista",
   "map:viewOnFullMap": "Ver en el mapa completo",
   "map:zoom": "Zoom",
-  "map:zoomHow": "doble clic/toque, o {ctrl}/{cmd} y desplazar, o pellizcar, o {keys}",
   "map:zoomIn": "Acercar",
   "map:zoomOut": "Alejar"
 }

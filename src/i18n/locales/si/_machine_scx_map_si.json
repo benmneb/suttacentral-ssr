@@ -1,4 +1,10 @@
 {
+  "map:arrows": "ඊතල",
+  "map:ctrlScroll": "{ctrl}/{cmd} සහ අනුචලනය",
+  "map:doubleClick": "දෙවරක් ක්ලික් කිරීම",
+  "map:doubleClickTap": "දෙවරක් ක්ලික්/තට්ටු කිරීම",
+  "map:doubleTap": "දෙවරක් තට්ටු කිරීම",
+  "map:drag": "ඇදීම",
   "map:exitFullScreen": "පූර්ණ තිරයෙන් ඉවත් වන්න",
   "map:fullScreen": "පූර්ණ තිරය",
   "map:indexOfPlaces": "ස්ථාන සූචිය",
@@ -8,7 +14,7 @@
   "map:moveRight": "දකුණට ගෙනයන්න",
   "map:moveUp": "ඉහළට ගෙනයන්න",
   "map:pan": "ගෙනයාම",
-  "map:panHow": "ඇදීම, හෝ ඊතල, හෝ {keys}",
+  "map:pinch": "ඇඟිලි දෙකෙන් කිරීම",
   "map:posterAlt": "අතින් ඇඳි ජම්බුද්වීප සිතියම",
   "map:presentDay": "වර්තමානය",
   "map:reset": "යළි සකසන්න",
@@ -16,7 +22,6 @@
   "map:view": "දසුන",
   "map:viewOnFullMap": "සම්පූර්ණ සිතියමේ බලන්න",
   "map:zoom": "විශාලනය",
-  "map:zoomHow": "දෙවරක් ක්ලික්/තට්ටු කිරීම, හෝ {ctrl}/{cmd} සහ අනුචලනය, හෝ ඇඟිලි දෙකෙන් කිරීම, හෝ {keys}",
   "map:zoomIn": "විශාල කරන්න",
   "map:zoomOut": "කුඩා කරන්න"
 }

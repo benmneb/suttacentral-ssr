@@ -1,4 +1,10 @@
 {
+  "map:arrows": "các mũi tên",
+  "map:ctrlScroll": "{ctrl}/{cmd} và cuộn",
+  "map:doubleClick": "nhấp đúp",
+  "map:doubleClickTap": "nhấp/chạm đúp",
+  "map:doubleTap": "chạm đúp",
+  "map:drag": "kéo",
   "map:exitFullScreen": "Thoát toàn màn hình",
   "map:fullScreen": "Toàn màn hình",
   "map:indexOfPlaces": "Danh mục địa danh",
@@ -8,7 +14,7 @@
   "map:moveRight": "Sang phải",
   "map:moveUp": "Lên trên",
   "map:pan": "Di chuyển",
-  "map:panHow": "kéo, hoặc các mũi tên, hoặc {keys}",
+  "map:pinch": "chụm hai ngón",
   "map:posterAlt": "Bản đồ Diêm-phù-đề vẽ tay",
   "map:presentDay": "Ngày nay",
   "map:reset": "Đặt lại",
@@ -16,7 +22,6 @@
   "map:view": "Hiển thị",
   "map:viewOnFullMap": "Xem trên bản đồ đầy đủ",
   "map:zoom": "Thu phóng",
-  "map:zoomHow": "nhấp/chạm đúp, hoặc {ctrl}/{cmd} và cuộn, hoặc chụm hai ngón, hoặc {keys}",
   "map:zoomIn": "Phóng to",
   "map:zoomOut": "Thu nhỏ"
 }

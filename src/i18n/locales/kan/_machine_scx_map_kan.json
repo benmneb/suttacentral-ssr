@@ -1,4 +1,10 @@
 {
+  "map:arrows": "ಬಾಣಗಳು",
+  "map:ctrlScroll": "{ctrl}/{cmd} ಮತ್ತು ಸ್ಕ್ರಾಲ್",
+  "map:doubleClick": "ಎರಡು ಬಾರಿ ಕ್ಲಿಕ್",
+  "map:doubleClickTap": "ಎರಡು ಬಾರಿ ಕ್ಲಿಕ್/ಟ್ಯಾಪ್",
+  "map:doubleTap": "ಎರಡು ಬಾರಿ ಟ್ಯಾಪ್",
+  "map:drag": "ಎಳೆಯಿರಿ",
   "map:exitFullScreen": "ಪೂರ್ಣ ಪರದೆಯಿಂದ ಹೊರಬನ್ನಿ",
   "map:fullScreen": "ಪೂರ್ಣ ಪರದೆ",
   "map:indexOfPlaces": "ಸ್ಥಳಗಳ ಸೂಚಿ",
@@ -8,7 +14,7 @@
   "map:moveRight": "ಬಲಕ್ಕೆ ಸರಿಸಿ",
   "map:moveUp": "ಮೇಲೆ ಸರಿಸಿ",
   "map:pan": "ಸರಿಸುವುದು",
-  "map:panHow": "ಎಳೆಯಿರಿ, ಅಥವಾ ಬಾಣಗಳು, ಅಥವಾ {keys}",
+  "map:pinch": "ಪಿಂಚ್",
   "map:posterAlt": "ಕೈಯಿಂದ ಬಿಡಿಸಿದ ಜಂಬುದೀಪದ ನಕ್ಷೆ",
   "map:presentDay": "ಇಂದಿನ",
   "map:reset": "ಮರುಹೊಂದಿಸಿ",
@@ -16,7 +22,6 @@
   "map:view": "ನೋಟ",
   "map:viewOnFullMap": "ಪೂರ್ಣ ನಕ್ಷೆಯಲ್ಲಿ ನೋಡಿ",
   "map:zoom": "ಜೂಮ್",
-  "map:zoomHow": "ಎರಡು ಬಾರಿ ಕ್ಲಿಕ್/ಟ್ಯಾಪ್, ಅಥವಾ {ctrl}/{cmd} ಮತ್ತು ಸ್ಕ್ರಾಲ್, ಅಥವಾ ಪಿಂಚ್, ಅಥವಾ {keys}",
   "map:zoomIn": "ಹಿಗ್ಗಿಸಿ",
   "map:zoomOut": "ಕುಗ್ಗಿಸಿ"
 }

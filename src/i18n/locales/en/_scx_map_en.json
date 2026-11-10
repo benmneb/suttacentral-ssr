@@ -15,8 +15,13 @@
   "map:moveUp": "Move up",
   "map:moveRight": "Move right",
   "map:zoom": "Zoom",
-  "map:zoomHow": "double click/tap, or {ctrl}/{cmd} and scroll, or pinch, or {keys}",
+  "map:doubleClick": "double click",
+  "map:doubleTap": "double tap",
+  "map:doubleClickTap": "double click/tap",
+  "map:ctrlScroll": "{ctrl}/{cmd} and scroll",
+  "map:pinch": "pinch",
   "map:pan": "Pan",
-  "map:panHow": "drag, or the arrows, or {keys}",
+  "map:drag": "drag",
+  "map:arrows": "the arrows",
   "map:viewOnFullMap": "View on full map"
 }

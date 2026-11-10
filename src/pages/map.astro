@@ -102,6 +102,37 @@ const mapStyles = [
 
 const kbd = (keys: string[]) => keys.map(key => `<kbd>${key}</kbd>`).join(' ')
 
+const orList = new Intl.ListFormat([langTag(userLanguage)], {
+  type: 'disjunction',
+})
+const ctrlScroll = t(userLanguage, 'map:ctrlScroll', {
+  ctrl: kbd(['ctrl']),
+  cmd: kbd(['cmd']),
+})
+const pinch = t(userLanguage, 'map:pinch')
+const panWays = [t(userLanguage, 'map:drag'), t(userLanguage, 'map:arrows')]
+
+/** Ways to zoom and pan, for a fine pointer, a coarse one, or both */
+const hints = [
+  {
+    term: 'map:zoom',
+    fine: [t(userLanguage, 'map:doubleClick'), ctrlScroll, kbd(['I', 'O'])],
+    coarse: [t(userLanguage, 'map:doubleTap'), pinch],
+    both: [
+      t(userLanguage, 'map:doubleClickTap'),
+      ctrlScroll,
+      pinch,
+      kbd(['I', 'O']),
+    ],
+  },
+  {
+    term: 'map:pan',
+    fine: [...panWays, kbd(['H', 'J', 'K', 'L'])],
+    coarse: panWays,
+    both: [...panWays, kbd(['H', 'J', 'K', 'L'])],
+  },
+]
+
 const moves = [
   { key: 'h', label: 'map:moveLeft', icon: 'arrowLeft' },
   { key: 'j', label: 'map:moveDown', icon: 'arrowDown' },
@@ -322,24 +353,21 @@ const moves = [
                 ))
               }
               <dl>
-                <div>
-                  <dt>{t(userLanguage, 'map:zoom')}</dt>
-                  <dd
-                    set:html={t(userLanguage, 'map:zoomHow', {
-                      ctrl: kbd(['ctrl']),
-                      cmd: kbd(['cmd']),
-                      keys: kbd(['I', 'O']),
-                    })}
-                  />
-                </div>
-                <div>
-                  <dt>{t(userLanguage, 'map:pan')}</dt>
-                  <dd
-                    set:html={t(userLanguage, 'map:panHow', {
-                      keys: kbd(['H', 'J', 'K', 'L']),
-                    })}
-                  />
-                </div>
+                {
+                  hints.map(({ term, ...ways }) => (
+                    <div>
+                      <dt>{t(userLanguage, term)}</dt>
+                      <dd>
+                        {Object.entries(ways).map(([pointer, items]) => (
+                          <span
+                            class={`for-${pointer}`}
+                            set:html={orList.format(items)}
+                          />
+                        ))}
+                      </dd>
+                    </div>
+                  ))
+                }
               </dl>
             </fieldset>
           </div>

@@ -1,4 +1,10 @@
 {
+  "map:arrows": "panah",
+  "map:ctrlScroll": "{ctrl}/{cmd} dan gulir",
+  "map:doubleClick": "klik dua kali",
+  "map:doubleClickTap": "klik/ketuk dua kali",
+  "map:doubleTap": "ketuk dua kali",
+  "map:drag": "seret",
   "map:exitFullScreen": "Keluar dari layar penuh",
   "map:fullScreen": "Layar penuh",
   "map:indexOfPlaces": "Indeks Tempat",
@@ -8,7 +14,7 @@
   "map:moveRight": "Geser ke kanan",
   "map:moveUp": "Geser ke atas",
   "map:pan": "Geser",
-  "map:panHow": "seret, atau panah, atau {keys}",
+  "map:pinch": "cubit",
   "map:posterAlt": "Peta Jambudīpa yang digambar tangan",
   "map:presentDay": "Masa kini",
   "map:reset": "Atur ulang",
@@ -16,7 +22,6 @@
   "map:view": "Tampilan",
   "map:viewOnFullMap": "Lihat di peta lengkap",
   "map:zoom": "Zoom",
-  "map:zoomHow": "klik/ketuk dua kali, atau {ctrl}/{cmd} dan gulir, atau cubit, atau {keys}",
   "map:zoomIn": "Perbesar",
   "map:zoomOut": "Perkecil"
 }
