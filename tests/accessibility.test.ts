@@ -170,8 +170,9 @@ describe('Accessibility', () => {
         return { page, pending }
       }
       const next = async () => {
-        let tab = await openTab()
         for (let url; browser!.connected && (url = queue.shift()); ) {
+          // A tab per page, as puppeteer counts requests a past page left running
+          const tab = await openTab()
           try {
             found.push(...(await violationsOn(tab.page, url, tab.pending)))
           } catch (error) {
@@ -185,14 +186,9 @@ describe('Accessibility', () => {
               retried.add(url)
               queue.push(url)
             }
-            // A crashed tab can't load the next page
-            if (browser!.connected) {
-              await tab.page.close().catch(() => {})
-              tab = await openTab()
-            }
           }
+          if (browser!.connected) await tab.page.close().catch(() => {})
         }
-        if (browser!.connected) await tab.page.close()
       }
       await Promise.all(Array.from({ length: TABS }, next))
       if (queue.length > 0) {
