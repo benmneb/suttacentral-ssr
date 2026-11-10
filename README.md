@@ -9,13 +9,12 @@
 This project fetches data from SuttaCentral's public APIs at request time and serves it as static HTML.
 
 - **Complete text library** — All suttas, vinaya, and abhidhamma in root languages and every available translation
+- **URLs you know and love** — Mirrors SuttaCentral.net URL structure. Just change `.net` to `.now`, or use the [browser extension](https://git.sr.ht/~benmneb/suttacentral-redirect) from the [Chrome](https://chromewebstore.google.com/detail/suttacentral-redirect/noaddajdfegpjfgpmbhcbahofgkceaan) or [Firefox](https://addons.mozilla.org/firefox/addon/suttacentral-redirect/) store
 - **Server-side rendering** — Pages rendered on-demand with latest data from SuttaCentral's APIs
-- **Internationalised** — Automatic language detection from your browsers preferred language
-- **Instant search** — Fast, powerful search using SuttaCentral's API (includes Pali dictionary lookups)
-- **URLs you know and love** — Mirrors SuttaCentral.net URL structure (just change `.net` to `.now`, or use the [browser extension](https://sr.ht/~benmneb/suttacentral-redirect))
-- **Flexible text settings** — Customizable reading preferences for footnotes, root-text views, and reference links
 - **Minimal JavaScript** — Every text and core feature works without it. About 13kb (gzipped) of optional client-side JS on a text adds inline Pali & Chinese dictionary lookups, text-to-speech via the Web Speech API and hot keys
-- **Valid and accessible** — W3C-valid HTML and schema.org structured data, built and tested to WCAG 2.2 AA, with AAA contrast when more contrast is set and support for forced colours. See the [principles](DEVELOPMENT.md#principles)
+- **Valid HTML** — No errors or warnings from the W3C's Nu validator, and schema.org-valid structured data
+- **Accessible** — Built and tested to WCAG 2.2 AA, with AAA contrast when more contrast is set and support for forced colours and reduced motion. See [ACCESSIBILITY.md](ACCESSIBILITY.md)
+- **Legacy supported** — Reads and navigates on an iPhone 6 from 2014 and on Windows 7 from 2009 (Chrome 109), with or without JS. See the [principles](DEVELOPMENT.md#principles)
 
 ## Performance Comparisons
 
