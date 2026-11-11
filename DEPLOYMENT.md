@@ -1,6 +1,6 @@
 # Deploying your own instance
 
-SuttaCentral.now is built so that a self-hosted copy needs only one file edited: [`src/constants/meta-data.ts`](src/constants/meta-data.ts).
+SuttaCentral.now is built so that a deployed fork needs only one file edited: [`src/constants/meta-data.ts`](src/constants/meta-data.ts).
 
 It runs well with low traffic on a Cloudflare worker free tier. The suttacentral.net API's are on the Cloudflare network too, so requests are fast.
 
@@ -32,4 +32,4 @@ The sitemap files are generated from `siteMetaData.origin`:
 pnpm build-sitemap
 ```
 
-That script fetches SuttaCentral's data in bulk (about 127,000 API calls), so run it only when you need to refresh the sitemap contents. The committed sitemaps and [`public/robots.txt`](public/robots.txt) still contain the SuttaCentral.now origin, so also update the `Sitemap:` line in `robots.txt`.
+That script fetches every menu and suttaplex from SuttaCentral's API, and five whole dictionaries, so run it once for your origin and again only when you need fresh sitemap contents, which is almost never. The committed sitemaps and [`public/robots.txt`](public/robots.txt) still contain the SuttaCentral.now origin, so you probably also want to update the `Sitemap:` line in `robots.txt`.

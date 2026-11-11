@@ -8,7 +8,7 @@
 
 This project fetches data from SuttaCentral's public APIs at request time, renders it server-side and serves it as static HTML.
 
-- **The whole library** — All suttas, vinaya, and abhidhamma texts in root languages and every available translation, plus the site pages: guides, essays, dictionaries, map, editions and more
+- **The whole library** — All suttas, vinaya, and abhidhamma texts in root languages and every available translation, plus the site pages: guides, essays, dictionaries, editions and more
 - **Familiar URLs** — Mirrors SuttaCentral.net URL structure. Just change `.net` to `.now`, or use the [browser extension](https://git.sr.ht/~benmneb/suttacentral-redirect) from the [Chrome](https://chromewebstore.google.com/detail/suttacentral-redirect/noaddajdfegpjfgpmbhcbahofgkceaan) or [Firefox](https://addons.mozilla.org/firefox/addon/suttacentral-redirect/) store
 - **Optional JavaScript** — Every page and core feature works without it. About 13kb (gzipped) of client-side JS on a text adds inline Pali & Chinese dictionary lookups, text-to-speech via the Web Speech API and hot keys
 - **Valid HTML** — No errors or warnings from the W3C's Nu validator, and schema.org-valid structured data
