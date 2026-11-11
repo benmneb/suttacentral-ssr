@@ -1,5 +1,5 @@
 ol li a:has(.reference) {
-  color: unset;
+  color: var(--text-color-secondary);
   background-color: unset;
   border: 1px solid var(--bg-alt-2);
   border-radius: var(--rounding);
@@ -10,8 +10,14 @@ ol li a:has(.reference) {
   margin-right: 0.3rem;
   font-weight: initial;
 
+  &:visited {
+    color: var(--text-color-secondary);
+  }
+
   &:hover {
     background-color: var(--bg-soft);
+    color: var(--text-color-secondary);
+    box-shadow: none;
   }
 }
 
