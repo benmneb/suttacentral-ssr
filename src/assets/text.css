@@ -1054,6 +1054,13 @@ aside:not(:has(#segmenter:checked))
   }
 }
 
+/* Script blockers still match scripting: enabled, so the noscript notice stays */
+@media (scripting: none) {
+  aside li:has(> #listen-menu-button) {
+    display: none;
+  }
+}
+
 /* Native like the select, as the bar's button look reads as a heading */
 #views-menu > li.script-apply > button {
   all: revert;
