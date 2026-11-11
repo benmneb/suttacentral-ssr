@@ -85,7 +85,8 @@ if (query) {
     dictionaryHits = searchData.hits.filter(h => h.category === 'dictionary')
     suttaplex = searchData.suttaplex ?? []
 
-    hasMore = searchData.total > page * limit
+    // The authors list comes whole on every page
+    hasMore = searchData.total > page * limit && query !== 'list authors'
     hasPrevious = page > 1
   } catch (e) {
     console.error(`Search failed for "${query}":`, e)
@@ -229,12 +230,7 @@ if (hasMore) {
                           {hit.author}
                         </a>
                       </h2>
-                      {/* <p>
-                        {hit.param_lang
-                          .sort()
-                          .map(lang => getLanguageName(lang))
-                          .join(' ∙ ')}
-                      </p> */}
+                      <p>{hit.author_uid}</p>
                     </hgroup>
                   </li>
                 ))}
