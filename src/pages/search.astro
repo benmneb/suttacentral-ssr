@@ -11,7 +11,12 @@ import { siteMap } from '~/constants/static-pages'
 import { SC_API, SC_ORIGIN } from '~/constants/urls'
 import { t } from '~/i18n'
 import Layout from '~/layouts/Layout.astro'
-import { getSearchLanguages, setSearchLanguages } from '~/utils/cookies'
+import {
+  getSearchLanguages,
+  getSearchStarts,
+  setSearchLanguages,
+  setSearchStarts,
+} from '~/utils/cookies'
 import { getAllPreferredLanguages } from '~/utils/language'
 import { getLanguages } from '~/utils/languages'
 import { expandUid } from '~/utils/strings'
@@ -90,6 +95,17 @@ if (query) {
   }
 }
 
+// The API merges hits after paging, so each page's first number is kept in a cookie
+const search = JSON.stringify([query, matchPartial, languageArray])
+const starts = getSearchStarts(Astro.cookies, search) ?? [1]
+for (let i = starts.length; i < page; i++) starts.push(i * limit + 1)
+const start = starts[page - 1]
+const digits = String(start + hits.length - 1).length
+if (hasMore) {
+  starts[page] = start + hits.length
+  setSearchStarts(Astro.cookies, search, starts)
+}
+
 function fold(text: string) {
   return text.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().trim()
 }
@@ -145,7 +161,7 @@ const pageHits =
             class:list={[!!hits.length && query !== 'list authors' && 'split']}
           >
             {query === 'list authors' ? (
-              <ol>
+              <ol start={start} style={`--digits: ${digits}`}>
                 {hits.map(hit => (
                   <li>
                     <hgroup>
@@ -282,7 +298,11 @@ const pageHits =
                   </ol>
                 )}
                 {!!hits.length && (
-                  <ol class="text-hits">
+                  <ol
+                    class="text-hits"
+                    start={start}
+                    style={`--digits: ${digits}`}
+                  >
                     {hits.map(hit => (
                       <li>
                         <hgroup>
@@ -434,7 +454,7 @@ const pageHits =
         min-width: 0;
         max-width: var(--content-max-width);
         overflow-wrap: break-word;
-        padding-left: 3ch;
+        padding-left: calc(var(--digits, 2) * 1ch + 1ch);
 
         li:first-of-type h2 {
           margin-top: 0;

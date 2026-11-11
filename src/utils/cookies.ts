@@ -1,6 +1,7 @@
 import type { AstroCookies } from 'astro'
 
 const SEARCH_LANGUAGES_KEY = 'searchLanguages'
+const SEARCH_STARTS_KEY = 'searchStarts'
 const VIEW_PREFS_KEY = 'viewPrefs'
 
 export function getSearchLanguages(cookies: AstroCookies): string[] | null {
@@ -17,6 +18,32 @@ export function setSearchLanguages(
   cookies.set(SEARCH_LANGUAGES_KEY, JSON.stringify(languages), {
     path: '/',
     // No maxAge = session cookie (expires when browser closes)
+  })
+}
+
+/** The first result number of each page seen so far, for one search */
+export function getSearchStarts(
+  cookies: AstroCookies,
+  search: string
+): number[] | null {
+  const cookieValue = cookies.get(SEARCH_STARTS_KEY)?.json() as
+    | { search: string; starts: unknown }
+    | undefined
+  const starts = cookieValue?.search === search ? cookieValue.starts : null
+  return Array.isArray(starts) &&
+    starts.every(n => Number.isInteger(n) && n > 0)
+    ? starts
+    : null
+}
+
+export function setSearchStarts(
+  cookies: AstroCookies,
+  search: string,
+  starts: number[]
+): void {
+  cookies.set(SEARCH_STARTS_KEY, JSON.stringify({ search, starts }), {
+    path: '/search',
+    sameSite: 'lax',
   })
 }
 
