@@ -59,7 +59,18 @@ const userLanguage = Astro.locals.userLanguage
   </fieldset>
   {
     isSearchPage && (
-      <fieldset>
+      <fieldset
+        class:list={[
+          pathname === '/search-filter' && 'without-filters',
+          pathname === '/search-options' && 'without-languages',
+          !!languageArray?.length && 'with-count',
+        ]}
+        style={
+          languageArray?.length
+            ? `--count-digits: ${String(languageArray.length).length}`
+            : undefined
+        }
+      >
         <legend class="sr-only">
           {t(userLanguage, 'search:searchOptions')}
         </legend>
@@ -72,46 +83,22 @@ const userLanguage = Astro.locals.userLanguage
             checked={matchPartial}
           />
         </label>
-        {/* Owned by the empty form below, so not sent with the search */}
-        <input
-          type="radio"
-          name="search-panel"
-          id="panel-none"
-          form="search-panels"
-          class="sr-only"
-          aria-label={t(userLanguage, 'bottomsheet:close')}
-          checked
-        />
         {pathname !== '/search-filter' && (
-          <>
-            <input
-              type="radio"
-              name="search-panel"
-              id="filter-toggle"
-              form="search-panels"
-              class="sr-only"
-            />
-            <label for="filter-toggle" class="panel-toggle">
+          <details id="filters-panel" name="search-panel">
+            <summary>
               <Icon name="informationCircle" mini />
               <span class="sr-only">
                 {t(userLanguage, 'interface:searchFilter')}
               </span>
-            </label>
-            <label for="panel-none" class="panel-toggle panel-close">
-              <Icon name="informationCircle" mini />
-            </label>
-          </>
+            </summary>
+            <SearchFilterContent />
+          </details>
         )}
-        {pathname !== '/search-options' && (
-          <>
-            <input
-              type="radio"
-              name="search-panel"
-              id="language-toggle"
-              form="search-panels"
-              class="sr-only"
-            />
-            <label for="language-toggle" class="panel-toggle">
+        {pathname === '/search-options' ? (
+          <SearchOptionsContent />
+        ) : (
+          <details id="languages-panel" name="search-panel">
+            <summary>
               <Icon name="globeAlt" mini />
               {!!languageArray?.length && (
                 <span> ({languageArray.length})</span>
@@ -119,25 +106,18 @@ const userLanguage = Astro.locals.userLanguage
               <span class="sr-only">
                 {t(userLanguage, 'interface:languages')}
               </span>
-            </label>
-            <label for="panel-none" class="panel-toggle panel-close">
-              <Icon name="globeAlt" mini />
-              {!!languageArray?.length && (
-                <span> ({languageArray.length})</span>
-              )}
-            </label>
-          </>
+            </summary>
+            <SearchOptionsContent />
+          </details>
         )}
-        {pathname !== '/search-filter' && <SearchFilterContent />}
-        <SearchOptionsContent />
       </fieldset>
     )
   }
 </form>
-{isSearchPage && <form id="search-panels" hidden />}
 
 <style>
   form[role='search'] {
+    --bar-width: min(var(--content-max-width), 100%);
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -145,6 +125,8 @@ const userLanguage = Astro.locals.userLanguage
     > fieldset:first-of-type {
       display: flex;
       flex: 1;
+      box-sizing: border-box;
+      max-width: var(--bar-width);
       margin: 0;
       padding: 0.4rem;
       border: 1px solid;
@@ -189,36 +171,72 @@ const userLanguage = Astro.locals.userLanguage
       }
     }
 
-    > label {
-      display: flex;
-      align-items: center;
-      align-self: end;
-      gap: 0.25rem;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-
     > fieldset:nth-of-type(2) {
+      --toggle-size: 1.75rem;
+      --languages-toggle-size: var(--toggle-size);
+      --toggles-end: calc(100% - var(--bar-width));
+      --filters-toggle-end: calc(
+        var(--toggles-end) + var(--languages-toggle-size) + 0.25rem
+      );
+      --label-end: calc(
+        var(--filters-toggle-end) + var(--toggle-size) + 0.5rem
+      );
+      position: relative;
+      margin: 0;
       border: none;
       padding: 0;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: end;
-      gap: 0.5rem;
       color: var(--text-color-secondary);
 
-      .panel-toggle {
+      /* 1.1em for the gap and brackets, and 1ch per tabular digit */
+      &.with-count {
+        --languages-toggle-size: calc(
+          var(--toggle-size) + 1.1em + var(--count-digits) * 1ch
+        );
+      }
+
+      &.without-languages {
+        --filters-toggle-end: var(--toggles-end);
+      }
+
+      &.without-filters {
+        --label-end: calc(
+          var(--toggles-end) + var(--languages-toggle-size) + 0.5rem
+        );
+      }
+
+      > label {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        width: fit-content;
+        min-height: var(--toggle-size);
+        margin-inline: auto var(--label-end);
+        text-align: end;
+        cursor: pointer;
+      }
+
+      > details > summary {
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline-end: var(--toggles-end);
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 0.25em;
         box-sizing: border-box;
-        min-width: 1.75rem;
-        height: 1.75rem;
-        margin: -0.125rem -0.25rem;
+        min-width: var(--toggle-size);
+        height: var(--toggle-size);
+        margin: 0;
         padding: 0 0.25rem;
         border-radius: var(--rounding);
+        list-style: none;
+        font-variant-numeric: tabular-nums;
         cursor: pointer;
+
+        /* Safari before 18.4 draws it even on a flex summary */
+        &::-webkit-details-marker {
+          display: none;
+        }
 
         &:hover {
           background-color: var(--primary-color);
@@ -226,29 +244,20 @@ const userLanguage = Astro.locals.userLanguage
         }
       }
 
-      .panel-close {
+      > details[open] > summary:not(:hover) {
         color: var(--primary-color);
       }
 
-      /* Inset, as the toggles' negative margins leave no room between them */
-      #panel-none:focus-visible ~ .panel-toggle,
-      :is(#filter-toggle, #language-toggle):focus-visible
-        + label
-        + .panel-close {
-        outline: var(--focus-ring);
-        outline-offset: -2px;
+      > #filters-panel > summary {
+        inset-inline-end: var(--filters-toggle-end);
       }
 
-      #filter-toggle:checked + label,
-      #filter-toggle:not(:checked) + label + .panel-close,
-      #language-toggle:checked + label,
-      #language-toggle:not(:checked) + label + .panel-close {
-        display: none;
+      > #languages-panel > summary {
+        width: var(--languages-toggle-size);
       }
 
-      > :global(fieldset) {
-        width: 100%;
-        margin: 0;
+      :global(fieldset) {
+        margin: 0.5rem 0 0;
         border: 1px solid var(--bg-alt-4);
         border-radius: var(--rounding);
         padding: 1rem;
@@ -260,16 +269,7 @@ const userLanguage = Astro.locals.userLanguage
         }
       }
 
-      /* Apart, as Astro mangles a selector list with :global in it */
-      #filter-toggle:not(:checked) ~ :global(fieldset#search-filters) {
-        display: none;
-      }
-
-      #language-toggle:not(:checked) ~ :global(fieldset#search-options) {
-        display: none;
-      }
-
-      > :global(fieldset#search-filters) {
+      :global(fieldset#search-filters) {
         color: var(--text-color);
       }
     }

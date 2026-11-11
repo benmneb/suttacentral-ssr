@@ -21,27 +21,40 @@ export function setSearchLanguages(
   })
 }
 
-/** The first result number of each page seen so far, for one search */
+/** Where each page seen so far starts, for one search */
+export type SearchStarts = {
+  /** The first result number */
+  starts: number[]
+  /** The index of the first suttaplex card */
+  cards: number[]
+}
+
+function isCountList(list: unknown, min: number): list is number[] {
+  return Array.isArray(list) && list.every(n => Number.isInteger(n) && n >= min)
+}
+
 export function getSearchStarts(
   cookies: AstroCookies,
   search: string
-): number[] | null {
+): SearchStarts | null {
   const cookieValue = cookies.get(SEARCH_STARTS_KEY)?.json() as
-    | { search: string; starts: unknown }
+    | { search: string; starts: unknown; cards: unknown }
     | undefined
-  const starts = cookieValue?.search === search ? cookieValue.starts : null
-  return Array.isArray(starts) &&
-    starts.every(n => Number.isInteger(n) && n > 0)
-    ? starts
+  if (cookieValue?.search !== search) return null
+  const { starts, cards } = cookieValue
+  return isCountList(starts, 1) &&
+    isCountList(cards, 0) &&
+    starts.length === cards.length
+    ? { starts, cards }
     : null
 }
 
 export function setSearchStarts(
   cookies: AstroCookies,
   search: string,
-  starts: number[]
+  { starts, cards }: SearchStarts
 ): void {
-  cookies.set(SEARCH_STARTS_KEY, JSON.stringify({ search, starts }), {
+  cookies.set(SEARCH_STARTS_KEY, JSON.stringify({ search, starts, cards }), {
     path: '/search',
     sameSite: 'lax',
   })

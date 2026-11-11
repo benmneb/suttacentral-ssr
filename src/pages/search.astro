@@ -57,7 +57,7 @@ const offset = (page - 1) * limit
 
 let hits = []
 let dictionaryHits = []
-let suttaplexHits = []
+let suttaplex = []
 let hasMore = false
 let hasPrevious = false
 let searchData = { total: 0 }
@@ -83,7 +83,7 @@ if (query) {
 
     hits = searchData.hits.filter(h => h.category !== 'dictionary')
     dictionaryHits = searchData.hits.filter(h => h.category === 'dictionary')
-    suttaplexHits = searchData.suttaplex.slice(offset / 2, (page * limit) / 2)
+    suttaplex = searchData.suttaplex ?? []
 
     hasMore = searchData.total > page * limit
     hasPrevious = page > 1
@@ -91,19 +91,8 @@ if (query) {
     console.error(`Search failed for "${query}":`, e)
     searchFailed = true
     searchData = { total: 0 }
-    hits = dictionaryHits = suttaplexHits = []
+    hits = dictionaryHits = suttaplex = []
   }
-}
-
-// The API merges hits after paging, so each page's first number is kept in a cookie
-const search = JSON.stringify([query, matchPartial, languageArray])
-const starts = getSearchStarts(Astro.cookies, search) ?? [1]
-for (let i = starts.length; i < page; i++) starts.push(i * limit + 1)
-const start = starts[page - 1]
-const digits = String(start + hits.length - 1).length
-if (hasMore) {
-  starts[page] = start + hits.length
-  setSearchStarts(Astro.cookies, search, starts)
 }
 
 function fold(text: string) {
@@ -126,6 +115,76 @@ const pageHits =
         })
         .filter(({ pages }) => pages.length)
     : []
+
+const split = !!hits.length && query !== 'list authors'
+const cardsPerPage = limit / 2
+
+// Rough heights in lines of a 600px column, so the cards can stop short of the hits
+function textLines(html: string | undefined, perLine: number) {
+  return Math.ceil((html ?? '').replace(/<[^>]*>/g, '').length / perLine)
+}
+
+function hitLines(hit) {
+  const refs = hit.all_reference?.includes('pts-') ? 1 : 0
+  return 5.7 + textLines(hit.highlight.content.join(''), 58) + refs
+}
+
+function dictionaryLines(hit) {
+  const { definition, text, grammar, xr, pronunciation } =
+    hit.highlight.detail[0]
+  const definitions = [definition, text].flat().filter(Boolean)
+  return (
+    7 +
+    definitions.reduce((n, d) => n + textLines(d, 55), 0) +
+    [grammar, xr, pronunciation].filter(Boolean).length
+  )
+}
+
+function cardLines(entry) {
+  const { translations, root_lang, blurb, type } = entry
+  const ownLanguage = translations.filter(t => t.lang === userLanguage).length
+  const roots = translations.filter(t => t.lang === root_lang).length
+  const lists = translations.length ? 5.1 + ownLanguage + roots : 0
+  const parallels = type === 'leaf' ? (translations.length ? 1.7 : 6) : 0
+  return 7.3 + (blurb ? 0.7 + textLines(blurb, 55) : 0) + lists + parallels
+}
+
+// The API merges hits after paging, so where each page starts is kept in a cookie
+const search = JSON.stringify([query, matchPartial, languageArray])
+const { starts, cards } = getSearchStarts(Astro.cookies, search) ?? {
+  starts: [1],
+  cards: [0],
+}
+for (let i = starts.length; i < page; i++) {
+  starts.push(i * limit + 1)
+  cards.push(i * cardsPerPage)
+}
+const start = starts[page - 1]
+const digits = String(start + hits.length - 1).length
+
+const cardStart = cards[page - 1]
+let cardEnd = cardStart + cardsPerPage
+if (split) {
+  let room =
+    hits.reduce((n, hit) => n + hitLines(hit), 0) -
+    (pageHits.length ? 4.6 + pageHits.length : 0) -
+    (page === 1
+      ? dictionaryHits.reduce((n, hit) => n + dictionaryLines(hit), 0)
+      : 0)
+  cardEnd = cardStart
+  while (cardEnd < suttaplex.length) {
+    room -= cardLines(suttaplex[cardEnd])
+    if (room < 0) break
+    cardEnd++
+  }
+}
+const suttaplexHits = suttaplex.slice(cardStart, cardEnd)
+
+if (hasMore) {
+  starts[page] = start + hits.length
+  cards[page] = cardStart + suttaplexHits.length
+  setSearchStarts(Astro.cookies, search, { starts, cards })
+}
 ---
 
 <Layout title={query || t(userLanguage, 'search:search')} noindex>
@@ -157,9 +216,7 @@ const pageHits =
     {
       query && !searchFailed && (
         <>
-          <section
-            class:list={[!!hits.length && query !== 'list authors' && 'split']}
-          >
+          <section class:list={[split && 'split']}>
             {query === 'list authors' ? (
               <ol start={start} style={`--digits: ${digits}`}>
                 {hits.map(hit => (
@@ -405,15 +462,25 @@ const pageHits =
   main {
     max-width: var(--content-double-width-gap);
 
+    @media (min-width: 672px) {
+      & > :global(form[role='search']) {
+        --bar-width: min(var(--content-max-width), calc((100% - 1rem) / 2));
+      }
+    }
+
     & > section {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
-      column-gap: 1rem;
       margin-top: 1rem;
 
       @media (min-width: 672px) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        &:not(.split) > * {
+          grid-column: 1;
+        }
+
         &.split {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
           grid-template-rows: auto 1fr;
           grid-template-areas:
             'texts featured'
