@@ -347,36 +347,32 @@ const pageHits =
             )}
           </section>
           <nav aria-label={t(userLanguage, 'search:pagination')}>
-            <div>
-              {hasPrevious && (
-                <form method="GET" action="/search">
-                  <input type="hidden" name="query" value={query} />
-                  <input type="hidden" name="page" value={page - 1} />
-                  {matchPartial && (
-                    <input type="hidden" name="matchpartial" value="true" />
-                  )}
-                  <button class="button" type="submit">
-                    <Icon name="arrowLeft" />
-                    <span>{t(userLanguage, 'interface:previous')}</span>
-                  </button>
-                </form>
-              )}
-            </div>
-            <div>
-              {hasMore && (
-                <form method="GET" action="/search">
-                  <input type="hidden" name="query" value={query} />
-                  <input type="hidden" name="page" value={page + 1} />
-                  {matchPartial && (
-                    <input type="hidden" name="matchpartial" value="true" />
-                  )}
-                  <button class="button" type="submit">
-                    <span>{t(userLanguage, 'interface:next')}</span>
-                    <Icon name="arrowRight" />
-                  </button>
-                </form>
-              )}
-            </div>
+            {hasPrevious && (
+              <form method="GET" action="/search">
+                <input type="hidden" name="query" value={query} />
+                <input type="hidden" name="page" value={page - 1} />
+                {matchPartial && (
+                  <input type="hidden" name="matchpartial" value="true" />
+                )}
+                <button class="button" type="submit">
+                  <Icon name="arrowLeft" />
+                  <span>{t(userLanguage, 'interface:previous')}</span>
+                </button>
+              </form>
+            )}
+            {hasMore && (
+              <form method="GET" action="/search">
+                <input type="hidden" name="query" value={query} />
+                <input type="hidden" name="page" value={page + 1} />
+                {matchPartial && (
+                  <input type="hidden" name="matchpartial" value="true" />
+                )}
+                <button class="button" type="submit">
+                  <span>{t(userLanguage, 'interface:next')}</span>
+                  <Icon name="arrowRight" />
+                </button>
+              </form>
+            )}
           </nav>
         </>
       )
@@ -542,7 +538,10 @@ const pageHits =
 
     & > nav {
       display: flex;
-      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      margin-left: 1.5rem;
     }
   }
 </style>
