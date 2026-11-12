@@ -901,9 +901,6 @@ aside:has(#rooter):not(:has(#rooter:checked))
     .script-apply,
     .look-up-apply
   ),
-aside:not(:has(#rooter-script:checked))
-  #views-menu
-  > li:has(#rooter-script-select),
 aside:has(#rooter-script:not(:checked):not(:default))
   #views-menu
   > li.script-apply,
@@ -938,9 +935,47 @@ aside:not(:has(#segmenter:checked))
   }
 }
 
+aside:not(:has(#rooter-script:checked)) #rooter-script-select {
+  display: none;
+}
+
+/* Not the bar's button look, which reads as a heading */
+#views-menu > li:is(.script-apply, .look-up-apply) > button {
+  all: revert;
+  padding: 0 0.6rem;
+  border: none;
+  border-radius: var(--rounding);
+  font: inherit;
+  color: var(--background-color);
+  background-color: var(--primary-color);
+  cursor: pointer;
+
+  &:is(:hover, :focus) {
+    background-color: var(--primary-color-alt);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  @media (forced-colors: active) {
+    border: 1px solid ButtonBorder;
+
+    &:is(:hover, :focus-visible) {
+      outline: 2px solid Highlight;
+      outline-offset: -2px;
+    }
+  }
+}
+
 /* Only without JS, as the script submits the form itself */
 @media (scripting: enabled) {
-  #views-menu > li:is(.script-apply, .look-up-apply) {
+  #views-menu > li:is(.script-apply, .look-up-apply) > button,
+  #views-menu > li:is(.script-apply, .look-up-apply):not(:has(select)),
+  aside:not(:has(#rooter-script:checked))
+    #views-menu
+    > li:has(#rooter-script-select) {
     display: none;
   }
 }
@@ -950,12 +985,6 @@ aside:not(:has(#segmenter:checked))
   aside li:has(> #listen-menu-button) {
     display: none;
   }
-}
-
-/* Native like the select, as the bar's button look reads as a heading */
-#views-menu > li:is(.script-apply, .look-up-apply) > button {
-  all: revert;
-  font: inherit;
 }
 
 #listen-menu {
@@ -1224,11 +1253,20 @@ input[type='range'] {
   }
 }
 
-/* Takes the width the other rows give the menu, never widening it */
 #rooter-script-select {
-  width: 0;
+  flex-basis: auto;
   /* The labels' size, so the em indent lines up with theirs */
   font: inherit;
+}
+
+/* Out of the menu's width, so a select too wide to share the row wraps the
+   button under it rather than widening the menu */
+#views-menu > li:has(> #rooter-script-select) {
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: stretch;
+  gap: 0.3rem;
+  contain: inline-size;
 }
 
 /* On the first line of the wrapped label, where one line sits when the row's

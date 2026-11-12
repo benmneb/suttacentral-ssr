@@ -32,7 +32,7 @@ const label = t(userLanguage, 'viewoption:changePaliScript').trim()
     aria-controls="rooter-script-select"
   />
 </li>
-<li class={subClass}>
+<li class={`${subClass} script-apply`}>
   <select
     id="rooter-script-select"
     name="pali-script"
@@ -49,8 +49,6 @@ const label = t(userLanguage, 'viewoption:changePaliScript').trim()
       ))
     }
   </select>
-</li>
-<li class={`${subClass} script-apply`}>
   <button type="submit" form="script-form">
     {t(userLanguage, 'viewoption:applyScript')}
   </button>
