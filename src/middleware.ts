@@ -40,9 +40,10 @@ function redirectTarget(path: string): string | null {
     s.replace(/^pi-/, 'pli-').replace(/^skt-/, 'san-')
   )
 
-  // Not edition paths, as a matter page like kd-1-introduction has a digit after the language
+  // Not edition paths, as a matter page like kd-1-introduction has a digit after the language,
+  // nor lookups, whose percent-encoded words have digits
   const isLegacyLang =
-    segments[0] !== 'edition' &&
+    !['edition', 'lookup'].includes(segments[0]) &&
     (LANG_THEN_UID.test(path) || UID_THEN_LANG.test(path)) &&
     !UID_LANG_AUTHOR.test(path)
 
@@ -75,7 +76,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   // what `t` falls back to. The API has nothing to translate
   if (!path.startsWith('/api/')) {
     // Started early for the layout's search form, which a fragment lacks
-    if (!path.startsWith('/parallels/')) getLanguages().catch(() => {})
+    if (!/^\/(parallels|lookup)\//.test(path)) getLanguages().catch(() => {})
     await Promise.all([
       loadLocale('en'),
       loadLocale(context.locals.userLanguage),

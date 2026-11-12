@@ -1,0 +1,69 @@
+---
+import { icon } from '~/constants/heroicons'
+import { t } from '~/i18n'
+import { lookupSource } from '~/utils/lookup-html'
+
+interface Props {
+  userLanguage: string
+  from: string
+  to: string
+  /** With the keys the sheet takes, which only the JS one does */
+  keys?: boolean
+}
+
+const { userLanguage, from, to, keys } = Astro.props
+const source = lookupSource(from, to)
+---
+
+{
+  source && (
+    <p set:html={t(userLanguage, 'viewoption:lookupSource', { source })} />
+  )
+}
+<p>
+  {
+    from === 'lzh'
+      ? t(userLanguage, 'viewoption:lookupLzhMachine')
+      : t(userLanguage, 'bottomsheet:help2')
+  }
+</p>
+<p
+  set:html={t(userLanguage, 'viewoption:lookupBookHelp', {
+    icon: icon('bookOpen'),
+  })}
+/>
+{
+  keys && (
+    <>
+      <h2 id="definition-keys">
+        {t(userLanguage, 'viewoption:lookupKeyboard')}
+      </h2>
+      <dl aria-labelledby="definition-keys">
+        <dt>
+          <kbd>←</kbd> <kbd>→</kbd>
+        </dt>
+        <dd>
+          {from === 'lzh'
+            ? t(userLanguage, 'viewoption:lookupKeyStepLzh')
+            : t(userLanguage, 'viewoption:lookupKeyStep')}
+        </dd>
+        <dt>
+          <kbd>Tab</kbd>
+        </dt>
+        <dd>{t(userLanguage, 'viewoption:lookupKeyTab')}</dd>
+        <dt>
+          <kbd>Enter</kbd>
+        </dt>
+        <dd>
+          {from === 'lzh'
+            ? t(userLanguage, 'viewoption:lookupKeyEnterLzh')
+            : t(userLanguage, 'viewoption:lookupKeyEnter')}
+        </dd>
+        <dt>
+          <kbd>Esc</kbd>
+        </dt>
+        <dd>{t(userLanguage, 'viewoption:lookupKeyEsc')}</dd>
+      </dl>
+    </>
+  )
+}

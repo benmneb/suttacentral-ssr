@@ -1,4 +1,6 @@
 @import url(./_variables.css);
+/* Not imported by the page, or it'd be a chunk of its own that every text inlines */
+@import url(./lookup.css);
 
 aside:has(#commenter:checked) {
   & ~ main {
@@ -579,8 +581,7 @@ aside:has(#rooter:checked) ~ main .segment {
   }
 }
 
-/* Not while its row is hidden, as without JS a cookie can still check it */
-aside:has(#views-menu > li:not([hidden]) > #rooter-look-up:checked)
+aside:has(#rooter-look-up:checked)
   ~ main
   .segment
   > :is(.translation, .root)[translate='no']
@@ -783,7 +784,16 @@ aside:has(#rooter:checked) {
   cursor: text;
 }
 
-.segment .text .word.looked-up {
+.segment .text a.word {
+  text-decoration: none;
+
+  &:not(:hover, :active) {
+    color: inherit;
+  }
+}
+
+/* Focus marks the word whose link was followed, though not in Safari */
+.segment .text :is(.word.looked-up, a.word:focus) {
   color: var(--background-color);
   background-color: var(--primary-color);
   border-radius: var(--rounding);
@@ -830,180 +840,48 @@ aside:has(#rooter:checked) {
   &:focus {
     outline: none;
   }
+}
 
-  > :is(div, section) {
-    width: calc(100% - 1rem); /* account for padding */
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-    padding: 0.5rem 0.5rem 0;
-    overflow-y: auto;
-    flex: 1;
+/* So a word tabbed to isn't put under the sheet, nor the end of the page */
+:root:has(#lookup-sheet) {
+  scroll-padding-block-end: var(--sheet-height, 0px);
 
-    > dfn {
-      font-weight: bold;
-      font-style: normal;
-      width: 100%;
-      color: var(--headings-color);
-    }
-
-    /* Chinese: flat list of substring matches */
-    > ol {
-      margin: 0.5rem 0;
-      padding-left: 1.5rem;
-
-      li {
-        margin-bottom: 0.25rem;
-        line-height: 1.4;
-
-        a {
-          text-decoration: none;
-        }
-      }
-    }
-
-    /* Pali: each match is a <dl> block */
-    dl {
-      margin: 0 0 0 0.5rem;
-      padding: 0.4rem 0;
-
-      &:first-of-type {
-        border-top: none;
-      }
-
-      dt dfn {
-        font-weight: bold;
-        font-style: normal;
-        color: var(--text-color);
-
-        a {
-          text-decoration: none;
-        }
-      }
-
-      dd {
-        margin: 0;
-      }
-    }
-
-    ol.definition {
-      margin: 0.15rem 0;
-      padding-left: 1.5rem;
-
-      li {
-        margin-bottom: 0.15rem;
-        line-height: 1.4;
-      }
-    }
-
-    ul.xr {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    .grammar {
-      font-style: italic;
-      color: var(--text-color-secondary);
-    }
-
-    &#definition-help {
-      p {
-        margin: 0 0 0.5rem;
-      }
-
-      h2 {
-        margin: 0.75rem 0 0.25rem;
-        font-size: inherit;
-        color: var(--text-color-secondary);
-      }
-
-      dl {
-        display: grid;
-        grid-template-columns: max-content 1fr;
-        gap: 0.25rem 1rem;
-        margin: 0;
-        padding: 0 0 0.5rem;
-      }
-
-      @media not all and (any-pointer: fine) {
-        #definition-keys,
-        #definition-keys + dl {
-          display: none;
-        }
-      }
-    }
+  &:not(:has(aside #rooter:not(:checked))) {
+    --sheet-height: 30vh;
   }
 
-  nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid var(--bg-alt-3);
-    font-size: large;
-
-    button {
-      flex: 1;
-      border: none;
-    }
-
-    [data-close] {
-      flex: none;
-      border-right: 1px solid var(--bg-alt-3);
-    }
-
-    [data-help] {
-      flex: none;
-      border-left: 1px solid var(--bg-alt-3);
-
-      &[aria-expanded='true'] {
-        color: var(--primary-color);
-
-        @media (forced-colors: active) {
-          outline: 2px solid Highlight;
-          outline-offset: -2px;
-        }
-      }
-    }
-
-    a {
-      border-left: 1px solid var(--bg-alt-3);
-      border-right: 1px solid var(--bg-alt-3);
-
-      /* Forced colours give a link's border its LinkText */
-      @media (forced-colors: active) {
-        border-color: ButtonBorder;
-      }
-    }
-
-    button,
-    a {
-      background: none;
-      padding: 0.3rem 0.75rem;
-      cursor: pointer;
-      color: inherit;
-      font: inherit;
-      text-decoration: none;
-
-      @media (forced-colors: active) {
-        color: ButtonBorder;
-      }
-
-      &:hover {
-        background-color: var(--details-summary-hover-background);
-        box-shadow: none;
-        border-radius: initial;
-
-        @media (forced-colors: active) {
-          outline: 2px solid Highlight;
-          outline-offset: -2px;
-        }
-      }
-
-      &:active {
-        background-color: var(--background-color-secondary);
-      }
-    }
+  body {
+    padding-bottom: var(--sheet-height, 0px);
   }
+}
+
+#lookup-sheet {
+  box-sizing: border-box;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  /* Over the bar, which comes before it */
+  z-index: 1;
+  height: var(--sheet-height, 30vh);
+  box-shadow: 0 0.3rem 1rem var(--shadow-color);
+  background-color: var(--popover-background-color);
+
+  @media (forced-colors: active) {
+    border-top: 1px solid;
+  }
+
+  > iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+}
+
+/* Not as lookup is unticked, as its links still open in it until Apply */
+aside:has(#rooter:not(:checked)) ~ main #lookup-sheet {
+  display: none;
 }
 
 /* Flat, not display: none, so the menu doesn't widen as it shows */
@@ -1020,7 +898,8 @@ aside:has(#rooter):not(:has(#rooter:checked))
     :has(#simplifier),
     :has(#rooter-script),
     :has(#rooter-script-select),
-    .script-apply
+    .script-apply,
+    .look-up-apply
   ),
 aside:not(:has(#rooter-script:checked))
   #views-menu
@@ -1029,6 +908,14 @@ aside:has(#rooter-script:not(:checked):not(:default))
   #views-menu
   > li.script-apply,
 aside:has(#simplifier:checked:default) #views-menu > li.script-apply,
+aside:not(
+    :has(
+      #rooter-look-up:checked:not([data-links]),
+      #rooter-look-up:not(:checked)[data-links]
+    )
+  )
+  #views-menu
+  > li.look-up-apply,
 aside:has(#simplifier:not(:checked):not(:default))
   #views-menu
   > li.script-apply,
@@ -1053,7 +940,7 @@ aside:not(:has(#segmenter:checked))
 
 /* Only without JS, as the script submits the form itself */
 @media (scripting: enabled) {
-  #views-menu > li.script-apply {
+  #views-menu > li:is(.script-apply, .look-up-apply) {
     display: none;
   }
 }
@@ -1066,7 +953,7 @@ aside:not(:has(#segmenter:checked))
 }
 
 /* Native like the select, as the bar's button look reads as a heading */
-#views-menu > li.script-apply > button {
+#views-menu > li:is(.script-apply, .look-up-apply) > button {
   all: revert;
   font: inherit;
 }
@@ -1194,7 +1081,7 @@ aside:not(:has(#segmenter:checked))
     background-color: Highlight;
   }
 
-  .segment .text .word.looked-up {
+  .segment .text :is(.word.looked-up, a.word:focus) {
     color: HighlightText;
     background-color: Highlight;
   }
@@ -1603,6 +1490,10 @@ input[type='range'] {
   body:has(#positioner:checked) {
     padding-bottom: 2.75rem;
 
+    &:has(#lookup-sheet) {
+      padding-bottom: calc(2.75rem + var(--sheet-height, 0px));
+    }
+
     #definition[popover] {
       bottom: 2.75rem;
       clip-path: inset(-2rem 0 0);
@@ -1611,6 +1502,15 @@ input[type='range'] {
         nav {
           border-bottom: 1px solid var(--bg-alt-3);
         }
+      }
+    }
+
+    #lookup-sheet {
+      bottom: 2.75rem;
+      clip-path: inset(-2rem 0 0);
+
+      @media (prefers-color-scheme: dark) {
+        border-bottom: 1px solid var(--bg-alt-3);
       }
     }
 
@@ -2069,6 +1969,10 @@ aside {
 
       > li.sub-sub > :is(select, button) {
         margin-inline-start: calc(0.7rem + 2.5em);
+      }
+
+      > li:is(.script-apply, .look-up-apply) > button {
+        margin-inline-start: auto;
       }
     }
 

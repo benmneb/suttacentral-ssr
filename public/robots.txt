@@ -1,8 +1,8 @@
 # Full syntax: https://developers.google.com/search/docs/advanced/robots/create-robots-txt
 
-# Allow all search engine crawlers
+# Allow all search engine crawlers, but not into word lookups
 User-agent: *
-Disallow:
+Disallow: /lookup/
 
 # Block AI and data-scraper bots specifically, as per the request on https://suttacentral.net/licensing
 # List from: https://github.com/ai-robots-txt/ai.robots.txt/blob/main/robots.txt

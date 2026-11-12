@@ -26,6 +26,8 @@
   "viewoption:lookupKeyboard": "Keyboard",
   "viewoption:lookupLzhMachine": "Terms are matched by machine, so results are not always accurate.",
   "viewoption:lookupSource": "Source: {source}",
+  "viewoption:lookupTapHint": "Tap a word to look it up.",
+  "viewoption:lookupTapHintLzh": "Tap a character to look it up.",
   "viewoption:marginNotes": "Sidenotes",
   "viewoption:markAnapatti": "Non-offenses",
   "viewoption:markCakka": "Permutations",

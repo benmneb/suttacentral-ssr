@@ -1,0 +1,103 @@
+---
+import '~/assets/lookup-frame.css'
+import Icon from '~/components/icon.astro'
+import LookupHelp from '~/components/lookup-help.astro'
+import { AVAILABLE_LOOKUPS } from '~/constants/lookup'
+import { t } from '~/i18n'
+import { langTag } from '~/utils/language'
+import { lookUpCached, lookupError } from '~/utils/lookup-answer'
+import {
+  cleanWord,
+  definePath,
+  type LookupLabels,
+  type LzhMatch,
+  lzhHtml,
+  type PaliMatch,
+  paliHtml,
+} from '~/utils/lookup-html'
+
+// A word's answer in the text page's sheet, for its links without JS
+const { from = '', to = '', query = '' } = Astro.params
+const userLanguage = Astro.locals.userLanguage
+const isLzh = from === 'lzh'
+const hans = isLzh && Astro.url.searchParams.has('hans')
+const lookup = {
+  from,
+  to,
+  query: isLzh ? query : cleanWord(query),
+  at: Number(Astro.url.searchParams.get('at')),
+  hans,
+}
+
+if (!AVAILABLE_LOOKUPS[from]?.includes(to)) {
+  return new Response(null, { status: 400 })
+}
+// No word is the sheet before one is tapped
+const status = query ? lookupError(lookup) : null
+if (status) return new Response(null, { status })
+
+const answer: PaliMatch[] | LzhMatch[] | null = query
+  ? await (await lookUpCached(lookup, Astro.url.origin, Astro.locals)).json()
+  : null
+
+const word = isLzh ? ([...query][lookup.at] ?? '') : lookup.query
+const lang = `${langTag(from)}${hans ? '-Hans' : ''}`
+const labels: LookupLabels = {
+  full: t(userLanguage, 'viewoption:fullDefinitions'),
+  see: t(userLanguage, 'viewoption:seeWord'),
+}
+
+Astro.response.headers.set('X-Robots-Tag', 'noindex')
+// Private, as the words around the answer are in the reader's language
+Astro.response.headers.set('Cache-Control', 'private, max-age=2592000')
+---
+
+<html lang={langTag(userLanguage)}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <base target="_top" />
+    <title>
+      {word || t(userLanguage, 'viewoption:wordLookup')}
+    </title>
+  </head>
+  <body id="lookup-answer">
+    {
+      answer ? (
+        <>
+          <main>
+            <h1>
+              <dfn lang={lang} translate="no">
+                {word}
+              </dfn>
+            </h1>
+            <Fragment
+              set:html={
+                isLzh
+                  ? lzhHtml(answer as LzhMatch[], hans, labels)
+                  : paliHtml(word, answer as PaliMatch[], lang, labels)
+              }
+            />
+          </main>
+          <nav aria-label={t(userLanguage, 'viewoption:wordLookup')}>
+            <a
+              href={definePath(word)}
+              aria-label={labels.full.replace('{word}', word)}
+            >
+              <Icon name="bookOpen" />
+            </a>
+          </nav>
+        </>
+      ) : (
+        <main id="definition-help">
+          <h1>
+            {isLzh
+              ? t(userLanguage, 'viewoption:lookupTapHintLzh')
+              : t(userLanguage, 'viewoption:lookupTapHint')}
+          </h1>
+          <LookupHelp userLanguage={userLanguage} from={from} to={to} />
+        </main>
+      )
+    }
+  </body>
+</html>

@@ -46,6 +46,9 @@ import {
 } from '~/utils/strings'
 import { getUrlViewPrefs } from '~/utils/url-prefs'
 import { simplifiedHtml } from '~/utils/hans'
+import { linkRootWords } from '~/utils/lookup-html'
+// Last, as with the other components it moves an inline style ahead of Layout's CSS
+import LookupHelp from '~/components/lookup-help.astro'
 
 const { text } = Astro.params
 
@@ -55,10 +58,16 @@ const formParams = [
   'pali-script-on',
   'simplified',
   'simplified-on',
+  'look-up',
+  'look-up-on',
   'rooter',
   'script',
 ]
-if (['pali-script', 'simplified'].some(p => Astro.url.searchParams.has(p))) {
+if (
+  ['pali-script', 'simplified', 'look-up'].some(p =>
+    Astro.url.searchParams.has(p)
+  )
+) {
   const params = Astro.url.searchParams
   if (params.has('pali-script')) {
     const script = paliScriptOf(params.get('pali-script'))
@@ -70,6 +79,13 @@ if (['pali-script', 'simplified'].some(p => Astro.url.searchParams.has(p))) {
   }
   if (params.has('simplified'))
     setViewPref(Astro.cookies, 'simplifier', params.has('simplified-on'))
+  // Not true, which is what JS saves, as without JS the words need links
+  if (params.has('look-up'))
+    setViewPref(
+      Astro.cookies,
+      'rooter-look-up',
+      params.has('look-up-on') && 'html'
+    )
   // Without JS nothing else saves it, so the root text would stay hidden
   if (params.has('rooter')) setViewPref(Astro.cookies, 'rooter', true)
   const cleanUrl = new URL(Astro.url)
@@ -410,13 +426,12 @@ const scriptTag = (tag: string) =>
 const lookupTargetLang = availableLangs?.includes(userLanguage)
   ? userLanguage
   : 'en'
-// Not for the other languages, whose dictionaries come from elsewhere
-const lookupSource =
-  rootLang === 'lzh'
-    ? '<a href="http://www.buddhism-dict.net/ddb/" rel="external">Digital Dictionary of Buddhism</a>'
-    : lookupTargetLang === 'en'
-      ? '<a href="https://digitalpalidictionary.github.io/" rel="external">Digital Pāḷi Dictionary</a>'
-      : null
+const lookUpLinks =
+  !!availableLangs && isSegmented && viewPrefs['rooter-look-up'] === 'html'
+const linked = (html: string) =>
+  lookUpLinks
+    ? linkRootWords(html, { from: rootLang!, to: lookupTargetLang, hans })
+    : html
 
 function isHeadingHTML(html: string): boolean {
   return /<h[1-6][^>]*>\{\}/.test(html)
@@ -821,7 +836,7 @@ ${renderReferences(key, ref)}
           ? `
       <!-- This is not a translation, its the root text, the class is so it's not \`display: none\` by default. -->
       <span class="translation" lang="${scriptTag(langTag(suttasData.root_text.lang))}" translate="no">
-        <span class="text">${isHeading ? softHyphenateTitle(text) : text}</span>
+        <span class="text">${linked(isHeading ? softHyphenateTitle(text) : text)}</span>
         ${
           comment
             ? `
@@ -898,7 +913,7 @@ ${renderReferences(key, ref)}
         rootText
           ? `
       <span class="root" lang="${scriptTag(langTag(suttasData.suttaplex.root_lang))}" translate="no" hidden>
-        <span class="text">${isHeading ? softHyphenateTitle(rootText) : rootText}</span>
+        <span class="text">${linked(isHeading ? softHyphenateTitle(rootText) : rootText)}</span>
         ${
           variant
             ? `
@@ -1280,7 +1295,7 @@ const metadata = textMetadata(userLanguage, {
                     />
                   )}
                   {availableLangs && (
-                    <li class="sub" hidden>
+                    <li class="sub">
                       <label for="rooter-look-up">
                         <span class="with-icon">
                           <Icon name="bookOpen" />
@@ -1300,11 +1315,21 @@ const metadata = textMetadata(userLanguage, {
                       <input
                         type="checkbox"
                         id="rooter-look-up"
-                        checked={viewPrefs['rooter-look-up'] ?? false}
+                        name="look-up-on"
+                        form="script-form"
+                        checked={!!viewPrefs['rooter-look-up']}
                         data-from={rootLang}
                         data-to={lookupTargetLang}
                         data-hans={hans || undefined}
+                        data-links={lookUpLinks || undefined}
                       />
+                    </li>
+                  )}
+                  {availableLangs && (
+                    <li class="sub sub-sub look-up-apply">
+                      <button type="submit" form="script-form">
+                        {t(userLanguage, 'viewoption:applyScript')}
+                      </button>
                     </li>
                   )}
                   {rootLang === 'lzh' && (
@@ -1356,7 +1381,7 @@ const metadata = textMetadata(userLanguage, {
             {
               isSegmented && isRootText && availableLangs && (
                 <>
-                  <li hidden>
+                  <li>
                     <label for="rooter-look-up">
                       <span class="with-icon">
                         <Icon name="bookOpen" />
@@ -1374,11 +1399,19 @@ const metadata = textMetadata(userLanguage, {
                     <input
                       type="checkbox"
                       id="rooter-look-up"
-                      checked={viewPrefs['rooter-look-up'] ?? false}
+                      name="look-up-on"
+                      form="script-form"
+                      checked={!!viewPrefs['rooter-look-up']}
                       data-from={rootLang}
                       data-to={lookupTargetLang}
                       data-hans={hans || undefined}
+                      data-links={lookUpLinks || undefined}
                     />
+                  </li>
+                  <li class="sub look-up-apply">
+                    <button type="submit" form="script-form">
+                      {t(userLanguage, 'viewoption:applyScript')}
+                    </button>
                   </li>
                 </>
               )
@@ -1659,6 +1692,7 @@ const metadata = textMetadata(userLanguage, {
                 {rootLang === 'lzh' && (
                   <input type="hidden" name="simplified" />
                 )}
+                {availableLangs && <input type="hidden" name="look-up" />}
               </form>
             )
           }
@@ -1949,52 +1983,12 @@ const metadata = textMetadata(userLanguage, {
             aria-label={t(userLanguage, 'bottomsheet:help')}
             hidden
           >
-            {lookupSource && (
-              <p
-                set:html={t(userLanguage, 'viewoption:lookupSource', {
-                  source: lookupSource,
-                })}
-              />
-            )}
-            <p>
-              {rootLang === 'lzh'
-                ? t(userLanguage, 'viewoption:lookupLzhMachine')
-                : t(userLanguage, 'bottomsheet:help2')}
-            </p>
-            <p
-              set:html={t(userLanguage, 'viewoption:lookupBookHelp', {
-                icon: icon('bookOpen'),
-              })}
+            <LookupHelp
+              userLanguage={userLanguage}
+              from={rootLang!}
+              to={lookupTargetLang}
+              keys
             />
-            <h2 id="definition-keys">
-              {t(userLanguage, 'viewoption:lookupKeyboard')}
-            </h2>
-            <dl aria-labelledby="definition-keys">
-              <dt>
-                <kbd>←</kbd> <kbd>→</kbd>
-              </dt>
-              <dd>
-                {rootLang === 'lzh'
-                  ? t(userLanguage, 'viewoption:lookupKeyStepLzh')
-                  : t(userLanguage, 'viewoption:lookupKeyStep')}
-              </dd>
-              <dt>
-                <kbd>Tab</kbd>
-              </dt>
-              <dd>{t(userLanguage, 'viewoption:lookupKeyTab')}</dd>
-              <dt>
-                <kbd>Enter</kbd>
-              </dt>
-              <dd>
-                {rootLang === 'lzh'
-                  ? t(userLanguage, 'viewoption:lookupKeyEnterLzh')
-                  : t(userLanguage, 'viewoption:lookupKeyEnter')}
-              </dd>
-              <dt>
-                <kbd>Esc</kbd>
-              </dt>
-              <dd>{t(userLanguage, 'viewoption:lookupKeyEsc')}</dd>
-            </dl>
           </section>
           <nav aria-label={t(userLanguage, 'viewoption:wordLookup')}>
             <button
@@ -2044,6 +2038,17 @@ const metadata = textMetadata(userLanguage, {
             ? t(userLanguage, 'viewoption:lookupHintLzh')
             : t(userLanguage, 'viewoption:lookupHint')}
         </p>
+      )
+    }
+    {
+      lookUpLinks && (
+        <div id="lookup-sheet">
+          <iframe
+            name="lookup"
+            src={`/lookup/${rootLang}/${lookupTargetLang}`}
+            title={t(userLanguage, 'viewoption:wordDefinition')}
+          />
+        </div>
       )
     }
   </main>
@@ -2321,6 +2326,11 @@ const metadata = textMetadata(userLanguage, {
     // Scripts that need to act on a pref at load time read it themselves rather
     // than waiting on a change event from here - this runs before they do.
     applyPrefs()
+
+    // The links the server makes for no JS, which the next page can do without
+    const savedPrefs = getCookiePrefs()
+    if (savedPrefs['rooter-look-up'] === 'html')
+      saveToCookie({ ...savedPrefs, 'rooter-look-up': true })
 
     migrateVoice()
     window.speechSynthesis?.addEventListener?.('voiceschanged', migrateVoice)
@@ -2969,7 +2979,17 @@ const metadata = textMetadata(userLanguage, {
   </script>
 
   <script>
-    import { icon } from '~/constants/heroicons'
+    import {
+      type LookupLabels,
+      type LzhMatch,
+      type PaliMatch,
+      cleanWord,
+      definePath,
+      escape,
+      lzhHtml,
+      PALI_WORD,
+      paliHtml,
+    } from '~/utils/lookup-html'
 
     /**
      * Word Lookup
@@ -2977,30 +2997,30 @@ const metadata = textMetadata(userLanguage, {
      * Shows what a root word means in a sheet along the bottom while "Word
      * lookup" is on, asking the server about one word at a time. ← and → or the
      * sheet's arrows go to the words either side, and Esc or a tap elsewhere
-     * closes it. Its row stays hidden without JS. Without popovers to show the
-     * answers in, a word goes straight to its /define page instead.
+     * closes it. Without JS each word is a link into a frame instead (see
+     * linkRootWords). Without popovers to show the answers in, a word goes
+     * straight to its /define page instead.
      *
      * Each Pāli word gets a span as its segment is first pointed at or reached,
      * for its highlight, and a Chinese character is found where it was tapped.
      * From the keyboard each segment's root text is a tab stop while it's on,
      * and Enter looks up its first word and takes focus to the sheet.
      */
-    type LookupEntry = {
-      d: string | string[]
-      g?: string
-      x?: string | string[]
-      p?: string
-      t?: string
-    }
-    type PaliMatch = { base: string; entry?: LookupEntry; meaning?: string }
-    type LzhMatch = { term: string; start: number; entry: LookupEntry }
     /** A Pāli word's span, or a Range of Chinese characters */
     type Word = HTMLElement | Range
 
     const toggle = document.getElementById('rooter-look-up')
     const popover = document.getElementById('definition')
     const main = document.querySelector('main')
-    if (toggle instanceof HTMLInputElement && popover && main)
+    // Out of the form, or a script change would turn on the no-JS links
+    toggle?.removeAttribute('form')
+    document.querySelector('#script-form > [name="look-up"]')?.remove()
+    if (
+      toggle instanceof HTMLInputElement &&
+      popover &&
+      main &&
+      !document.getElementById('lookup-sheet')
+    )
       setUpLookup(toggle, popover, main)
 
     function setUpLookup(
@@ -3014,9 +3034,11 @@ const metadata = textMetadata(userLanguage, {
       // The root text: a root page's own, or a translation's beside it
       const TEXT = ".segment > :is(.translation, .root)[translate='no'] > .text"
       const HAN = /\p{Script=Han}/u
-      const WORD = isLzh
-        ? /\p{Script=Han}/gu
-        : /[\p{L}\p{M}­‧]+(?:[’'”][\p{L}\p{M}­‧]+)*/gu
+      const WORD = isLzh ? /\p{Script=Han}/gu : PALI_WORD
+      const labels: LookupLabels = {
+        full: popover.dataset.full ?? '{word}',
+        see: popover.dataset.see ?? '{word}',
+      }
       const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
       const rangeHighlight =
         typeof CSS !== 'undefined' &&
@@ -3037,8 +3059,6 @@ const metadata = textMetadata(userLanguage, {
       let current: Word | null = null
       let latest = 0
 
-      // Shown now, as it does nothing without JS
-      toggle.closest('li')!.hidden = false
       popover.tabIndex = -1
 
       // Tab stops only while it's on
@@ -3084,11 +3104,6 @@ const metadata = textMetadata(userLanguage, {
           answers.delete(query)
           return null
         }
-      }
-
-      /** A Pāli word as the dictionary has it */
-      function cleanWord(word: string) {
-        return word.replace(/[­‧]/g, '').toLowerCase()
       }
 
       /**
@@ -3322,62 +3337,6 @@ const metadata = textMetadata(userLanguage, {
       const elementOf = (word: Word) =>
         word instanceof Range ? word.startContainer.parentElement! : word
 
-      const escape = (text: string) =>
-        text.replace(/[&<>"]/g, char => `&#${char.charCodeAt(0)};`)
-
-      const definePath = (word: string) => `/define/${encodeURIComponent(word)}`
-
-      function defineLink(word: string) {
-        const label = popover.dataset.full?.replace('{word}', word) ?? word
-        return `<a href="${definePath(word)}" aria-label="${escape(label)}">${icon('bookOpen')}</a>`
-      }
-
-      function paliHtml(word: string, found: PaliMatch[], lang: string) {
-        const matches = found.length ? found : [{ base: word, meaning: '?' }]
-        // The word already heads the sheet, so one match of it alone needs no
-        // heading of its own
-        const headed = !(matches.length === 1 && matches[0].base === word)
-        return matches
-          .map(match => {
-            const dt = headed
-              ? `<dt><dfn lang="${lang}" translate="no">${escape(match.base)} ${defineLink(match.base)}</dfn></dt>`
-              : ''
-            let dd = ''
-            if (match.entry) {
-              const { d, g, x } = match.entry
-              if (g) dd += `<span class="grammar">${g}</span>`
-              dd += `<ol class="definition">${[d]
-                .flat()
-                .map(d => `<li>${d}</li>`)
-                .join('')}</ol>`
-              if (x) {
-                const see = popover.dataset.see ?? '{word}'
-                dd += `<ul class="xr">${[x]
-                  .flat()
-                  .map(
-                    x =>
-                      `<li><a href="${definePath(x)}">${escape(see.replace('{word}', x))}</a></li>`
-                  )
-                  .join('')}</ul>`
-              }
-            } else {
-              dd = escape(match.meaning ?? '?')
-            }
-            return `<dl>${dt}<dd>${dd}</dd></dl>`
-          })
-          .join('')
-      }
-
-      function lzhHtml(terms: LzhMatch[]) {
-        if (!terms.length) return '<ol><li>?</li></ol>'
-        return `<ol>${terms
-          .map(({ term, entry }) => {
-            const defs = [entry.d].flat().join('; ')
-            return `<li><b lang="${isHans ? 'lzh-Hans' : 'lzh'}">${escape(term)}</b>${entry.p ? ` (${escape(entry.p)})` : ''} ${defs} ${defineLink(entry.t ?? term)}</li>`
-          })
-          .join('')}</ol>`
-      }
-
       /** Scrolls the word up out from under the sheet, to the middle above it */
       function keepInSight(word: Word) {
         const rect = word.getBoundingClientRect()
@@ -3403,10 +3362,7 @@ const metadata = textMetadata(userLanguage, {
         const book = popover.querySelector<HTMLAnchorElement>('nav > a')
         if (book) {
           book.href = definePath(word)
-          book.setAttribute(
-            'aria-label',
-            popover.dataset.full?.replace('{word}', word) ?? word
-          )
+          book.setAttribute('aria-label', labels.full.replace('{word}', word))
         }
         if (!popover.matches(':popover-open')) popover.showPopover()
       }
@@ -3452,8 +3408,8 @@ const metadata = textMetadata(userLanguage, {
           !answer
             ? `<p>${escape(popover.dataset.failed ?? '')}</p>`
             : isLzh
-              ? lzhHtml(answer as LzhMatch[])
-              : paliHtml(name, answer as PaliMatch[], escape(lang))
+              ? lzhHtml(answer as LzhMatch[], isHans, labels)
+              : paliHtml(name, answer as PaliMatch[], escape(lang), labels)
         )
         section.removeAttribute('aria-busy')
       }

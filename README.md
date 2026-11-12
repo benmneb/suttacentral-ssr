@@ -10,7 +10,7 @@ This project fetches data from SuttaCentral's public APIs at request time, rende
 
 - **The whole library** — All suttas, vinaya, and abhidhamma texts in root languages and every available translation, plus the site pages: guides, essays, dictionaries, editions and more
 - **Familiar URLs** — Mirrors SuttaCentral.net URL structure. Just change `.net` to `.now`, or use the [browser extension](https://git.sr.ht/~benmneb/suttacentral-redirect) from the [Chrome](https://chromewebstore.google.com/detail/suttacentral-redirect/noaddajdfegpjfgpmbhcbahofgkceaan) or [Firefox](https://addons.mozilla.org/firefox/addon/suttacentral-redirect/) store
-- **Optional JavaScript** — Every page and core feature works without it. About 13kb (gzipped) of client-side JS on a text adds inline Pali & Chinese dictionary lookups, text-to-speech via the Web Speech API and hot keys
+- **Optional JavaScript** — Every page and core feature works without it. About 13kb (gzipped) of client-side JS on a text adds text-to-speech via the Web Speech API and hot keys
 - **Valid HTML** — No errors or warnings from the W3C's Nu validator, and schema.org-valid structured data
 - **Pretty accessible** — Built and tested to WCAG 2.2 AA, with AAA contrast when more contrast is requested plus support for forced colours and reduced motion. See [ACCESSIBILITY.md](ACCESSIBILITY.md)
 - **Legacy supported** — Reads and navigates on Windows 7 from 2009 (Chrome 109), with or without JS. See the [principles](DEVELOPMENT.md#principles)
