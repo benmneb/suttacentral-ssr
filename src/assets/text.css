@@ -969,15 +969,13 @@ aside:not(:has(#rooter-script:checked)) #rooter-script-select {
   }
 }
 
-/* Only without JS, as the script submits the form itself */
-@media (scripting: enabled) {
-  #views-menu > li:is(.script-apply, .look-up-apply) > button,
-  #views-menu > li:is(.script-apply, .look-up-apply):not(:has(select)),
-  aside:not(:has(#rooter-script:checked))
-    #views-menu
-    > li:has(#rooter-script-select) {
-    display: none;
-  }
+/* A class from the script, as script blockers still match scripting: enabled */
+#views-menu.scripted > li:is(.script-apply, .look-up-apply) > button,
+#views-menu.scripted > li:is(.script-apply, .look-up-apply):not(:has(select)),
+aside:not(:has(#rooter-script:checked))
+  #views-menu.scripted
+  > li:has(#rooter-script-select) {
+  display: none;
 }
 
 /* Script blockers still match scripting: enabled, so the noscript notice stays */
