@@ -34,12 +34,14 @@ const MAX_LENGTH = 100
  * @param word - Pali word to look up
  * @param text - Run of Chinese characters around the one clicked
  * @param at - Where the clicked one is in `text`, counting characters
+ * @param hans - Set when `text` is in simplified characters
  */
 export const GET: APIRoute = async ({ url, locals }) => {
   const from = url.searchParams.get('from') ?? ''
   const to = url.searchParams.get('to') ?? ''
   const query = url.searchParams.get(from === 'lzh' ? 'text' : 'word')
   const at = Number(url.searchParams.get('at'))
+  const hans = from === 'lzh' && url.searchParams.has('hans')
 
   // Both end up in an asset path, so only ever the known pairs
   if (!AVAILABLE_LOOKUPS[from]?.includes(to) || !query) {
@@ -65,6 +67,7 @@ export const GET: APIRoute = async ({ url, locals }) => {
       to,
       q: query,
       ...(from === 'lzh' && { at: String(at) }),
+      ...(hans && { hans: '1' }),
       v: DICTIONARY_VERSION,
     })}`
   )
@@ -73,7 +76,10 @@ export const GET: APIRoute = async ({ url, locals }) => {
   const cached = await cache?.match(cacheKey)
   if (cached) return cached
 
-  const dict = getShardedDict<LookupEntry>(`lookup-${from}-${to}`, url.origin)
+  const dict = getShardedDict<LookupEntry>(
+    `lookup-${from}-${to}${hans ? '-hans' : ''}`,
+    url.origin
+  )
   let result: unknown
 
   // Fetching shards one at a time as the lookup reaches them costs a round

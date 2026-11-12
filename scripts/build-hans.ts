@@ -1,7 +1,7 @@
 /**
  * Writes the simplified form of each traditional Chinese character, and the
  * phrases OpenCC simplifies otherwise, for the text page's "Simplified"
- * setting. The text page fetches it only once that's turned on.
+ * setting and word lookup on it.
  *
  * Run: pnpm build-hans
  */

@@ -45,20 +45,35 @@ import {
   uidToTitle,
 } from '~/utils/strings'
 import { getUrlViewPrefs } from '~/utils/url-prefs'
+import { simplifiedHtml } from '~/utils/hans'
 
 const { text } = Astro.params
 
 // The script form, which saves and comes back to a clean URL
-if (Astro.url.searchParams.has('pali-script')) {
-  const on = Astro.url.searchParams.has('pali-script-on')
-  const script = paliScriptOf(Astro.url.searchParams.get('pali-script'))
-  setViewPref(Astro.cookies, 'script', (on && script?.id) || 'latin')
-  // Without JS nothing else saves it, so the Pali would stay hidden
-  if (Astro.url.searchParams.has('rooter'))
-    setViewPref(Astro.cookies, 'rooter', true)
+const formParams = [
+  'pali-script',
+  'pali-script-on',
+  'simplified',
+  'simplified-on',
+  'rooter',
+  'script',
+]
+if (['pali-script', 'simplified'].some(p => Astro.url.searchParams.has(p))) {
+  const params = Astro.url.searchParams
+  if (params.has('pali-script')) {
+    const script = paliScriptOf(params.get('pali-script'))
+    setViewPref(
+      Astro.cookies,
+      'script',
+      (params.has('pali-script-on') && script?.id) || 'latin'
+    )
+  }
+  if (params.has('simplified'))
+    setViewPref(Astro.cookies, 'simplifier', params.has('simplified-on'))
+  // Without JS nothing else saves it, so the root text would stay hidden
+  if (params.has('rooter')) setViewPref(Astro.cookies, 'rooter', true)
   const cleanUrl = new URL(Astro.url)
-  for (const param of ['pali-script', 'pali-script-on', 'rooter', 'script'])
-    cleanUrl.searchParams.delete(param)
+  for (const param of formParams) cleanUrl.searchParams.delete(param)
   return Astro.redirect(cleanUrl.pathname + cleanUrl.search)
 }
 
@@ -130,6 +145,9 @@ let paliScript =
   suttasData.segmented && suttasData.suttaplex?.root_lang === 'pli'
     ? paliScriptOf(viewPrefs.script)
     : undefined
+const hans =
+  suttasData.suttaplex?.root_lang === 'lzh' && viewPrefs.simplifier === true
+Astro.locals.hans = hans
 const bilaraPromise = suttasData.segmented
   ? Promise.all([
       fetchJson(
@@ -302,6 +320,18 @@ if (bilaraPromise) {
   }
 
   tidySegmentedHtml(bilaraData)
+
+  if (hans) {
+    for (const texts of [bilaraData.root_text, bilaraData.variant_text]) {
+      for (const key in texts) texts[key] = simplifiedHtml(texts[key])
+    }
+  }
+}
+
+if (hans && !suttasData.segmented && suttasData.translation?.lang === 'lzh') {
+  suttasData.translation.text = simplifiedHtml(
+    suttasData.translation.text
+  ).replace(/(?<=\slang=(['"]))lzh(?=\1)/g, 'lzh-Hans')
 }
 
 const [publicationData, crumbsData, parallelsData] = await extrasPromise
@@ -373,8 +403,10 @@ const rootLang = suttasData.suttaplex?.root_lang
 const availableLangs =
   rootLang && !paliScript ? AVAILABLE_LOOKUPS[rootLang] : null
 const canChangeScript = isSegmented && rootLang === 'pli'
+const hasScriptForm = canChangeScript || rootLang === 'lzh'
+// So fonts draw the simplified forms of the characters both share
 const scriptTag = (tag: string) =>
-  paliScript ? `${tag}-${paliScript.tag}` : tag
+  paliScript ? `${tag}-${paliScript.tag}` : hans ? `${tag}-Hans` : tag
 const lookupTargetLang = availableLangs?.includes(userLanguage)
   ? userLanguage
   : 'en'
@@ -1189,7 +1221,7 @@ const metadata = textMetadata(userLanguage, {
                     <input
                       type="checkbox"
                       id="rooter"
-                      {...(canChangeScript && {
+                      {...(hasScriptForm && {
                         name: 'rooter',
                         form: 'script-form',
                       })}
@@ -1271,11 +1303,12 @@ const metadata = textMetadata(userLanguage, {
                         checked={viewPrefs['rooter-look-up'] ?? false}
                         data-from={rootLang}
                         data-to={lookupTargetLang}
+                        data-hans={hans || undefined}
                       />
                     </li>
                   )}
                   {rootLang === 'lzh' && (
-                    <li class="sub" hidden>
+                    <li class="sub">
                       <label for="simplifier">
                         <span class="with-icon">
                           <Icon name="arrowPath" />
@@ -1296,8 +1329,17 @@ const metadata = textMetadata(userLanguage, {
                       <input
                         type="checkbox"
                         id="simplifier"
-                        checked={viewPrefs.simplifier ?? false}
+                        name="simplified-on"
+                        form="script-form"
+                        checked={hans}
                       />
+                    </li>
+                  )}
+                  {rootLang === 'lzh' && (
+                    <li class="sub sub-sub script-apply">
+                      <button type="submit" form="script-form">
+                        {t(userLanguage, 'viewoption:applyScript')}
+                      </button>
                     </li>
                   )}
                 </>
@@ -1335,6 +1377,7 @@ const metadata = textMetadata(userLanguage, {
                       checked={viewPrefs['rooter-look-up'] ?? false}
                       data-from={rootLang}
                       data-to={lookupTargetLang}
+                      data-hans={hans || undefined}
                     />
                   </li>
                 </>
@@ -1342,7 +1385,7 @@ const metadata = textMetadata(userLanguage, {
             }
             {
               isRootText && rootLang === 'lzh' && (
-                <li hidden>
+                <li>
                   <label for="simplifier">
                     <span class="with-icon">
                       <Icon name="arrowPath" />
@@ -1363,8 +1406,19 @@ const metadata = textMetadata(userLanguage, {
                   <input
                     type="checkbox"
                     id="simplifier"
-                    checked={viewPrefs.simplifier ?? false}
+                    name="simplified-on"
+                    form="script-form"
+                    checked={hans}
                   />
+                </li>
+              )
+            }
+            {
+              isRootText && rootLang === 'lzh' && (
+                <li class="sub script-apply">
+                  <button type="submit" form="script-form">
+                    {t(userLanguage, 'viewoption:applyScript')}
+                  </button>
                 </li>
               )
             }
@@ -1599,7 +1653,15 @@ const metadata = textMetadata(userLanguage, {
               />
             </li>
           </ul>
-          {canChangeScript && <form id="script-form" method="get" hidden />}
+          {
+            hasScriptForm && (
+              <form id="script-form" method="get" hidden>
+                {rootLang === 'lzh' && (
+                  <input type="hidden" name="simplified" />
+                )}
+              </form>
+            )
+          }
         </li>
         <li>
           <button
@@ -2080,7 +2142,6 @@ const metadata = textMetadata(userLanguage, {
       'rooter-first',
       'rooter-look-up',
       'rooter-side',
-      'simplifier',
       'segmenter',
       'segmenter-main',
       'segmenter-pts',
@@ -2419,32 +2480,40 @@ const metadata = textMetadata(userLanguage, {
     // Another script is another page from the server, so the place is kept
     // across the load
     const SCRIPT_SPOT = 'script-spot'
+    const scriptForm = document.getElementById('script-form')
     const scriptBox = document.getElementById('rooter-script')
     const scriptSelect = document.getElementById('rooter-script-select')
+    const simplifier = document.getElementById('simplifier')
 
     function submitScript() {
-      if (!(scriptSelect instanceof HTMLSelectElement)) return
+      if (!(scriptForm instanceof HTMLFormElement)) return
       rememberAnchor()
-      if (anchor) {
-        const { el, top } = anchor
-        try {
-          sessionStorage.setItem(
-            SCRIPT_SPOT,
-            JSON.stringify({
-              path: location.pathname,
-              id: el.closest('.segment').id,
-              kind: el.parentElement.classList.contains('root')
-                ? 'root'
-                : 'translation',
-              top,
-            })
-          )
-        } catch {}
-      }
-      scriptSelect.form?.requestSubmit()
+      const spot = anchor
+        ? {
+            id: anchor.el.closest('.segment').id,
+            kind: anchor.el.parentElement.classList.contains('root')
+              ? 'root'
+              : 'translation',
+            top: anchor.top,
+          }
+        : // A legacy text has no segments, and keeps its layout
+          { y: scrollY }
+      try {
+        sessionStorage.setItem(
+          SCRIPT_SPOT,
+          JSON.stringify({ path: location.pathname, ...spot })
+        )
+      } catch {}
+      scriptForm.requestSubmit()
     }
 
     scriptSelect?.addEventListener('change', submitScript)
+    simplifier?.addEventListener('change', submitScript)
+    // Back from the reload, the page is still in its old characters
+    addEventListener('pageshow', e => {
+      if (e.persisted && simplifier instanceof HTMLInputElement)
+        simplifier.checked = simplifier.defaultChecked
+    })
     scriptBox?.addEventListener('change', () => {
       if (
         scriptBox instanceof HTMLInputElement &&
@@ -2461,6 +2530,7 @@ const metadata = textMetadata(userLanguage, {
         sessionStorage.removeItem(SCRIPT_SPOT)
       } catch {}
       if (spot?.path !== location.pathname) return
+      if ('y' in spot) return scrollTo(0, spot.y)
       const el = document
         .getElementById(spot.id)
         ?.querySelector(`:scope > .${spot.kind} > .text`)
@@ -2899,17 +2969,7 @@ const metadata = textMetadata(userLanguage, {
   </script>
 
   <script>
-    import { setUpSimplify } from '~/utils/simplify'
-
-    const simplifier = document.getElementById('simplifier')
-    const main = document.querySelector('main')
-    if (simplifier instanceof HTMLInputElement && main)
-      setUpSimplify(simplifier, main)
-  </script>
-
-  <script>
     import { icon } from '~/constants/heroicons'
-    import { original } from '~/utils/simplify'
 
     /**
      * Word Lookup
@@ -2930,6 +2990,7 @@ const metadata = textMetadata(userLanguage, {
       g?: string
       x?: string | string[]
       p?: string
+      t?: string
     }
     type PaliMatch = { base: string; entry?: LookupEntry; meaning?: string }
     type LzhMatch = { term: string; start: number; entry: LookupEntry }
@@ -2948,6 +3009,7 @@ const metadata = textMetadata(userLanguage, {
       main: HTMLElement
     ) {
       const isLzh = toggle.dataset.from === 'lzh'
+      const isHans = 'hans' in toggle.dataset
       const canPop = 'popover' in HTMLElement.prototype
       // The root text: a root page's own, or a translation's beside it
       const TEXT = ".segment > :is(.translation, .root)[translate='no'] > .text"
@@ -3062,8 +3124,7 @@ const metadata = textMetadata(userLanguage, {
 
       /**
        * What to ask the server about a word. Chinese with the characters around
-       * it, in traditional characters as the dictionary has them where they've
-       * been simplified, and where it is among them
+       * it, and where it is among them
        */
       function queryOf(word: Word) {
         const query = new URLSearchParams({
@@ -3075,12 +3136,13 @@ const metadata = textMetadata(userLanguage, {
           return query
         }
         const context = contextOf(word)
-        const data = original(context.startContainer as Text)
+        const { data } = context.startContainer as Text
         query.set('text', data.slice(context.startOffset, context.endOffset))
         query.set(
           'at',
           String([...data.slice(context.startOffset, word.startOffset)].length)
         )
+        if (isHans) query.set('hans', '1')
         return query
       }
 
@@ -3088,7 +3150,7 @@ const metadata = textMetadata(userLanguage, {
       function termOf(char: Range, terms: LzhMatch[]) {
         const context = contextOf(char)
         const text = [
-          ...original(context.startContainer as Text).slice(
+          ...(context.startContainer as Text).data.slice(
             context.startOffset,
             context.endOffset
           ),
@@ -3311,7 +3373,7 @@ const metadata = textMetadata(userLanguage, {
         return `<ol>${terms
           .map(({ term, entry }) => {
             const defs = [entry.d].flat().join('; ')
-            return `<li><b lang="lzh">${escape(term)}</b>${entry.p ? ` (${escape(entry.p)})` : ''} ${defs} ${defineLink(term)}</li>`
+            return `<li><b lang="${isHans ? 'lzh-Hans' : 'lzh'}">${escape(term)}</b>${entry.p ? ` (${escape(entry.p)})` : ''} ${defs} ${defineLink(entry.t ?? term)}</li>`
           })
           .join('')}</ol>`
       }

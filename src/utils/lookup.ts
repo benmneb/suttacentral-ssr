@@ -5,6 +5,8 @@ export type LookupEntry = {
   g?: string
   x?: string | string[]
   p?: string
+  /** The traditional term, in the simplified dictionary */
+  t?: string
 }
 
 /** A dictionary that may need fetching before it can answer */

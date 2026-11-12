@@ -7,5 +7,7 @@ declare namespace App {
      * Set once per request by the middleware, so read this, not getPreferredLanguage
      */
     userLanguage: string
+    /** Set by the text page when it shows its Chinese in simplified characters */
+    hans?: boolean
   }
 }

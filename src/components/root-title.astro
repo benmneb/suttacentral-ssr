@@ -1,4 +1,5 @@
 ---
+import { simplified } from '~/utils/hans'
 import { langTag } from '~/utils/language'
 import { normalise, softHyphenateTitle } from '~/utils/strings'
 
@@ -10,9 +11,14 @@ interface Props {
 }
 
 const { href } = Astro.props
-const lang = Astro.props.lang ? langTag(Astro.props.lang) : undefined
+const hans = Astro.locals.hans && Astro.props.lang === 'lzh'
+const lang = Astro.props.lang
+  ? `${langTag(Astro.props.lang)}${hans ? '-Hans' : ''}`
+  : undefined
 // The API leaves trailing spaces on names
-const root = Astro.props.root?.trim()
+const root = hans
+  ? simplified(Astro.props.root?.trim() ?? '')
+  : Astro.props.root?.trim()
 const translation = Astro.props.translation?.trim()
 const isPair =
   !!root && !!translation && normalise(root) !== normalise(translation)

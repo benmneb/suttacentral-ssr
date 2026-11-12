@@ -4,7 +4,7 @@
 
 SuttaCentral.now is built HTML first, with CSS where it's needed and JavaScript only as an enhancement. Every change is held to these:
 
-- Every page, text and core feature is server-rendered HTML and CSS, and works without JavaScript. Of suttacentral.net's features, only word lookup and Simplified Chinese need JS here. The rest of the optional ~13 kB (gzipped) on a text adds extras such as text-to-speech and hot keys to pages that already work
+- Every page, text and core feature is server-rendered HTML and CSS, and works without JavaScript. Of suttacentral.net's features, only word lookup needs JS here. The rest of the optional ~13 kB (gzipped) on a text adds extras such as text-to-speech and hot keys to pages that already work
 - Every kind of page passes the W3C's [Nu validator](https://validator.w3.org/nu/) with no errors or warnings, and their JSON-LD fits the schema.org vocabulary. Slips in SuttaCentral's markup are mended as each page renders. The one warning let through is for text in its data that isn't in Unicode Normalization Form C, such as some Bengali names
 - Pages are built and tested to [WCAG 2.2](https://www.w3.org/TR/WCAG22/) AA, with no axe-core violations in light and dark mode or at a phone's width. With more contrast set, text meets AAA contrast ratios. Forced colours and reduced motion are respected throughout. See [ACCESSIBILITY.md](ACCESSIBILITY.md)
 - There's no render-blocking JS, with 0 ms Total Blocking Time and no layout shift
@@ -16,13 +16,15 @@ Data the site takes from SuttaCentral or elsewhere ahead of time, such as dictio
 
 ## View Settings
 
-The texts have every view setting .net has and more. They only show on texts they work on. All but root-word lookup and Simplified Chinese work without JS, though only the Pali script is remembered from page to page without it, as JS saves the rest to the cookie. Two are narrower than on .net: references come as Main, PTS and Others rather than one per edition, and the Pali script list has 18 of .net's 141, the ones devices ship a font for, so none needs a web font.
+The texts have every view setting .net has and more. They only show on texts they work on. All but root-word lookup work without JS, though only the Pali script and Simplified Chinese are remembered from page to page without it, as JS saves the rest to the cookie. Those two are rendered by the server, so changing either loads the page again, keeping the reader's place. Two are narrower than on .net: references come as Main, PTS and Others rather than one per edition, and the Pali script list has 18 of .net's 141, the ones devices ship a font for, so none needs a web font.
 
 .net links carry the reader's view settings in the query, e.g. `/mn1/en/sujato?lang=en&layout=sidebyside&reference=main/pts&notes=asterisk&highlight=true&script=latin`. They're honoured here too, so a shared .net link (or one redirected here from .net) opens as it was sent. The server reads them over the browser's cookie, so they work without JS, and as on .net they apply to that page only and are never saved over the reader's own settings.
 
 ## Word Lookup
 
 .net ships the full dictionaries and DPD tables (~30 MB) as client-side JS. Here [`/api/lookup`](src/pages/api/lookup.ts) looks up each word as it's clicked and returns only its matches. The build splits each dictionary into ~100 KB shards, served as static files, and a lookup fetches the few its word touches all at once, as each is a round trip, and taking them in turn left a click waiting 1–2 seconds. Answers are cached for a month, in the data centre, so a word anyone nearby has looked up skips the shards, and in the browser.
+
+A text in Simplified Chinese is looked up in a copy of the Chinese dictionary keyed by simplified characters, which the build makes alongside the shards. Terms that simplify alike, such as 發 and 髮, share one entry there.
 
 ### Updating Dictionaries
 

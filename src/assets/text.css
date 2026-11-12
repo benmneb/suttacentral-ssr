@@ -1028,6 +1028,10 @@ aside:not(:has(#rooter-script:checked))
 aside:has(#rooter-script:not(:checked):not(:default))
   #views-menu
   > li.script-apply,
+aside:has(#simplifier:checked:default) #views-menu > li.script-apply,
+aside:has(#simplifier:not(:checked):not(:default))
+  #views-menu
+  > li.script-apply,
 aside:not(:has(#segmenter:checked))
   #views-menu
   > li:is(
@@ -1047,7 +1051,7 @@ aside:not(:has(#segmenter:checked))
   }
 }
 
-/* Only without JS, as the script submits the select itself */
+/* Only without JS, as the script submits the form itself */
 @media (scripting: enabled) {
   #views-menu > li.script-apply {
     display: none;

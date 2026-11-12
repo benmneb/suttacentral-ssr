@@ -14,6 +14,8 @@ import { createHash } from 'node:crypto'
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { simplified } from '../src/utils/hans.ts'
+import type { LookupEntry } from '../src/utils/lookup.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const SOURCE_DIR = join(__dirname, '..', 'data')
@@ -124,6 +126,31 @@ async function shardDictionary(
     : { by: 'prefix', prefixes }
 }
 
+/**
+ * A Chinese dictionary keyed by simplified characters, for lookup on a
+ * simplified text. Terms that simplify alike share one entry, and each keeps
+ * its traditional term for the define link
+ */
+function simplifiedDictionary(data: Record<string, LookupEntry>) {
+  const out: Record<string, LookupEntry> = {}
+  for (const [term, entry] of Object.entries(data)) {
+    const key = simplified(term)
+    const own = key === term ? entry : { ...entry, t: term }
+    const had = out[key]
+    out[key] = had
+      ? {
+          ...had,
+          d: [had.d, own.d].flat(),
+          ...(own.p &&
+            own.p !== had.p && {
+              p: had.p ? `${had.p} / ${own.p}` : own.p,
+            }),
+        }
+      : own
+  }
+  return out
+}
+
 // Start clean, so a dictionary dropped from data/ doesnt linger as shards
 await rm(SHARDS_DIR, { recursive: true, force: true })
 const indexes: Record<string, object> = {}
@@ -136,7 +163,16 @@ for (const file of (await readdir(SOURCE_DIR)).sort()) {
   const json = await readFile(join(SOURCE_DIR, file), 'utf8')
   hash.update(name).update(json)
   indexes[name] = await shardDictionary(name, JSON.parse(json))
+  if (name.startsWith('lookup-lzh')) {
+    indexes[`${name}-hans`] = await shardDictionary(
+      `${name}-hans`,
+      simplifiedDictionary(JSON.parse(json))
+    )
+  }
 }
+hash.update(
+  await readFile(join(__dirname, '..', 'src', 'constants', 'hans.json'))
+)
 const version = hash.digest('hex').slice(0, 12)
 await mkdir(dirname(INDEXES_FILE), { recursive: true })
 await writeFile(INDEXES_FILE, JSON.stringify({ version, indexes }))
