@@ -14,11 +14,12 @@ const userLanguage = Astro.locals.userLanguage
 
 const lowerChapter = chapter?.toLowerCase()
 
+// The api answers a uid with a file extension, like favicon.ico, with an HTML 404
 async function fetchCrumbs(uid: string | undefined) {
   const r = await fetch(
     `${SC_API}/navigation_data/${uid}?language=${userLanguage}`
   )
-  return r.json()
+  return r.ok ? r.json() : []
 }
 
 async function fetchShortcuts(): Promise<string[]> {
@@ -45,7 +46,7 @@ const { signal } = fetchesLeft
 const suttaplexPromise = fetch(
   `${SC_API}/suttaplex/${lowerChapter}?language=${userLanguage}`,
   { signal }
-).then(r => r.json())
+).then(r => (r.ok ? r.json() : []))
 // The test text-meta-content shows parallels by, so none are fetched unused
 const parallelsPromise = suttaplexPromise.then(data => {
   const entries = data?.filter?.(entry => entry?.uid) ?? []
@@ -89,7 +90,9 @@ if (!suttaplexData?.[0]?.uid) {
   const rangeSuttaplexResponse = await fetch(
     `${SC_API}/range_suttaplex/${lowerChapter}?language=${userLanguage}`
   )
-  const rangeSuttaplexData = await rangeSuttaplexResponse.json()
+  const rangeSuttaplexData = rangeSuttaplexResponse.ok
+    ? await rangeSuttaplexResponse.json()
+    : []
   if (rangeSuttaplexData?.[0]?.uid) {
     suttaplexData = rangeSuttaplexData
     isIndividualRangeSutta = true
