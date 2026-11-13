@@ -5,6 +5,13 @@ User-agent: *
 Disallow: /lookup/
 Disallow: /api/
 
+# Welcome, but slower, as its bursts went over the Worker's CPU limit
+User-agent: SeznamBot
+Crawl-delay: 10
+Request-rate: 1/10s
+Disallow: /lookup/
+Disallow: /api/
+
 # Block AI and data-scraper bots specifically, as per the request on https://suttacentral.net/licensing
 # List from: https://github.com/ai-robots-txt/ai.robots.txt/blob/main/robots.txt
 
